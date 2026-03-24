@@ -3,7 +3,7 @@
 #include "FileUtils.h"
 #include "StringUtils.h"
 
-#include "..\vendor\nlohmann\json.hpp"
+#include "../vendor/nlohmann/json.hpp"
 
 #include <stdio.h>
 

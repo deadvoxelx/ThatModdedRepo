@@ -105,7 +105,7 @@ typedef XNKID SessionID;
 typedef XUID GameSessionUID;
 #define HRESULT_SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
 
-#include "..\Minecraft.Client\xbox\network\extra.h"
+#include "../Minecraft.Client/xbox/network/extra.h"
 #else
 #include "extraX64.h"
 #endif
@@ -146,48 +146,48 @@ typedef XUID GameSessionUID;
 #include <xparty.h>
 #endif
 
-#include "..\Minecraft.World\Definitions.h"
-#include "..\Minecraft.World\class.h"
-#include "..\Minecraft.World\ArrayWithLength.h"
-#include "..\Minecraft.World\SharedConstants.h"
-#include "..\Minecraft.World\Random.h"
-#include "..\Minecraft.World\compression.h"
-#include "..\Minecraft.World\PerformanceTimer.h"
+#include "../Minecraft.World/Definitions.h"
+#include "../Minecraft.World/Class.h"
+#include "../Minecraft.World/ArrayWithLength.h"
+#include "../Minecraft.World/SharedConstants.h"
+#include "../Minecraft.World/Random.h"
+#include "../Minecraft.World/compression.h"
+#include "../Minecraft.World/PerformanceTimer.h"
 
 #ifdef _XBOX
-	#include "xbox\4JLibs\inc\4J_Input.h"
-	#include "xbox\4JLibs\inc\4J_Profile.h"
-	#include "xbox\4JLibs\inc\4J_Render.h"
-	#include "xbox\4JLibs\inc\4J_XTMS.h"
-	#include "xbox\4JLibs\inc\4J_Storage.h"
+	#include "xbox/4JLibs/inc/4J_Input.h"
+	#include "xbox/4JLibs/inc/4J_Profile.h"
+	#include "xbox/4JLibs/inc/4J_Render.h"
+	#include "xbox/4JLibs/inc/4J_xtms.h"
+	#include "xbox/4JLibs/inc/4J_Storage.h"
 #elif defined (__PS3__)
 
-	#include "PS3\4JLibs\inc\4J_Input.h"
-	#include "PS3\4JLibs\inc\4J_Profile.h"
-	#include "PS3\4JLibs\inc\4J_Render.h"
-	#include "PS3\4JLibs\inc\4J_Storage.h"
+	#include "PS3/4JLibs/inc/4J_Input.h"
+	#include "PS3/4JLibs/inc/4J_Profile.h"
+	#include "PS3/4JLibs/inc/4J_Render.h"
+	#include "PS3/4JLibs/inc/4J_Storage.h"
 #elif defined _DURANGO
-	#include "Durango\4JLibs\inc\4J_Input.h"
-	#include "Durango\4JLibs\inc\4J_Profile.h"
-	#include "Durango\4JLibs\inc\4J_Render.h"
-	#include "Durango\4JLibs\inc\4J_Storage.h"
+	#include "Durango/4JLibs/inc/4J_Input.h"
+	#include "Durango/4JLibs/inc/4J_Profile.h"
+	#include "Durango/4JLibs/inc/4J_Render.h"
+	#include "Durango/4JLibs/inc/4J_Storage.h"
 #elif defined _WINDOWS64
 	#include <Xinput.h>
-	#include "Windows64\4JLibs\inc\4J_Input.h"
-	#include "Windows64\4JLibs\inc\4J_Profile.h"
-	#include "Windows64\4JLibs\inc\4J_Render.h"
-	#include "Windows64\4JLibs\inc\4J_Storage.h"
-	#include "Windows64\KeyboardMouseInput.h"
+	#include "Windows64/4JLibs/inc/4J_Input.h"
+	#include "Windows64/4JLibs/inc/4J_Profile.h"
+	#include "Windows64/4JLibs/inc/4J_Render.h"
+	#include "Windows64/4JLibs/inc/4J_Storage.h"
+	#include "Windows64/KeyboardMouseInput.h"
 #elif defined __PSVITA__
-	#include "PSVita\4JLibs\inc\4J_Input.h"
-	#include "PSVita\4JLibs\inc\4J_Profile.h"
-	#include "PSVita\4JLibs\inc\4J_Render.h"
-	#include "PSVita\4JLibs\inc\4J_Storage.h"
+	#include "PSVita/4JLibs/inc/4J_Input.h"
+	#include "PSVita/4JLibs/inc/4J_Profile.h"
+	#include "PSVita/4JLibs/inc/4J_Render.h"
+	#include "PSVita/4JLibs/inc/4J_Storage.h"
 #else
-	#include "Orbis\4JLibs\inc\4J_Input.h"
-	#include "Orbis\4JLibs\inc\4J_Profile.h"
-	#include "Orbis\4JLibs\inc\4J_Render.h"
-	#include "Orbis\4JLibs\inc\4J_Storage.h"
+	#include "Orbis/4JLibs/inc/4J_Input.h"
+	#include "Orbis/4JLibs/inc/4J_Profile.h"
+	#include "Orbis/4JLibs/inc/4J_Render.h"
+	#include "Orbis/4JLibs/inc/4J_Storage.h"
 #endif
 
 #include "Textures.h"

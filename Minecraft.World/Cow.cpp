@@ -13,7 +13,7 @@
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.stats.h"
 #include "Cow.h"
-#include "..\Minecraft.Client\Textures.h"
+#include "../Minecraft.Client/Textures.h"
 #include "MobCategory.h"
 
 Cow::Cow(Level *level) : Animal( level )

@@ -10,7 +10,7 @@
 #include "Screen.h"
 #include "Tesselator.h"
 #include "Textures.h"
-#include "..\Minecraft.World\net.minecraft.locale.h"
+#include "../Minecraft.World/net.minecraft.locale.h"
 #include <vector>
 
 extern ConsoleUIController ui;

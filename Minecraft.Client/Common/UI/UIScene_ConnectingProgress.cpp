@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIScene_ConnectingProgress.h"
-#include "..\..\Minecraft.h"
+#include "../../Minecraft.h"
 #ifdef _WINDOWS64
-#include "..\..\Windows64\Network\WinsockNetLayer.h"
+#include "../../Windows64/Network/WinsockNetLayer.h"
 #include "..\..\..\Minecraft.World\DisconnectPacket.h"
 
 static int ConnectingProgress_OnRejectedDialogOK(LPVOID, int iPad, const C4JStorage::EMessageResult)

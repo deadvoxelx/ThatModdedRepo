@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\IServerCliCommand.h"
+#include "../IServerCliCommand.h"
 
 namespace ServerRuntime
 {

@@ -9,7 +9,7 @@
 #endif
 #include <queue>
 
-#include "..\..\Common\Network\Sony\SQRNetworkManager.h"
+#include "../../Common/Network/Sony/SQRNetworkManager.h"
 
 class SQRNetworkPlayer;
 class ISQRNetworkManagerListener;

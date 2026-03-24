@@ -414,3 +414,10 @@ build/
 tmp*/
 _server_asset_probe/
 server-data/
+
+
+# Nix
+result
+result-*
+.direnv/
+.xwin-cache/

@@ -7,7 +7,7 @@
 #include "net.minecraft.world.h"
 #include "net.minecraft.stats.h"
 #include "net.minecraft.h"
-#include "..\Minecraft.Client\Minecraft.h"
+#include "../Minecraft.Client/Minecraft.h"
 
 const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {
 	IDS_TILE_LEAVES_OAK,

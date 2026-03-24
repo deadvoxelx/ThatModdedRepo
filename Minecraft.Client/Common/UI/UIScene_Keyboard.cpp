@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIScene_Keyboard.h"
-#include "..\..\Screen.h"
+#include "../../Screen.h"
 
 #ifdef _WINDOWS64
 // Global buffer that stores the text entered in the native keyboard scene.

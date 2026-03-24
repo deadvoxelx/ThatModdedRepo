@@ -2,13 +2,13 @@
 
 #include "CliCommandDefaultGamemode.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\..\Minecraft.Client\MinecraftServer.h"
-#include "..\..\..\..\Minecraft.Client\PlayerList.h"
-#include "..\..\..\..\Minecraft.Client\ServerLevel.h"
-#include "..\..\..\..\Minecraft.Client\ServerPlayer.h"
-#include "..\..\..\..\Minecraft.World\net.minecraft.world.level.storage.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../../Minecraft.Client/MinecraftServer.h"
+#include "../../../../Minecraft.Client/PlayerList.h"
+#include "../../../../Minecraft.Client/ServerLevel.h"
+#include "../../../../Minecraft.Client/ServerPlayer.h"
+#include "../../../../Minecraft.World/net.minecraft.world.level.storage.h"
 
 namespace ServerRuntime
 {

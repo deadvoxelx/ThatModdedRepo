@@ -2,11 +2,11 @@
 
 #include "CliCommandGamemode.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\..\Minecraft.Client\MinecraftServer.h"
-#include "..\..\..\..\Minecraft.Client\PlayerList.h"
-#include "..\..\..\..\Minecraft.Client\ServerPlayer.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../../Minecraft.Client/MinecraftServer.h"
+#include "../../../../Minecraft.Client/PlayerList.h"
+#include "../../../../Minecraft.Client/ServerPlayer.h"
 
 namespace ServerRuntime
 {

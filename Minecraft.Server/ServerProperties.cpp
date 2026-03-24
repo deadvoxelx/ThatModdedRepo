@@ -3,9 +3,9 @@
 #include "ServerProperties.h"
 
 #include "ServerLogger.h"
-#include "Common\\StringUtils.h"
-#include "Common\\FileUtils.h"
-#include "..\\Minecraft.World\\ChunkSource.h"
+#include "Common//StringUtils.h"
+#include "Common//FileUtils.h"
+#include "..//Minecraft.World//ChunkSource.h"
 
 #include <cctype>
 #include <map>

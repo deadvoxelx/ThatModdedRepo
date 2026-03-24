@@ -3,7 +3,7 @@
 #include "Options.h"
 #include "SmallButton.h"
 #include "Minecraft.h"
-#include "..\Minecraft.World\net.minecraft.locale.h"
+#include "../Minecraft.World/net.minecraft.locale.h"
 #ifdef _WINDOWS64
 #include "Windows64\KeyboardMouseInput.h"
 #endif

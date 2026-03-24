@@ -2,11 +2,11 @@
 
 #include "CliCommandPardonIp.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\Access\Access.h"
-#include "..\..\..\Common\NetworkUtils.h"
-#include "..\..\..\Common\StringUtils.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../Access/Access.h"
+#include "../../../Common/NetworkUtils.h"
+#include "../../../Common/StringUtils.h"
 
 namespace ServerRuntime
 {

@@ -2,7 +2,7 @@
 
 #include "CliCommandStop.h"
 
-#include "..\..\ServerCliEngine.h"
+#include "../../ServerCliEngine.h"
 
 namespace ServerRuntime
 {

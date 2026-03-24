@@ -2,8 +2,8 @@
 
 #include "ServerCliRegistry.h"
 
-#include "commands\IServerCliCommand.h"
-#include "..\Common\StringUtils.h"
+#include "commands/IServerCliCommand.h"
+#include "../Common/StringUtils.h"
 
 namespace ServerRuntime
 {

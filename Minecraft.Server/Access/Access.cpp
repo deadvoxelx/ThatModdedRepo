@@ -2,8 +2,8 @@
 
 #include "Access.h"
 
-#include "..\Common\StringUtils.h"
-#include "..\ServerLogger.h"
+#include "../Common/StringUtils.h"
+#include "../ServerLogger.h"
 
 #include <memory>
 #include <mutex>
