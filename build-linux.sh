@@ -127,7 +127,7 @@ do_install() {
     info "Installing to $INSTALL_DIR..."
     mkdir -p "$INSTALL_DIR"/{client,server}
     cp "$BUILD_DIR/Minecraft.Client/Minecraft.Client.exe" "$INSTALL_DIR/client/"
-    cp "$BUILD_DIR/Minecraft.Server/Minecraft.Server.exe" "$INSTALL_DIR/server/"
+    cp "$BUILD_DIR/Minecraft.Server/$BUILD_TYPE/Minecraft.Server.exe" "$INSTALL_DIR/server/"
     for asset in iggy_w64.dll Common music Windows64 Windows64Media; do
         [[ -e "$BUILD_DIR/Minecraft.Client/$asset" ]] && \
             cp -r "$BUILD_DIR/Minecraft.Client/$asset" "$INSTALL_DIR/client/" || true
