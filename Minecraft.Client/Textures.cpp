@@ -168,6 +168,10 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/zombiceLegacy",
 	L"mob/white_enderman",
 	L"mob/white_enderman_eyes",
+	L"mob/evupul",
+	L"mob/evupul_dark",
+	L"mob/evupul_dark_overlay",
+	L"mob/evupul_gold",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
