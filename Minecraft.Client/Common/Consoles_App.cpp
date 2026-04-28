@@ -4548,6 +4548,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_STRAY, L"Stray");
 		m_stringTable->registerString(IDS_ZOMBICE, L"Zombice");
 		m_stringTable->registerString(IDS_WHITEENDERMAN, L"White Enderman");
+		m_stringTable->registerString(IDS_EVUPULDARK, L"Dark Evupul");
 	}
 	else
 	{
