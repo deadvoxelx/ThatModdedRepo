@@ -2363,3 +2363,4 @@
 #define IDS_STRAY											   2357
 #define IDS_ZOMBICE											   2358
 #define IDS_WHITEENDERMAN									   2359
+#define IDS_EVUPULDARK										   2360
