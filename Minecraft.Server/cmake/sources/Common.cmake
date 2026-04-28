@@ -288,6 +288,8 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/EntityTileRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/EntityTracker.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/ErrorScreen.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/EvupulModel.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/EvupulRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/ExperienceOrbRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/ExplodeParticle.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/Extrax64Stubs.cpp"
