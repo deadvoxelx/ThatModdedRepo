@@ -53,9 +53,9 @@ ItemInHandRenderer::ItemInHandRenderer(Minecraft *minecraft, bool optimisedMinim
 			for( int xp = 0; xp < 16; xp++ )
 			{
 				float u = (15-xp) / 256.0f;
-				float v = (15-yp) / 256.0f;
+				float v = (15-yp) / 512.0f;
 				u += 0.5f / 256.0f;
-				v += 0.5f / 256.0f;
+				v += 0.5f / 512.0f;
 				float x0 = xp / 16.0f;
 				float x1 = x0 + 1.0f/16.0f;
 				float y0 = yp / 16.0f;
