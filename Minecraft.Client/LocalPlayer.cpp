@@ -512,7 +512,7 @@ void LocalPlayer::changeDimension(int i)
 {
 	if (!level->isClientSide)
 	{
-		if (dimension == 1 && i == 1)
+		if ((dimension == 1 || dimension == 2) && i == 1)
 		{
 			awardStat(GenericStats::winGame(), GenericStats::param_noArgs());
 			//minecraft.setScreen(new WinScreen());
@@ -535,10 +535,10 @@ float LocalPlayer::getFieldOfViewModifier()
 	float targetFov = 1.0f;
 
 	// modify for movement
-	if (abilities.flying) targetFov *= 1.1f;
+	//if (abilities.flying) targetFov *= 1.1f;
 
-	AttributeInstance *speed = getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
-	targetFov *= (speed->getValue() / abilities.getWalkingSpeed() + 1) / 2;
+	//AttributeInstance *speed = getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
+	//targetFov *= (speed->getValue() / abilities.getWalkingSpeed() + 1) / 2;
 
 	// modify for bow =)
 	if (isUsingItem() && getUseItem()->id == Item::bow->id)
@@ -1287,7 +1287,7 @@ void LocalPlayer::handleMouseDown(int button, bool down)
 
 		// 4J - addition to stop layer mining out of the top or bottom of the world
 		// 4J Stu - Allow this for The End
-		if( ( ( y == 0 ) || ( ( y == 127 ) && level->dimension->hasCeiling ) ) && level->dimension->id != 1 ) return;
+		if( ( ( y == 0 ) || ( ( y == 127 ) && level->dimension->hasCeiling ) ) && (level->dimension->id != 1 && level->dimension->id != 2) ) return;
 
 		minecraft->gameMode->continueDestroyBlock(x, y, z, minecraft->hitResult->f);
 		
@@ -1547,7 +1547,7 @@ bool LocalPlayer::handleMouseClick(int button)
 		{
 			// 4J - addition to stop layer mining out of the top or bottom of the world
 			// 4J Stu - Allow this for The End
-			if( !( ( y == 0 ) || ( ( y == 127 ) && level->dimension->hasCeiling ) ) ||  level->dimension->id == 1 )
+			if( !( ( y == 0 ) || ( ( y == 127 ) && level->dimension->hasCeiling ) ) ||  level->dimension->id == 1 || level->dimension->id == 2 )
 			{
 				minecraft->gameMode->startDestroyBlock(x, y, z, minecraft->hitResult->f);
 			}
