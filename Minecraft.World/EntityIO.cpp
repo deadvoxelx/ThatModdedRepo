@@ -89,7 +89,7 @@ void EntityIO::staticCtor()
 	setId(Blaze::create, eTYPE_BLAZE, L"Blaze", 61, eMinecraftColour_Mob_Blaze_Colour1, eMinecraftColour_Mob_Blaze_Colour2, IDS_BLAZE);
 	setId(LavaSlime::create, eTYPE_LAVASLIME, L"LavaSlime", 62, eMinecraftColour_Mob_LavaSlime_Colour1, eMinecraftColour_Mob_LavaSlime_Colour2, IDS_LAVA_SLIME);
 	setId(EnderDragon::create, eTYPE_ENDERDRAGON, L"EnderDragon", 63, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Enderman_Colour1, IDS_ENDERDRAGON);
-	setId(WitherBoss::create, eTYPE_WITHERBOSS, L"WitherBoss", 64);
+	setId(WitherBoss::create, eTYPE_WITHERBOSS, L"WitherBoss", 64, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Skeleton_Colour2, IDS_WITHER);
 	setId(Bat::create, eTYPE_BAT, L"Bat", 65, eMinecraftColour_Mob_Bat_Colour1, eMinecraftColour_Mob_Bat_Colour2, IDS_BAT);
 	setId(Witch::create, eTYPE_WITCH, L"Witch", 66, eMinecraftColour_Mob_Witch_Colour1, eMinecraftColour_Mob_Witch_Colour2, IDS_WITCH);
 
@@ -110,6 +110,7 @@ void EntityIO::staticCtor()
 	setId(Husk::create, eTYPE_HUSK, L"Husk", 104, eMinecraftColour_Mob_Ocelot_Colour1, eMinecraftColour_Mob_Zombie_Colour2, IDS_HUSK);
 	setId(Zombice::create, eTYPE_ZOMBICE, L"Zombice", 105, eMinecraftColour_Mob_Zombie_Colour1, eMinecraftColour_Mob_Zombie_Colour1, IDS_ZOMBICE);
 	setId(WhiteEnderman::create, eTYPE_WHITE_ENDERMAN, L"WhiteEnderman", 106, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_WHITEENDERMAN);
+	setId(EvupulDark::create, eTYPE_EVUPULDARK, L"EvupulDark", 107, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Squid_Colour1, IDS_EVUPULDARK);
 
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
 
