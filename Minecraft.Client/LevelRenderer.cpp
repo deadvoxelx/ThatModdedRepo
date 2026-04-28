@@ -21,11 +21,9 @@
 #include "LavaParticle.h"
 #include "FootstepParticle.h"
 #include "SplashParticle.h"
-#include "SmokeParticle.h"
 #include "RedDustParticle.h"
 #include "BreakingItemParticle.h"
 #include "SnowShovelParticle.h"
-#include "BreakingItemParticle.h"
 #include "HeartParticle.h"
 #include "HugeExplosionParticle.h"
 #include "HugeExplosionSeedParticle.h"
@@ -3377,7 +3375,7 @@ void LevelRenderer::registerTextures(IconRegister *iconRegister)
 // Gets a dimension index (0, 1, or 2) from an id ( 0, -1, 1)
 int LevelRenderer::getDimensionIndexFromId(int id)
 {
-	if (id == 2) return 3;
+	if (id == 2) return 3;					//Voxel - why the fuck is tile entity rendering linked to dimension rendering
 	return ( 3 - id ) % 3;					//Voxel - come back to this later
 }
 
@@ -3833,4 +3831,3 @@ int LevelRenderer::checkAllPresentChunks(bool *faultFound)
 	}
 	return presentCount;
 }
-

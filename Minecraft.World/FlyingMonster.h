@@ -1,0 +1,52 @@
+#pragma once
+using namespace std;
+
+#include "PathfinderMob.h"
+#include "Enemy.h"
+
+class Level;
+class CompoundTag;
+class DamageSource;
+
+class FlyingMonster : public PathfinderMob, public Enemy
+{
+public:
+	eINSTANCEOF GetType() { return eTYPE_MONSTER; }
+	static Entity *create(Level *level) { return nullptr; }
+
+public:
+	FlyingMonster(Level *level);
+
+	virtual void aiStep();
+	virtual void tick();
+
+protected:
+	virtual shared_ptr<Entity> findAttackTarget();
+
+public:
+	virtual bool hurt(DamageSource *source, float dmg);
+	virtual bool doHurtTarget(shared_ptr<Entity> target);
+
+protected:
+	virtual void checkHurtTarget(shared_ptr<Entity> target, float distance);
+
+public:
+	virtual float getWalkTargetValue(int x, int y, int z);
+
+protected:
+	virtual bool isDarkEnoughToSpawn();
+
+public:
+	virtual bool canSpawn();
+
+protected:
+	void registerAttributes();
+
+protected:
+	virtual void causeFallDamage(float distance);
+	virtual void checkFallDamage(double ya, bool onGround);
+
+public:
+	virtual void travel(float xa, float ya);
+	virtual bool onLadder();
+};

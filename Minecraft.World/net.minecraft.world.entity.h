@@ -32,3 +32,5 @@
 #include "OwnableEntity.h"
 #include "EntitySelector.h"
 #include "LivingEntity.h"
+
+#include "FlyingMonster.h"

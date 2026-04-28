@@ -30,3 +30,4 @@
 #include "Husk.h"
 #include "Zombice.h"
 #include "WhiteEnderman.h"
+#include "EvupulDark.h"

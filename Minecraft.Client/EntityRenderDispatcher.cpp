@@ -85,6 +85,7 @@
 #include "PigmanRenderer.h"
 #include "WatcherRenderer.h"
 #include "WhiteEndermanRenderer.h"
+#include "EvupulRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -118,6 +119,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_ENDERMAN] = new EndermanRenderer();
 
 	renderers[eTYPE_WHITE_ENDERMAN] = new WhiteEndermanRenderer();
+	renderers[eTYPE_EVUPULDARK] = new EvupulRenderer();
 
 	renderers[eTYPE_SNOWMAN] = new SnowManRenderer();
 	renderers[eTYPE_SKELETON] = new SkeletonRenderer();

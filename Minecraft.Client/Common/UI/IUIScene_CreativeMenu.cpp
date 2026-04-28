@@ -383,6 +383,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 103); // Watcher
 		ITEM_AUX(Item::spawnEgg_Id, 58); // Enderman
 		ITEM_AUX(Item::spawnEgg_Id, 106); // White Enderman
+		ITEM_AUX(Item::spawnEgg_Id, 107); // Dark Evupul 
 		ITEM_AUX(Item::spawnEgg_Id, 59); // Cave Spider
 		ITEM_AUX(Item::spawnEgg_Id, 60); // Silverfish
 		ITEM_AUX(Item::spawnEgg_Id, 61); // Blaze
@@ -403,6 +404,8 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 100 | ((EntityHorse::TYPE_SKELETON + 1) << 12)); // Skeleton
 		ITEM_AUX(Item::spawnEgg_Id, 100 | ((EntityHorse::TYPE_UNDEAD + 1) << 12)); // Zombie
 		ITEM_AUX(Item::spawnEgg_Id, 120); // Villager
+		ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon
+		ITEM_AUX(Item::spawnEgg_Id, 64); // Wither
 		ITEM(Item::record_01_Id)
 		ITEM(Item::record_02_Id)
 		ITEM(Item::record_03_Id)
