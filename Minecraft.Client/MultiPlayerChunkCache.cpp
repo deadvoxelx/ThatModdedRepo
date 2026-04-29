@@ -139,18 +139,24 @@ bool MultiPlayerChunkCache::reallyHasChunk(int x, int z)
 	return hasData[idx];
 }
 
-void MultiPlayerChunkCache::drop(int x, int z)
+void MultiPlayerChunkCache::drop(const int x, const int z)
 {
-	// 4J Stu - We do want to drop any entities in the chunks, especially for the case when a player is dead as they will
-	// not get the RemoveEntity packet if an entity is removed.
-	LevelChunk *chunk = getChunk(x, z);
-	if (!chunk->isEmpty())
+	const int ix = x + XZOFFSET;
+	const int iz = z + XZOFFSET;
+	if ((ix < 0) || (ix >= XZSIZE)) return;
+	if ((iz < 0) || (iz >= XZSIZE)) return;
+	const int idx = ix * XZSIZE + iz;
+	LevelChunk* chunk = cache[idx];
+
+	if (chunk != nullptr && !chunk->isEmpty())
 	{
-		// Added parameter here specifies that we don't want to delete tile entities, as they won't get recreated unless they've got update packets
-		// The tile entities are in general only created on the client by virtue of the chunk rebuild
+		// Drop entities in the chunks, especially for the case when a player is dead
+		// as they will not get the RemoveEntity packet if an entity is removed.
+		// Don't delete tile entities, as they won't get recreated unless they've got
+		// update packets. Tile entities are created on the client by the chunk rebuild.
 		chunk->unload(false);
 
-		// 4J - We just want to clear out the entities in the chunk, but everything else should be valid
+		// Keep chunk in cache with structural data intact.
 		chunk->loaded = true;
 	}
 }
