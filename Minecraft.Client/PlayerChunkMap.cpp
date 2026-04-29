@@ -792,6 +792,14 @@ void PlayerChunkMap::setRadius(int newRadius)
 				int xc = static_cast<int>(player->x) >> 4;
 				int zc = static_cast<int>(player->z) >> 4;
 
+				for (auto it = addRequests.begin(); it != addRequests.end(); )
+				{
+					if (it->player == player)
+						it = addRequests.erase(it);
+					else
+						++it;
+				}
+
 				for (int x = xc - newRadius; x <= xc + newRadius; x++)
 					for (int z = zc - newRadius; z <= zc + newRadius; z++)
 					{
@@ -801,6 +809,18 @@ void PlayerChunkMap::setRadius(int newRadius)
 							getChunkAndAddPlayer(x, z, player);
 						}
 					}
+
+				// Remove chunks that are outside the new radius
+				for (int x = xc - radius; x <= xc + radius; x++)
+				{
+					for (int z = zc - radius; z <= zc + radius; z++)
+					{
+						if (x < xc - newRadius || x > xc + newRadius || z < zc - newRadius || z > zc + newRadius)
+						{
+							getChunkAndRemovePlayer(x, z, player);
+						}
+					}
+				}
 			}
 		}
 
