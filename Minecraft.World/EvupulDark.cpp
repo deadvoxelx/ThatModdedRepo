@@ -142,8 +142,8 @@ void EvupulDark::newServerAiStep() //honestly feel free to improve this or sum, 
 		else	//this half forcefully moves it towards its target, also kinda chopped, but its the best i can come up with
 		{		//we take whatever wins we can, i have no idea what im doing lmfao
 			delete targetPosition;
-			targetPosition = new Pos(target->x, target->y, target->z);		//idk why this was so difficult for me to figure out lol
-		}		//i got laid after making this LMAOO
+      		targetPosition = new Pos(target->x, target->y, target->z);		//idk why this was so difficult for me to figure out lol
+		}		//i got laid after making this LMAOO						//it seems to crash the game when targeting the Wither wtf
 		
 		double dx = (targetPosition->x + .3) - x;
 		double dy = (targetPosition->y + .1) - y;
