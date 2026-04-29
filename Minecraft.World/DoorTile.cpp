@@ -194,7 +194,8 @@ bool DoorTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player,
 		return false;
 	}
 
-	if (material == Material::metal) return true;
+	// Match vanilla Java: iron doors don't consume right-click so held items still fire.
+	if (material == Material::metal) return false;
 
 	int compositeData = getCompositeData(level, x, y, z);
 	int lowerData = compositeData & C_LOWER_DATA_MASK;
