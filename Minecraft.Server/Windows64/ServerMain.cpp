@@ -669,7 +669,7 @@ int main(int argc, char **argv)
 		}
 
 		DWORD now = GetTickCount();
-		if ((LONG)(now - nextAutosaveTick) >= 0)
+		if ((LONG)(now - nextAutosaveTick) >= 0 && !IsShutdownRequested() && !app.m_bShutdown)
 		{
             if (app.GetXuiServerAction(kServerActionPad) == eXuiServerAction_Idle && !ConsoleSaveFileOriginal::hasPendingBackgroundSave())
 			{
@@ -687,16 +687,30 @@ int main(int argc, char **argv)
 
 	LogInfof("shutdown", "Dedicated server stopped");
 	MinecraftServer *server = MinecraftServer::getInstance();
-    if (server != NULL && !ConsoleSaveFileOriginal::hasPendingBackgroundSave())
+    if (server != NULL)
 	{
-        server->setSaveOnExit(true);
-		LogWorldIO("requesting save before shutdown");
-		LogWorldIO("using saveOnExit for shutdown");
-	}
-
-	if (ConsoleSaveFileOriginal::hasPendingBackgroundSave())
-    {
-        LogWorldIO("Waiting for autosave to complete...");
+        // Drain any in-flight autosave before requesting the exit save so the
+		// async autosave can't overwrite the exit save with an older snapshot,
+		// and so m_saveOnExit gets set (prior logic skipped it when a save was
+		// pending, causing silent data loss on restart).
+		if (ConsoleSaveFileOriginal::hasPendingBackgroundSave())
+		{
+			LogWorldIO("Draining pending autosave before exit save...");
+			const DWORD kDrainTimeoutMs = 30000;
+			DWORD drainStart = GetTickCount();
+			while (ConsoleSaveFileOriginal::hasPendingBackgroundSave())
+			{
+				if ((LONG)(GetTickCount() - drainStart) > (LONG)kDrainTimeoutMs)
+				{
+					LogWorldIO("Autosave drain timed out; continuing with exit save");
+					break;
+				}
+				TickCoreSystems();
+				Sleep(10);
+			}
+		}
+		server->setSaveOnExit(true);
+		LogWorldIO("requesting exit save");
 	}
 
 	MinecraftServer::HaltServer();
