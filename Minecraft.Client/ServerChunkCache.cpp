@@ -80,54 +80,27 @@ vector<LevelChunk *> *ServerChunkCache::getLoadedChunkList()
 	return &m_loadedChunkList;
 }
 
-void ServerChunkCache::drop(int x, int z)
+void ServerChunkCache::drop(const int x, const int z)
 {
-	// 4J - we're not dropping things anymore now that we have a fixed sized cache
-#ifdef _LARGE_WORLDS
+	const int ix = x + XZOFFSET;
+	const int iz = z + XZOFFSET;
+	if ((ix < 0) || (ix >= XZSIZE)) return;
+	if ((iz < 0) || (iz >= XZSIZE)) return;
+	const int idx = ix * XZSIZE + iz;
+	LevelChunk* chunk = cache[idx];
 
-	bool canDrop = false;
-//	if (level->dimension->mayRespawn())
-//	{
-//		Pos *spawnPos = level->getSharedSpawnPos();
-//		int xd = x * 16 + 8 - spawnPos->x;
-//		int zd = z * 16 + 8 - spawnPos->z;
-//		delete spawnPos;
-//		int r = 128;
-//		if (xd < -r || xd > r || zd < -r || zd > r)
-//		{
-//			canDrop = true;
-//}
-//	}
-//	else
+	if (chunk != nullptr)
 	{
-		canDrop = true;
+		m_toDrop.push_back(chunk);
 	}
-	if(canDrop)
-	{
-		int ix = x + XZOFFSET;
-		int iz = z + XZOFFSET;
-		// Check we're in range of the stored level
-		if( ( ix < 0 ) || ( ix >= XZSIZE ) ) return;
-		if( ( iz < 0 ) || ( iz >= XZSIZE ) ) return;
-		int idx = ix * XZSIZE + iz;
-		LevelChunk *chunk = cache[idx];
-
-		if(chunk)
-		{
-			m_toDrop.push_back(chunk);
-		}
-	}
-#endif
 }
 
 void ServerChunkCache::dropAll()
 {
-#ifdef _LARGE_WORLDS
 	for (LevelChunk *chunk : m_loadedChunkList)
 	{
 		drop(chunk->x, chunk->z);
-}
-#endif
+	}
 }
 
 // 4J - this is the original (and virtual) interface to create
@@ -521,7 +494,7 @@ void ServerChunkCache::flagPostProcessComplete(short flag, int x, int z)
 
 		// This would be a good time to fix up any lighting for this chunk since all the geometry that could affect it should now be in place
 		PIXBeginNamedEvent(0,"Recheck gaps");
-		if( lc->level->dimension->id != 1 )
+		if( lc->level->dimension->id != 1 && lc->level->dimension->id != 2 )
 		{
 			lc->recheckGaps(true);
 		}
@@ -730,16 +703,17 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 #else
 		// Multithreaded implementation for larger saves
 
-		C4JThread::Event *wakeEvent[3]; // This sets off the threads that are waiting to continue
-		C4JThread::Event *notificationEvent[3]; // These are signalled by the threads to let us know they are complete
-		C4JThread *saveThreads[3];
-		DWORD threadId[3];
-		SaveThreadData threadData[3];
+		C4JThread::Event *wakeEvent[4]; // This sets off the threads that are waiting to continue
+		C4JThread::Event *notificationEvent[4]; // These are signalled by the threads to let us know they are complete
+		C4JThread *saveThreads[4];
+		DWORD threadId[4];
+		SaveThreadData threadData[4];
 		ZeroMemory(&threadData[0], sizeof(SaveThreadData));
 		ZeroMemory(&threadData[1], sizeof(SaveThreadData));
 		ZeroMemory(&threadData[2], sizeof(SaveThreadData));
+		ZeroMemory(&threadData[3], sizeof(SaveThreadData));
 
-		for(unsigned int i = 0; i < 3; ++i)
+		for(unsigned int i = 0; i < 4; ++i)
 		{
 			saveThreads[i] = nullptr;
 
@@ -785,7 +759,7 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 		{
 			workingThreads = 0;
 			PIXBeginNamedEvent(0,"Setting tasks for save threads\n");
-			for(unsigned int j = 0; j < 3; ++j)
+			for(unsigned int j = 0; j < 4; ++j)
 			{
 				chunkSet = false;
 
@@ -857,7 +831,7 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 			PIXEndNamedEvent();
 			PIXBeginNamedEvent(0,"Waking save threads\n");
 			// Start the worker threads going
-			for(unsigned int k = 0; k < 3; ++k)
+			for(unsigned int k = 0; k < 4; ++k)
 			{
 				//app.DebugPrintf("Waking save thread %d\n",k);
 				threadData[k].wakeEvent->Set(); //SetEvent(threadData[k].wakeEvent);
@@ -880,7 +854,7 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 		//app.DebugPrintf("Clearing up worker threads\n");
 		// Stop all the worker threads by giving them nothing to process then telling them to start
 		unsigned char validThreads = 0;
-		for(unsigned int i = 0; i < 3; ++i)
+		for(unsigned int i = 0; i < 4; ++i)
 		{
 			//app.DebugPrintf("Settings chunk to nullptr for save thread %d\n", i);
 			threadData[i].chunkToSave = nullptr;
@@ -898,7 +872,7 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 			saveThreads[k]->WaitForCompletion(INFINITE);;
 		}
 
-		for(unsigned int i = 0; i < 3; ++i)
+		for(unsigned int i = 0; i < 4; ++i)
 		{
 			//app.DebugPrintf("Closing handles for save thread %d\n", i);
 			delete threadData[i].wakeEvent; //CloseHandle(threadData[i].wakeEvent);
@@ -956,6 +930,10 @@ bool ServerChunkCache::tick()
 						int idx = ix * XZSIZE + iz;
 						m_unloadedCache[idx] = chunk;
 						cache[idx] = nullptr;
+					}
+					else
+					{
+						continue;
 					}
 				}
 				m_toDrop.pop_front();
