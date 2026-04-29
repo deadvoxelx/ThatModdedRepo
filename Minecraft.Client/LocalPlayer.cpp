@@ -164,14 +164,15 @@ bool LocalPlayer::isEffectiveAi()
 
 void LocalPlayer::aiStep()
 {
-	if (sprintTime > 0)
-	{
-		sprintTime--;
-		if (sprintTime == 0)
-		{
-			setSprinting(false);
-		}
-	}
+	//if (sprintTime > 0)
+	//{
+	//	sprintTime--;
+	//	if (sprintTime == 0)
+	//	{
+	//		setSprinting(false);
+	//	}
+	//}
+	if (sprintTime > 0) sprintTime--;
 	if (sprintTriggerTime > 0) sprintTriggerTime--;
 	if (minecraft->gameMode->isCutScene())
 	{

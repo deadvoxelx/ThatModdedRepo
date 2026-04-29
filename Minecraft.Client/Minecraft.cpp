@@ -2595,7 +2595,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				case Item::sword_diamond_Id:
 				case Item::sword_gold_Id:
 				case Item::nethaniumSword_Id:
-				//case Item::endoriumSword_Id:
+				case Item::endoriumSword_Id:
 				case Item::relicMallet_Id:
 					*piUse=IDS_TOOLTIPS_BLOCK;
 					break;
@@ -2723,7 +2723,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 							case Item::hoe_diamond_Id:
 							case Item::hoe_gold_Id:
 							case Item::nethaniumHoe_Id:
-							//case Item::endoriumHoe_Id:
+							case Item::endoriumHoe_Id:
 								*piUse=IDS_TOOLTIPS_TILL;
 								break;
 

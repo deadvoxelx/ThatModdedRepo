@@ -14,7 +14,7 @@
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id)
 {
-	setMaxStackSize(16); // 4J-PB brought forward. It is 64 on PC, but we'll never be able to place that many
+	setMaxStackSize(64); // 4J-PB brought forward. It is 64 on PC, but we'll never be able to place that many
 	setStackedByData(true);
 	overlay = nullptr;
 }
