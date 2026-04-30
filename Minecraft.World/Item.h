@@ -442,6 +442,10 @@ public:
 	static Item *evupulWing;
 	static Item *evupulWingGold;
 	static Item *isogalRib;
+	static Item *endoriumHelmet;
+	static Item *endoriumChestplate;
+	static Item *endoriumLeggings;
+	static Item *endoriumBoots;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -673,6 +677,10 @@ public:
 	static const int evupulWing_Id = 444;
 	static const int evupulWingGold_Id = 445;
 	static const int isogalRib_Id = 446;
+	static const int endoriumHelmet_Id = 447;
+	static const int endoriumChestplate_Id = 448;
+	static const int endoriumLeggings_Id = 449;
+	static const int endoriumBoots_Id = 450;
 
 public:
 	const int id;

@@ -2645,6 +2645,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				case Item::helmet_gold_Id:
 				case Item::helmet_diamond_Id:
 				case Item::nethaniumHelmet_Id:
+				case Item::endoriumHelmet_Id:
 
 				case Item::chestplate_leather_Id:
 				case Item::chestplate_chain_Id:
@@ -2652,6 +2653,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				case Item::chestplate_gold_Id:
 				case Item::chestplate_diamond_Id:
 				case Item::nethaniumChestplate_Id:
+				case Item::endoriumChestplate_Id:
 
 				case Item::leggings_leather_Id:
 				case Item::leggings_chain_Id:
@@ -2659,6 +2661,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				case Item::leggings_gold_Id:
 				case Item::leggings_diamond_Id:
 				case Item::nethaniumLeggings_Id:
+				case Item::endoriumLeggings_Id:
 
 				case Item::boots_leather_Id:
 				case Item::boots_chain_Id:
@@ -2666,6 +2669,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				case Item::boots_gold_Id:
 				case Item::boots_diamond_Id:
 				case Item::nethaniumBoots_Id:
+				case Item::endoriumBoots_Id:
 
 					*piUse = IDS_TOOLTIPS_EQUIP;
 					break;

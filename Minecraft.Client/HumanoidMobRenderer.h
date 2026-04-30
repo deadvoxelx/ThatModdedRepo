@@ -8,7 +8,7 @@ class ArmorItem;
 class HumanoidMobRenderer : public MobRenderer
 {
 private:
-	static const wstring MATERIAL_NAMES[6];
+	static const wstring MATERIAL_NAMES[7];
 	static std::map<wstring, ResourceLocation> ARMOR_LOCATION_CACHE;
 
 protected:
