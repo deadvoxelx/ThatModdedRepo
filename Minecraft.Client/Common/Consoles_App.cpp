@@ -4556,6 +4556,10 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING, L"Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING_GOLD, L"Golden Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_ISOGAL_RIB, L"Isogal Rib");
+		m_stringTable->registerString(IDS_ITEM_ENDORIUMHELMET, L"Endorium Helmet");
+		m_stringTable->registerString(IDS_ITEM_ENDORIUMCHESTPLATE, L"Endorium Chestplate");
+		m_stringTable->registerString(IDS_ITEM_ENDORIUMLEGGINGS, L"Endorium Leggings");
+		m_stringTable->registerString(IDS_ITEM_ENDORIUMBOOTS, L"Endorium Boots");
 
 	}
 	else
