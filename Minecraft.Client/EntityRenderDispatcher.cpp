@@ -120,6 +120,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 
 	renderers[eTYPE_WHITE_ENDERMAN] = new WhiteEndermanRenderer();
 	renderers[eTYPE_EVUPULDARK] = new EvupulRenderer();
+	renderers[eTYPE_EVUPUL] = new EvupulRenderer();
 
 	renderers[eTYPE_SNOWMAN] = new SnowManRenderer();
 	renderers[eTYPE_SKELETON] = new SkeletonRenderer();

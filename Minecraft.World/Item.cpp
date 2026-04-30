@@ -275,6 +275,9 @@ Item *Item::endoriumAxe = NULL;
 Item *Item::endoriumPickaxe = NULL;
 Item *Item::endoriumShovel = NULL;
 Item *Item::endoriumHoe = NULL;
+Item *Item::evupulWing = NULL;
+Item *Item::evupulWingGold = NULL;
+Item *Item::isogalRib = NULL;
 
 
 void Item::staticCtor()
@@ -541,6 +544,9 @@ void Item::staticCtor()
 	Item::nethaniumBread = ( new FoodItem(180, 8, FoodConstants::FOOD_SATURATION_SUPERNATURAL, false) ) ->setCanAlwaysEat()->setEatEffect(MobEffect::damageResistance->id, 300, 3, 1.0f)->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"nethanium_bread")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD)->setUseDescriptionId(IDS_DESC_BREAD);
 	Item::endorium = (new Item(181))																->setIconName(L"endorium")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDORIUM)->setUseDescriptionId(IDS_DESC_ENDORIUM);
 	Item::veloettBerry = ( new FoodItem(182, 4, FoodConstants::FOOD_SATURATION_NORMAL, false) )		->setIconName(L"veloett_berry")->setDescriptionId(IDS_ITEM_VELOETTBERRY)->setUseDescriptionId(IDS_DESC_VELOETTBERRY);
+	Item::evupulWing = (new Item(188))																->setIconName(L"evupul_wing")->setDescriptionId(IDS_ITEM_EVUPUL_WING)->setUseDescriptionId(IDS_ITEM_EVUPUL_WING);
+	Item::evupulWingGold = (new Item(189))															->setIconName(L"evupul_wing_gold")->setDescriptionId(IDS_ITEM_EVUPUL_WING_GOLD)->setUseDescriptionId(IDS_ITEM_EVUPUL_WING_GOLD);
+	Item::isogalRib = (new Item(190))																->setIconName(L"isogal_rib")->setDescriptionId(IDS_ITEM_ISOGAL_RIB)->setUseDescriptionId(IDS_ITEM_ISOGAL_RIB);
 
 }
 

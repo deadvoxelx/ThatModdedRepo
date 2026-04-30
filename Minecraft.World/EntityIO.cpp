@@ -111,6 +111,8 @@ void EntityIO::staticCtor()
 	setId(Zombice::create, eTYPE_ZOMBICE, L"Zombice", 105, eMinecraftColour_Mob_Zombie_Colour1, eMinecraftColour_Mob_Zombie_Colour1, IDS_ZOMBICE);
 	setId(WhiteEnderman::create, eTYPE_WHITE_ENDERMAN, L"WhiteEnderman", 106, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_WHITEENDERMAN);
 	setId(EvupulDark::create, eTYPE_EVUPULDARK, L"EvupulDark", 107, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Squid_Colour1, IDS_EVUPULDARK);
+	setId(Evupul::create, eTYPE_EVUPUL, L"Evupul", 108, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Horse_Colour2, IDS_EVUPUL);
+	setId(Evupul::create, eTYPE_EVUPUL,	L"Evupul",	108 | ((Evupul::TYPE_GOLD + 1) << 12), eMinecraftColour_Mob_Horse_Colour2, eMinecraftColour_Mob_Horse_Colour2, IDS_EVUPULGOLD);
 
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
 
