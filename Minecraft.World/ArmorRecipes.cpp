@@ -49,6 +49,7 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[0],Item::diamond);
 	ADD_OBJECT(map[0],Item::goldIngot);
 	ADD_OBJECT(map[0],Item::nethanium);
+	ADD_OBJECT(map[0],Item::endorium);
 
 	ADD_OBJECT(map[1],Item::helmet_leather);
 	ADD_OBJECT(map[1],Item::helmet_chain);
@@ -56,6 +57,7 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[1],Item::helmet_diamond);
 	ADD_OBJECT(map[1],Item::helmet_gold);
 	ADD_OBJECT(map[1],Item::nethaniumHelmet);
+	ADD_OBJECT(map[1],Item::endoriumHelmet);
 
 	ADD_OBJECT(map[2],Item::chestplate_leather);
 	ADD_OBJECT(map[2],Item::chestplate_chain);
@@ -63,6 +65,7 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[2],Item::chestplate_diamond);
 	ADD_OBJECT(map[2],Item::chestplate_gold);
 	ADD_OBJECT(map[2],Item::nethaniumChestplate);
+	ADD_OBJECT(map[2],Item::endoriumChestplate);
 
 	ADD_OBJECT(map[3],Item::leggings_leather);
 	ADD_OBJECT(map[3],Item::leggings_chain);
@@ -70,6 +73,7 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[3],Item::leggings_diamond);
 	ADD_OBJECT(map[3],Item::leggings_gold);
 	ADD_OBJECT(map[3],Item::nethaniumLeggings);
+	ADD_OBJECT(map[3],Item::endoriumLeggings);
 
 	ADD_OBJECT(map[4],Item::boots_leather);
 	ADD_OBJECT(map[4],Item::boots_chain);
@@ -77,6 +81,7 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[4],Item::boots_diamond);
 	ADD_OBJECT(map[4],Item::boots_gold);
 	ADD_OBJECT(map[4],Item::nethaniumBoots);
+	ADD_OBJECT(map[4],Item::endoriumBoots);
 }
 
 // 4J-PB added for quick equip in the inventory
@@ -90,6 +95,7 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::helmet_diamond_Id:						
 	case Item::helmet_gold_Id:
 	case Item::nethaniumHelmet_Id:
+	case Item::endoriumHelmet_Id:
 		return eArmorType_Helmet;
 		break;
 
@@ -99,6 +105,7 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::chestplate_diamond_Id:
 	case Item::chestplate_gold_Id:
 	case Item::nethaniumChestplate_Id:
+	case Item::endoriumChestplate_Id:
 		return eArmorType_Chestplate;
 		break;
 
@@ -108,6 +115,7 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::leggings_diamond_Id:
 	case Item::leggings_gold_Id:
 	case Item::nethaniumLeggings_Id:
+	case Item::endoriumLeggings_Id:
 		return eArmorType_Leggings;
 		break;
 
@@ -117,6 +125,7 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::boots_diamond_Id:
 	case Item::boots_gold_Id:
 	case Item::nethaniumBoots_Id:
+	case Item::endoriumBoots_Id:
 		return eArmorType_Boots;
 		break;
 	}
