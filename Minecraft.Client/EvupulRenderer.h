@@ -7,8 +7,12 @@ class EvupulModel;
 class EvupulRenderer : public MobRenderer
 {
 private:
+	static ResourceLocation EVUPUL_LOCATION;
+	static ResourceLocation EVUPUL_OVERLAY_LOCATION;
 	static ResourceLocation EVUPULDARK_LOCATION;
 	static ResourceLocation EVUPULDARK_OVERLAY_LOCATION;
+	static ResourceLocation EVUPULGOLD_LOCATION;
+	static ResourceLocation EVUPULGOLD_OVERLAY_LOCATION;
 
 public:
 	EvupulRenderer();
@@ -16,5 +20,5 @@ public:
 	virtual ResourceLocation *getTextureLocation(shared_ptr<Entity> mob);
 
 protected:
-	virtual int prepareArmor(shared_ptr<LivingEntity> _evupulDark, int layer, float a);
+	virtual int prepareArmor(shared_ptr<LivingEntity> _mob, int layer, float a);
 };
