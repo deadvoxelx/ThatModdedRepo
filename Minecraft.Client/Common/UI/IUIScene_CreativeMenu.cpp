@@ -368,34 +368,12 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::eyeOfEnder_Id)
 		ITEM(Item::nameTag_Id)
 		ITEM(Item::netherStar_Id)
-		ITEM_AUX(Item::spawnEgg_Id, 50); // Creeper
-		ITEM_AUX(Item::spawnEgg_Id, 51); // Skeleton
-		//ITEM_AUX(Item::spawnEgg_Id, 51 | ((Skeleton::TYPE_STRAY + 1) << 12) ); // Stray
-		//ITEM_AUX(Item::spawnEgg_Id, 51 | ((Skeleton::TYPE_WITHER + 1) << 12) ); // Wither Skeleton
-		ITEM_AUX(Item::spawnEgg_Id, 52); // Spider
-		ITEM_AUX(Item::spawnEgg_Id, 54); // Zombie
-		ITEM_AUX(Item::spawnEgg_Id, 104); // Husk
-		ITEM_AUX(Item::spawnEgg_Id, 105); // Zombice
-		ITEM_AUX(Item::spawnEgg_Id, 55); // Slime
-		ITEM_AUX(Item::spawnEgg_Id, 56); // Ghast
-		ITEM_AUX(Item::spawnEgg_Id, 57); // Zombie Pigman
-		ITEM_AUX(Item::spawnEgg_Id, 102); // Pigman
-		ITEM_AUX(Item::spawnEgg_Id, 103); // Watcher
-		ITEM_AUX(Item::spawnEgg_Id, 58); // Enderman
-		ITEM_AUX(Item::spawnEgg_Id, 106); // White Enderman
-		ITEM_AUX(Item::spawnEgg_Id, 107); // Dark Evupul 
-		ITEM_AUX(Item::spawnEgg_Id, 59); // Cave Spider
-		ITEM_AUX(Item::spawnEgg_Id, 60); // Silverfish
-		ITEM_AUX(Item::spawnEgg_Id, 61); // Blaze
-		ITEM_AUX(Item::spawnEgg_Id, 62); // Magma Cube
-		ITEM_AUX(Item::spawnEgg_Id, 65); // Bat
-		ITEM_AUX(Item::spawnEgg_Id, 66); // Witch
+		ITEM_AUX(Item::spawnEgg_Id, 93); // Chicken
 		ITEM_AUX(Item::spawnEgg_Id, 90); // Pig
 		ITEM_AUX(Item::spawnEgg_Id, 91); // Sheep
 		ITEM_AUX(Item::spawnEgg_Id, 92); // Cow
-		ITEM_AUX(Item::spawnEgg_Id, 93); // Chicken
-		ITEM_AUX(Item::spawnEgg_Id, 94); // Squid
 		ITEM_AUX(Item::spawnEgg_Id, 95); // Wolf
+		ITEM_AUX(Item::spawnEgg_Id, 94); // Squid
 		ITEM_AUX(Item::spawnEgg_Id, 96); // Mooshroom
 		ITEM_AUX(Item::spawnEgg_Id, 98); // Ozelot
 		ITEM_AUX(Item::spawnEgg_Id, 100); // Horse
@@ -403,8 +381,32 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 100 | ((EntityHorse::TYPE_MULE + 1) << 12)); // Mule
 		ITEM_AUX(Item::spawnEgg_Id, 100 | ((EntityHorse::TYPE_SKELETON + 1) << 12)); // Skeleton
 		ITEM_AUX(Item::spawnEgg_Id, 100 | ((EntityHorse::TYPE_UNDEAD + 1) << 12)); // Zombie
+		ITEM_AUX(Item::spawnEgg_Id, 65); // Bat
 		ITEM_AUX(Item::spawnEgg_Id, 120); // Villager
-		ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon
+		ITEM_AUX(Item::spawnEgg_Id, 54); // Zombie
+		ITEM_AUX(Item::spawnEgg_Id, 104); // Husk
+		ITEM_AUX(Item::spawnEgg_Id, 105); // Zombice
+		ITEM_AUX(Item::spawnEgg_Id, 51); // Skeleton
+		//ITEM_AUX(Item::spawnEgg_Id, 51 | ((Skeleton::TYPE_STRAY + 1) << 12) ); // Stray
+		//ITEM_AUX(Item::spawnEgg_Id, 51 | ((Skeleton::TYPE_WITHER + 1) << 12) ); // Wither Skeleton
+		ITEM_AUX(Item::spawnEgg_Id, 50); // Creeper
+		ITEM_AUX(Item::spawnEgg_Id, 52); // Spider
+		ITEM_AUX(Item::spawnEgg_Id, 59); // Cave Spider
+		ITEM_AUX(Item::spawnEgg_Id, 60); // Silverfish
+		ITEM_AUX(Item::spawnEgg_Id, 55); // Slime
+		ITEM_AUX(Item::spawnEgg_Id, 66); // Witch
+		ITEM_AUX(Item::spawnEgg_Id, 56); // Ghast
+		ITEM_AUX(Item::spawnEgg_Id, 61); // Blaze
+		ITEM_AUX(Item::spawnEgg_Id, 62); // Magma Cube
+		ITEM_AUX(Item::spawnEgg_Id, 102); // Pigman
+		ITEM_AUX(Item::spawnEgg_Id, 57); // Zombie Pigman
+		ITEM_AUX(Item::spawnEgg_Id, 103); // Watcher
+		ITEM_AUX(Item::spawnEgg_Id, 58); // Enderman
+		ITEM_AUX(Item::spawnEgg_Id, 106); // White Enderman
+		ITEM_AUX(Item::spawnEgg_Id, 108); // Evupul
+		//ITEM_AUX(Item::spawnEgg_Id, 108 | ((Evupul::TYPE_GOLD + 1) << 12) ); // Golden Evupul
+		ITEM_AUX(Item::spawnEgg_Id, 107); // Dark Evupul 
+		//ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon - doesnt work
 		ITEM_AUX(Item::spawnEgg_Id, 64); // Wither
 		ITEM(Item::record_01_Id)
 		ITEM(Item::record_02_Id)
@@ -607,6 +609,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::blazeRod_Id)
 		ITEM(Item::goldNugget_Id)
 		ITEM(Item::netherwart_seeds_Id)
+		ITEM(Item::evupulWing_Id)
+		ITEM(Item::evupulWingGold_Id)
+		ITEM(Item::isogalRib_Id)
 		ITEM_AUX(Item::dye_powder_Id,1)		// Red
 		ITEM_AUX(Item::dye_powder_Id,14)	// Orange
 		ITEM_AUX(Item::dye_powder_Id,11)	// Yellow
