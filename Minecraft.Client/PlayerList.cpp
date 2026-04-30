@@ -927,6 +927,18 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 			oldLevel->tick(entity, false);
 		}
 	}
+	//
+	else if (entity->dimension == 2)
+	{
+		/*xt *= scale;
+		zt *= scale;*/
+		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
+		if (entity->isAlive())
+		{
+			oldLevel->tick(entity, false);
+		}
+	}
+	//
 	else
 	{
 		Pos *p;

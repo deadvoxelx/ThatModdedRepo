@@ -93,7 +93,7 @@ const int netherSize = HELL_LEVEL_MAX_WIDTH + 2; // 4J Stu - The plus 2 is reall
 const int endSize = END_LEVEL_MAX_WIDTH;
 const int outerEndSize = OUTER_END_LEVEL_MAX_WIDTH;
 const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[4] = { overworldSize, netherSize, endSize, outerEndSize };
-const int LevelRenderer::DIMENSION_OFFSETS[4] = { 0, (overworldSize * overworldSize * CHUNK_Y_COUNT) ,  (overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT )  + ( endSize * endSize * CHUNK_Y_COUNT ) };
+const int LevelRenderer::DIMENSION_OFFSETS[4] = { 0, (overworldSize * overworldSize * CHUNK_Y_COUNT) ,  (overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ), (overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ) + ( endSize * endSize * CHUNK_Y_COUNT ) };
 #else
 // This defines the maximum size of renderable level, must be big enough to cope with actual size of level + view distance at each side
 // so that we can render the "infinite" sea at the edges. Currently defined as:
@@ -101,7 +101,7 @@ const int LevelRenderer::DIMENSION_OFFSETS[4] = { 0, (overworldSize * overworldS
 // Dimension idx 1 (nether)    : 44 ( = 18 + 13 + 13 )
 // Dimension idx 2 (the end)   : 44 ( = 18 + 13 + 13 )
 
-const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[4] = { 80, 44, 44 };
+const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[4] = { 80, 44, 44, 80 };
 
 // Linked directly to the sizes in the previous array, these next values dictate the start offset for each dimension index into the global array for these things.
 // Each dimension uses MAX_LEVEL_RENDER_SIZE[i]^2 * 8 indices, as a MAX_LEVEL_RENDER_SIZE * MAX_LEVEL_RENDER_SIZE * 8 sized cube of references.
@@ -3376,7 +3376,7 @@ void LevelRenderer::registerTextures(IconRegister *iconRegister)
 int LevelRenderer::getDimensionIndexFromId(int id)
 {
 	if (id == 2) return 3;					//Voxel - why the fuck is tile entity rendering linked to dimension rendering
-	return ( 3 - id ) % 3;					//Voxel - come back to this later
+	return ( 3 - id ) % 3;					//Voxel - NEVERMIND ITS FINALLY FIXED OH MY FUCK I HATE THIS SO MUCH
 }
 
 // 4J - added for new render list handling. Render lists used to be allocated per chunk, but these are now allocated per fixed chunk position
