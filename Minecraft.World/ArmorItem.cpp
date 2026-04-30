@@ -67,12 +67,14 @@ const int _ArmorMaterial::ironArray[] = {2, 6, 5, 2};
 const int _ArmorMaterial::goldArray[] = {2, 5, 3, 1};
 const int _ArmorMaterial::diamondArray[] = {3, 8, 6, 3};
 const int _ArmorMaterial::nethaniumArray[] = {3, 8, 6, 3};
+const int _ArmorMaterial::endoriumArray[] = {3, 8, 6, 3};
 const _ArmorMaterial *_ArmorMaterial::CLOTH = new _ArmorMaterial(5, _ArmorMaterial::clothArray, 15);
 const _ArmorMaterial *_ArmorMaterial::CHAIN = new _ArmorMaterial(15, _ArmorMaterial::chainArray, 12);
 const _ArmorMaterial *_ArmorMaterial::IRON = new _ArmorMaterial(15, _ArmorMaterial::ironArray, 9);
 const _ArmorMaterial *_ArmorMaterial::GOLD = new _ArmorMaterial(7, _ArmorMaterial::goldArray, 25);
 const _ArmorMaterial *_ArmorMaterial::DIAMOND = new _ArmorMaterial(33, _ArmorMaterial::diamondArray, 10);
 const _ArmorMaterial *_ArmorMaterial::NETHANIUM = new _ArmorMaterial(33, _ArmorMaterial::nethaniumArray, 15);
+const _ArmorMaterial *_ArmorMaterial::ENDORIUM = new _ArmorMaterial(38, _ArmorMaterial::endoriumArray, 15);
 
 _ArmorMaterial::ArmorMaterial(int durabilityMultiplier, const int slotProtections[], int enchantmentValue)
 {
@@ -127,6 +129,10 @@ int _ArmorMaterial::getTierItemId() const
 	{
 		return Item::nethanium_Id;
 	}
+	else if (this == ENDORIUM)
+	{
+		return Item::endorium_Id;
+	}
 	return 0;
 }
 
@@ -161,7 +167,8 @@ shared_ptr<ItemInstance> ArmorItem::use(shared_ptr<ItemInstance> instance, Level
 	case Item::eMaterial_gold:    lo = 212; hi = 217; break;
 	case Item::eMaterial_diamond: lo = 218; hi = 223; break;
 	case Item::eMaterial_nethanium: lo = 224; hi = 229; break;
-	default:                      lo = 230; hi = 235; break;
+	case Item::eMaterial_endorium: lo = 230; hi = 235; break;
+	default:                      lo = 236; hi = 241; break;
 	}
 
 	std::mt19937 rng(std::random_device{}());
