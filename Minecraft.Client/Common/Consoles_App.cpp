@@ -4548,7 +4548,15 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_STRAY, L"Stray");
 		m_stringTable->registerString(IDS_ZOMBICE, L"Zombice");
 		m_stringTable->registerString(IDS_WHITEENDERMAN, L"White Enderman");
+		m_stringTable->registerString(IDS_EVUPUL, L"Evupul");
 		m_stringTable->registerString(IDS_EVUPULDARK, L"Dark Evupul");
+		m_stringTable->registerString(IDS_EVUPULGOLD, L"Golden Evupul");
+		m_stringTable->registerString(IDS_RESET_END, L"Reset End");
+		m_stringTable->registerString(IDS_RESET_OUTEREND, L"Reset Outer End");
+		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING, L"Evupul Wing");
+		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING_GOLD, L"Golden Evupul Wing");
+		m_stringTable->registerString(IDS_ITEM_ISOGAL_RIB, L"Isogal Rib");
+
 	}
 	else
 	{
