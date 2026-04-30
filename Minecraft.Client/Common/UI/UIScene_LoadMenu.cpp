@@ -694,7 +694,7 @@ void UIScene_LoadMenu::handlePress(F64 controlId, F64 childId)
 	if(m_bIgnoreInput) return;
 
 	//CD - Added for audio
-	ui.PlayUISFX(eSFX_Press);
+	//ui.PlayUISFX(eSFX_Press);
 
 	switch(static_cast<int>(controlId))
 	{
@@ -725,11 +725,13 @@ void UIScene_LoadMenu::handlePress(F64 controlId, F64 childId)
 		break;
 	case eControl_TexturePackList:
 		{
+			ui.PlayUISFX(eSFX_Press);
 			UpdateCurrentTexturePack(static_cast<int>(childId));
 		}
 		break;
 	case eControl_LoadWorld:
 		{
+			ui.PlayUISFX(eSFX_Press);
 #ifdef _DURANGO
 			if(m_MoreOptionsParams.bOnlineGame)
 			{
