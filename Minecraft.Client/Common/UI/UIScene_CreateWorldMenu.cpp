@@ -429,7 +429,7 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId)
 #endif
 
 	//CD - Added for audio
-	ui.PlayUISFX(eSFX_Press);
+	//ui.PlayUISFX(eSFX_Press);
 
 	switch(static_cast<int>(controlId))
 	{
@@ -481,11 +481,13 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId)
 		break;
 	case eControl_TexturePackList:
 		{
+			ui.PlayUISFX(eSFX_Press);
 			UpdateCurrentTexturePack(static_cast<int>(childId));
 		}
 		break;
 	case eControl_NewWorld:
 		{
+			ui.PlayUISFX(eSFX_Press);
 #ifdef _DURANGO
 			if(m_MoreOptionsParams.bOnlineGame)
 			{
