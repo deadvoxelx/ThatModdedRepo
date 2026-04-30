@@ -2364,3 +2364,10 @@
 #define IDS_ZOMBICE											   2358
 #define IDS_WHITEENDERMAN									   2359
 #define IDS_EVUPULDARK										   2360
+#define IDS_RESET_END                                          2361
+#define IDS_RESET_OUTEREND                                     2362
+#define IDS_EVUPUL										       2363
+#define IDS_EVUPULGOLD										   2364
+#define IDS_ITEM_EVUPUL_WING								   2365
+#define IDS_ITEM_EVUPUL_WING_GOLD							   2366
+#define IDS_ITEM_ISOGAL_RIB									   2367
