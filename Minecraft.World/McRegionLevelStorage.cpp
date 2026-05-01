@@ -27,7 +27,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
     if (dynamic_cast<HellDimension *>(dimension) != nullptr)
 	{
 
-		if(app.GetResetNether())
+		/*if(app.GetResetNether())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *netherFiles = m_saveFile->getRegionFilesByDimension(1);
@@ -54,11 +54,40 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			resetNetherPlayerPositions();
 		}
 
-		return new McRegionChunkStorage(m_saveFile, LevelStorage::NETHER_FOLDER);
+		return new McRegionChunkStorage(m_saveFile, LevelStorage::NETHER_FOLDER);*/
     }
 
 	if (dynamic_cast<TheEndDimension *>(dimension))
 	{
+		if(app.GetResetNether())
+		{
+#ifdef SPLIT_SAVES
+			vector<FileEntry *> *endFiles = m_saveFile->getRegionFilesByDimension(2);
+			if(endFiles!=nullptr)
+			{
+				DWORD bytesWritten = 0;
+				for(auto& endFile : *endFiles)
+				{
+					m_saveFile->zeroFile(endFile, endFile->getFileSize(), &bytesWritten);
+				}
+				delete endFiles;
+			}
+#else
+			vector<FileEntry *> *endFiles = m_saveFile->getFilesWithPrefix(LevelStorage::ENDER_FOLDER);
+			if(endFiles!=nullptr)
+			{
+				for(auto& endFile : *endFiles)
+				{
+					m_saveFile->deleteFile(endFile);
+				}
+				delete endFiles;
+			}
+#endif
+			resetNetherPlayerPositions();
+		}
+
+		return new McRegionChunkStorage(m_saveFile, LevelStorage::ENDER_FOLDER);
+
 		//File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
 		//dir2.mkdirs();
 		//return new ThreadedMcRegionChunkStorage(dir2);
@@ -88,6 +117,35 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 
 	if (dynamic_cast<TheOuterEndDimension *>(dimension))
 	{
+		if(app.GetResetNether())
+		{
+#ifdef SPLIT_SAVES
+			vector<FileEntry *> *outerEndFiles = m_saveFile->getRegionFilesByDimension(3);
+			if(outerEndFiles!=nullptr)
+			{
+				DWORD bytesWritten = 0;
+				for(auto& outerEndFile : *outerEndFiles)
+				{
+					m_saveFile->zeroFile(outerEndFile, outerEndFile->getFileSize(), &bytesWritten);
+				}
+				delete outerEndFiles;
+			}
+#else
+			vector<FileEntry *> *outerEndFiles = m_saveFile->getFilesWithPrefix(LevelStorage::OUTEREND_FOLDER);
+			if(outerEndFiles!=nullptr)
+			{
+				for(auto& outerEndFile : *outerEndFiles)
+				{
+					m_saveFile->deleteFile(outerEndFile);
+				}
+				delete outerEndFiles;
+			}
+#endif
+			resetNetherPlayerPositions();
+		}
+
+		return new McRegionChunkStorage(m_saveFile, LevelStorage::OUTEREND_FOLDER);
+
 		//File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
 		//dir2.mkdirs();
 		//return new ThreadedMcRegionChunkStorage(dir2);
