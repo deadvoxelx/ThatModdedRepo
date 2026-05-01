@@ -2365,7 +2365,7 @@
 #define IDS_WHITEENDERMAN									   2359
 #define IDS_EVUPULDARK										   2360
 #define IDS_RESET_END                                          2361
-#define IDS_RESET_OUTEREND                                     2362
+#define IDS_DONT_RESET_END                                     2362
 #define IDS_EVUPUL										       2363
 #define IDS_EVUPULGOLD										   2364
 #define IDS_ITEM_EVUPUL_WING								   2365
@@ -2375,3 +2375,4 @@
 #define IDS_ITEM_ENDORIUMCHESTPLATE							   2369
 #define IDS_ITEM_ENDORIUMLEGGINGS							   2370
 #define IDS_ITEM_ENDORIUMBOOTS								   2371
+#define IDS_RESET_END_INFO                                     2372
