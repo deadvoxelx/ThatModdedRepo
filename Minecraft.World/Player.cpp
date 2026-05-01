@@ -328,6 +328,15 @@ void Player::tick()
 		clearFire();
 	}
 
+	if ((isSneaking()) && (!isSleeping()))
+	{
+		setSize(0.6f, 1.5f);
+	}
+	else if ((!isSneaking()) && (!isSleeping()))
+	{
+		setSize(0.6f, 1.8f);
+	}
+
 	xCloakO = xCloak;
 	yCloakO = yCloak;
 	zCloakO = zCloak;
@@ -984,7 +993,6 @@ void Player::rideTick()
 void Player::resetPos()
 {
 	heightOffset = 1.62f;
-	setSize(0.6f, 1.8f);
 	LivingEntity::resetPos();
 	setHealth(getMaxHealth());
 	deathTime = 0;
