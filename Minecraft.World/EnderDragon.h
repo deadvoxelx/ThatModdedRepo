@@ -144,6 +144,10 @@ protected:
 
 private:
 	void spawnExitPortal(int x, int z);
+	void spawnGateways(int x, int z);
+	void spawnGateways2(int x, int z);
+	void spawnGateways3(int x, int z);
+	void spawnGateways4(int x, int z);
 
 protected:
 	virtual void checkDespawn();

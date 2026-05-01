@@ -1248,11 +1248,15 @@ void EnderDragon::tickDeath()
 		}
 		// 4J-PB changed to center this between the pillars
 		spawnExitPortal(0,0);//Mth::floor(x), Mth::floor(z));
+		spawnGateways(100,0);
+		spawnGateways2(-100,0);
+		spawnGateways3(0,100);
+		spawnGateways4(0,-100);
 		remove();
 	}
 }
 
-void EnderDragon::spawnExitPortal(int x, int z)
+void EnderDragon::spawnExitPortal(int x, int z) //
 {
 	int y = level->seaLevel;
 
@@ -1326,6 +1330,102 @@ void EnderDragon::spawnExitPortal(int x, int z)
 	}
 
 	TheEndPortal::allowAnywhere(false);
+}
+
+void EnderDragon::spawnGateways(int x, int z) //
+{
+	int y = level->seaLevel;
+
+    // Center column
+	level->setTileAndUpdate(x, y + 11, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 13, z, Tile::endGateway_Id);
+    level->setTileAndUpdate(x, y + 14, z, Tile::unbreakable_Id);
+	level->setTileAndUpdate(x, y + 15, z, Tile::unbreakable_Id);
+
+    // Upper cross
+    level->setTileAndUpdate(x + 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z - 1, Tile::unbreakable_Id);
+
+    // Lower cross
+    level->setTileAndUpdate(x + 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z - 1, Tile::unbreakable_Id);
+}
+
+void EnderDragon::spawnGateways2(int x, int z) //
+{
+	int y = level->seaLevel;
+
+    // Center column
+	level->setTileAndUpdate(x, y + 11, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 13, z, Tile::endGateway_Id);
+    level->setTileAndUpdate(x, y + 14, z, Tile::unbreakable_Id);
+	level->setTileAndUpdate(x, y + 15, z, Tile::unbreakable_Id);
+
+    // Upper cross
+    level->setTileAndUpdate(x + 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z - 1, Tile::unbreakable_Id);
+
+    // Lower cross
+    level->setTileAndUpdate(x + 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z - 1, Tile::unbreakable_Id);
+}
+
+void EnderDragon::spawnGateways3(int x, int z) //
+{
+	int y = level->seaLevel;
+
+    // Center column
+	level->setTileAndUpdate(x, y + 11, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 13, z, Tile::endGateway_Id);
+    level->setTileAndUpdate(x, y + 14, z, Tile::unbreakable_Id);
+	level->setTileAndUpdate(x, y + 15, z, Tile::unbreakable_Id);
+
+    // Upper cross
+    level->setTileAndUpdate(x + 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z - 1, Tile::unbreakable_Id);
+
+    // Lower cross
+    level->setTileAndUpdate(x + 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z - 1, Tile::unbreakable_Id);
+}
+
+void EnderDragon::spawnGateways4(int x, int z) //
+{
+	int y = level->seaLevel;
+
+    // Center column
+	level->setTileAndUpdate(x, y + 11, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 13, z, Tile::endGateway_Id);
+    level->setTileAndUpdate(x, y + 14, z, Tile::unbreakable_Id);
+	level->setTileAndUpdate(x, y + 15, z, Tile::unbreakable_Id);
+
+    // Upper cross
+    level->setTileAndUpdate(x + 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 14, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 14, z - 1, Tile::unbreakable_Id);
+
+    // Lower cross
+    level->setTileAndUpdate(x + 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x - 1, y + 12, z, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z + 1, Tile::unbreakable_Id);
+    level->setTileAndUpdate(x, y + 12, z - 1, Tile::unbreakable_Id);
 }
 
 void EnderDragon::checkDespawn()
