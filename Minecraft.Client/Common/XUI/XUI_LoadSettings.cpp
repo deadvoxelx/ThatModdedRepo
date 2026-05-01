@@ -631,10 +631,10 @@ HRESULT CScene_LoadGameSettings::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyP
 		if(m_MoreOptionsParams.bResetNether==TRUE)
 		{
 			UINT uiIDA[2];
-			uiIDA[0]=IDS_DONT_RESET_NETHER;
-			uiIDA[1]=IDS_RESET_NETHER;
+			uiIDA[0]=IDS_DONT_RESET_END;
+			uiIDA[1]=IDS_RESET_END;
 
-			StorageManager.RequestMessageBox(IDS_RESETNETHER_TITLE, IDS_RESETNETHER_TEXT, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_LoadGameSettings::CheckResetNetherReturned,this,app.GetStringTable());
+			StorageManager.RequestMessageBox(IDS_RESET_END, IDS_RESET_END_INFO, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_LoadGameSettings::CheckResetNetherReturned,this,app.GetStringTable());
 		}
 		else
 		{

@@ -934,10 +934,10 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 	if(m_MoreOptionsParams.bResetNether==TRUE)
 	{
 		UINT uiIDA[2];
-		uiIDA[0]=IDS_DONT_RESET_NETHER;
-		uiIDA[1]=IDS_RESET_NETHER;
+		uiIDA[0]=IDS_DONT_RESET_END;
+		uiIDA[1]=IDS_RESET_END;
 
-		ui.RequestAlertMessage(IDS_RESETNETHER_TITLE, IDS_RESETNETHER_TEXT, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
+		ui.RequestAlertMessage(IDS_RESET_END, IDS_RESET_END_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
 	}
 	else
 	{
@@ -1665,10 +1665,10 @@ void UIScene_LoadMenu::checkStateAndStartGame()
 	if(m_MoreOptionsParams.bResetNether==TRUE)
 	{
 		UINT uiIDA[2];
-		uiIDA[0]=IDS_DONT_RESET_NETHER;
-		uiIDA[1]=IDS_RESET_NETHER;
+		uiIDA[0]=IDS_DONT_RESET_END;
+		uiIDA[1]=IDS_RESET_END;
 
-		ui.RequestAlertMessage(IDS_RESETNETHER_TITLE, IDS_RESETNETHER_TEXT, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
+		ui.RequestAlertMessage(IDS_RESET_END, IDS_RESET_END_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
 	}
 	else
 	{
