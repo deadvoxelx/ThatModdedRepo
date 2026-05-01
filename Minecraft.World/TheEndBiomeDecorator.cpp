@@ -75,8 +75,7 @@ void TheEndBiomeDecorator::decorate()
 	{		
 		endPodiumFeature->place(level, random, 0, level->seaLevel, 0);
 	}
-
-	if (xo == 0 && zo == 0)
+	/*if (xo == 0 && zo == 0)
 	{
 		for (int i = 0; i < 20; i++)
 		{
@@ -89,5 +88,5 @@ void TheEndBiomeDecorator::decorate()
 
 			endGatewayFeature->place(level, random, gx, 75, gz);
 		}
-	}
+	}*/
 }
