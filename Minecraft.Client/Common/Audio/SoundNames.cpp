@@ -166,10 +166,10 @@ const WCHAR *ConsoleSoundEngine::wchSoundNames[eSoundType_MAX]=
 	L"mob.bat.death",					//eSoundType_MOB_BAT_DEATH,
 	L"mob.bat.takeoff",					//eSoundType_MOB_BAT_TAKEOFF,
 
-	L"mob.wither.spawn",				//eSoundType_MOB_WITHER_SPAWN,
-	L"mob.wither.idle",					//eSoundType_MOB_WITHER_IDLE,	
-	L"mob.wither.hurt",					//eSoundType_MOB_WITHER_HURT, 
-	L"mob.wither.death",				//eSoundType_MOB_WITHER_DEATH,
+	L"mob.witherspawn",				//eSoundType_MOB_WITHER_SPAWN,
+	L"mob.witheridle",					//eSoundType_MOB_WITHER_IDLE,	
+	L"mob.witherhurt",					//eSoundType_MOB_WITHER_HURT, 
+	L"mob.witherdeath",				//eSoundType_MOB_WITHER_DEATH,
 	L"mob.wither.shoot",				//eSoundType_MOB_WITHER_SHOOT,
 
 	L"mob.cow.step",					//eSoundType_MOB_COW_STEP,
@@ -225,6 +225,7 @@ const WCHAR *ConsoleSoundEngine::wchSoundNames[eSoundType_MAX]=
 	L"fire.new_ignite",
 
 	L"damage.critical",				//eSoundType_DAMAGE_CRITICAL,
+	L"mob.aphalafhurt",
 };
 
 
