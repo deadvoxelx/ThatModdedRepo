@@ -126,7 +126,7 @@ void EvupulDark::newServerAiStep() //honestly feel free to improve this or sum, 
 	FlyingMonster::newServerAiStep();
 	{
 		shared_ptr<LivingEntity> target = getTarget();
-		if ((target == nullptr) && (getAttackTarget() == nullptr))	//this half determines random empty tiles to move to, kinda chopped but it works
+		if ((target == nullptr)/* && (getAttackTarget() == nullptr)*/)	//this half determines random empty tiles to move to, kinda chopped but it works
 		{															//but only for aimless flying, its ass for targeting
 			if (targetPosition != nullptr && (!level->isEmptyTile(targetPosition->x, targetPosition->y, targetPosition->z) || targetPosition->y))
 			{
@@ -141,9 +141,20 @@ void EvupulDark::newServerAiStep() //honestly feel free to improve this or sum, 
 		}
 		else	//this half forcefully moves it towards its target, also kinda chopped, but its the best i can come up with
 		{		//we take whatever wins we can, i have no idea what im doing lmfao
-			delete targetPosition;
-      		targetPosition = new Pos(target->x, target->y, target->z);		//idk why this was so difficult for me to figure out lol
-		}		//i got laid after making this LMAOO						//it seems to crash the game when targeting the Wither wtf
+			if (targetPosition != nullptr)
+			{
+				delete targetPosition;
+				targetPosition = nullptr;
+			}
+			if (targetPosition == nullptr)
+			{
+				delete targetPosition;
+      			targetPosition = new Pos(target->x, target->y, target->z);	//idk why this was so difficult for me to figure out lol
+			}	//this change fixes the crash when it targets the Wither
+
+			//delete targetPosition;
+      		//targetPosition = new Pos(target->x, target->y, target->z);
+		}	//i got laid after making this LMAOO
 		
 		double dx = (targetPosition->x + .3) - x;
 		double dy = (targetPosition->y + .1) - y;
