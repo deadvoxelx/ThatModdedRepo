@@ -60,11 +60,7 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(int iPad, void 
 
 	if(m_editingSelf)
 	{
-#ifndef _DEBUG // (defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED))
-		removeControl( &m_checkboxes[eControl_Op], true );
-#else
-		m_checkboxes[eControl_Op].init(L"DEBUG: Creative",eControl_Op,Player::getPlayerGamePrivilege(m_playerPrivileges,Player::ePlayerGamePrivilege_CreativeMode));
-#endif
+		m_checkboxes[eControl_Op].init(L"Creative Toggle",eControl_Op,Player::getPlayerGamePrivilege(m_playerPrivileges,Player::ePlayerGamePrivilege_CreativeMode));
 		
 		removeControl( &m_buttonKick, true );
 		removeControl( &m_checkboxes[eControl_CheatTeleport], true );
@@ -114,31 +110,6 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(int iPad, void 
 		{
 			removeControl( &m_checkboxes[eControl_Op], true );
 		}
-
-		/*if(localPlayer->IsHost() && cheats )
-		{
-			m_checkboxes[eControl_HostInvisible].SetEnable(true);
-			bool checked = Player::getPlayerGamePrivilege(m_playerPrivileges, Player::ePlayerGamePrivilege_CanToggleInvisible)!=0;
-			m_checkboxes[eControl_HostInvisible].init( app.GetString(IDS_CAN_INVISIBLE), eControl_HostInvisible, checked);
-
-			m_checkboxes[eControl_HostFly].SetEnable(true);
-			checked = Player::getPlayerGamePrivilege(m_playerPrivileges, Player::ePlayerGamePrivilege_CanToggleFly)!=0;
-			m_checkboxes[eControl_HostFly].init( app.GetString(IDS_CAN_FLY), eControl_HostFly, checked);
-
-			m_checkboxes[eControl_HostHunger].SetEnable(true);
-			checked = Player::getPlayerGamePrivilege(m_playerPrivileges, Player::ePlayerGamePrivilege_CanToggleClassicHunger)!=0;
-			m_checkboxes[eControl_HostHunger].init( app.GetString(IDS_CAN_DISABLE_EXHAUSTION), eControl_HostHunger, checked);
-			
-			checked = Player::getPlayerGamePrivilege(m_playerPrivileges, Player::ePlayerGamePrivilege_CanTeleport)!=0;
-			m_checkboxes[eControl_CheatTeleport].init(app.GetString(IDS_ENABLE_TELEPORT),eControl_CheatTeleport,checked);
-		}
-		else
-		{
-			removeControl( &m_checkboxes[eControl_HostInvisible], true );
-			removeControl( &m_checkboxes[eControl_HostFly], true );
-			removeControl( &m_checkboxes[eControl_HostHunger], true );
-			removeControl( &m_checkboxes[eControl_CheatTeleport], true );
-		}*/
 
 		if(localPlayer->IsHost() && cheats )
 		{
@@ -253,9 +224,7 @@ void UIScene_InGamePlayerOptionsMenu::handleReload()
 
 	if(m_editingSelf)
 	{
-#ifndef _DEBUG //(defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED))
 		removeControl( &m_checkboxes[eControl_Op], true );
-#endif
 		
 		removeControl( &m_buttonKick, true );
 		removeControl( &m_checkboxes[eControl_CheatTeleport], true );
@@ -347,10 +316,8 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key, bool repeat
 			bool cheats = app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
 			if(m_editingSelf)
 			{
-#ifndef _DEBUG // (defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED))
-#else
 				Player::setPlayerGamePrivilege(m_playerPrivileges,Player::ePlayerGamePrivilege_CreativeMode,m_checkboxes[eControl_Op].IsChecked());
-#endif
+
 				if(cheats)
 				{
 					bool canBeInvisible = Player::getPlayerGamePrivilege(m_playerPrivileges, Player::ePlayerGamePrivilege_CanToggleInvisible) != 0;
