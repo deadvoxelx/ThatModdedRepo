@@ -282,6 +282,8 @@ Item *Item::endoriumHelmet = NULL;
 Item *Item::endoriumChestplate = NULL;
 Item *Item::endoriumLeggings = NULL;
 Item *Item::endoriumBoots = NULL;
+Item *Item::aphalafTooth = NULL;
+Item *Item::aphalafSword = NULL;
 
 
 void Item::staticCtor()
@@ -555,6 +557,8 @@ void Item::staticCtor()
 	Item::evupulWing = (new Item(188))																->setIconName(L"evupul_wing")->setDescriptionId(IDS_ITEM_EVUPUL_WING)->setUseDescriptionId(IDS_ITEM_EVUPUL_WING);
 	Item::evupulWingGold = (new Item(189))															->setIconName(L"evupul_wing_gold")->setDescriptionId(IDS_ITEM_EVUPUL_WING_GOLD)->setUseDescriptionId(IDS_ITEM_EVUPUL_WING_GOLD);
 	Item::isogalRib = (new Item(190))																->setIconName(L"isogal_rib")->setDescriptionId(IDS_ITEM_ISOGAL_RIB)->setUseDescriptionId(IDS_ITEM_ISOGAL_RIB);
+	Item::aphalafTooth = (new Item(195))															->setIconName(L"aphalaf_tooth")->setDescriptionId(IDS_ITEM_APHALAF_TOOTH)->setUseDescriptionId(IDS_ITEM_APHALAF_TOOTH);
+	Item::aphalafSword	= ( new AphalafSwordItem(196, _Tier::NETHANIUM) )							->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_nethanium)->setIconName(L"aphalaf_sword")->setDescriptionId(IDS_ITEM_APHALAF_SWORD)->setUseDescriptionId(IDS_ITEM_APHALAF_SWORD);
 
 }
 

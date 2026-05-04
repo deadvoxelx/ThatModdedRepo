@@ -446,6 +446,8 @@ public:
 	static Item *endoriumChestplate;
 	static Item *endoriumLeggings;
 	static Item *endoriumBoots;
+	static Item *aphalafTooth;
+	static Item *aphalafSword;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -681,6 +683,8 @@ public:
 	static const int endoriumChestplate_Id = 448;
 	static const int endoriumLeggings_Id = 449;
 	static const int endoriumBoots_Id = 450;
+	static const int aphalafTooth_Id = 451;
+	static const int aphalafSword_Id = 452;
 
 public:
 	const int id;

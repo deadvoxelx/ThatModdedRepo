@@ -4,6 +4,7 @@
 #include "System.h"
 #include "Entity.h"
 #include "WitherBoss.h"
+#include "AphalafBoss.h"
 #include "net.minecraft.world.entity.ambient.h"
 #include "net.minecraft.world.entity.animal.h"
 #include "net.minecraft.world.entity.item.h"
@@ -113,6 +114,8 @@ void EntityIO::staticCtor()
 	setId(EvupulDark::create, eTYPE_EVUPULDARK, L"EvupulDark", 107, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Squid_Colour1, IDS_EVUPULDARK);
 	setId(Evupul::create, eTYPE_EVUPUL, L"Evupul", 108, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Horse_Colour2, IDS_EVUPUL);
 	setId(Evupul::create, eTYPE_EVUPUL,	L"Evupul",	108 | ((Evupul::TYPE_GOLD + 1) << 12), eMinecraftColour_Mob_Horse_Colour2, eMinecraftColour_Mob_Horse_Colour2, IDS_EVUPULGOLD);
+	setId(AphalafBoss::create, eTYPE_APHALAF_BOSS, L"AphalafBoss", 109, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Enderman_Colour1, IDS_APHALAF_BOSS);
+	setId(AphalafPlant::create, eTYPE_APHALAF_PLANT, L"AphalafPlant", 110, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_CaveSpider_Colour1, IDS_APHALAF_PLANT);
 
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
 

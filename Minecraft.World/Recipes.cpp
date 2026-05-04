@@ -363,6 +363,16 @@ Recipes::Recipes()
 		L'#', Tile::sand,
 		L'T');
 
+	addShapedRecipy(new ItemInstance(Tile::tnt, 1), //
+		L"ssscictg",
+		L"X#X", //
+		L"#X#", //
+		L"X#X", //
+
+		L'X', Item::aphalafTooth,//
+		L'#', Tile::endSand,
+		L'T');
+
 	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::SAND_SLAB), //
 		L"sctg",
 		L"###", //
