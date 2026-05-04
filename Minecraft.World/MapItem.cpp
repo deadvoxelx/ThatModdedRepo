@@ -104,10 +104,10 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 	int zp = Mth::floor(player->z - zo) / scale + h / 2;
 
 	int rad = 128 / scale;
-	if (level->dimension->hasCeiling)
+	/*if (level->dimension->hasCeiling)
 	{
 		rad /= 2;
-	}
+	}*/
 	shared_ptr<MapItemSavedData::HoldingPlayer> hp = data->getHoldingPlayer(dynamic_pointer_cast<Player>(player));
 	hp->step++;
 
@@ -141,16 +141,16 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 			int liquidDepth = 0;
 
 			double hh = 0;
-			if (level->dimension->hasCeiling)
+			/*if (level->dimension->hasCeiling)
 			{
 				int ss = xx + zz * 231871;
 				ss = ss * ss * 31287121 + ss * 11;
 				if (((ss >> 20) & 1) == 0) count[Tile::dirt_Id] += 10;
 				else count[Tile::stone_Id] += 10;
 				hh = 100;
-			}
-			else
-			{
+			}*/
+			//else
+			//{
 				for (int xs = 0; xs < scale; xs++)
 				{
 					for (int zs = 0; zs < scale; zs++)
@@ -195,7 +195,7 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 						count[t]++;
 					}
 				}
-			}
+			//}
 			liquidDepth /= scale * scale;
 
 			int best = 0;
@@ -338,19 +338,3 @@ void MapItem::onCraftedBy(shared_ptr<ItemInstance> itemInstance, Level *level, s
 	data->dimension = static_cast<byte>(level->dimension->id);
 	data->setDirty();
 }
-
-// 4J - Don't want
-/*
-void appendHoverText(ItemInstance itemInstance, Player player, List<String> lines, boolean advanced) {
-	MapItemSavedData data = getSavedData(itemInstance, player.level);
-
-	if (advanced) {
-		if (data == null) {
-			lines.add("Unknown map");
-		} else {
-			lines.add("Scaling at 1:" + (1 << data.scale));
-			lines.add("(Level " + data.scale + "/" + MapItemSavedData.MAX_SCALE + ")");
-		}
-	}
-}
-*/
