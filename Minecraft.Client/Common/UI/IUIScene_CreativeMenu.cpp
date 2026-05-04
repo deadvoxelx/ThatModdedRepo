@@ -405,7 +405,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 106); // White Enderman
 		ITEM_AUX(Item::spawnEgg_Id, 108); // Evupul
 		//ITEM_AUX(Item::spawnEgg_Id, 108 | ((Evupul::TYPE_GOLD + 1) << 12) ); // Golden Evupul
-		ITEM_AUX(Item::spawnEgg_Id, 107); // Dark Evupul 
+		ITEM_AUX(Item::spawnEgg_Id, 107); // Dark Evupul
+		ITEM_AUX(Item::spawnEgg_Id, 110); // Aphalaf Plant
+		ITEM_AUX(Item::spawnEgg_Id, 109); // Aphalaf Boss 
 		//ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon - doesnt work
 		ITEM_AUX(Item::spawnEgg_Id, 64); // Wither
 		ITEM(Item::record_01_Id)
@@ -554,6 +556,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::carrotOnAStick_Id)
 		ITEM(Item::lead_Id)
 		ITEM(Item::relicMallet_Id)
+		ITEM(Item::aphalafSword_Id)
 		ITEM(Item::horseArmorDiamond_Id)
 		ITEM(Item::horseArmorGold_Id)
 		ITEM(Item::horseArmorMetal_Id)
@@ -612,6 +615,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::evupulWing_Id)
 		ITEM(Item::evupulWingGold_Id)
 		ITEM(Item::isogalRib_Id)
+		ITEM(Item::aphalafTooth_Id)
 		ITEM_AUX(Item::dye_powder_Id,1)		// Red
 		ITEM_AUX(Item::dye_powder_Id,14)	// Orange
 		ITEM_AUX(Item::dye_powder_Id,11)	// Yellow
@@ -788,6 +792,7 @@ void IUIScene_CreativeMenu::staticCtor()
 	specs[eCreativeInventoryTab_Misc] = new TabSpec(L"Misc", IDS_GROUPNAME_MISCELLANEOUS, 1, miscGroup, 0, nullptr, 1, debugMiscGroup);
 #else
 	ECreative_Inventory_Groups miscGroup[] = {eCreativeInventory_Misc};
+	ECreative_Inventory_Groups debugMiscGroup[] = {eCreativeInventory_ArtToolsMisc};
 	specs[eCreativeInventoryTab_Misc] = new TabSpec(L"Misc", IDS_GROUPNAME_MISCELLANEOUS, 1, miscGroup);
 #endif
 }

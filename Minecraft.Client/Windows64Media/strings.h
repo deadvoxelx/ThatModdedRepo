@@ -2376,3 +2376,7 @@
 #define IDS_ITEM_ENDORIUMLEGGINGS							   2370
 #define IDS_ITEM_ENDORIUMBOOTS								   2371
 #define IDS_RESET_END_INFO                                     2372
+#define IDS_APHALAF_BOSS                                       2373
+#define IDS_APHALAF_PLANT                                      2374
+#define IDS_ITEM_APHALAF_TOOTH                                 2375
+#define IDS_ITEM_APHALAF_SWORD                                 2376

@@ -86,6 +86,10 @@
 #include "WatcherRenderer.h"
 #include "WhiteEndermanRenderer.h"
 #include "EvupulRenderer.h"
+#include "AphalafBossModel.h"
+#include "AphalafBossRenderer.h"
+#include "AphalafPlantModel.h"
+#include "AphalafPlantRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -121,6 +125,8 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_WHITE_ENDERMAN] = new WhiteEndermanRenderer();
 	renderers[eTYPE_EVUPULDARK] = new EvupulRenderer();
 	renderers[eTYPE_EVUPUL] = new EvupulRenderer();
+	renderers[eTYPE_APHALAF_BOSS] = new AphalafBossRenderer();
+	renderers[eTYPE_APHALAF_PLANT] = new AphalafPlantRenderer();
 
 	renderers[eTYPE_SNOWMAN] = new SnowManRenderer();
 	renderers[eTYPE_SKELETON] = new SkeletonRenderer();

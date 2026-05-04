@@ -47,6 +47,7 @@ void EntityTracker::addEntity(shared_ptr<Entity> e)
     else if (e->instanceof(eTYPE_ARROW)) addEntity(e, 16 * 4, 20, false);
     else if (e->instanceof(eTYPE_FIREBALL)) addEntity(e, 16 * 4, 10, false);
     else if (e->instanceof(eTYPE_SNOWBALL)) addEntity(e, 16 * 4, 10, true);
+	else if (e->instanceof(eTYPE_HELLSPHERE)) addEntity(e, 16 * 4, 10, true);
 	else if (e->instanceof(eTYPE_THROWNENDERPEARL)) addEntity(e, 16 * 4, 10, true);
 	else if (e->instanceof(eTYPE_EYEOFENDERSIGNAL)) addEntity(e, 16 * 4, 4, true);
     else if (e->instanceof(eTYPE_THROWNEGG)) addEntity(e, 16 * 4, 10, true);
@@ -58,6 +59,8 @@ void EntityTracker::addEntity(shared_ptr<Entity> e)
     else if (e->instanceof(eTYPE_BOAT)) addEntity(e, 16 * 5, 1, true);
     else if (e->instanceof(eTYPE_SQUID)) addEntity(e, 16 * 4, 1, true);
 	else if (e->instanceof(eTYPE_WITHERBOSS)) addEntity(e, 16 * 5, 1, false);
+	else if (e->instanceof(eTYPE_APHALAF_BOSS)) addEntity(e, 16 * 5, 1, false);
+	else if (e->instanceof(eTYPE_APHALAF_PLANT)) addEntity(e, 16 * 5, 1, false);
 	else if (e->instanceof(eTYPE_BAT)) addEntity(e, 16 * 5, 1, false);
     else if (dynamic_pointer_cast<Creature>(e)!=nullptr) addEntity(e, 16 * 5, 1, true);
 	else if (e->instanceof(eTYPE_ENDERDRAGON)) addEntity(e, 16 * 10, 1, true);

@@ -17,6 +17,7 @@ TheOuterEndBiome::TheOuterEndBiome(int id) : Biome(id)
 	enemies.push_back(new MobSpawnerData(eTYPE_WHITE_ENDERMAN, 4, 4, 4));
 	enemies.push_back(new MobSpawnerData(eTYPE_EVUPUL, 7, 1, 3));
 	enemies.push_back(new MobSpawnerData(eTYPE_EVUPULDARK, 10, 2, 4));
+	enemies.push_back(new MobSpawnerData(eTYPE_APHALAF_PLANT, 7, 1, 1));
 
 	decorator = new TheOuterEndBiomeDecorator(this);
 }
