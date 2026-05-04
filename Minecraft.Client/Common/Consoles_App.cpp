@@ -4561,6 +4561,10 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_ENDORIUMCHESTPLATE, L"Endorium Chestplate");
 		m_stringTable->registerString(IDS_ITEM_ENDORIUMLEGGINGS, L"Endorium Leggings");
 		m_stringTable->registerString(IDS_ITEM_ENDORIUMBOOTS, L"Endorium Boots");
+		m_stringTable->registerString(IDS_APHALAF_BOSS, L"Aphalaf Boss");
+		m_stringTable->registerString(IDS_APHALAF_PLANT, L"Aphalaf Plant");
+		m_stringTable->registerString(IDS_ITEM_APHALAF_TOOTH, L"Aphalaf Tooth");
+		m_stringTable->registerString(IDS_ITEM_APHALAF_SWORD, L"Aphalaf Sword");
 
 	}
 	else
@@ -8592,6 +8596,18 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_WITHER);
 	case eTYPE_BAT:
 		return app.GetString(IDS_BAT);
+	case eTYPE_HUSK:
+		return app.GetString(IDS_HUSK);
+	case eTYPE_ZOMBICE:
+		return app.GetString(IDS_ZOMBICE);
+	case eTYPE_WHITE_ENDERMAN:
+		return app.GetString(IDS_WHITEENDERMAN);
+	case eTYPE_EVUPULDARK:
+		return app.GetString(IDS_EVUPULDARK);
+	case eTYPE_APHALAF_BOSS:
+		return app.GetString(IDS_APHALAF_BOSS);
+	case eTYPE_APHALAF_PLANT:
+		return app.GetString(IDS_APHALAF_PLANT);
 	};
 
 	return L"";
