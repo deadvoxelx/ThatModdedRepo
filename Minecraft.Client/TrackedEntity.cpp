@@ -690,6 +690,12 @@ shared_ptr<Packet> TrackedEntity::getAddEntityPacket()
 	{
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::SNOWBALL, yRotp, xRotp, xp, yp, zp);
 	}
+
+	else if (e->instanceof(eTYPE_HELLSPHERE))
+	{
+		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::HELLSPHERE, yRotp, xRotp, xp, yp, zp);
+	}
+
 	else if (e->instanceof(eTYPE_THROWNPOTION))
 	{
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::THROWN_POTION, ((dynamic_pointer_cast<ThrownPotion>(e))->getPotionValue()), yRotp, xRotp, xp, yp, zp);

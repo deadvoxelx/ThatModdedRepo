@@ -174,6 +174,8 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/evupul_dark_overlay",
 	L"mob/evupul_gold",
 	L"mob/evupul_gold_overlay",
+	L"mob/aphalaf_boss",
+	L"mob/aphalaf_plant",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
