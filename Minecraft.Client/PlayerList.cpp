@@ -776,6 +776,11 @@ shared_ptr<ServerPlayer> PlayerList::respawn(shared_ptr<ServerPlayer> serverPlay
 		player->displayClientMessage(IDS_PLAYER_LEFT_END);
 	}
 
+	if( oldDimension == 2 && player->dimension != 2 )
+	{
+		player->displayClientMessage(IDS_PLAYER_LEAVE_OUTER_END);
+	}
+
 	return player;
 
 }
@@ -846,11 +851,11 @@ void PlayerList::toggleDimension(shared_ptr<ServerPlayer> player, int targetDime
 
 	//else if(player->dimension != 2 && targetDimension == 2)
 	//{
-	//	player->displayClientMessage(IDS_PLAYER_ENTERED_END);
+	//	player->displayClientMessage(IDS_PLAYER_ENTERED_OUTER_END);
 	//}
 	//else if( player->dimension == 2 )
 	//{
-	//	player->displayClientMessage(IDS_PLAYER_LEFT_END);
+	//	player->displayClientMessage(IDS_PLAYER_LEAVE_OUTER_END);
 	//}
 
 	player->dimension = targetDimension;
@@ -1425,7 +1430,7 @@ void PlayerList::sendLevelInfo(shared_ptr<ServerPlayer> player, ServerLevel *lev
 	}
 
 	// send the stronghold position if there is one
-	if((level->dimension->id==0) && level->getLevelData()->getHasStronghold())
+	if( ( (level->dimension->id==0) && (level->dimension->id!=2) ) && level->getLevelData()->getHasStronghold() )
 	{
 		player->connection->send(std::make_shared<XZPacket>(XZPacket::STRONGHOLD, level->getLevelData()->getXStronghold(), level->getLevelData()->getZStronghold()));
 	}
@@ -1614,6 +1619,7 @@ void PlayerList::addPlayerToReceiving(shared_ptr<ServerPlayer> player)
 	int playerDim = 0;
 	if( player->dimension == -1 ) playerDim = 1;
 	else if( player->dimension == 1) playerDim = 2;
+	else if( player->dimension == 2) playerDim = 3;
 
 #ifndef _CONTENT_PACKAGE
 	app.DebugPrintf("Requesting add player %ls as primary in dimension %d\n", player->name.c_str(), playerDim);
@@ -1657,6 +1663,7 @@ bool PlayerList::canReceiveAllPackets(shared_ptr<ServerPlayer> player)
 	int playerDim = 0;
 	if( player->dimension == -1 ) playerDim = 1;
 	else if( player->dimension == 1) playerDim = 2;
+	else if( player->dimension == 2) playerDim = 3;
 	for(const auto& newPlayer : receiveAllPlayers[playerDim])
 	{
 		if(newPlayer == player)
