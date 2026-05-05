@@ -1312,6 +1312,28 @@ void ServerPlayer::displayClientMessage(int messageId)
 			}
 		}
 		break;
+
+	case IDS_PLAYER_ENTER_OUTER_END:
+		for (unsigned int i = 0; i < server->getPlayers()->players.size(); i++)
+		{
+			shared_ptr<ServerPlayer> player = server->getPlayers()->players[i];
+			if(shared_from_this()!=player)
+			{
+				player->connection->send(std::make_shared<ChatPacket>(name, ChatPacket::e_ChatPlayerEnterOuterEnd));
+			}
+		}
+		break;
+	case IDS_PLAYER_LEAVE_OUTER_END:
+		for (unsigned int i = 0; i < server->getPlayers()->players.size(); i++)
+		{
+			shared_ptr<ServerPlayer> player = server->getPlayers()->players[i];
+			if(shared_from_this()!=player)
+			{
+				player->connection->send(std::make_shared<ChatPacket>(name, ChatPacket::e_ChatPlayerLeaveOuterEnd));
+			}
+		}
+		break;
+
 	case IDS_TILE_BED_MESLEEP:
 		messageType = ChatPacket::e_ChatBedMeSleep;
 		connection->send(std::make_shared<ChatPacket>(L"", messageType));
