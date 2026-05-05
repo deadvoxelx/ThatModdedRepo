@@ -4565,6 +4565,8 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_APHALAF_PLANT, L"Aphalaf Plant");
 		m_stringTable->registerString(IDS_ITEM_APHALAF_TOOTH, L"Aphalaf Tooth");
 		m_stringTable->registerString(IDS_ITEM_APHALAF_SWORD, L"Aphalaf Sword");
+		m_stringTable->registerString(IDS_PLAYER_ENTER_OUTER_END, L"Entering Outer End");
+		m_stringTable->registerString(IDS_PLAYER_LEAVE_OUTER_END, L"Leaving Outer End");
 
 	}
 	else
