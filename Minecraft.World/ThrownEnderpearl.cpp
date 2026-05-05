@@ -21,6 +21,7 @@ ThrownEnderpearl::ThrownEnderpearl(Level *level, shared_ptr<LivingEntity> mob) :
 	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that
 	// the derived version of the function is called
 	this->defineSynchedData();
+	setSize(0.05f, 0.05f);
 }
 
 ThrownEnderpearl::ThrownEnderpearl(Level *level, double x, double y, double z) : Throwable(level,x,y,z)

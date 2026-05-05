@@ -25,7 +25,7 @@ _MapDataMappings::_MapDataMappings()
 int _MapDataMappings::getDimension(int id)
 {
 	const int offset = (2*(id%4));
-	const int val = (dimensions[id>>3] & (4 << offset))>>offset;
+	const int val = (dimensions[id>>4] & (4 << offset))>>offset;
 
 	int returnVal=0;
 
@@ -60,20 +60,20 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension)
 	const int offset = (2*(id%4));
 
 	// Reset it first
-	dimensions[id>>2] &= ~( 2 << offset );
+	dimensions[id>>4] &= ~( 4 << offset );
 	switch(dimension)
 	{
 	case 0: // Overworld
 		//dimensions[id>>2] &= ~( 2 << offset );
 		break;
 	case -1: // Nether
-		dimensions[id>>2] |= ( 1 << offset );
+		dimensions[id>>4] |= ( 1 << offset );
 		break;
 	case 1: // End
-		dimensions[id>>2] |= ( 2 << offset );
+		dimensions[id>>4] |= ( 2 << offset );
 		break;
 	case 2: // Outer End
-		dimensions[id>>3] |= ( 3 << offset );
+		dimensions[id>>4] |= ( 3 << offset );
 		break;
 	default:
 #ifndef _CONTENT_PACKAGE
@@ -597,7 +597,7 @@ void DirectoryLevelStorage::resetNetherPlayerPositions()
 
 							pos->get(2)->data = DBL_MAX;
 						}
-						if (tag->getInt(L"Dimension") == LevelData::DIMENSION_OUTER_END)
+						else if (tag->getInt(L"Dimension") == LevelData::DIMENSION_OUTER_END)
 						{
 							ListTag<DoubleTag> *pos = (ListTag<DoubleTag> *) tag->getList(L"Pos");
 

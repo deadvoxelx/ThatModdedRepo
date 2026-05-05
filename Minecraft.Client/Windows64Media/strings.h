@@ -2380,3 +2380,5 @@
 #define IDS_APHALAF_PLANT                                      2374
 #define IDS_ITEM_APHALAF_TOOTH                                 2375
 #define IDS_ITEM_APHALAF_SWORD                                 2376
+#define IDS_PLAYER_ENTER_OUTER_END                             2377
+#define IDS_PLAYER_LEAVE_OUTER_END                             2378

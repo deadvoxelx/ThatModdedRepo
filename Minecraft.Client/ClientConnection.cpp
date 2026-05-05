@@ -1822,6 +1822,17 @@ void ClientConnection::handleChat(shared_ptr<ChatPacket> packet)
 		message.replace(iPos,2,playerDisplayName);
 		break;
 
+	case ChatPacket::e_ChatPlayerEnterOuterEnd:
+		message=app.GetString(IDS_PLAYER_ENTER_OUTER_END);
+		iPos=message.find(L"%s");
+		message.replace(iPos,2,playerDisplayName);
+		break;
+	case ChatPacket::e_ChatPlayerLeaveOuterEnd:
+		message=app.GetString(IDS_PLAYER_LEAVE_OUTER_END);
+		iPos=message.find(L"%s");
+		message.replace(iPos,2,playerDisplayName);
+		break;
+
 	case ChatPacket::e_ChatPlayerMaxEnemies:
 		message=app.GetString(IDS_MAX_ENEMIES_SPAWNED);
 		break;
@@ -2948,11 +2959,11 @@ void ClientConnection::handleRespawn(shared_ptr<RespawnPacket> packet)
 
 		else if( packet->dimension == 2)
 		{
-			param->stringId = IDS_PROGRESS_ENTERING_END;
+			param->stringId = IDS_PLAYER_ENTER_OUTER_END;
 		}
 		else if( oldDimension == 2)
 		{
-			param->stringId = IDS_PROGRESS_LEAVING_END;
+			param->stringId = IDS_PLAYER_LEAVE_OUTER_END;
 		}
 
 		param->showTooltips = false;

@@ -75,6 +75,9 @@ public:
 		e_ChatPlayerEnteredEnd,
 		e_ChatPlayerLeftEnd,
 
+		e_ChatPlayerEnterOuterEnd,
+		e_ChatPlayerLeaveOuterEnd,
+
 		e_ChatPlayerMaxPigsSheepCows, // tell the players they can't use the spawn egg
 		e_ChatPlayerMaxChickens, // tell the players they can't use the spawn egg
 		e_ChatPlayerMaxSquid, // tell the players they can't use the spawn egg
