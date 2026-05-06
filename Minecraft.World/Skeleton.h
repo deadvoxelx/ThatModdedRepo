@@ -57,6 +57,8 @@ protected:
 	virtual void dropRareDeathLoot(int rareLootLevel);
 	virtual void populateDefaultEquipmentSlots();
 
+	virtual int decreaseAirSupply(int currentSupply);
+
 public:
 	virtual MobGroupData *finalizeMobSpawn(MobGroupData *groupData, int extraData = 0); // 4J Added extraData param
 	virtual void reassessWeaponGoal();
