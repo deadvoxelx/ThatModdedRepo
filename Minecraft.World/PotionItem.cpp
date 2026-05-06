@@ -22,7 +22,7 @@ vector<pair<int, int> >  PotionItem::s_uniquePotionValues;
 
 PotionItem::PotionItem(int id) : Item(id)
 {
-	setMaxStackSize(1);
+	setMaxStackSize(16);
 	setStackedByData(true);
 	setMaxDamage(0);
 
