@@ -18,6 +18,6 @@ public:
 	virtual int getSpawnYPosition();
 	virtual bool isFoggyAt(int x, int z);
 
-protected:
-	virtual void updateLightRamp();
+//protected:
+//	virtual void updateLightRamp();
 };
