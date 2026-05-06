@@ -30,7 +30,15 @@ bool EnchantmentCategory::canEnchant(Item *item) const
 	{
 		return this == weapon;
 	}
+	else if (dynamic_cast<AphalafSwordItem *>(item) != nullptr)
+	{
+		return this == weapon;
+	}
 	else if (dynamic_cast<DiggerItem *>(item) != nullptr)
+	{
+		return this == digger;
+	}
+	else if (dynamic_cast<HoeItem *>(item) != nullptr)
 	{
 		return this == digger;
 	}
