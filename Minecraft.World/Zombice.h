@@ -49,6 +49,7 @@ protected:
 	virtual void dropRareDeathLoot(int rareLootLevel);
 	virtual int getDeathLoot();
 
+	virtual int decreaseAirSupply(int currentSupply);
 
 public:
 	virtual bool doHurtTarget(shared_ptr<Entity> target);
