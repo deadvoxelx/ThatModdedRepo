@@ -6,6 +6,7 @@
 #include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.h"
+#include "net.minecraft.world.phys.h"
 #include "..\Minecraft.Client\ServerPlayer.h"
 
 const wstring CauldronTile::TEXTURE_INSIDE = L"cauldron_inner";
@@ -29,6 +30,27 @@ Icon *CauldronTile::getTexture(int face, int data)
 		return iconBottom;
 	}
 	return icon;
+}
+
+void CauldronTile::entityInside(Level* level, int x, int y, int z, shared_ptr<Entity> entity)
+{
+	if (level->isClientSide) return;
+
+	int data = level->getData(x, y, z);
+	int fillLevel = getFillLevel(data);
+
+	double waterSurfaceY = ((3 * fillLevel + 6) * 0.0625) + y;
+
+	if (level->isClientSide) return;
+	if (!entity->isOnFire()) return;
+
+	if (fillLevel <= 0) return;
+
+	if (entity->bb->y0 <= waterSurfaceY)
+	{
+		entity->clearFire();
+		level->setData(x, y, z, fillLevel - 1, Tile::UPDATE_CLIENTS);
+	}
 }
 
 void CauldronTile::registerIcons(IconRegister *iconRegister)
