@@ -52,9 +52,9 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			}
 #endif
 			resetNetherPlayerPositions();
-		}
+		}*/
 
-		return new McRegionChunkStorage(m_saveFile, LevelStorage::NETHER_FOLDER);*/
+		return new McRegionChunkStorage(m_saveFile, LevelStorage::NETHER_FOLDER);
     }
 
 	if (dynamic_cast<TheEndDimension *>(dimension))
@@ -85,8 +85,6 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 #endif
 			resetNetherPlayerPositions();
 		}
-
-		return new McRegionChunkStorage(m_saveFile, LevelStorage::ENDER_FOLDER);
 
 		//File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
 		//dir2.mkdirs();
@@ -143,8 +141,6 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 #endif
 			resetNetherPlayerPositions();
 		}
-
-		return new McRegionChunkStorage(m_saveFile, LevelStorage::OUTEREND_FOLDER);
 
 		//File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
 		//dir2.mkdirs();
