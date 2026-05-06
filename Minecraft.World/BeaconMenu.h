@@ -36,7 +36,8 @@ private:
 public:
 	BeaconMenu(shared_ptr<Container> inventory, shared_ptr<BeaconTileEntity> beacon);
 
-	void addSlotListener(ContainerListener *listener);
+	void addSlotListener(ContainerListener *listener) override;
+	void broadcastChanges() override;
 	void setData(int id, int value);
 	shared_ptr<BeaconTileEntity> getBeacon();
 	bool stillValid(shared_ptr<Player> player);
