@@ -23,6 +23,7 @@ public:
 	virtual bool useNewAi();
 
 protected:
+	virtual bool removeWhenFarAway();
 	virtual void registerAttributes();
 	virtual void newServerAiStep();
 
