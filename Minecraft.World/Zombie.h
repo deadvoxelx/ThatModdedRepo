@@ -99,6 +99,8 @@ protected:
 	virtual void finishConversion();
 	virtual int getConversionProgress();
 
+	virtual int decreaseAirSupply(int currentSupply);
+
 private:
 	class ZombieGroupData : public MobGroupData
 	{
