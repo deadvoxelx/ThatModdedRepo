@@ -496,6 +496,50 @@ void PlayerList::add(shared_ptr<ServerPlayer> player)
 		}
 	}
 
+	// Send AddPlayerPackets so all players appear in each other's Tab list
+	// regardless of render distance. The entity tracking system will send
+	// another AddPlayerPacket when they enter range, which is handled
+	// gracefully by putEntity replacing the old entity.
+	{
+		PlayerUID xuid = INVALID_XUID;
+		PlayerUID onlineXuid = INVALID_XUID;
+#ifndef MINECRAFT_SERVER_BUILD
+		xuid = player->getXuid();
+		onlineXuid = player->getOnlineXuid();
+#endif
+		int xp = Mth::floor(player->x * 32.0);
+		int yp = Mth::floor(player->y * 32.0);
+		int zp = Mth::floor(player->z * 32.0);
+		int yRotp = Mth::floor(player->yRot * 256.0f / 360.0f);
+		int xRotp = Mth::floor(player->xRot * 256.0f / 360.0f);
+		int yHeadRotp = Mth::floor(player->yHeadRot * 256.0f / 360.0f);
+
+		// Broadcast the new player to all existing players
+		broadcastAll(std::make_shared<AddPlayerPacket>(player, xuid, onlineXuid, xp, yp, zp, yRotp, xRotp, yHeadRotp));
+
+		// Send all existing players to the new player
+		for (size_t i = 0; i < players.size(); i++)
+		{
+			shared_ptr<ServerPlayer> op = players.at(i);
+			if (op != player && op->connection->getNetworkPlayer())
+			{
+				PlayerUID opXuid = INVALID_XUID;
+				PlayerUID opOnlineXuid = INVALID_XUID;
+#ifndef MINECRAFT_SERVER_BUILD
+				opXuid = op->getXuid();
+				opOnlineXuid = op->getOnlineXuid();
+#endif
+				int oxp = Mth::floor(op->x * 32.0);
+				int oyp = Mth::floor(op->y * 32.0);
+				int ozp = Mth::floor(op->z * 32.0);
+				int oyRotp = Mth::floor(op->yRot * 256.0f / 360.0f);
+				int oxRotp = Mth::floor(op->xRot * 256.0f / 360.0f);
+				int oyHeadRotp = Mth::floor(op->yHeadRot * 256.0f / 360.0f);
+				player->connection->send(std::make_shared<AddPlayerPacket>(op, opXuid, opOnlineXuid, oxp, oyp, ozp, oyRotp, oxRotp, oyHeadRotp));
+			}
+		}
+	}
+
 	if(level->isAtLeastOnePlayerSleeping())
 	{
 		shared_ptr<ServerPlayer> firstSleepingPlayer = nullptr;
@@ -523,11 +567,21 @@ void PlayerList::remove(shared_ptr<ServerPlayer> player)
 	//4J Stu - We don't want to save the map data for guests, so when we are sure that the player is gone delete the map
 	if(player->isGuest()) playerIo->deleteMapFilesForPlayer(player);
 	ServerLevel *level = player->getLevel();
-if (player->riding != nullptr)
+	if (player->riding != nullptr)
 	{
 		level->removeEntityImmediately(player->riding);
 		app.DebugPrintf("removing player mount");
 	}
+
+	// Notify all clients to remove this player entity, not just those who
+	// had the player in tracking range. This ensures players added to the
+	// Tab list via the AddPlayerPacket broadcast are properly cleaned up.
+	{
+		intArray ids(1);
+		ids[0] = player->entityId;
+		broadcastAll(std::make_shared<RemoveEntitiesPacket>(ids));
+	}
+
 	level->getTracker()->removeEntity(player);
 	level->removeEntity(player);
 	level->getChunkMap()->remove(player);
