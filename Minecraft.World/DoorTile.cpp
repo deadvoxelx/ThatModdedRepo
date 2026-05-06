@@ -248,7 +248,7 @@ void DoorTile::neighborChanged(Level *level, int x, int y, int z, int type)
 			level->removeTile(x, y, z);
 			spawn = true;
 		}
-		if (!level->isSolidBlockingTile(x, y - 1, z))
+		if (!level->isTopSolidBlocking(x, y - 1, z))
 		{
 			level->removeTile(x, y, z);
 			spawn = true;
