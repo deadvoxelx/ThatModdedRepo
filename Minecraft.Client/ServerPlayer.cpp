@@ -1070,10 +1070,11 @@ bool ServerPlayer::openBeacon(shared_ptr<BeaconTileEntity> beacon)
 	if(containerMenu == inventoryMenu)
 	{
 		nextContainerCounter();
-		connection->send(std::make_shared<ContainerOpenPacket>(containerCounter, ContainerOpenPacket::BEACON, beacon->getCustomName(), beacon->getContainerSize(), beacon->hasCustomName()));
 		containerMenu = new BeaconMenu(inventory, beacon);
 		containerMenu->containerId = containerCounter;
+		connection->send(std::make_shared<ContainerOpenPacket>(containerCounter, ContainerOpenPacket::BEACON, beacon->getCustomName(), beacon->getContainerSize(), beacon->hasCustomName()));
 		containerMenu->addSlotListener(this);
+		refreshContainer(containerMenu);
 	}
 	else
 	{
