@@ -63,8 +63,8 @@ public:
 
 
 public:
-	static const int MAX_XBOX_BOATS = 60;										// Max number of boats
-	static const int MAX_CONSOLE_MINECARTS = 60;
+	static const int MAX_XBOX_BOATS = 200;										// Max number of boats
+	static const int MAX_CONSOLE_MINECARTS = 200;
 	static const int MAX_DISPENSABLE_FIREBALLS = 300;
 	static const int MAX_DISPENSABLE_PROJECTILES = 400;
 
