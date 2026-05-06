@@ -20,6 +20,7 @@ public:
 	virtual Icon *getTexture(int face, int data);
 	//@Override
 	void registerIcons(IconRegister *iconRegister);
+	void entityInside(Level* level, int x, int y, int z, shared_ptr<Entity> entity);
 	static Icon *getTexture(const wstring &name);
 	virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source);
 	virtual void updateDefaultShape();
