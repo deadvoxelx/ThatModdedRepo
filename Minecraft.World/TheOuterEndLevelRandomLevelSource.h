@@ -36,8 +36,8 @@ public:
 	TheOuterEndLevelRandomLevelSource(Level *level, int64_t seed);
 	~TheOuterEndLevelRandomLevelSource();
 
-	void prepareHeights(int xOffs, int zOffs, byteArray blocks);
-	void buildSurfaces(int xOffs, int zOffs, byteArray blocks);
+	void prepareHeights(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes);
+	void buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes);
 
 public:
 	virtual LevelChunk *create(int x, int z);
@@ -48,6 +48,10 @@ private:
 
 public:
 	virtual bool hasChunk(int x, int y);
+
+private:
+	void calcWaterDepths(ChunkSource *parent, int xt, int zt);
+	
 public:
 	virtual void postProcess(ChunkSource *parent, int xt, int zt);
 	virtual bool save(bool force, ProgressListener *progressListener);
