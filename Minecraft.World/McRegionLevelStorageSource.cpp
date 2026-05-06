@@ -159,10 +159,10 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 	convertRegions(baseFolder, normalRegions, 0, totalCount, progress);
 	// convert hell world
 	convertRegions(netherFolder, netherRegions, normalRegions->size(), totalCount, progress);
-    // convert hell world
+    // convert end world
     convertRegions(enderFolder, enderRegions, normalRegions.size() + netherRegions.size(), totalCount, progress);
-
-	convertRegions(outerEndFolder, outerEndRegions, normalRegions.size(), totalCount, progress);
+	// convert outer end world
+	convertRegions(outerEndFolder, outerEndRegions, normalRegions.size() + netherRegions.size() + enderRegions.size(), totalCount, progress);
 
 	LevelData *levelData = getDataTagFor(levelId);
 	levelData->setVersion(McRegionLevelStorage::MCREGION_VERSION_ID);
@@ -171,10 +171,15 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 	levelStorage->saveLevelData(levelData);
 
 	// erase old files
-	eraseFolders(normalBaseFolders, normalRegions->size() + netherRegions->size(), totalCount, progress);
+	/*eraseFolders(normalBaseFolders, normalRegions->size() + netherRegions->size(), totalCount, progress);
 	if (netherFolder.exists())
 	{
 		eraseFolders(netherBaseFolders, normalRegions->size() + netherRegions->size() + normalBaseFolders->size(), totalCount, progress);
+	}*/
+	eraseFolders(normalBaseFolders, normalRegions->size() + enderRegions->size(), totalCount, progress);
+	if (enderFolder.exists())
+	{
+		eraseFolders(enderBaseFolders, normalRegions->size() + enderRegions->size() + normalBaseFolders->size(), totalCount, progress);
 	}
 #endif
 	return true;
