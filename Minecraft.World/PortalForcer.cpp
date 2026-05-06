@@ -93,7 +93,7 @@ bool PortalForcer::findPortal(shared_ptr<Entity> e, double xOriginal, double yOr
 	int xc = Mth::floor(e->x);
 	int zc = Mth::floor(e->z);
 
-	long hash = ChunkPos::hashCode(xc, zc);
+	long hash = ChunkPos::hashCode(xc >> 4, zc >> 4);
 	bool updateCache = true;
 
     auto it = cachedPortals.find(hash);
@@ -148,8 +148,17 @@ bool PortalForcer::findPortal(shared_ptr<Entity> e, double xOriginal, double yOr
 
 		if (updateCache)
 		{
-			cachedPortals[hash] = new PortalPosition(x, y, z, level->getGameTime());
-			cachedPortalKeys.push_back(hash);
+			auto existing = cachedPortals.find(hash);
+			if (existing != cachedPortals.end())
+			{
+				delete existing->second;
+				existing->second = new PortalPosition(x, y, z, level->getGameTime());
+			}
+			else
+			{
+				cachedPortals[hash] = new PortalPosition(x, y, z, level->getGameTime());
+				cachedPortalKeys.push_back(hash);
+			}
 		}
 
 		double xt = x + 0.5;
