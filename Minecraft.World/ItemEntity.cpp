@@ -13,8 +13,6 @@
 #include "ItemEntity.h"
 #include "SoundTypes.h"
 
-
-
 void ItemEntity::_init()
 {
 	age = 0;
@@ -193,6 +191,8 @@ bool ItemEntity::hurt(DamageSource *source, float damage)
 
 	if (isInvulnerable()) return false;
 	if (getItem() != nullptr && getItem()->id == Item::netherStar_Id && source->isExplosion()) return false;
+	if (getItem() != nullptr && getItem()->id == Item::relicMallet_Id && source->isExplosion()) return false;
+	if (getItem() != nullptr && getItem()->id == Item::aphalafSword_Id && source->isExplosion()) return false;
 	markHurt();
 	health -= damage;
 	if (health <= 0)
