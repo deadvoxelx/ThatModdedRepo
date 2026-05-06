@@ -183,3 +183,9 @@ void Husk::aiStep()
 	}
 	Monster::aiStep();
 }
+
+int Husk::decreaseAirSupply(int currentSupply)
+{
+	// infinite air supply
+	return currentSupply;
+}
