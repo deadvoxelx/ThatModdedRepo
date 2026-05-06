@@ -183,3 +183,9 @@ void Zombice::aiStep()
 	}
 	Monster::aiStep();
 }
+
+int Zombice::decreaseAirSupply(int currentSupply)
+{
+	// infinite air supply
+	return currentSupply;
+}

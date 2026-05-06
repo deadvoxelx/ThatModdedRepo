@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "TheOuterEndDimension.h"
-#include "TheOuterEndLevelRandomLevelSource.h"
+//#include "TheOuterEndLevelRandomLevelSource.h"
 #include "FixedBiomeSource.h"
+#include "net.minecraft.world.level.storage.h"
 #include "net.minecraft.world.level.levelgen.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
@@ -93,10 +94,10 @@ bool TheOuterEndDimension::isFoggyAt(int x, int z)
 
 int TheOuterEndDimension::getSpawnYPosition()
 {
-	return 50;
+	return 80;
 }
 
-void TheOuterEndDimension::updateLightRamp()
+/*void TheOuterEndDimension::updateLightRamp()
 {
     float ambientLight = 0.10f;
     for (int i = 0; i <= Level::MAX_BRIGHTNESS; i++)
@@ -104,4 +105,4 @@ void TheOuterEndDimension::updateLightRamp()
         float v = (1 - i / (float) (Level::MAX_BRIGHTNESS));
         brightnessRamp[i] = ((1 - v) / (v * 3 + 1)) * (1 - ambientLight) + ambientLight;
     }
-}
+}*/

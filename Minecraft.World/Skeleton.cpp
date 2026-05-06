@@ -15,6 +15,7 @@
 #include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.entity.monster.h"
+#include "net.minecraft.world.entity.animal.h"
 #include "net.minecraft.stats.h"
 #include "net.minecraft.world.damagesource.h"
 #include "SharedConstants.h"
@@ -30,12 +31,12 @@ Skeleton::Skeleton(Level *level) : Monster( level )
 	registerAttributes();
 	setHealth(getMaxHealth());
 
-	bowGoal = new RangedAttackGoal(this, this, 1.0, SharedConstants::TICKS_PER_SECOND * 1, SharedConstants::TICKS_PER_SECOND * 3, 15);
+	bowGoal = new RangedAttackGoal(this, this, 1.0, SharedConstants::TICKS_PER_SECOND * 3, SharedConstants::TICKS_PER_SECOND * 5, 15);
 	meleeGoal = new MeleeAttackGoal(this, eTYPE_PLAYER, 1.2, false);
 
-	goalSelector.addGoal(1, new FloatGoal(this));
-	goalSelector.addGoal(2, new RestrictSunGoal(this));
-	goalSelector.addGoal(3, new FleeSunGoal(this, 1.0));
+	goalSelector.addGoal(1, new RestrictSunGoal(this));
+	goalSelector.addGoal(2, new FleeSunGoal(this, 1.0));
+	goalSelector.addGoal(3, new AvoidPlayerGoal(this, typeid(Wolf), 8, 1.0, 1.0));
 	goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
 	goalSelector.addGoal(6, new LookAtPlayerGoal(this, typeid(Player), 8));
 	goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -400,4 +401,10 @@ void Skeleton::setEquippedSlot(int slot, shared_ptr<ItemInstance> item)
 double Skeleton::getRidingHeight()
 {
 	return Monster::getRidingHeight() - .5;
+}
+
+int Skeleton::decreaseAirSupply(int currentSupply)
+{
+	// infinite air supply
+	return currentSupply;
 }

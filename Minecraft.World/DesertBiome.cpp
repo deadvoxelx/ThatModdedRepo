@@ -3,6 +3,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.biome.h"
+#include "net.minecraft.world.entity.monster.h"
 
 DesertBiome::DesertBiome(int id) : Biome(id)
 {
@@ -18,7 +19,7 @@ DesertBiome::DesertBiome(int id) : Biome(id)
 	decorator->reedsCount = 50;
 	decorator->cactusCount = 10;
 
-	enemies.push_back(new MobSpawnerData(eTYPE_HUSK, 50, 4, 4));
+	enemies.push_back(new MobSpawnerData(eTYPE_HUSK, 10, 4, 4));
 }
 
 void DesertBiome::decorate(Level *level, Random *random, int xo, int zo)

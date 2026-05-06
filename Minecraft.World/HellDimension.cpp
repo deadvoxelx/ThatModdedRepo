@@ -11,7 +11,7 @@
 void HellDimension::init()
 {
     biomeSource = new FixedBiomeSource(Biome::hell, 1, 0);
-    ultraWarm = false;
+    ultraWarm = true;
     hasCeiling = true;
     id = -1;
 }
@@ -60,7 +60,7 @@ ChunkSource *HellDimension::createRandomLevelSource() const
 
 bool HellDimension::isNaturalDimension()
 {
-	return true;
+	return false;
 }
 
 bool HellDimension::isValidSpawn(int x, int z) const

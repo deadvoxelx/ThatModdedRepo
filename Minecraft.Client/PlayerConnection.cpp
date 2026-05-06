@@ -1622,12 +1622,17 @@ void PlayerConnection::handleCustomPayload(shared_ptr<CustomPayloadPacket> custo
 
 				BeaconMenu *beaconMenu = static_cast<BeaconMenu *>(player->containerMenu);
 				Slot *slot = beaconMenu->getSlot(0);
-				if (slot->hasItem())
+				if (slot != nullptr && slot->hasItem())
 				{
-					slot->remove(1);
 					shared_ptr<BeaconTileEntity> beacon = beaconMenu->getBeacon();
+					int prevPrimary = beacon->getPrimaryPower();
+					int prevSecondary = beacon->getSecondaryPower();
 					beacon->setPrimaryPower(primary);
 					beacon->setSecondaryPower(secondary);
+					if (beacon->getPrimaryPower() != prevPrimary || beacon->getSecondaryPower() != prevSecondary)
+					{
+						slot->remove(1);
+					}
 					beacon->setChanged();
 				}
 			}

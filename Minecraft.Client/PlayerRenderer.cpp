@@ -517,7 +517,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 	}
 }
 
-void PlayerRenderer::renderNameTags(shared_ptr<LivingEntity> player, double x, double y, double z, wstring msg, float scale, double dist)
+void PlayerRenderer::renderNameTags(shared_ptr<LivingEntity> player, double x, double y, double z, const wstring& msg, float scale, double dist)
 {
 #if 0
     if (dist < 10 * 10)

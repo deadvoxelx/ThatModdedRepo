@@ -472,6 +472,7 @@ void Villager::addOffers(int addCount)
 		addItemForPurchase(newOffers, Tile::glass_Id, random, getRecipeChance(.2f));
 		addItemForPurchase(newOffers, Item::compass_Id, random, getRecipeChance(.2f));
 		addItemForPurchase(newOffers, Item::clock_Id, random, getRecipeChance(.2f));
+		addItemForPurchase(newOffers, Item::nameTag_Id, random, getRecipeChance(.2f));
 
 		if (random->nextFloat() < getRecipeChance(0.07f))
 		{
@@ -774,4 +775,13 @@ wstring Villager::getDisplayName()
 		break;
 	};
 	return app.GetString(name);
+}
+
+void Villager::thunderHit(const LightningBolt *lightningBolt)
+{
+	if (level->isClientSide) return;
+	shared_ptr<Witch> pz = std::make_shared<Witch>(level);
+	pz->moveTo(x, y, z, yRot, xRot);
+	level->addEntity(pz);
+	remove();
 }

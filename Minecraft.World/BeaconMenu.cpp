@@ -39,6 +39,29 @@ void BeaconMenu::addSlotListener(ContainerListener *listener)
 	listener->setContainerData(this, 2, secondaryPower);
 }
 
+void BeaconMenu::broadcastChanges()
+{
+	AbstractContainerMenu::broadcastChanges();
+
+	int currentLevels = beacon->getLevels();
+	int currentPrimary = beacon->getPrimaryPower();
+	int currentSecondary = beacon->getSecondaryPower();
+
+	for (auto& listener : containerListeners)
+	{
+		if (levels != currentLevels)
+			listener->setContainerData(this, 0, currentLevels);
+		if (primaryPower != currentPrimary)
+			listener->setContainerData(this, 1, currentPrimary);
+		if (secondaryPower != currentSecondary)
+			listener->setContainerData(this, 2, currentSecondary);
+	}
+
+	levels = currentLevels;
+	primaryPower = currentPrimary;
+	secondaryPower = currentSecondary;
+}
+
 void BeaconMenu::setData(int id, int value)
 {
 	if (id == 0) beacon->setLevels(value);

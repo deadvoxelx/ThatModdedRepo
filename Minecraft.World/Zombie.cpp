@@ -12,7 +12,9 @@
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.entity.npc.h"
 #include "net.minecraft.world.entity.player.h"
+#include "AABB.h"
 #include "Zombie.h"
+#include "Chicken.h"
 #include "GenericStats.h"
 #include "..\Minecraft.Client\Textures.h"
 #include "net.minecraft.world.entity.h"
@@ -36,7 +38,6 @@ Zombie::Zombie(Level *level) : Monster( level )
 	villagerConversionTime = 0;
 
 	getNavigation()->setCanOpenDoors(true);
-	goalSelector.addGoal(0, new FloatGoal(this));
 	goalSelector.addGoal(1, new BreakDoorGoal(this));
 	goalSelector.addGoal(2, new MeleeAttackGoal(this, eTYPE_PLAYER, 1.0, false));
 	goalSelector.addGoal(3, new MeleeAttackGoal(this, eTYPE_VILLAGER, 1.0, true));
@@ -364,6 +365,33 @@ MobGroupData *Zombie::finalizeMobSpawn(MobGroupData *groupData, int extraData /*
 		if (zombieData->isBaby)
 		{
 			setBaby(true);
+
+			bool checkExisting = false;
+			if (level->random->nextFloat() < 0.05f) 
+			{
+				vector<shared_ptr<Entity>> *entities = level->getEntitiesOfClass(typeid(Chicken), bb->grow(5.0f, 3.0f, 5.0f));
+				for (auto it = entities->begin(); it != entities->end(); ++it)
+				{
+					shared_ptr<Chicken> chicken = dynamic_pointer_cast<Chicken>(*it);
+					if (chicken != nullptr && !chicken->isChickenJockey)
+					{
+						chicken->isChickenJockey = true;
+						ride(chicken);
+						checkExisting = true;
+						break;
+					}
+				}
+			}
+
+			if (!checkExisting && level->random->nextFloat() < 0.05f) 
+			{
+				shared_ptr<Chicken> chicken = std::make_shared<Chicken>(level);
+				chicken->moveTo(x, y, z, yRot, 0);
+				chicken->finalizeMobSpawn(nullptr);
+				chicken->isChickenJockey = true;
+				level->addEntity(chicken);
+				ride(chicken);
+			}
 		}
 	}
 
@@ -502,4 +530,10 @@ Zombie::ZombieGroupData::ZombieGroupData(bool baby, bool villager)
 {
 	isBaby = baby;
 	isVillager = villager;
+}
+
+int Zombie::decreaseAirSupply(int currentSupply)
+{
+	// infinite air supply
+	return currentSupply;
 }

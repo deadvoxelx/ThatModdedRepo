@@ -38,6 +38,7 @@ public:
 	virtual bool hurt(DamageSource *source, float dmg);
 	virtual void addAdditonalSaveData(CompoundTag *tag);
 	virtual void readAdditionalSaveData(CompoundTag *tag);
+	virtual void dropLeash(bool synch, bool createItemDrop);
 
 protected:
 	virtual shared_ptr<Entity> findAttackTarget();

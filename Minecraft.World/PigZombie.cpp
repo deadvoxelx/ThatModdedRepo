@@ -225,3 +225,9 @@ MobGroupData *PigZombie::finalizeMobSpawn(MobGroupData *groupData, int extraData
 	setVillager(false);
 	return groupData;
 }
+
+int PigZombie::decreaseAirSupply(int currentSupply)
+{
+	// infinite air supply
+	return currentSupply;
+}

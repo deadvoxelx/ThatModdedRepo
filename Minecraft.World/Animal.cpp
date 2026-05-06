@@ -221,6 +221,12 @@ void Animal::readAdditionalSaveData(CompoundTag *tag)
 	setDespawnProtected();
 }
 
+void Animal::dropLeash(bool synch, bool createItemDrop)
+{
+	setDespawnProtected();
+	Mob::dropLeash(synch, createItemDrop);
+}
+
 shared_ptr<Entity> Animal::findAttackTarget()
 {
 	if (fleeTime > 0) return nullptr;
@@ -301,7 +307,7 @@ int Animal::getAmbientSoundInterval()
 
 bool Animal::removeWhenFarAway()
 {
-	return !isDespawnProtected();	// 4J changed - was false
+	return !hasCustomName() && !isLeashed() && !isDespawnProtected();
 }
 
 int Animal::getExperienceReward(shared_ptr<Player> killedBy)

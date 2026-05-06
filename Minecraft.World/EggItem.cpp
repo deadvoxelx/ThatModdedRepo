@@ -16,7 +16,7 @@ using namespace std;
 
 EggItem::EggItem(int id) : Item( id )
 {
-	maxStackSize = 16;
+	maxStackSize = 64;
 }
 
 shared_ptr<ItemInstance> EggItem::use(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player) 

@@ -43,7 +43,7 @@ TheOuterEndLevelRandomLevelSource::~TheOuterEndLevelRandomLevelSource()
 	delete depthNoise;
 }
 
-void TheOuterEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)
+void TheOuterEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
 {
 	doubleArray buffer;	// 4J - used to be declared with class level scope but tidying up for thread safety reasons
 
@@ -118,7 +118,7 @@ void TheOuterEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs, byt
 
 }
 
-void TheOuterEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks)
+void TheOuterEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
 {
 	int waterHeight = Level::genDepth - 64;
 
@@ -212,8 +212,8 @@ LevelChunk *TheOuterEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs)
 	//    LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);			// 4J moved below
 	level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16, 16, true);
 
-	prepareHeights(xOffs, zOffs, blocks);
-	buildSurfaces(xOffs, zOffs, blocks);
+	prepareHeights(xOffs, zOffs, blocks, biomes);
+	buildSurfaces(xOffs, zOffs, blocks, biomes);
 
 	// 4J - this now creates compressed block data from the blocks array passed in, so moved it until after the blocks are actually finalised. We also
 	// now need to free the passed in blocks as the LevelChunk doesn't use the passed in allocation anymore.
@@ -327,6 +327,65 @@ doubleArray TheOuterEndLevelRandomLevelSource::getHeights(doubleArray buffer, in
 bool TheOuterEndLevelRandomLevelSource::hasChunk(int x, int y)
 {
 	return true;
+}
+
+void TheOuterEndLevelRandomLevelSource::calcWaterDepths(ChunkSource *parent, int xt, int zt)
+{
+	int xo = xt * 16;
+	int zo = zt * 16;
+	for (int x = 0; x < 16; x++)
+	{
+		int y = level->getSeaLevel();
+		for (int z = 0; z < 16; z++)
+		{
+			int xp = xo + x + 7;
+			int zp = zo + z + 7;
+			int h = level->getHeightmap(xp, zp);
+			if (h <= 0)
+			{
+				if (level->getHeightmap(xp - 1, zp) > 0 || level->getHeightmap(xp + 1, zp) > 0 || level->getHeightmap(xp, zp - 1) > 0 || level->getHeightmap(xp, zp + 1) > 0)
+				{
+					bool hadWater = false;
+					if (hadWater || (level->getTile(xp - 1, y, zp) == Tile::calmWater_Id && level->getData(xp - 1, y, zp) < 7)) hadWater = true;
+					if (hadWater || (level->getTile(xp + 1, y, zp) == Tile::calmWater_Id && level->getData(xp + 1, y, zp) < 7)) hadWater = true;
+					if (hadWater || (level->getTile(xp, y, zp - 1) == Tile::calmWater_Id && level->getData(xp, y, zp - 1) < 7)) hadWater = true;
+					if (hadWater || (level->getTile(xp, y, zp + 1) == Tile::calmWater_Id && level->getData(xp, y, zp + 1) < 7)) hadWater = true;
+					if (hadWater)
+					{
+						for (int x2 = -5; x2 <= 5; x2++)
+						{
+							for (int z2 = -5; z2 <= 5; z2++)
+							{
+								int d = (x2 > 0 ? x2 : -x2) + (z2 > 0 ? z2 : -z2);
+
+								if (d <= 5)
+								{
+									d = 6 - d;
+									if (level->getTile(xp + x2, y, zp + z2) == Tile::calmWater_Id)
+									{
+										int od = level->getData(xp + x2, y, zp + z2);
+										if (od < 7 && od < d)
+										{
+											level->setData(xp + x2, y, zp + z2, d, Tile::UPDATE_CLIENTS);
+										}
+									}
+								}
+							}
+						}
+						if (hadWater)
+						{
+							level->setTileAndData(xp, y, zp, Tile::calmWater_Id, 7, Tile::UPDATE_CLIENTS);
+							for (int y2 = 0; y2 < y; y2++)
+							{
+								level->setTileAndData(xp, y2, zp, Tile::calmWater_Id, 8, Tile::UPDATE_CLIENTS);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 }
 
 void TheOuterEndLevelRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)

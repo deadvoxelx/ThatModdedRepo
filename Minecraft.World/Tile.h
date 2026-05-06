@@ -786,6 +786,7 @@ public:
 	static bool isMatching(int tileIdA, int tileIdB);
 	virtual bool hasAnalogOutputSignal();
 	virtual int getAnalogOutputSignal(Level *level, int x, int y, int z, int dir);
+	virtual bool blocksLight() { return Tile::lightBlock[id] > 0; }
 
 protected:
 	virtual Tile *setIconName(const wstring &iconName);

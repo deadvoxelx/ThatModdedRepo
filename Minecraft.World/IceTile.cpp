@@ -37,11 +37,11 @@ void IceTile::playerDestroy(Level *level, shared_ptr<Player> player, int x, int 
 	}
 	else
 	{
-		if (level->dimension->ultraWarm)
+		/*if (level->dimension->ultraWarm)
 		{
 			level->removeTile(x, y, z);
 			return;
-		}
+		}*/
 
 		int playerBonusLevel = EnchantmentHelper::getDiggingLootBonus(player);
 		spawnResources(level, x, y, z, data, playerBonusLevel);
@@ -62,11 +62,11 @@ void IceTile::tick(Level *level, int x, int y, int z, Random *random)
 {
 	if (level->getBrightness(LightLayer::Block, x, y, z) > 11 - Tile::lightBlock[id])
 	{
-		if (level->dimension->ultraWarm)
+		/*if (level->dimension->ultraWarm)
 		{
 			level->removeTile(x, y, z);
 			return;
-		}
+		}*/
 		this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
 		level->setTileAndUpdate(x, y, z, Tile::calmWater_Id);
 	}
