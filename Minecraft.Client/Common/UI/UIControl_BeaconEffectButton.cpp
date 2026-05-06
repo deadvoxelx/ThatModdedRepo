@@ -9,6 +9,7 @@ UIControl_BeaconEffectButton::UIControl_BeaconEffectButton()
 	m_selected = false;
 	m_active = false;
 	m_focus = false;
+	m_lastState = eState_Disabled;
 }
 
 bool UIControl_BeaconEffectButton::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
