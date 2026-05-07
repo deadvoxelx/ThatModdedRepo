@@ -1,4 +1,4 @@
-![HellishEnds Banner](https://cdn.discordapp.com/attachments/1497037577746907227/1497044753420779522/hellishEndsTitle.png?ex=69ec1712&is=69eac592&hm=8094d9f99ca8a2473bb01814deea999aec06d4a2062e75ee823852cd4b821020&)
+![HellishEnds Banner](https://media.discordapp.net/attachments/1479684063018352652/1501969775969042443/hellishEndsTitle.png?ex=69fe01db&is=69fcb05b&hm=4491c8121025dc66381aefcc60cedd228869c15be242e4225351f4ec2764385b&=&format=webp&quality=lossless&width=1505&height=284)
 
 ## Controls (Keyboard & Mouse)
 
