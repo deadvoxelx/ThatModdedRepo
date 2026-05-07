@@ -556,6 +556,7 @@ bool VillagePieces::Well::postProcess(Level *level, Random *random, BoundingBox 
 				continue;
 			}
 			placeBlock(level, Tile::gravel_Id, 0, x, height - 4, z, chunkBB);
+			placeBlock(level, Tile::cobblestone_Id, 0, x, height - 5, z, chunkBB);
 			generateAirColumnUp(level, x, height - 3, z, chunkBB);
 		}
 	}
@@ -710,6 +711,8 @@ BoundingBox *VillagePieces::StraightRoad::findPieceBox(StartPiece *startPiece, l
 bool VillagePieces::StraightRoad::postProcess(Level *level, Random *random, BoundingBox *chunkBB)
 {
 	int tile = biomeBlock(Tile::gravel_Id, 0);
+	int belowTile = biomeBlock(Tile::cobblestone_Id, 0);
+	int waterTile = biomeBlock(Tile::wood_Id, 0);
 	for (int x = boundingBox->x0; x <= boundingBox->x1; x++)
 	{
 		for (int z = boundingBox->z0; z <= boundingBox->z1; z++)
@@ -717,7 +720,15 @@ bool VillagePieces::StraightRoad::postProcess(Level *level, Random *random, Boun
 			if (chunkBB->isInside(x, 64, z))
 			{
 				int y = level->getTopSolidBlock(x, z) - 1;
-				level->setTileAndData(x, y, z,tile, 0, Tile::UPDATE_CLIENTS);
+				if ((level->getTile(x, y + 1, z) == Tile::water_Id || level->getTile(x, y + 1, z) == Tile::calmWater_Id))
+				{
+					level->setTileAndData(x, 63, z,waterTile, 0, Tile::UPDATE_CLIENTS);
+				}
+				else
+				{
+					level->setTileAndData(x, y, z,tile, 0, Tile::UPDATE_CLIENTS);
+					level->setTileAndData(x, y - 1, z,belowTile, 0, Tile::UPDATE_CLIENTS);
+				}
 			}
 		}
 	}
