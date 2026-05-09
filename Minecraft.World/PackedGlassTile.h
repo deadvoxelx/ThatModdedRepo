@@ -10,4 +10,6 @@ protected:
 
 public:
 	virtual int getResourceCount(Random *random);
+	virtual int getColor(LevelSource *level, int x, int y, int z);
+	virtual int getColor(LevelSource *level, int x, int y, int z, int data);
 };
