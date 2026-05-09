@@ -4567,6 +4567,9 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_APHALAF_SWORD, L"Aphalaf Sword");
 		m_stringTable->registerString(IDS_PLAYER_ENTER_OUTER_END, L"Entering Outer End");
 		m_stringTable->registerString(IDS_PLAYER_LEAVE_OUTER_END, L"Leaving Outer End");
+		m_stringTable->registerString(IDS_TILE_PACKED_ICE, L"Packed Ice");
+		m_stringTable->registerString(IDS_TILE_BLUE_ICE, L"Blue Ice");
+		m_stringTable->registerString(IDS_TILE_PACKED_GLASS, L"Packed Glass");
 
 	}
 	else
