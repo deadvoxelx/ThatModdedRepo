@@ -38,6 +38,11 @@ public:
 	weak_ptr<ChestTileEntity> e;
 	weak_ptr<ChestTileEntity> w;
 	weak_ptr<ChestTileEntity> s;
+	bool hasPlacementPartnerIntent;
+	int placementPartnerX;
+	int placementPartnerY;
+	int placementPartnerZ;
+	bool placementPartnerStrict;
 
 	float openness, oOpenness;
 	int openCount;
@@ -63,6 +68,9 @@ public:
 	virtual bool stillValid(shared_ptr<Player> player);
 	virtual void setChanged();
 	virtual void clearCache();
+	virtual void setPlacementPartnerIntent(int partnerX, int partnerY, int partnerZ, bool strict);
+	virtual void clearPlacementPartnerIntent();
+	virtual bool getPlacementPartnerIntent(int &partnerX, int &partnerY, int &partnerZ, bool &strict) const;
 
 private:
 	virtual void heyImYourNeighbor(shared_ptr<ChestTileEntity> neighbor, int from);

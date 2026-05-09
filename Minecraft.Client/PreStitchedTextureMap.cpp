@@ -1053,5 +1053,10 @@ void PreStitchedTextureMap::loadUVs()
 
 	ADD_ICON(22,	0,	L"veloett_flower");
 	ADD_ICON(22,	1,	L"veloett_vine");
+	ADD_ICON(22,	2,	L"melon_carved");
+	ADD_ICON(22,	3,	L"melon_lit");
+	ADD_ICON(22,	4,	L"packed_ice");
+	ADD_ICON(22,	5,	L"blue_ice");
+	ADD_ICON(22,	6,	L"packed_glass");
 	}
 }

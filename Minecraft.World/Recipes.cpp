@@ -721,6 +721,22 @@ Recipes::Recipes()
 		L'#', Item::netherQuartz,
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::packedIce, 1), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::ice,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::blueIce, 1), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::packedIce,
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Tile::lever, 1), //
 		L"ssctcig",
 		L"X", //

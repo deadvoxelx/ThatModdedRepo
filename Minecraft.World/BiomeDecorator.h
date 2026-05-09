@@ -44,6 +44,7 @@ protected:
 	Feature *brownMushroomFeature;
 	Feature *redMushroomFeature;
 	Feature *hugeMushroomFeature;
+	Feature *swampMushroomHugeFeature;
 	Feature *reedsFeature;
 	Feature *cactusFeature;
 	Feature *waterlilyFeature;
@@ -62,6 +63,7 @@ protected:
 	int sandCount;
 	int clayCount;
 	int hugeMushrooms;
+	int hugeSwampMushrooms;
 	bool liquids;
 
 	void _init();

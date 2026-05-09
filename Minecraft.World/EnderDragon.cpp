@@ -2068,3 +2068,8 @@ Vec3 *EnderDragon::getHeadLookVector(float a)
 	}
 	return result;
 }
+
+void EnderDragon::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
+{
+	spawnAtLocation(Tile::packedGlass_Id, 1);
+}

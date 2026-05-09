@@ -4,6 +4,7 @@
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "net.minecraft.world.level.biome.h"
 #include "HerobrineFeature.h"
+#include "SwampMushroomHugeFeature.h"
 
 BiomeDecorator::BiomeDecorator(Biome *biome)
 {
@@ -59,6 +60,7 @@ void BiomeDecorator::_init()
 	brownMushroomFeature = new FlowerFeature(Tile::mushroom_brown_Id);
 	redMushroomFeature = new FlowerFeature(Tile::mushroom_red_Id);
 	hugeMushroomFeature = new HugeMushroomFeature();
+	swampMushroomHugeFeature = new SwampMushroomHugeFeature();
 	reedsFeature = new ReedsFeature();
 	cactusFeature = new CactusFeature();
 	waterlilyFeature = new WaterlilyFeature();
@@ -77,6 +79,7 @@ void BiomeDecorator::_init()
 	sandCount = 3;
 	clayCount = 1;
 	hugeMushrooms = 0;
+	hugeSwampMushrooms = 0;
 	liquids = true;
 }
 
@@ -131,6 +134,13 @@ void BiomeDecorator::decorate()
 		int x = xo + random->nextInt(16) + 8;
 		int z = zo + random->nextInt(16) + 8;
 		hugeMushroomFeature->place(level, random, x, level->getHeightmap(x, z), z);
+	}
+
+	for (int i = 0; i < hugeSwampMushrooms; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int z = zo + random->nextInt(16) + 8;
+		swampMushroomHugeFeature->place(level, random, x, level->getHeightmap(x, z), z);
 	}
 
 	for (int i = 0; i < flowerCount; i++)

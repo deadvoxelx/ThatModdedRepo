@@ -49,3 +49,4 @@
 #include "VeloettVineFeature.h"
 #include "HerobrineFeature.h"
 #include "EndTowerFeature.h"
+#include "SwampMushroomHugeFeature.h"

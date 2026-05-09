@@ -191,4 +191,7 @@ public:
 	virtual float getHealth() { return LivingEntity::getHealth(); };
 	virtual float getMaxHealth() { return LivingEntity::getMaxHealth(); };
 	virtual int getDimension() { return Entity::dimension; };
+
+protected:
+	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 };
