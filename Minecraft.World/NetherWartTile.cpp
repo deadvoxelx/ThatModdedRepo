@@ -34,11 +34,15 @@ void NetherWartTile::tick(Level *level, int x, int y, int z, Random *random)
 	int age = level->getData(x, y, z);
 	if (age < MAX_AGE)
 	{
+		//Biome *biome = biomeSource->getBiome(x, z);
+		//if (dynamic_cast<HellBiome *>(biome) != NULL)
+		//{
 		if (random->nextInt(10) == 0)
 		{
 			age++;
 			level->setData(x, y, z, age, Tile::UPDATE_CLIENTS);
 		}
+		//}
 	}
 
 	Bush::tick(level, x, y, z, random);
