@@ -32,7 +32,7 @@ AphalafBoss::AphalafBoss(Level *level) : Monster( level )
 	fireImmune = true;
 
 	getNavigation()->setAvoidWater(true);
-	goalSelector.addGoal(3, new MeleeAttackGoal(this, eTYPE_PLAYER, 1.0, true));
+	goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, true));
 	goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 
 	targetSelector.addGoal(1, new HurtByTargetGoal(this, true));
@@ -63,6 +63,14 @@ bool AphalafBoss::hurt(DamageSource *source, float dmg)
 
 	shared_ptr<Entity> directEntity = source->getDirectEntity();
 	if (directEntity != nullptr && directEntity->GetType() == eTYPE_ARROW)
+	{
+		return false;
+	}
+	if (directEntity != nullptr && directEntity->GetType() == eTYPE_ENDERMAN)
+	{
+		return false;
+	}
+	if (directEntity != nullptr && directEntity->GetType() == eTYPE_WHITE_ENDERMAN)
 	{
 		return false;
 	}

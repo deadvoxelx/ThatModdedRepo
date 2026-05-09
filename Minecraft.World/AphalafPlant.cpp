@@ -32,7 +32,7 @@ AphalafPlant::AphalafPlant(Level *level) : Monster( level )
 	xpReward = Enemy::XP_REWARD_MEDIUM;
 
 	getNavigation()->setAvoidWater(true);
-	goalSelector.addGoal(3, new MeleeAttackGoal(this, eTYPE_PLAYER, 1.0, true));
+	goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, true));
 	goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 
 	targetSelector.addGoal(1, new HurtByTargetGoal(this, true));
