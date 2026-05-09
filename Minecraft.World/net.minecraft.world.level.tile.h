@@ -144,3 +144,6 @@
 #include "VeloettFlowerTile.h"
 #include "EndoriumGrateTile.h"
 #include "PumpkinFacelessTile.h"
+#include "PackedIce.h"
+#include "BlueIce.h"
+#include "PackedGlassTile.h"
