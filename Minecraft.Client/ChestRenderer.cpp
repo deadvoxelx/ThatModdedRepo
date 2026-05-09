@@ -3,9 +3,9 @@
 #include "ChestModel.h"
 #include "LargeChestModel.h"
 #include "ModelPart.h"
-#include "..\Minecraft.World\net.minecraft.world.level.tile.entity.h"
-#include "..\Minecraft.World\net.minecraft.world.level.tile.h"
-#include "..\Minecraft.World\Calendar.h"
+#include "../Minecraft.World/net.minecraft.world.level.tile.entity.h"
+#include "../Minecraft.World/net.minecraft.world.level.tile.h"
+#include "../Minecraft.World/Calendar.h"
 
 ResourceLocation ChestRenderer::CHEST_LARGE_TRAP_LOCATION = ResourceLocation(TN_TILE_LARGE_TRAP_CHEST);
 //ResourceLocation ChestRenderer::CHEST_LARGE_XMAS_LOCATION = ResourceLocation(TN_TILE_LARGE_XMAS_CHEST);
@@ -60,11 +60,30 @@ void ChestRenderer::render(shared_ptr<TileEntity>  _chest, double x, double y, d
 
 		chest->checkNeighbors();
 	}
-	if (chest->n.lock() != nullptr || chest->w.lock() != nullptr) return;
 
+	// Fireblade - get potential cached "neighboring" chests
+	shared_ptr<ChestTileEntity> n = chest->n.lock();
+	shared_ptr<ChestTileEntity> s = chest->s.lock();
+	shared_ptr<ChestTileEntity> w = chest->w.lock();
+	shared_ptr<ChestTileEntity> e = chest->e.lock();
+
+	// Fireblade - re-check validity of neighboring chests
+	if (n != nullptr) n->checkNeighbors();
+	if (s != nullptr) s->checkNeighbors();
+	if (w != nullptr) w->checkNeighbors();
+	if (e != nullptr) e->checkNeighbors();
+
+	// Fireblade - check if pairing is valid
+	bool pairN = n != nullptr && n->s.lock() == chest;
+	bool pairS = s != nullptr && s->n.lock() == chest;
+	bool pairW = w != nullptr && w->e.lock() == chest;
+	bool pairE = e != nullptr && e->w.lock() == chest;
+
+	// Fireblade - prevent unnecessary rendering of chest pairs
+	if (pairN || pairW) return;
 
 	ChestModel *model;
-	if (chest->e.lock() != nullptr || chest->s.lock() != nullptr)
+	if (pairE || pairS)
 	{
 		model = largeChestModel;
 
@@ -112,11 +131,11 @@ void ChestRenderer::render(shared_ptr<TileEntity>  _chest, double x, double y, d
 	if (data == 4) rot = 90;
 	if (data == 5) rot = -90;
 
-	if (data == 2 && chest->e.lock() != nullptr)
+	if (data == 2 && pairE)
 	{
 		glTranslatef(1, 0, 0);
 	}
-	if (data == 5 && chest->s.lock() != nullptr)
+	if (data == 5 && pairS)
 	{
 		glTranslatef(0, 0, -1);
 	}
@@ -124,14 +143,14 @@ void ChestRenderer::render(shared_ptr<TileEntity>  _chest, double x, double y, d
 	glTranslatef(-0.5f, -0.5f, -0.5f);
 
 	float open = chest->oOpenness + (chest->openness - chest->oOpenness) * a;
-	if (chest->n.lock() != nullptr)
+	if (pairN)
 	{
-		float open2 = chest->n.lock()->oOpenness + (chest->n.lock()->openness - chest->n.lock()->oOpenness) * a;
+		float open2 = n->oOpenness + (n->openness - n->oOpenness) * a;
 		if (open2 > open) open = open2;
 	}
-	if (chest->w.lock() != nullptr)
+	if (pairW)
 	{
-		float open2 = chest->w.lock()->oOpenness + (chest->w.lock()->openness - chest->w.lock()->oOpenness) * a;
+		float open2 = w->oOpenness + (w->openness - w->oOpenness) * a;
 		if (open2 > open) open = open2;
 	}
 
