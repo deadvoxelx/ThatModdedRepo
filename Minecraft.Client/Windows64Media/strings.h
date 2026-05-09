@@ -2382,3 +2382,6 @@
 #define IDS_ITEM_APHALAF_SWORD                                 2376
 #define IDS_PLAYER_ENTER_OUTER_END                             2377
 #define IDS_PLAYER_LEAVE_OUTER_END                             2378
+#define IDS_TILE_PACKED_ICE									   2379
+#define IDS_TILE_BLUE_ICE									   2380
+#define IDS_TILE_PACKED_GLASS								   2381
