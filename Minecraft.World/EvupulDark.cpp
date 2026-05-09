@@ -36,7 +36,7 @@ EvupulDark::EvupulDark(Level *level) : FlyingMonster( level )
 	getNavigation()->setAvoidWater(true);
 	goalSelector.addGoal(0, new FloatGoal(this));
 	goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.4));
-	goalSelector.addGoal(3, new MeleeAttackGoal(this, eTYPE_PLAYER, 1.0, false));
+	goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, false));
 	goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0));
 	goalSelector.addGoal(7, new LookAtPlayerGoal(this, typeid(Player), 8));
 
