@@ -93,6 +93,7 @@ public:
 		eMaterial_nethanium,
 		eMaterial_bread,
 		eMaterial_endorium,
+		eMaterial_ice,
 
 	}
 	eMaterial;

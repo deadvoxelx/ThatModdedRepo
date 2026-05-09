@@ -9,7 +9,279 @@
 #include "net.minecraft.world.level.tile.entity.h"
 #include "net.minecraft.world.phys.h"
 #include "ChestTile.h"
+#include "ChestPair.h"
 #include "Facing.h"
+
+namespace
+{
+	// Fireblade - bunch of functions once again cause mc only got this ever in 1.13 w/ a new block nbt / blockstate system i think is what its called
+	// dont quote me on that
+	enum class ChestAxis
+	{
+		X,
+		Z,
+	};
+
+	struct PendingChestPlacementIntent
+	{
+		bool hasValue;
+		int placeX;
+		int placeY;
+		int placeZ;
+		int targetX;
+		int targetY;
+		int targetZ;
+	};
+
+	PendingChestPlacementIntent pendingChestPlacementIntent = { false, 0, 0, 0, 0, 0, 0 };
+
+	void setPendingChestPlacementIntent(int placeX, int placeY, int placeZ, int targetX, int targetY, int targetZ)
+	{
+		pendingChestPlacementIntent.hasValue = true;
+		pendingChestPlacementIntent.placeX = placeX;
+		pendingChestPlacementIntent.placeY = placeY;
+		pendingChestPlacementIntent.placeZ = placeZ;
+		pendingChestPlacementIntent.targetX = targetX;
+		pendingChestPlacementIntent.targetY = targetY;
+		pendingChestPlacementIntent.targetZ = targetZ;
+	}
+
+	inline bool isChestBlock(LevelSource *level, int chestId, int x, int y, int z)
+	{
+		return level->getTile(x, y, z) == chestId;
+	}
+
+	ChestAxis getChestAxis(LevelSource *level, int chestId, int x, int y, int z)
+	{
+		int data = level->getData(x, y, z);
+		if (data == Facing::NORTH || data == Facing::SOUTH) return ChestAxis::X;
+		if (data == Facing::WEST || data == Facing::EAST) return ChestAxis::Z;
+
+		bool hasX = isChestBlock(level, chestId, x - 1, y, z) || isChestBlock(level, chestId, x + 1, y, z);
+		bool hasZ = isChestBlock(level, chestId, x, y, z - 1) || isChestBlock(level, chestId, x, y, z + 1);
+		if (hasZ && !hasX) return ChestAxis::Z;
+
+		return ChestAxis::X;
+	}
+
+	bool hasOtherChestOnAxis(LevelSource *level, int chestId, int x, int y, int z, ChestAxis axis, int exceptX, int exceptZ)
+	{
+		if (axis == ChestAxis::X)
+		{
+			if (isChestBlock(level, chestId, x - 1, y, z) && !(x - 1 == exceptX && z == exceptZ)) return true;
+			if (isChestBlock(level, chestId, x + 1, y, z) && !(x + 1 == exceptX && z == exceptZ)) return true;
+			return false;
+		}
+
+		if (isChestBlock(level, chestId, x, y, z - 1) && !(x == exceptX && z - 1 == exceptZ)) return true;
+		if (isChestBlock(level, chestId, x, y, z + 1) && !(x == exceptX && z + 1 == exceptZ)) return true;
+		return false;
+	}
+
+	bool isRightCandidateFirst(LevelSource *level, int x, int y, int z, ChestAxis axis, int firstX, int firstZ)
+	{
+		int data = level->getData(x, y, z);
+
+		if (axis == ChestAxis::X)
+		{
+			int rightX = x + 1;
+			if (data == Facing::SOUTH) rightX = x - 1;
+			else if (data == Facing::NORTH) rightX = x + 1;
+			return firstX == rightX;
+		}
+
+		int rightZ = z + 1;
+		if (data == Facing::WEST) rightZ = z - 1;
+		else if (data == Facing::EAST) rightZ = z + 1;
+		return firstZ == rightZ;
+	}
+
+	static bool useCandidateForAxis(LevelSource *level, int chestId, int x, int y, int z, ChestAxis axis, shared_ptr<ChestTileEntity> neighbor, int &outX, int &outZ)
+	{
+		if (neighbor == nullptr) return false;
+
+		int nx = neighbor->x;
+		int nz = neighbor->z;
+		bool isAdjacent = (nx == x - 1 && nz == z) || (nx == x + 1 && nz == z) || (nx == x && nz == z - 1) || (nx == x && nz == z + 1);
+		if (!isAdjacent) return false;
+
+		if (axis == ChestAxis::X && nz != z) return false;
+		if (axis == ChestAxis::Z && nx != x) return false;
+		if (!isChestBlock(level, chestId, nx, y, nz)) return false;
+
+		outX = nx;
+		outZ = nz;
+		return true;
+	}
+
+	bool getCachedChestNeighborOnAxis(LevelSource *level, int chestId, int x, int y, int z, ChestAxis axis, int &outX, int &outZ)
+	{
+		shared_ptr<ChestTileEntity> chestEntity = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z));
+		if (chestEntity == nullptr) return false;
+		chestEntity->checkNeighbors();
+
+		if (useCandidateForAxis(level, chestId, x, y, z, axis, chestEntity->n.lock(), outX, outZ)) return true;
+		if (useCandidateForAxis(level, chestId, x, y, z, axis, chestEntity->e.lock(), outX, outZ)) return true;
+		if (useCandidateForAxis(level, chestId, x, y, z, axis, chestEntity->w.lock(), outX, outZ)) return true;
+		if (useCandidateForAxis(level, chestId, x, y, z, axis, chestEntity->s.lock(), outX, outZ)) return true;
+
+		return false;
+	}
+
+	bool candidateCommittedElsewhere(LevelSource *level, int chestId, int x, int y, int z, int candidateX, int candidateZ)
+	{
+		int partnerX = candidateX;
+		int partnerZ = candidateZ;
+		ChestAxis candidateAxis = getChestAxis(level, chestId, candidateX, y, candidateZ);
+		if (!getCachedChestNeighborOnAxis(level, chestId, candidateX, y, candidateZ, candidateAxis, partnerX, partnerZ)) return false;
+		return !(partnerX == x && partnerZ == z);
+	}
+
+	bool candidateMatchesFacingData(LevelSource *level, int x, int y, int z, int candidateX, int candidateZ)
+	{
+		int selfFacingData = level->getData(x, y, z);
+		if (selfFacingData == 0) return false;
+		return level->getData(candidateX, y, candidateZ) == selfFacingData;
+	}
+
+	ChestPair::CandidateDecision buildCandidateDecision(LevelSource *level, int chestId, int x, int y, int z, ChestAxis axis, int candidateX, int candidateZ)
+	{
+		ChestPair::CandidateDecision decision = { false, false, false, false };
+
+		int partnerX = candidateX;
+		int partnerZ = candidateZ;
+		ChestAxis candidateAxis = getChestAxis(level, chestId, candidateX, y, candidateZ);
+		bool hasPartner = getCachedChestNeighborOnAxis(level, chestId, candidateX, y, candidateZ, candidateAxis, partnerX, partnerZ);
+		decision.prefersThisChest = hasPartner && partnerX == x && partnerZ == z;
+		decision.committedElsewhere = hasPartner && !decision.prefersThisChest;
+		decision.matchesFacingData = candidateMatchesFacingData(level, x, y, z, candidateX, candidateZ);
+		decision.available = !hasOtherChestOnAxis(level, chestId, candidateX, y, candidateZ, axis, x, z);
+
+		return decision;
+	}
+
+	struct IsCommittedElsewhereSelector
+	{
+		LevelSource *level;
+		int chestId;
+		int x;
+		int y;
+		int z;
+
+		bool operator()(int candidateX, int candidateZ) const
+		{
+			return candidateCommittedElsewhere(level, chestId, x, y, z, candidateX, candidateZ);
+		}
+	};
+
+	struct BuildCandidateDecisionSelector
+	{
+		LevelSource *level;
+		int chestId;
+		int x;
+		int y;
+		int z;
+		ChestAxis axis;
+
+		ChestPair::CandidateDecision operator()(int candidateX, int candidateZ) const
+		{
+			return buildCandidateDecision(level, chestId, x, y, z, axis, candidateX, candidateZ);
+		}
+	};
+
+	bool getPreferredChestNeighbor(LevelSource *level, int chestId, int x, int y, int z, int &outX, int &outZ)
+	{
+		ChestAxis axis = getChestAxis(level, chestId, x, y, z);
+
+		int firstX = x;
+		int firstZ = z;
+		int secondX = x;
+		int secondZ = z;
+
+		if (axis == ChestAxis::X)
+		{
+			firstX = x - 1;
+			secondX = x + 1;
+		}
+		else
+		{
+			firstZ = z - 1;
+			secondZ = z + 1;
+		}
+
+		bool hasFirst = isChestBlock(level, chestId, firstX, y, firstZ);
+		bool hasSecond = isChestBlock(level, chestId, secondX, y, secondZ);
+
+		bool hasPlacementIntent = false;
+		int intendedPartnerX = x;
+		int intendedPartnerY = y;
+		int intendedPartnerZ = z;
+		bool strictPlacementIntent = false;
+		shared_ptr<ChestTileEntity> preferenceEntity = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z));
+		if (preferenceEntity != nullptr)
+		{
+			hasPlacementIntent = preferenceEntity->getPlacementPartnerIntent(intendedPartnerX, intendedPartnerY, intendedPartnerZ, strictPlacementIntent);
+			if (hasPlacementIntent && !isChestBlock(level, chestId, intendedPartnerX, intendedPartnerY, intendedPartnerZ))
+			{
+				if (strictPlacementIntent) return false;
+				preferenceEntity->clearPlacementPartnerIntent();
+				hasPlacementIntent = false;
+			}
+		}
+
+		int cachedX = x;
+		int cachedZ = z;
+		bool hasCachedPartner = getCachedChestNeighborOnAxis(level, chestId, x, y, z, axis, cachedX, cachedZ);
+		bool rightIsFirst = isRightCandidateFirst(level, x, y, z, axis, firstX, firstZ);
+
+		ChestPair::PreferredNeighborInput input =
+		{
+			firstX,
+			firstZ,
+			secondX,
+			secondZ,
+			hasFirst,
+			hasSecond,
+			hasPlacementIntent,
+			intendedPartnerX,
+			intendedPartnerY,
+			intendedPartnerZ,
+			y,
+			strictPlacementIntent,
+			hasCachedPartner,
+			cachedX,
+			cachedZ,
+			rightIsFirst,
+		};
+
+		IsCommittedElsewhereSelector isCommittedElsewhere = { level, chestId, x, y, z };
+		BuildCandidateDecisionSelector candidateDecisionSelector = { level, chestId, x, y, z, axis };
+
+		return ChestPair::choosePreferredNeighbor(
+			input,
+			isCommittedElsewhere,
+			candidateDecisionSelector,
+			outX,
+			outZ);
+	}
+
+	bool getMutualChestNeighbor(LevelSource *level, int chestId, int x, int y, int z, int &outX, int &outZ)
+	{
+		int neighborX = x;
+		int neighborZ = z;
+		if (!getPreferredChestNeighbor(level, chestId, x, y, z, neighborX, neighborZ)) return false;
+
+		int backX = neighborX;
+		int backZ = neighborZ;
+		if (!getPreferredChestNeighbor(level, chestId, neighborX, y, neighborZ, backX, backZ)) return false;
+
+		if (backX != x || backZ != z) return false;
+
+		outX = neighborX;
+		outZ = neighborZ;
+		return true;
+	}
+}
 
 ChestTile::ChestTile(int id, int type) : BaseEntityTile(id, Material::wood, isSolidRender() )
 {
@@ -39,28 +311,68 @@ int ChestTile::getRenderShape()
 	return Tile::SHAPE_ENTITYTILE_ANIMATED;
 }
 
+// fix chest hitbox [https://discord.com/channels/1482443865754701868/1494370281073016953]
+
+AABB *ChestTile::getTileAABB(Level *level, int x, int y, int z)
+{
+	updateShape(level, x, y, z, -1, shared_ptr<TileEntity>());
+	return Tile::getTileAABB(level, x, y, z);
+}
+
+AABB *ChestTile::getAABB(Level *level, int x, int y, int z)
+{
+	updateShape(level, x, y, z, -1, shared_ptr<TileEntity>());
+	return Tile::getAABB(level, x, y, z);
+}
+
+int ChestTile::getPlacedOnFaceDataValue(Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, int itemValue)
+{
+	int clickedX = x;
+	int clickedY = y;
+	int clickedZ = z;
+
+	if (face == Facing::DOWN) clickedY = y + 1;
+	else if (face == Facing::UP) clickedY = y - 1;
+	else if (face == Facing::NORTH) clickedZ = z + 1;
+	else if (face == Facing::SOUTH) clickedZ = z - 1;
+	else if (face == Facing::WEST) clickedX = x + 1;
+	else if (face == Facing::EAST) clickedX = x - 1;
+
+	setPendingChestPlacementIntent(x, y, z, clickedX, clickedY, clickedZ);
+
+	return itemValue;
+}
+
+// Fireblade - recalculate facing direction + relation to neighboring chests
 void ChestTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity)
 {
-	if (level->getTile(x, y, z - 1) == id)
+	int partnerX = x;
+	int partnerZ = z;
+	if (getMutualChestNeighbor(level, id, x, y, z, partnerX, partnerZ))
 	{
-		setShape(1 / 16.0f, 0, 0, 15 / 16.0f, 14 / 16.0f, 15 / 16.0f);
+		if (partnerZ < z)
+		{
+			setShape(1 / 16.0f, 0, 0, 15 / 16.0f, 14 / 16.0f, 15 / 16.0f);
+			return;
+		}
+		if (partnerZ > z)
+		{
+			setShape(1 / 16.0f, 0, 1 / 16.0f, 15 / 16.0f, 14 / 16.0f, 1);
+			return;
+		}
+		if (partnerX < x)
+		{
+			setShape(0, 0, 1 / 16.0f, 15 / 16.0f, 14 / 16.0f, 15 / 16.0f);
+			return;
+		}
+		if (partnerX > x)
+		{
+			setShape(1 / 16.0f, 0, 1 / 16.0f, 1, 14 / 16.0f, 15 / 16.0f);
+			return;
+		}
 	}
-	else if (level->getTile(x, y, z + 1) == id)
-	{
-		setShape(1 / 16.0f, 0, 1 / 16.0f, 15 / 16.0f, 14 / 16.0f, 1);
-	}
-	else if (level->getTile(x - 1, y, z) == id)
-	{
-		setShape(0, 0, 1 / 16.0f, 15 / 16.0f, 14 / 16.0f, 15 / 16.0f);
-	}
-	else if (level->getTile(x + 1, y, z) == id)
-	{
-		setShape(1 / 16.0f, 0, 1 / 16.0f, 1, 14 / 16.0f, 15 / 16.0f);
-	}
-	else
-	{
-		setShape(1 / 16.0f, 0, 1 / 16.0f, 15 / 16.0f, 14 / 16.0f, 15 / 16.0f);
-	}
+
+	setShape(1 / 16.0f, 0, 1 / 16.0f, 15 / 16.0f, 14 / 16.0f, 15 / 16.0f);
 }
 
 void ChestTile::onPlace(Level *level, int x, int y, int z)
@@ -68,22 +380,78 @@ void ChestTile::onPlace(Level *level, int x, int y, int z)
 	BaseEntityTile::onPlace(level, x, y, z);
 	recalcLockDir(level, x, y, z);
 
-	int n = level->getTile(x, y, z - 1); // face = 2
-	int s = level->getTile(x, y, z + 1); // face = 3
-	int w = level->getTile(x - 1, y, z); // face = 4
-	int e = level->getTile(x + 1, y, z); // face = 5
-	if (n == id) recalcLockDir(level, x, y, z - 1);
-	if (s == id) recalcLockDir(level, x, y, z + 1);
-	if (w == id) recalcLockDir(level, x - 1, y, z);
-	if (e == id) recalcLockDir(level, x + 1, y, z);
+	int partnerX = x;
+	int partnerZ = z;
+	// Fireblade - recalculate neighbor on place
+	if (getMutualChestNeighbor(level, id, x, y, z, partnerX, partnerZ))
+	{
+		recalcLockDir(level, partnerX, y, partnerZ);
+	}
 }
 
 void ChestTile::setPlacedBy(Level *level, int x, int y, int z, shared_ptr<LivingEntity> by, shared_ptr<ItemInstance> itemInstance)
 {
-	int n = level->getTile(x, y, z - 1); // face = 2
-	int s = level->getTile(x, y, z + 1); // face = 3
-	int w = level->getTile(x - 1, y, z); // face = 4
-	int e = level->getTile(x + 1, y, z); // face = 5
+	auto neighborCanRetargetToPlacedChest = [&](int neighborX, int neighborZ) -> bool
+	{
+		if (level->getTile(neighborX, y, neighborZ) != id) return false;
+
+		int partnerX = neighborX;
+		int partnerZ = neighborZ;
+		if (!getMutualChestNeighbor(level, id, neighborX, y, neighborZ, partnerX, partnerZ)) return true;
+
+		return partnerX == x && partnerZ == z;
+	};
+
+	int explicitPartnerX = 0;
+	int explicitPartnerY = 0;
+	int explicitPartnerZ = 0;
+	bool hasExplicitPartnerTarget =
+		pendingChestPlacementIntent.hasValue &&
+		pendingChestPlacementIntent.placeX == x &&
+		pendingChestPlacementIntent.placeY == y &&
+		pendingChestPlacementIntent.placeZ == z;
+
+	if (hasExplicitPartnerTarget)
+	{
+		explicitPartnerX = pendingChestPlacementIntent.targetX;
+		explicitPartnerY = pendingChestPlacementIntent.targetY;
+		explicitPartnerZ = pendingChestPlacementIntent.targetZ;
+	}
+
+	pendingChestPlacementIntent.hasValue = false;
+
+	bool strictTargetSelection = hasExplicitPartnerTarget && by != nullptr && by->isSneaking();
+	bool explicitTargetCanPairWithPlaced = false;
+	if (strictTargetSelection && explicitPartnerY == y)
+	{
+		bool adjacentX = (explicitPartnerX == x - 1 || explicitPartnerX == x + 1) && explicitPartnerZ == z;
+		bool adjacentZ = (explicitPartnerZ == z - 1 || explicitPartnerZ == z + 1) && explicitPartnerX == x;
+		explicitTargetCanPairWithPlaced = adjacentX || adjacentZ;
+	}
+
+	// Fireblade - clear + set relation intents
+	if (explicitTargetCanPairWithPlaced && level->getTile(explicitPartnerX, explicitPartnerY, explicitPartnerZ) == id)
+	{
+		shared_ptr<ChestTileEntity> explicitTargetEntity = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(explicitPartnerX, explicitPartnerY, explicitPartnerZ));
+		if (explicitTargetEntity != nullptr)
+		{
+			explicitTargetEntity->clearPlacementPartnerIntent();
+			explicitTargetEntity->clearCache();
+		}
+	}
+
+	shared_ptr<ChestTileEntity> placedChestEntity = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z));
+	if (placedChestEntity != nullptr)
+	{
+		if (strictTargetSelection)
+		{
+			placedChestEntity->setPlacementPartnerIntent(explicitPartnerX, explicitPartnerY, explicitPartnerZ, true);
+		}
+		else
+		{
+			placedChestEntity->clearPlacementPartnerIntent();
+		}
+	}
 
 	int facing = 0;
 	int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
@@ -93,29 +461,29 @@ void ChestTile::setPlacedBy(Level *level, int x, int y, int z, shared_ptr<Living
 	if (dir == 2) facing = Facing::SOUTH;
 	if (dir == 3) facing = Facing::WEST;
 
-	if (n != id && s != id && w != id && e != id)
+	// Fireblade - make chest face player [idk why but it didnt work half the time before]
+	level->setData(x, y, z, facing, Tile::UPDATE_ALL);
+
+	int partnerX = x;
+	int partnerZ = z;
+	bool hasMutualPartner = getMutualChestNeighbor(level, id, x, y, z, partnerX, partnerZ);
+	if (hasMutualPartner && neighborCanRetargetToPlacedChest(partnerX, partnerZ))
 	{
-		level->setData(x, y, z, facing, Tile::UPDATE_ALL);
-	}
-	else
-	{
-		if ((n == id || s == id) && (facing == Facing::WEST || facing == Facing::EAST))
-		{
-			if (n == id) level->setData(x, y, z - 1, facing, Tile::UPDATE_ALL);
-			else level->setData(x, y, z + 1, facing, Tile::UPDATE_ALL);
-			level->setData(x, y, z, facing, Tile::UPDATE_ALL);
-		}
-		if ((w == id || e == id) && (facing == Facing::NORTH || facing == Facing::SOUTH))
-		{
-			if (w == id) level->setData(x - 1, y, z, facing, Tile::UPDATE_ALL);
-			else level->setData(x + 1, y, z, facing, Tile::UPDATE_ALL);
-			level->setData(x, y, z, facing, Tile::UPDATE_ALL);
-		}
+		level->setData(partnerX, y, partnerZ, facing, Tile::UPDATE_ALL);
 	}
 
-	if (itemInstance->hasCustomHoverName())
+	if (itemInstance->hasCustomHoverName() && placedChestEntity != nullptr)
 	{
-		dynamic_pointer_cast<ChestTileEntity>( level->getTileEntity(x, y, z))->setCustomName(itemInstance->getHoverName());
+		placedChestEntity->setCustomName(itemInstance->getHoverName());
+	}
+
+	if (placedChestEntity != nullptr)
+	{
+		// Fireblade - shift right click selection, failure to attach to the selected block forces the placed chest to be single
+		if (!strictTargetSelection || hasMutualPartner)
+		{
+			placedChestEntity->clearPlacementPartnerIntent();
+		}
 	}
 
 }
@@ -132,32 +500,32 @@ void ChestTile::recalcLockDir(Level *level, int x, int y, int z)
 	int w = level->getTile(x - 1, y, z); // face = 4
 	int e = level->getTile(x + 1, y, z); // face = 5
 
+	int partnerX = x;
+	int partnerZ = z;
+	bool hasPartner = getMutualChestNeighbor(level, id, x, y, z, partnerX, partnerZ);
+
 	// Long!
 	int lockDir = 4;
-	if (n == id || s == id)
+	if (hasPartner && partnerZ != z)
 	{
-		int w2 = level->getTile(x - 1, y, n == id ? z - 1 : z + 1);
-		int e2 = level->getTile(x + 1, y, n == id ? z - 1 : z + 1);
+		int w2 = level->getTile(x - 1, y, partnerZ);
+		int e2 = level->getTile(x + 1, y, partnerZ);
 
 		lockDir = 5;
 
-		int otherDir = -1;
-		if (n == id) otherDir = level->getData(x, y, z - 1);
-		else otherDir = level->getData(x, y, z + 1);
+		int otherDir = level->getData(x, y, partnerZ);
 		if (otherDir == 4) lockDir = 4;
 
 		if ((Tile::solid[w] || Tile::solid[w2]) && !Tile::solid[e] && !Tile::solid[e2]) lockDir = 5;
 		if ((Tile::solid[e] || Tile::solid[e2]) && !Tile::solid[w] && !Tile::solid[w2]) lockDir = 4;
 	}
-	else if (w == id || e == id)
+	else if (hasPartner && partnerX != x)
 	{
-		int n2 = level->getTile(w == id ? x - 1 : x + 1, y, z - 1);
-		int s2 = level->getTile(w == id ? x - 1 : x + 1, y, z + 1);
+		int n2 = level->getTile(partnerX, y, z - 1);
+		int s2 = level->getTile(partnerX, y, z + 1);
 
 		lockDir = 3;
-		int otherDir = -1;
-		if (w == id) otherDir = level->getData(x - 1, y, z);
-		else otherDir = level->getData(x + 1, y, z);
+		int otherDir = level->getData(partnerX, y, z);
 		if (otherDir == 2) lockDir = 2;
 
 		if ((Tile::solid[n] || Tile::solid[n2]) && !Tile::solid[s] && !Tile::solid[s2]) lockDir = 3;
@@ -177,37 +545,13 @@ void ChestTile::recalcLockDir(Level *level, int x, int y, int z)
 
 bool ChestTile::mayPlace(Level *level, int x, int y, int z)
 {
-	int chestCount = 0;
-
-	if (level->getTile(x - 1, y, z) == id) chestCount++;
-	if (level->getTile(x + 1, y, z) == id) chestCount++;
-	if (level->getTile(x, y, z - 1) == id) chestCount++;
-	if (level->getTile(x, y, z + 1) == id) chestCount++;
-
-	if (chestCount > 1) return false;
-
-	if (isFullChest(level, x - 1, y, z)) return false;
-	if (isFullChest(level, x + 1, y, z)) return false;
-	if (isFullChest(level, x, y, z - 1)) return false;
-	if (isFullChest(level, x, y, z + 1)) return false;
 	return true;
-
-}
-
-bool ChestTile::isFullChest(Level *level, int x, int y, int z)
-{
-	if (level->getTile(x, y, z) != id) return false;
-	if (level->getTile(x - 1, y, z) == id) return true;
-	if (level->getTile(x + 1, y, z) == id) return true;
-	if (level->getTile(x, y, z - 1) == id) return true;
-	if (level->getTile(x, y, z + 1) == id) return true;
-	return false;
 }
 
 void ChestTile::neighborChanged(Level *level, int x, int y, int z, int type)
 {
 	BaseEntityTile::neighborChanged(level, x, y, z, type);
-	shared_ptr<ChestTileEntity>(cte) = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z));
+	shared_ptr<ChestTileEntity> cte = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z));
 	if (cte != nullptr) cte->clearCache();
 }
 
@@ -288,15 +632,26 @@ shared_ptr<Container> ChestTile::getContainer(Level *level, int x, int y, int z)
 	if (level->isSolidBlockingTile(x, y + 1, z)) return nullptr;
 	if (isCatSittingOnChest(level,x, y, z)) return nullptr;	
 
-	if (level->getTile(x - 1, y, z) == id && (level->isSolidBlockingTile(x - 1, y + 1, z) || isCatSittingOnChest(level, x - 1, y, z))) return nullptr;
-	if (level->getTile(x + 1, y, z) == id && (level->isSolidBlockingTile(x + 1, y + 1, z) || isCatSittingOnChest(level, x + 1, y, z))) return nullptr;
-	if (level->getTile(x, y, z - 1) == id && (level->isSolidBlockingTile(x, y + 1, z - 1) || isCatSittingOnChest(level, x, y, z - 1))) return nullptr;
-	if (level->getTile(x, y, z + 1) == id && (level->isSolidBlockingTile(x, y + 1, z + 1) || isCatSittingOnChest(level, x, y, z + 1))) return nullptr;
 
-	if (level->getTile(x - 1, y, z) == id) container = std::make_shared<CompoundContainer>(IDS_CHEST_LARGE, dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x - 1, y, z)), container);
-	if (level->getTile(x + 1, y, z) == id) container = std::make_shared<CompoundContainer>(IDS_CHEST_LARGE, container, dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x + 1, y, z)));
-	if (level->getTile(x, y, z - 1) == id) container = std::make_shared<CompoundContainer>(IDS_CHEST_LARGE, dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z - 1)), container);
-	if (level->getTile(x, y, z + 1) == id) container = std::make_shared<CompoundContainer>(IDS_CHEST_LARGE, container, dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z + 1)));
+	// Fireblade - check for + combine with neighbor if applicable
+	int partnerX = x;
+	int partnerZ = z;
+	if (!getMutualChestNeighbor(level, id, x, y, z, partnerX, partnerZ)) return container;
+
+	if (level->isSolidBlockingTile(partnerX, y + 1, partnerZ)) return nullptr;
+	if (isCatSittingOnChest(level, partnerX, y, partnerZ)) return nullptr;
+
+	shared_ptr<Container> partnerContainer = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(partnerX, y, partnerZ));
+	if (partnerContainer == nullptr) return container;
+
+	if (partnerX < x || partnerZ < z)
+	{
+		container = std::make_shared<CompoundContainer>(IDS_CHEST_LARGE, partnerContainer, container);
+	}
+	else
+	{
+		container = std::make_shared<CompoundContainer>(IDS_CHEST_LARGE, container, partnerContainer);
+	}
 
 	return container;
 }

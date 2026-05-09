@@ -30,16 +30,14 @@ public:
 	virtual bool isSolidRender(bool isServerLevel = false);
 	virtual bool isCubeShaped();
 	virtual int getRenderShape();
+	virtual AABB *getTileAABB(Level *level, int x, int y, int z);
+	virtual AABB *getAABB(Level *level, int x, int y, int z);
+	virtual int getPlacedOnFaceDataValue(Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, int itemValue);
 	virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>());
 	virtual void onPlace(Level *level, int x, int y, int z);
 	virtual void setPlacedBy(Level *level, int x, int y, int z, shared_ptr<LivingEntity> by, shared_ptr<ItemInstance> itemInstance);
 	void recalcLockDir(Level *level, int x, int y, int z);
 	virtual bool mayPlace(Level *level, int x, int y, int z);
-
-private:
-	bool isFullChest(Level *level, int x, int y, int z);
-
-public:
 	virtual void neighborChanged(Level *level, int x, int y, int z, int type);
 	virtual void onRemove(Level *level, int x, int y, int z, int id, int data);
 	virtual bool TestUse();
