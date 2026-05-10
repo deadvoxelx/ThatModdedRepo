@@ -13,7 +13,7 @@ int PackedGlassTile::getResourceCount(Random *random)
 
 shared_ptr<ItemInstance> PackedGlassTile::getSilkTouchItemInstance(int data)
 {
-	return shared_ptr<ItemInstance>(new ItemInstance(Tile::blueIce));
+	return shared_ptr<ItemInstance>(new ItemInstance(Tile::packedGlass));
 }
 
 int PackedGlassTile::getColor(LevelSource *level, int x, int y, int z)
