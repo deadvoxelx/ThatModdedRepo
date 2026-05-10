@@ -307,12 +307,46 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat, 
 			// Toggle tab index
 			m_tabIndex = m_tabIndex == 0 ? 1 : 0;
 			updateTooltips();
+			app.DebugPrintf("WorldOptions: %i , %i\n", m_labelWorldOptions.getXPos(), m_labelWorldOptions.getYPos());
+			app.DebugPrintf("GameOptions: %i , %i\n", m_labelGameOptions.getXPos(), m_labelGameOptions.getYPos());
 			IggyDataValue result;
 			IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcChangeTab , 0 , nullptr );
 		}
 		break;
 	}
 }
+
+#ifdef _WINDOWS64
+bool UIScene_LaunchMoreOptionsMenu::handleMouseClick(F32 x, F32 y){
+
+	F32 tabHeight = (m_labelWorldOptions.getYPos() + 61) - m_labelWorldOptions.getYPos();
+	F32 tabWidth = m_labelGameOptions.getXPos() - m_labelWorldOptions.getXPos();
+	F32 WorldOptionsCenterX = m_labelWorldOptions.getXPos() + (tabWidth / 2);
+	F32 WorldOptionsCenterY = m_labelWorldOptions.getYPos() + (tabHeight / 2);
+
+	if (x >= m_labelWorldOptions.getXPos() && x <= m_labelWorldOptions.getXPos() + tabWidth && y >= m_labelWorldOptions.getYPos() && y <= m_labelWorldOptions.getYPos() + tabHeight && m_tabIndex == 1)
+	{
+		m_tabIndex = 0;
+		updateTooltips();
+		IggyDataValue result;
+		IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcChangeTab , 0 , nullptr );
+		return true;
+	}
+	else if (x >= m_labelGameOptions.getXPos() && x <= m_labelGameOptions.getXPos() + tabWidth && y >= m_labelGameOptions.getYPos() && y <= m_labelGameOptions.getYPos() + tabHeight && m_tabIndex == 0)
+	{
+		m_tabIndex = 1;
+		updateTooltips();
+		IggyDataValue result;
+		IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcChangeTab , 0 , nullptr );
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
+}
+#endif
 
 #ifdef __PSVITA__
 void UIScene_LaunchMoreOptionsMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId, bool bPressed, bool bRepeat, bool bReleased)
