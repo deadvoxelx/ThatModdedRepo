@@ -16,6 +16,7 @@
 - **Pause Menu**: `Esc`
 - **Attack / Destroy**: `Left Click`
 - **Use / Place**: `Right Click`
+- **Pick Block**: `Middle Click`
 - **Select Item**: `Mouse Wheel` or keys `1` to `9`
 - **Accept or Decline Tutorial hints**: `Enter` to accept and `B` to decline
 - **Game Info (Player list and Host Options)**: `TAB`
