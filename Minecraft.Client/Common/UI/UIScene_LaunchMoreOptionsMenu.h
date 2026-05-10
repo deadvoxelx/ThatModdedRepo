@@ -105,7 +105,6 @@ private:
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_FlatWorld], "CheckboxFlatWorld")
 
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_ResetNether], "CheckboxResetNether")
-
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_DisableSaving], "CheckboxDisableSaving")
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_TrustSystem], "CheckboxTrustSystem")
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_FireSpreads], "CheckboxFireSpreads")
@@ -142,6 +141,7 @@ public:
 	virtual void handleDestroy();
 #ifdef _WINDOWS64
 	virtual void getDirectEditInputs(vector<UIControl_TextInput*> &inputs);
+	virtual bool handleMouseClick(F32 x, F32 y);
 	virtual void onDirectEditFinished(UIControl_TextInput *input, UIControl_TextInput::EDirectEditResult result);
 #endif
 	// INPUT
