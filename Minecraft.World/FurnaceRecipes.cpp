@@ -43,6 +43,7 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::netherDiamond_Id, new ItemInstance(Item::diamond), 1);
 	addFurnaceRecipy(Tile::netherGold_Id, new ItemInstance(Item::goldIngot), 1);
 	addFurnaceRecipy(Tile::nethaniumOre_Id, new ItemInstance(Item::nethanium), 1);
+	addFurnaceRecipy(Tile::stoneBrick_Id, new ItemInstance(Tile::stoneBrick, 1, 2), 1);
 	
 	// special silk touch related recipes:
 	addFurnaceRecipy(Tile::coalOre_Id, new ItemInstance(Item::coal), .1f);

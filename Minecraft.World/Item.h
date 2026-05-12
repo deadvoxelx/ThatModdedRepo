@@ -94,6 +94,8 @@ public:
 		eMaterial_bread,
 		eMaterial_endorium,
 		eMaterial_ice,
+		eMaterial_stick,
+		eMaterial_tnt,
 
 	}
 	eMaterial;
@@ -145,6 +147,9 @@ public:
 		eBaseItemType_lever,
 		eBaseItemType_paper,
 		eBaseItemType_bread,
+		eBaseItemType_stick,
+		eBaseItemType_tnt,
+		eBaseItemType_wall,
 		eBaseItemType_MAXTYPES,
 	}
 	eBaseItemType;

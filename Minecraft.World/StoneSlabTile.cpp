@@ -6,15 +6,16 @@
 #include "StoneSlabTile.h"
 
 
-const unsigned int StoneSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {	IDS_TILE_STONESLAB_STONE,
-													IDS_TILE_STONESLAB_SAND,
-													IDS_TILE_STONESLAB_WOOD,
-													IDS_TILE_STONESLAB_COBBLE,
-													IDS_TILE_STONESLAB_BRICK,
-													IDS_TILE_STONESLAB_SMOOTHBRICK,
-													IDS_TILE_STONESLAB_NETHERBRICK,
-													IDS_TILE_STONESLAB_QUARTZ,
-												};
+const unsigned int StoneSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {	
+	IDS_TILE_STONESLAB_STONE,
+	IDS_TILE_STONESLAB_SAND,
+	IDS_TILE_STONESLAB_WOOD,
+	IDS_TILE_STONESLAB_COBBLE,
+	IDS_TILE_STONESLAB_BRICK,
+	IDS_TILE_STONESLAB_SMOOTHBRICK,
+	IDS_TILE_STONESLAB_NETHERBRICK,
+	IDS_TILE_STONESLAB_QUARTZ,
+};
 
 StoneSlabTile::StoneSlabTile(int id, bool fullSize) : HalfSlabTile(id, fullSize, Material::stone)
 {
@@ -27,7 +28,40 @@ Icon *StoneSlabTile::getTexture(int face, int data)
 	{
 		face = Facing::UP;
 	}
-	switch(type)
+	if (data == STONE_SLAB)		//replaced the trashy switch method; this is better
+	{
+		if (face == Facing::UP || face == Facing::DOWN) return icon;
+		return iconSide;
+	}
+	if (data == SAND_SLAB)
+	{
+		return Tile::sandStone->getTexture(face);
+	}
+	if (data == WOOD_SLAB)
+	{
+		return Tile::wood->getTexture(face);
+	}
+	if (data == COBBLESTONE_SLAB)
+	{
+		return Tile::cobblestone->getTexture(face);
+	}
+	if (data == BRICK_SLAB)
+	{
+		return Tile::redBrick->getTexture(face);
+	}
+	if (data == SMOOTHBRICK_SLAB)
+	{
+		return Tile::stoneBrick->getTexture(face, SmoothStoneBrickTile::TYPE_DEFAULT);
+	}
+	if (data == NETHERBRICK_SLAB)
+	{
+		return Tile::netherBrick->getTexture(face);
+	}
+	if (data == QUARTZ_SLAB)
+	{
+		return Tile::quartzBlock->getTexture(face);
+	}
+	/*switch(type)
 	{
 	case STONE_SLAB:
 		if (face == Facing::UP || face == Facing::DOWN) return icon;
@@ -47,7 +81,9 @@ Icon *StoneSlabTile::getTexture(int face, int data)
 		return Tile::netherBrick->getTexture(Facing::UP);
 	case QUARTZ_SLAB:
 		return Tile::quartzBlock->getTexture(face);
-	}
+	case NETHERBRICK_MOSSY_SLAB:
+		return Tile::netherBricksMossy->getTexture(Facing::UP);
+	}*/
 	
 	return icon;
 }

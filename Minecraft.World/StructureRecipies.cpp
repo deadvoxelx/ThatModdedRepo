@@ -31,6 +31,14 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', new ItemInstance(Tile::stoneSlabHalf, 1, StoneSlabTile::SAND_SLAB),
 		L'S');
 
+	r->addShapedRecipy(new ItemInstance(Tile::quartzBlock, 1), //
+		L"sscig",
+		L"##", //
+		L"##", //
+
+		L'#', Item::netherQuartz,
+		L'S');
+
 	r->addShapedRecipy(new ItemInstance(Tile::quartzBlock, 1, QuartzBlockTile::TYPE_CHISELED), //
 		L"ssczg",
 		L"#", //
@@ -45,6 +53,116 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L"#", //
 
 		L'#', new ItemInstance(Tile::quartzBlock, 1, QuartzBlockTile::TYPE_DEFAULT),
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::clay, 1), //
+		L"sscig",
+		L"##", //
+		L"##", //
+
+		L'#', Item::clay,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::redBrick, 1), //
+		L"sscig",
+		L"##", //
+		L"##", //
+
+		L'#', Item::brick,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stoneBrick, 4), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::stone,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stoneBrick, 1, 1), //
+		L"sctctg",
+		L"#-", //
+
+		L'#', Tile::stoneBrick, L'-', Tile::vine,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stoneBrick, 8, 3), //
+		L"sssctg",
+		L"###", //
+		L"# #", //
+		L"###", //
+
+		L'#', Tile::stoneBrick,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::netherBricksMossy, 1), //
+		L"sctctg",
+		L"#-", //
+
+		L'#', Tile::netherBrick, L'-', Tile::netherVine,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::endBricks, 4), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::endStone,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::endBricksChiseled, 4), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::endBricks,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::endBricksMossy, 4), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::endStoneMossy,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::endoriumGrate, 1), //
+		L"ssscig",
+		L" R ", //
+		L"R R", //
+		L" R ", //
+		L'R', Item::endorium,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::snow, 1), //
+		L"sscig",
+		L"##", //
+		L"##", //
+
+		L'#', Item::snowBall,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::topSnow, 6), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::snow,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::packedIce, 1), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::ice,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::blueIce, 1), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::packedIce,
 		L'S');
 
 	// 4J Stu - Changed the order, as the blocks that go with sandstone cause a 3-icon scroll
@@ -63,6 +181,14 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L"##", //
 
 		L'#', Tile::netherPlanks,
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::workBench), //
+		L"ssctg",
+		L"##", //
+		L"##", //
+
+		L'#', Tile::purulPlanks,
 		L'S');
 	
 	r->addShapedRecipy(new ItemInstance(Tile::furnace), //
@@ -119,6 +245,15 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', Tile::netherPlanks,
 		L'S');
 
+	r->addShapedRecipy(new ItemInstance((Tile*)Tile::chest), //
+		L"sssctg",
+		L"###", //
+		L"# #", //
+		L"###", //
+
+		L'#', Tile::purulPlanks,
+		L'S');
+
 	r->addShapedRecipy(new ItemInstance(Tile::chest_trap), //
 		L"sctctg",
 		L"#-", //
@@ -134,23 +269,6 @@ void StructureRecipies::addRecipes(Recipes *r)
 
 		L'#', Tile::obsidian, L'E', Item::eyeOfEnder,
 		L'S');
-
-	r->addShapedRecipy(new ItemInstance(Tile::stoneBrick, 4), //
-		L"ssctg",
-		L"##", //
-		L"##", //
-
-		L'#', Tile::stone,
-		L'S');
-
-	// 4J Stu - Move this into "Recipes" to change the order things are displayed on the crafting menu
-	//r->addShapedRecipy(new ItemInstance(Tile::ironFence, 16), //
-	//	L"sscig",
-	//	L"###", //
-	//	L"###", //
-
-	//	L'#', Item::ironIngot,
-	//	L'S');
 
 	r->addShapedRecipy(new ItemInstance(Tile::thinGlass, 16), //
 		L"ssctg",
@@ -180,21 +298,6 @@ for (int i = 0; i < 16; i++)
         L'D');
 }
 
-	r->addShapedRecipy(new ItemInstance(Tile::netherBrick, 1), //
-		L"sscig",
-		L"NN", //
-		L"NN", //
-
-		L'N', Item::netherbrick,
-		L'S');
-
-	r->addShapedRecipy(new ItemInstance(Tile::netherBricksMossy, 1), //
-		L"sctctg",
-		L"#-", //
-
-		L'#', Tile::netherBrick, L'-', Tile::netherVine,
-		L'S');
-
 	r->addShapedRecipy(new ItemInstance(Tile::redstoneLight, 1), //
 		L"ssscictg",
 		L" R ", //
@@ -211,36 +314,4 @@ for (int i = 0; i < 16; i++)
 
 		L'G', Tile::glass, L'S', Item::netherStar, L'O', Tile::obsidian,
 		L'M');
-
-	r->addShapedRecipy(new ItemInstance(Tile::endoriumGrate, 1), //
-		L"ssscig",
-		L" R ", //
-		L"R R", //
-		L" R ", //
-		L'R', Item::endorium,
-		L'S');
-
-	r->addShapedRecipy(new ItemInstance(Tile::endBricks, 4), //
-		L"ssctg",
-		L"##", //
-		L"##", //
-
-		L'#', Tile::endStone,
-		L'S');
-
-	r->addShapedRecipy(new ItemInstance(Tile::endBricksChiseled, 4), //
-		L"ssctg",
-		L"##", //
-		L"##", //
-
-		L'#', Tile::endBricks,
-		L'S');
-
-	r->addShapedRecipy(new ItemInstance(Tile::endBricksMossy, 4), //
-		L"ssctg",
-		L"##", //
-		L"##", //
-
-		L'#', Tile::endStoneMossy,
-		L'S');
 }

@@ -4570,6 +4570,28 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_PACKED_ICE, L"Packed Ice");
 		m_stringTable->registerString(IDS_TILE_BLUE_ICE, L"Blue Ice");
 		m_stringTable->registerString(IDS_TILE_PACKED_GLASS, L"Packed Glass");
+		m_stringTable->registerString(IDS_TILE_STONE_BUTTON, L"Stone Button");
+		m_stringTable->registerString(IDS_TILE_ENDSTONE_BUTTON, L"End Stone Button");
+		m_stringTable->registerString(IDS_TILE_WOOD_BUTTON, L"Wood Button");
+		m_stringTable->registerString(IDS_TILE_STONEBRICK_WALL, L"Stone Brick Wall");
+		m_stringTable->registerString(IDS_TILE_GOLDENCLIN_WALL, L"Goldenclin Wall");
+		m_stringTable->registerString(IDS_TILE_GOLDENCLIN_BRICK_WALL, L"Goldenclin Brick Wall");
+		m_stringTable->registerString(IDS_TILE_QUARTZ_WALL, L"Quartz Wall");
+		m_stringTable->registerString(IDS_TILE_BRICK_WALL, L"Brick Wall");
+		m_stringTable->registerString(IDS_TILE_NETHERBRICK_WALL, L"Nether Brick Wall");
+		m_stringTable->registerString(IDS_TILE_NETHERBRICK_MOSSY_WALL, L"Mossy Nether Brick Wall");
+		m_stringTable->registerString(IDS_TILE_ENDSTONE_WALL, L"End Stone Wall");
+		m_stringTable->registerString(IDS_TILE_ENDSTONE_MOSSY_WALL, L"Mossy End Stone Wall");
+		m_stringTable->registerString(IDS_TILE_ENDBRICK_WALL, L"End Stone Brick Wall");
+		m_stringTable->registerString(IDS_TILE_ENDBRICK_MOSSY_WALL, L"Mossy End Stone Brick Wall");
+		m_stringTable->registerString(IDS_TILE_NETHERBRICK_MOSSY_SLAB, L"Mossy Nether Brick Slab");
+		m_stringTable->registerString(IDS_TILE_GOLDENCLIN_SLAB, L"Goldenclin Slab");
+		m_stringTable->registerString(IDS_TILE_GOLDENCLIN_BRICK_SLAB, L"Goldenclin Brick Slab");
+		m_stringTable->registerString(IDS_TILE_GOLDENCLIN_SLAB, L"Goldenclin Slab");
+		m_stringTable->registerString(IDS_TILE_ENDSTONE_SLAB, L"End Stone Slab");
+		m_stringTable->registerString(IDS_TILE_ENDSTONE_MOSSY_SLAB, L"Mossy End Stone Slab");
+		m_stringTable->registerString(IDS_TILE_ENDBRICK_SLAB, L"End Stone Brick Slab");
+		m_stringTable->registerString(IDS_TILE_ENDBRICK_MOSSY_SLAB, L"Mossy End Stone Brick Slab");
 
 	}
 	else

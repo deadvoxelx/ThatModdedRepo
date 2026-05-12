@@ -362,6 +362,7 @@ public:
 	static const int packedIce_Id = 161;
 	static const int blueIce_Id = 162;
 	static const int packedGlass_Id = 163;
+	static const int endStoneButton_Id = 164;
 
 	static const int hayBlock_Id = 170;
 	static const int woolCarpet_Id = 171;
@@ -406,6 +407,8 @@ public:
 	static const int pumpkinFaceless_Id = 210;
 	//static const int melonCarved_Id = 211;
 	//static const int melonLit_Id = 212;
+	static const int stoneSlab2_Id = 213;
+	static const int stoneSlab2Half_Id = 214;
 
 
 	static Tile *stone;
@@ -577,6 +580,10 @@ public:
 	static Tile *dropper;
 	static Tile *clayHardened_colored;
 	static Tile *stained_glass_pane;
+	static Tile *packedIce;
+	static Tile *blueIce;
+	static Tile *packedGlass;
+	static Tile *endStoneButton;
 
 	static Tile *hayBlock;
 	static Tile *woolCarpet;
@@ -621,9 +628,8 @@ public:
 	static Tile *pumpkinFaceless;
 	//static Tile *melonCarved;
 	//static Tile *melonLit;
-	static Tile *packedIce;
-	static Tile *blueIce;
-	static Tile *packedGlass;
+	static HalfSlabTile *stoneSlab2;
+	static HalfSlabTile *stoneSlab2Half;
 
 	static void staticCtor();
 
