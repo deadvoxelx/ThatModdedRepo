@@ -11,8 +11,20 @@ const float WallTile::WALL_HEIGHT = 13.0f / 16.0f;
 const float WallTile::POST_WIDTH = 4.0f / 16.0f;
 const float WallTile::POST_HEIGHT = 16.0f / 16.0f;
 
-const unsigned int WallTile::COBBLE_NAMES[2] = { IDS_TILE_COBBLESTONE_WALL,
+const unsigned int WallTile::COBBLE_NAMES[13] = { 
+	IDS_TILE_COBBLESTONE_WALL,
 	IDS_TILE_COBBLESTONE_WALL_MOSSY,
+	IDS_TILE_STONEBRICK_WALL,
+	IDS_TILE_GOLDENCLIN_WALL,
+	IDS_TILE_GOLDENCLIN_BRICK_WALL,
+	IDS_TILE_QUARTZ_WALL,
+	IDS_TILE_BRICK_WALL,
+	IDS_TILE_NETHERBRICK_WALL,
+	IDS_TILE_NETHERBRICK_MOSSY_WALL,
+	IDS_TILE_ENDSTONE_WALL,
+	IDS_TILE_ENDSTONE_MOSSY_WALL,
+	IDS_TILE_ENDBRICK_WALL,
+	IDS_TILE_ENDBRICK_MOSSY_WALL,
 };
 
 WallTile::WallTile(int id, Tile *baseTile) : Tile(id, baseTile->material, isSolidRender())
@@ -27,6 +39,50 @@ Icon *WallTile::getTexture(int face, int data)
 	if (data == TYPE_MOSSY)
 	{
 		return Tile::mossyCobblestone->getTexture(face);
+	}
+	if (data == TYPE_STONEBRICK)
+	{
+		return Tile::stoneBrick->getTexture(face);
+	}
+	if (data == TYPE_GOLDENCLIN)
+	{
+		return Tile::goldenclin->getTexture(face);
+	}
+	if (data == TYPE_GOLDENCLINBRICK)
+	{
+		return Tile::goldenclinBricks->getTexture(face);
+	}
+	if (data == TYPE_QUARTZ)
+	{
+		return Tile::quartzBlock->getTexture(face);
+	}
+	if (data == TYPE_BRICK)
+	{
+		return Tile::redBrick->getTexture(face);
+	}
+	if (data == TYPE_NETHERBRICK)
+	{
+		return Tile::netherBrick->getTexture(face);
+	}
+	if (data == TYPE_NETHERBRICK_MOSSY)
+	{
+		return Tile::netherBricksMossy->getTexture(face);
+	}
+	if (data == TYPE_ENDSTONE)
+	{
+		return Tile::endStone->getTexture(face);
+	}
+	if (data == TYPE_ENDSTONE_MOSSY)
+	{
+		return Tile::endStoneMossy->getTexture(face);
+	}
+	if (data == TYPE_ENDBRICK)
+	{
+		return Tile::endBricks->getTexture(face);
+	}
+	if (data == TYPE_ENDBRICK_MOSSY)
+	{
+		return Tile::endBricksMossy->getTexture(face);
 	}
 	return Tile::cobblestone->getTexture(face);
 }
