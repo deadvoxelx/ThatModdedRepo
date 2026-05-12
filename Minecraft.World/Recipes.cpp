@@ -102,6 +102,22 @@ Recipes::Recipes()
 		L'#', Tile::wood,
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Item::stick, 4), //
+		L"ssctg",
+		L"#", //
+		L"#", //
+
+		L'#', Tile::netherPlanks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Item::stick, 4), //
+		L"ssctg",
+		L"#", //
+		L"#", //
+
+		L'#', Tile::purulPlanks,
+		L'S');
+
 	pToolRecipies->addRecipes(this);
 	pFoodRecipies->addRecipes(this);
 	pStructureRecipies->addRecipes(this);
@@ -144,12 +160,64 @@ Recipes::Recipes()
 		L'#', Item::stick,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Tile::fenceGate, 1), //
-		L"sscictg",
-		L"#W#", //
-		L"#W#", //
+	addShapedRecipy(new ItemInstance(Item::door_wood, 4), //
+		L"sssctg",
+		L"##", //
+		L"##", //
+		L"##", //
 
-		L'#', Item::stick, L'W', Tile::wood,
+		L'#', Tile::wood,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Item::door_wood, 4), //
+		L"sssctg",
+		L"##", //
+		L"##", //
+		L"##", //
+
+		L'#', Tile::netherPlanks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Item::door_wood, 4), //
+		L"sssctg",
+		L"##", //
+		L"##", //
+		L"##", //
+
+		L'#', Tile::purulPlanks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Item::door_iron, 4), //
+		L"ssscig",
+		L"##", //
+		L"##", //
+		L"##", //
+
+		L'#', Item::ironIngot,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::trapdoor, 4), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::wood,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::trapdoor, 4), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::netherPlanks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::trapdoor, 4), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::purulPlanks,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::fence, 4), //
@@ -160,12 +228,20 @@ Recipes::Recipes()
 		L'#', Item::stick,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Tile::netherFence, 6), //
-		L"ssctg",
-		L"###", //
-		L"###", //
+	addShapedRecipy(new ItemInstance(Tile::fenceGate, 1), //
+		L"sscictg",
+		L"#W#", //
+		L"#W#", //
 
-		L'#', Tile::netherBrick,
+		L'#', Item::stick, L'W', Tile::wood,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::netherFence, 6), //
+		L"ssctcig",
+		L"#D#", //
+		L"#D#", //
+
+		L'#', Tile::netherBrick, L'D', Item::stick,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::ironFence, 16), //
@@ -192,22 +268,92 @@ Recipes::Recipes()
 		L'#', Tile::mossyCobblestone,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Item::door_wood, 4), //
-		L"sssctg",
-		L"##", //
-		L"##", //
-		L"##", //
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_STONEBRICK), //
+		L"ssctg",
+		L"###", //
+		L"###", //
 
-		L'#', Tile::wood,
+		L'#', Tile::stoneBrick,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Item::door_iron, 4), //
-		L"ssscig",
-		L"##", //
-		L"##", //
-		L"##", //
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_GOLDENCLIN), //
+		L"ssctg",
+		L"###", //
+		L"###", //
 
-		L'#', Item::ironIngot,
+		L'#', Tile::goldenclin,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_GOLDENCLINBRICK), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::goldenclinBricks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_QUARTZ), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::quartzBlock,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_BRICK), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::redBrick,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_NETHERBRICK), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::netherBrick,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_NETHERBRICK_MOSSY), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::netherBricksMossy,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDSTONE), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::endStone,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDSTONE_MOSSY), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::endStoneMossy,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDBRICK), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::endBricks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDBRICK_MOSSY), //
+		L"ssctg",
+		L"###", //
+		L"###", //
+
+		L'#', Tile::endBricksMossy,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stairs_wood, 6), //
@@ -219,13 +365,33 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::wood, 1, 0),
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Tile::trapdoor, 4), //
-		L"ssctg",
-		L"###", //
+	addShapedRecipy(new ItemInstance(Tile::woodStairsBirch, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
 		L"###", //
 
-		L'#', Tile::wood,
+		L'#', new ItemInstance(Tile::wood, 1, TreeTile::BIRCH_TRUNK),
 		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodStairsDark, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::wood, 1, TreeTile::DARK_TRUNK),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodStairsJungle, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::wood, 1, TreeTile::JUNGLE_TRUNK),
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Tile::stairs_stone, 6), //
 		L"sssctg",
 		L"#  ", //
@@ -271,33 +437,6 @@ Recipes::Recipes()
 		L'#', Tile::sandStone,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Tile::woodStairsBirch, 6), //
-		L"sssczg",
-		L"#  ", //
-		L"## ", //
-		L"###", //
-
-		L'#', new ItemInstance(Tile::wood, 1, TreeTile::BIRCH_TRUNK),
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::woodStairsDark, 6), //
-		L"sssczg",
-		L"#  ", //
-		L"## ", //
-		L"###", //
-
-		L'#', new ItemInstance(Tile::wood, 1, TreeTile::DARK_TRUNK),
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::woodStairsJungle, 6), //
-		L"sssczg",
-		L"#  ", //
-		L"## ", //
-		L"###", //
-
-		L'#', new ItemInstance(Tile::wood, 1, TreeTile::JUNGLE_TRUNK),
-		L'S');
-
 	addShapedRecipy(new ItemInstance(Tile::stairs_quartz, 6), //
 		L"sssctg",
 		L"#  ", //
@@ -311,39 +450,6 @@ Recipes::Recipes()
 	//iCount=getRecipies()->size();
 
 	pClothDyeRecipes->addRecipes(this);
-
-
-
-	addShapedRecipy(new ItemInstance(Tile::snow, 1), //
-		L"sscig",
-		L"##", //
-		L"##", //
-
-		L'#', Item::snowBall,
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::topSnow, 6), //
-		L"sctg",
-		L"###", //
-
-		L'#', Tile::snow,
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::clay, 1), //
-		L"sscig",
-		L"##", //
-		L"##", //
-
-		L'#', Item::clay,
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::redBrick, 1), //
-		L"sscig",
-		L"##", //
-		L"##", //
-
-		L'#', Item::brick,
-		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::wool, 1), //
 		L"sscig",
@@ -414,11 +520,60 @@ Recipes::Recipes()
 		L'#', Tile::netherBrick,
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::NETHERBRICK_MOSSY_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::netherBricksMossy,
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::QUARTZ_SLAB), //
 		L"sctg",
 		L"###", //
 
 		L'#', Tile::quartzBlock,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::GOLDENCLIN_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::goldenclin,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::GOLDENCLINBRICK_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::goldenclinBricks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDSTONE_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::endStone,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDSTONE_MOSSY_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::endStoneMossy,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDBRICK_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::endBricks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDBRICK_MOSSY_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::endBricksMossy,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, 0), //
@@ -450,9 +605,6 @@ Recipes::Recipes()
 
 		L'#', new ItemInstance(Tile::wood, 1, TreeTile::JUNGLE_TRUNK),
 		L'S');
-
-
-
 
 
 	//iCount=getRecipies()->size();
@@ -583,14 +735,6 @@ Recipes::Recipes()
 		L'#', Item::fishingRod, L'X', Item::carrots,
 		L'T')->keepTag();
 
-	addShapedRecipy(new ItemInstance(Item::flintAndSteel, 1), //
-		L"sscicig",
-		L"A ", //
-		L" B", //
-
-		L'A', Item::ironIngot, L'B', Item::flint,
-		L'T');
-
 	addShapedRecipy(new ItemInstance(Item::bread, 1), //
 		L"scig",
 		L"###", //
@@ -713,30 +857,6 @@ Recipes::Recipes()
 		L'R', Tile::endoriumGrate, 'G', Tile::torch,
 		L'T');
 
-	addShapedRecipy(new ItemInstance(Tile::quartzBlock, 1), //
-		L"sscig",
-		L"##", //
-		L"##", //
-
-		L'#', Item::netherQuartz,
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::packedIce, 1), //
-		L"ssctg",
-		L"##", //
-		L"##", //
-
-		L'#', Tile::ice,
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::blueIce, 1), //
-		L"ssctg",
-		L"##", //
-		L"##", //
-
-		L'#', Tile::packedIce,
-		L'S');
-
 	addShapedRecipy(new ItemInstance(Tile::lever, 1), //
 		L"ssctcig",
 		L"X", //
@@ -853,6 +973,13 @@ Recipes::Recipes()
 		L"#", //
 
 		L'#', Tile::stone,
+		L'M');
+
+	addShapedRecipy(new ItemInstance(Tile::endStoneButton, 1), //
+		L"sctg",
+		L"#", //
+
+		L'#', Tile::endStone,
 		L'M');
 
 	addShapedRecipy(new ItemInstance(Tile::button_wood, 1), //
