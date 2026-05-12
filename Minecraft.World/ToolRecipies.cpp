@@ -113,18 +113,28 @@ void ToolRecipies::addRecipes(Recipes *r)
 			}
 		}
 	}
-	r->addShapedRecipy(new ItemInstance((Item *)Item::shears), 
+	r->addShapedRecipy(new ItemInstance((Item *)Item::shears),
 		L"sscig",
         L" #", //
         L"# ", //
+
 		L'#', Item::ironIngot,
 		L'T'
 		);
 
-	r->addShapedRecipy(new ItemInstance((Item *)Item::hellSphere), 
+	r->addShapedRecipy(new ItemInstance(Item::flintAndSteel, 1),
+		L"sscicig",
+		L"A ", //
+		L" B", //
+
+		L'A', Item::ironIngot, L'B', Item::flint,
+		L'T');
+
+	r->addShapedRecipy(new ItemInstance((Item *)Item::hellSphere),
 		L"sscig",
         L"##", //
         L"##", //
+
 		L'#', Item::magmaCream,
 		L'T'
 		);
