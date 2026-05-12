@@ -387,7 +387,7 @@ void Item::staticCtor()
 	Item::apple = ( new FoodItem(4, 4, FoodConstants::FOOD_SATURATION_LOW, false) )	->setIconName(L"apple")->setDescriptionId(IDS_ITEM_APPLE)->setUseDescriptionId(IDS_DESC_APPLE);
 	Item::coal = ( new CoalItem(7) )												->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_coal)->setIconName(L"coal")->setDescriptionId(IDS_ITEM_COAL)->setUseDescriptionId(IDS_DESC_COAL);
 	Item::diamond = ( new Item(8) )													->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_diamond)->setIconName(L"diamond")->setDescriptionId(IDS_ITEM_DIAMOND)->setUseDescriptionId(IDS_DESC_DIAMONDS);
-	Item::stick = ( new Item(24) )													->setIconName(L"stick")->handEquipped()->setDescriptionId(IDS_ITEM_STICK)->setUseDescriptionId(IDS_DESC_STICK);
+	Item::stick = ( new Item(24) )													->setBaseItemTypeAndMaterial(eBaseItemType_stick,	eMaterial_stick)->setIconName(L"stick")->handEquipped()->setDescriptionId(IDS_ITEM_STICK)->setUseDescriptionId(IDS_DESC_STICK);
 	Item::mushroomStew = ( new BowlFoodItem(26, 6) )								->setIconName(L"mushroomStew")->setDescriptionId(IDS_ITEM_MUSHROOM_STEW)->setUseDescriptionId(IDS_DESC_MUSHROOMSTEW);
 
 	Item::string = ( new TilePlanterItem(31, Tile::tripWire) )						->setIconName(L"string")->setDescriptionId(IDS_ITEM_STRING)->setUseDescriptionId(IDS_DESC_STRING);
@@ -547,7 +547,7 @@ void Item::staticCtor()
 	Item::lead = (new LeashItem(164))																->setBaseItemTypeAndMaterial(eBaseItemType_pockettool,	eMaterial_undefined)->setIconName(L"lead")->setDescriptionId(IDS_ITEM_LEAD)->setUseDescriptionId(IDS_DESC_LEAD);
 	Item::nameTag = (new NameTagItem(165))															->setIconName(L"name_tag")->setDescriptionId(IDS_ITEM_NAME_TAG)->setUseDescriptionId(IDS_DESC_NAME_TAG);
 	Item::nethanium = (new Item(166))																->setIconName(L"nethanium")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_nethanium)->setDescriptionId(IDS_ITEM_NETHANIUM)->setUseDescriptionId(IDS_DESC_NETHANIUM);
-	Item::hellSphere = ( new HellSphereItem(172) )													->setBaseItemTypeAndMaterial(eBaseItemType_torch,	eMaterial_setfire)->setIconName(L"hellsphere")->setDescriptionId(IDS_ITEM_HELLSPHERE)->setUseDescriptionId(IDS_DESC_HELLSPHERE);
+	Item::hellSphere = ( new HellSphereItem(172) )													->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_setfire)->setIconName(L"hellsphere")->setDescriptionId(IDS_ITEM_HELLSPHERE)->setUseDescriptionId(IDS_DESC_HELLSPHERE);
 	Item::relicMallet	= ( new RelicMalletItem(177, _Tier::NETHANIUM) )							->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_nethanium)->setIconName(L"relic_mallet")->setDescriptionId(IDS_ITEM_RELICMALLET)->setUseDescriptionId(IDS_DESC_RELICMALLET);
 	Item::netherBread = ( new FoodItem(178, 6, FoodConstants::FOOD_SATURATION_GOOD, false) )		->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"nether_bread")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD)->setUseDescriptionId(IDS_DESC_BREAD);
 	Item::goldBread = ( new FoodItem(179, 7, FoodConstants::FOOD_SATURATION_GOOD, false) )			->setCanAlwaysEat()->setEatEffect(MobEffect::regeneration->id, 10, 1, 1.0f)->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"gold_bread")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD)->setUseDescriptionId(IDS_DESC_BREAD);
