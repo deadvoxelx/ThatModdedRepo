@@ -12,8 +12,19 @@ public:
 
 	static const int TYPE_NORMAL = 0;
 	static const int TYPE_MOSSY = 1;
+	static const int TYPE_STONEBRICK = 2;
+	static const int TYPE_GOLDENCLIN = 3;
+	static const int TYPE_GOLDENCLINBRICK = 4;
+	static const int TYPE_QUARTZ = 5;
+	static const int TYPE_BRICK = 6;
+	static const int TYPE_NETHERBRICK = 7;
+	static const int TYPE_NETHERBRICK_MOSSY = 8;
+	static const int TYPE_ENDSTONE = 9;
+	static const int TYPE_ENDSTONE_MOSSY = 10;
+	static const int TYPE_ENDBRICK = 11;
+	static const int TYPE_ENDBRICK_MOSSY = 12;
 
-	static const unsigned int COBBLE_NAMES[2];
+	static const unsigned int COBBLE_NAMES[13];
 
 	WallTile(int id, Tile *baseTile);
 
