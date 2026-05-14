@@ -1288,7 +1288,7 @@ void LocalPlayer::handleMouseDown(int button, bool down)
 
 		// Voxel - only bottom layer is non-mineable now, top layer can be broken even in Nether
 		// Voxel - both top and bottom layers can be broken in the end and outer end
-		if( !( y == 0 ) ||  level->dimension->id == 1 || level->dimension->id == 2 ) return;
+		if( ( y == 0 ) && (level->dimension->id != 1 && level->dimension->id != 2) ) return;
 
 		minecraft->gameMode->continueDestroyBlock(x, y, z, minecraft->hitResult->f);
 		
