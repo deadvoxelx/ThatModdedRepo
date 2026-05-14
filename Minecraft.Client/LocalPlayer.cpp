@@ -1286,9 +1286,9 @@ void LocalPlayer::handleMouseDown(int button, bool down)
 		int y = minecraft->hitResult->y;
 		int z = minecraft->hitResult->z;
 
-		// 4J - addition to stop layer mining out of the top or bottom of the world
-		// 4J Stu - Allow this for The End
-		if( ( ( y == 0 ) || ( ( y == 127 ) && level->dimension->hasCeiling ) ) && (level->dimension->id != 1 && level->dimension->id != 2) ) return;
+		// Voxel - only bottom layer is non-mineable now, top layer can be broken even in Nether
+		// Voxel - both top and bottom layers can be broken in the end and outer end
+		if( !( y == 0 ) ||  level->dimension->id == 1 || level->dimension->id == 2 ) return;
 
 		minecraft->gameMode->continueDestroyBlock(x, y, z, minecraft->hitResult->f);
 		
@@ -1546,9 +1546,9 @@ bool LocalPlayer::handleMouseClick(int button)
 
 		if (button == 0)
 		{
-			// 4J - addition to stop layer mining out of the top or bottom of the world
-			// 4J Stu - Allow this for The End
-			if( !( ( y == 0 ) || ( ( y == 127 ) && level->dimension->hasCeiling ) ) ||  level->dimension->id == 1 || level->dimension->id == 2 )
+			// Voxel - only bottom layer is non-mineable now, top layer can be broken even in Nether
+			// Voxel - both top and bottom layers can be broken in the end and outer end
+			if( !( y == 0 ) ||  level->dimension->id == 1 || level->dimension->id == 2 )
 			{
 				minecraft->gameMode->startDestroyBlock(x, y, z, minecraft->hitResult->f);
 			}
