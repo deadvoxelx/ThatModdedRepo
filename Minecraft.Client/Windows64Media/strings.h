@@ -2406,3 +2406,9 @@
 #define IDS_TILE_ENDSTONE_MOSSY_SLAB						   2400
 #define IDS_TILE_ENDBRICK_SLAB								   2401
 #define IDS_TILE_ENDBRICK_MOSSY_SLAB						   2402
+#define IDS_TILE_OAK_FENCE									   2403
+#define IDS_TILE_SPRUCE_FENCE								   2404
+#define IDS_TILE_BIRCH_FENCE								   2405
+#define IDS_TILE_JUNGLE_FENCE								   2406
+#define IDS_TILE_NETHER_FENCE								   2407
+#define IDS_TILE_PURUL_FENCE								   2408
