@@ -10333,3 +10333,4 @@ bool CMinecraftApp::HasReachedMainMenu()
 	return m_hasReachedMainMenu;
 }
 #endif
+
