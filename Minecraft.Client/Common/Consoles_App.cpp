@@ -4504,7 +4504,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_NETHANIUM, L"Nethanium");
 		m_stringTable->registerString(IDS_ITEM_ENDORIUM, L"Endorium");
 		m_stringTable->registerString(IDS_TILE_NETHERSOIL, L"Nether Soil");
-		m_stringTable->registerString(IDS_ITEM_HELLSPHERE, L"Hell Sphere");
+		m_stringTable->registerString(IDS_ITEM_HELLSPHERE, L"Magma Bomb");
 		m_stringTable->registerString(IDS_TILE_LOG_NETHER, L"Nether Wood");
 		m_stringTable->registerString(IDS_TILE_NETHER_PLANKS, L"Nether Planks");
 		m_stringTable->registerString(IDS_PIGMAN, L"Pigman");
@@ -4592,6 +4592,12 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_ENDSTONE_MOSSY_SLAB, L"Mossy End Stone Slab");
 		m_stringTable->registerString(IDS_TILE_ENDBRICK_SLAB, L"End Stone Brick Slab");
 		m_stringTable->registerString(IDS_TILE_ENDBRICK_MOSSY_SLAB, L"Mossy End Stone Brick Slab");
+		m_stringTable->registerString(IDS_TILE_OAK_FENCE, L"Oak Fence");
+		m_stringTable->registerString(IDS_TILE_SPRUCE_FENCE, L"Spruce Fence");
+		m_stringTable->registerString(IDS_TILE_BIRCH_FENCE, L"Birch Fence");
+		m_stringTable->registerString(IDS_TILE_JUNGLE_FENCE, L"Jungle Fence");
+		m_stringTable->registerString(IDS_TILE_NETHER_FENCE, L"Nether Fence");
+		m_stringTable->registerString(IDS_TILE_PURUL_FENCE, L"Purul Fence");
 
 	}
 	else
