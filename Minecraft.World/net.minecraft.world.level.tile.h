@@ -149,3 +149,4 @@
 //#include "LavaRockTile.h"
 #include "EndStoneButtonTile.h"
 #include "StoneSlab2Tile.h"
+#include "StoneFenceTile.h"
