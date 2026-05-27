@@ -101,97 +101,201 @@ bool PortalTile::validPortalFrame(Level* level, int x, int y, int z, int xd, int
 	return true;
 }
 
-bool PortalTile::trySpawnPortal(Level *level, int x, int y, int z, bool actuallySpawn)
-{
-	int xd = 0;
-	int zd = 0;
-	if (level->getTile(x - 1, y, z) == Tile::obsidian_Id || level->getTile(x + 1, y, z) == Tile::obsidian_Id) xd = 1;
-	if (level->getTile(x, y, z - 1) == Tile::obsidian_Id || level->getTile(x, y, z + 1) == Tile::obsidian_Id) zd = 1;
-
-	bool twoPosible = false; // two neth portals posible (x and z direction)
-	if (xd == zd)
-	{
-		if (xd == 1) twoPosible = true;
-		else return false;
+bool PortalTile::detectAndSpawnPortal(Level* level, int x, int y, int z, int axis, bool actuallySpawn) {
+	int baseX = x;
+	int baseZ = z;
+	int hCoord;
+	if (axis == 1) {
+		hCoord = x;
+	}
+	else {
+		hCoord = z;
 	}
 
-	bool changedx = false; // changed x so it can be reverted if two portals are posible
-	if (level->getTile(x - xd, y, z) == 0)
-	{
-		changedx = true;
-		x--;
-	}
-	else if (level->getTile(x, y, z - zd) == 0 && !twoPosible)
-	{
-		z--;
+	int left = hCoord;
+	while (true) {
+		int nextX = (axis == 1) ? left - 1 : baseX;
+		int nextZ = (axis == 0) ? left - 1 : baseZ;
+		int tile = level->getTile(nextX, y, nextZ);
+		if (tile == Tile::obsidian_Id) break;
+		if (tile != 0 && tile != Tile::fire_Id) return false;
+		left--;
+		if (left < -30000000) return false;
 	}
 
-	if (!twoPosible)
-	{
-		if (!PortalTile::validPortalFrame(level, x, y, z, xd, zd, actuallySpawn)) return false;
+	int right = hCoord;
+	while (true) {
+		int nextX = (axis == 1) ? right + 1 : baseX;
+		int nextZ = (axis == 0) ? right + 1 : baseZ;
+		int tile = level->getTile(nextX, y, nextZ);
+		if (tile == Tile::obsidian_Id) break;
+		if (tile != 0 && tile != Tile::fire_Id) return false;
+		right++;
+		if (right > 30000000) return false;
 	}
-	else
-	{
-		if (!PortalTile::validPortalFrame(level, x, y, z, xd, 0, actuallySpawn))
-		{
-			if (changedx) x++; // revert x (this check wants to check z not x and z)
+	int interiorWidth = right - left + 1;
 
-			if (level->getTile(x, y, z - zd) == 0) z--;
+	int bottom = y;
+	while (true) {
+		int tileBelow = level->getTile((axis == 1) ? hCoord : baseX, bottom - 1, (axis == 0) ? hCoord : baseZ);
+		if (tileBelow == Tile::obsidian_Id) break;
+		if (tileBelow != 0 && tileBelow != Tile::fire_Id) return false;
+		bottom--;
+		if (bottom < -64) return false;
+	}
 
-			if (!PortalTile::validPortalFrame(level, x, y, z, 0, zd, actuallySpawn))
-				return false;
+	int top = y;
+	while (true) {
+		int tileAbove = level->getTile((axis == 1) ? hCoord : baseX, top + 1, (axis == 0) ? hCoord : baseZ);
+		if (tileAbove == Tile::obsidian_Id) break;
+		if (tileAbove != 0 && tileAbove != Tile::fire_Id) return false;
+		top++;
+		if (top > 320) return false;
+	}
+	int interiorHeight = top - bottom + 1;
+
+	if (interiorWidth < 2 || interiorWidth > 21) return false;
+	if (interiorHeight < 3 || interiorHeight > 21) return false;
+
+	for (int cy = bottom; cy <= top; cy++) {
+		int obsX = (axis == 1) ? left - 1 : baseX;
+		int obsZ = (axis == 0) ? left - 1 : baseZ;
+		if (level->getTile(obsX, cy, obsZ) != Tile::obsidian_Id) return false;
+	}
+
+	for (int cy = bottom; cy <= top; cy++) {
+		int obsX = (axis == 1) ? right + 1 : baseX;
+		int obsZ = (axis == 0) ? right + 1 : baseZ;
+		if (level->getTile(obsX, cy, obsZ) != Tile::obsidian_Id) return false;
+	}
+
+	for (int cx = left; cx <= right; cx++) {
+		int obsX = (axis == 1) ? cx : baseX;
+		int obsZ = (axis == 0) ? cx : baseZ;
+		if (level->getTile(obsX, bottom - 1, obsZ) != Tile::obsidian_Id) return false;
+	}
+
+	for (int cx = left; cx <= right; cx++) {
+		int obsX = (axis == 1) ? cx : baseX;
+		int obsZ = (axis == 0) ? cx : baseZ;
+		if (level->getTile(obsX, top + 1, obsZ) != Tile::obsidian_Id) return false;
+	}
+
+	for (int cx = left; cx <= right; cx++) {
+		for (int cy = bottom; cy <= top; cy++) {
+			int tile = level->getTile(
+				(axis == 1) ? cx : baseX,
+				cy,
+				(axis == 0) ? cx : baseZ
+			);
+			if (tile != 0 && tile != Tile::fire_Id) return false;
+		}
+	}
+
+	if (actuallySpawn) {
+		for (int cx = left; cx <= right; cx++) {
+			for (int cy = bottom; cy <= top; cy++) {
+				int px = (axis == 1) ? cx : baseX;
+				int pz = (axis == 0) ? cx : baseZ;
+				level->setTileAndData(px, cy, pz, Tile::portalTile_Id, 0, Tile::UPDATE_CLIENTS);
+			}
 		}
 	}
 	return true;
 }
 
-void PortalTile::neighborChanged(Level *level, int x, int y, int z, int type)
-{
-	int xd = 0;
-	int zd = 1;
-	if (level->getTile(x - 1, y, z) == id || level->getTile(x + 1, y, z) == id)
-	{
-		xd = 1;
-		zd = 0;
+bool PortalTile::trySpawnPortal(Level* level, int x, int y, int z, bool actuallySpawn) {
+	int centerTile = level->getTile(x, y, z);
+	if (centerTile != 0 && centerTile != Tile::fire_Id) return false;
+
+	if (detectAndSpawnPortal(level, x, y, z, 1, actuallySpawn)) return true; // X
+	if (detectAndSpawnPortal(level, x, y, z, 0, actuallySpawn)) return true; // Z
+
+	return false;
+}
+
+void PortalTile::neighborChanged(Level* level, int x, int y, int z, int type) {
+	int axis = -1; // 0:Z, 1:X
+	if (level->getTile(x - 1, y, z) == id || level->getTile(x + 1, y, z) == id) {
+		axis = 1;
 	}
-
-	int yBottom = y;
-	while (level->getTile(x, yBottom - 1, z) == id)
-		yBottom--;
-
-	if (level->getTile(x, yBottom - 1, z) != Tile::obsidian_Id)
-	{
+	else if (level->getTile(x, y, z - 1) == id || level->getTile(x, y, z + 1) == id) {
+		axis = 0;
+	}
+	else {
 		level->removeTile(x, y, z);
 		return;
 	}
 
-	int height = 1;
-	while (height < 4 && level->getTile(x, yBottom + height, z) == id)
-		height++;
-
-	if (height != 3 || level->getTile(x, yBottom + height, z) != Tile::obsidian_Id)
-	{
+	int bottomY = y;
+	while (level->getTile(x, bottomY - 1, z) == id) bottomY--;
+	if (level->getTile(x, bottomY - 1, z) != Tile::obsidian_Id) {
 		level->removeTile(x, y, z);
 		return;
 	}
 
-	bool we = level->getTile(x - 1, y, z) == id || level->getTile(x + 1, y, z) == id;
-	bool ns = level->getTile(x, y, z - 1) == id || level->getTile(x, y, z + 1) == id;
-	if (we && ns)
-	{
+	int topY = y;
+	while (level->getTile(x, topY + 1, z) == id) topY++;
+	if (level->getTile(x, topY + 1, z) != Tile::obsidian_Id) {
+		level->removeTile(x, y, z);
+		return;
+	}
+	int height = topY - bottomY + 1;
+	if (height < 3 || height > 21) {
 		level->removeTile(x, y, z);
 		return;
 	}
 
-	if (!(//
-		(level->getTile(x + xd, y, z + zd) == Tile::obsidian_Id && level->getTile(x - xd, y, z - zd) == id) || //
-		(level->getTile(x - xd, y, z - zd) == Tile::obsidian_Id && level->getTile(x + xd, y, z + zd) == id)//
-		))
-	{
+	int baseX = x, baseZ = z;
+	int hCoord = (axis == 1) ? x : z;
+	int left = hCoord, right = hCoord;
+
+	while (true) {
+		int nx = (axis == 1) ? left - 1 : baseX;
+		int nz = (axis == 0) ? left - 1 : baseZ;
+		int tile = level->getTile(nx, y, nz);
+		if (tile == Tile::obsidian_Id) break;
+		if (tile != id) {
+			level->removeTile(x, y, z);
+			return;
+		}
+		left--;
+	}
+	while (true) {
+		int nx = (axis == 1) ? right + 1 : baseX;
+		int nz = (axis == 0) ? right + 1 : baseZ;
+		int tile = level->getTile(nx, y, nz);
+		if (tile == Tile::obsidian_Id) break;
+		if (tile != id) {
+			level->removeTile(x, y, z);
+			return;
+		}
+		right++;
+	}
+	int width = right - left + 1;
+	if (width < 2 || width > 21) {
 		level->removeTile(x, y, z);
 		return;
 	}
 
+	for (int cy = bottomY; cy <= topY; cy++) {
+		if (level->getTile((axis == 1) ? left - 1 : baseX, cy, (axis == 0) ? left - 1 : baseZ) != Tile::obsidian_Id) { level->removeTile(x, y, z); return; }
+		if (level->getTile((axis == 1) ? right + 1 : baseX, cy, (axis == 0) ? right + 1 : baseZ) != Tile::obsidian_Id) { level->removeTile(x, y, z); return; }
+	}
+	for (int cx = left; cx <= right; cx++) {
+		if (level->getTile((axis == 1) ? cx : baseX, bottomY - 1, (axis == 0) ? cx : baseZ) != Tile::obsidian_Id) { level->removeTile(x, y, z); return; }
+		if (level->getTile((axis == 1) ? cx : baseX, topY + 1, (axis == 0) ? cx : baseZ) != Tile::obsidian_Id) { level->removeTile(x, y, z); return; }
+	}
+
+	for (int cx = left; cx <= right; cx++) {
+		for (int cy = bottomY; cy <= topY; cy++) {
+			int tile = level->getTile((axis == 1) ? cx : baseX, cy, (axis == 0) ? cx : baseZ);
+			if (tile != id && tile != 0 && tile != Tile::fire_Id) {
+				level->removeTile(x, y, z);
+				return;
+			}
+		}
+	}
 }
 
 bool PortalTile::shouldRenderFace(LevelSource *level, int x, int y, int z, int face)
@@ -222,7 +326,7 @@ int PortalTile::getResourceCount(Random *random)
 
 int PortalTile::getRenderLayer()
 {
-	return 1;
+	return 2;
 }
 
 void PortalTile::entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
