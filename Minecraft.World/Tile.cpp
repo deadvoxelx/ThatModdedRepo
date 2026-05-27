@@ -397,7 +397,7 @@ void Tile::staticCtor()
 	Tile::clay = (new ClayTile(82))										->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_clay)->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"clay")->setDescriptionId(IDS_TILE_CLAY)->setUseDescriptionId(IDS_DESC_CLAY_TILE);
 	Tile::reeds = (new ReedTile(83))									->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"reeds")->setDescriptionId(IDS_TILE_REEDS)->setNotCollectStatistics()->setUseDescriptionId(IDS_DESC_REEDS)->disableMipmap();
 	Tile::jukebox = (new JukeboxTile(84))								->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"jukebox")->setDescriptionId(IDS_TILE_JUKEBOX)->sendTileData()->setUseDescriptionId(IDS_DESC_JUKEBOX);
-	Tile::fence = (new FenceTile(85, L"planks_oak", Material::wood))	->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,	Item::eMaterial_wood)->setDestroyTime(2.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_WOOD)->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
+	Tile::fence = (new FenceTile(85, Tile::wood))						->setIconName(L"fence")->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,	Item::eMaterial_wood)->setDestroyTime(2.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_WOOD)->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
 	Tile::pumpkin = (new PumpkinTile(86, false))						->setDestroyTime(1.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"pumpkin")->setDescriptionId(IDS_TILE_PUMPKIN)->sendTileData()->setUseDescriptionId(IDS_DESC_PUMPKIN);
 	Tile::netherRack = (new NetherrackTile(87))							->setDestroyTime(0.4f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"netherrack")->setDescriptionId(IDS_TILE_HELL_ROCK)->setUseDescriptionId(IDS_DESC_HELL_ROCK);
 	Tile::soulsand = (new SoulSandTile(88))								->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_SAND)->setIconName(L"soul_sand")->setDescriptionId(IDS_TILE_HELL_SAND)->setUseDescriptionId(IDS_DESC_HELL_SAND);
@@ -434,7 +434,7 @@ void Tile::staticCtor()
 
 	Tile::waterLily = (new WaterlilyTile(111))									->setDestroyTime(0.0f)->setSoundType(SOUND_GRASS)->setIconName(L"waterlily")->setDescriptionId(IDS_TILE_WATERLILY)->setUseDescriptionId(IDS_DESC_WATERLILY);
 	Tile::netherBrick = (new Tile(112, Material::stone))						->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_netherbrick)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setIconName(L"nether_brick")->setDescriptionId(IDS_TILE_NETHERBRICK)->setUseDescriptionId(IDS_DESC_NETHERBRICK);
-	Tile::netherFence = (new FenceTile(113, L"nether_brick", Material::stone))	->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,		Item::eMaterial_netherbrick)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setDescriptionId(IDS_TILE_NETHERFENCE)->setUseDescriptionId(IDS_DESC_NETHERFENCE);
+	Tile::netherFence = (new StoneFenceTile(113, Tile::netherBrick))			->setIconName(L"nether_brick")->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,		Item::eMaterial_netherbrick)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setDescriptionId(IDS_TILE_NETHERFENCE)->setUseDescriptionId(IDS_DESC_NETHERFENCE);
 	Tile::stairs_netherBricks = (new StairTile(114, Tile::netherBrick,0))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,	Item::eMaterial_netherbrick)->setExplodeable(10)->setIconName(L"stairsNetherBrick")->setDescriptionId(IDS_TILE_STAIRS_NETHERBRICK)	->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);
 	Tile::netherStalk = (new NetherWartTile(115))								->setIconName(L"nether_wart")->setDescriptionId(IDS_TILE_NETHERSTALK)->sendTileData()->setUseDescriptionId(IDS_DESC_NETHERSTALK);
 	Tile::enchantTable = (new EnchantmentTableTile(116))						->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_magic)->setDestroyTime(5.0f)->setExplodeable(2000)->setIconName(L"enchanting_table")->setDescriptionId(IDS_TILE_ENCHANTMENTTABLE)->setUseDescriptionId(IDS_DESC_ENCHANTMENTTABLE);
@@ -572,6 +572,7 @@ void Tile::staticCtor()
 	Item::items[cobbleWall_Id]			= ( new MultiTextureTileItem(cobbleWall_Id - 256, cobbleWall, (int *)WallTile::COBBLE_NAMES, 13) )->setDescriptionId(IDS_TILE_COBBLESTONE_WALL)->setUseDescriptionId(IDS_DESC_COBBLESTONE_WALL);
 	Item::items[anvil_Id]				= ( new AnvilTileItem(anvil) )->setDescriptionId(IDS_TILE_ANVIL)->setUseDescriptionId(IDS_DESC_ANVIL);
 
+	Item::items[fence_Id]				= ( new MultiTextureTileItem(fence_Id - 256, fence, (int *)FenceTile::FENCE_NAMES, 6) )->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
 
 	for (int i = 0; i < 256; i++)
 	{
