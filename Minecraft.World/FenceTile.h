@@ -8,7 +8,17 @@ private:
 	wstring texture;
 
 public:
-	FenceTile(int id, const wstring &texture, Material *material);
+	static const int TYPE_NORMAL = 0;
+	static const int TYPE_SPRUCE = 1;
+	static const int TYPE_BIRCH = 2;
+	static const int TYPE_JUNGLE = 3;
+	static const int TYPE_NETHER = 4;
+	static const int TYPE_PURUL = 5;
+
+	static const unsigned int FENCE_NAMES[6];
+
+	FenceTile(int id, Tile *baseTile);
+	Icon *getTexture(int face, int data);
 	virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source);
 	virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>()); // 4J added forceData, forceEntity param
 	virtual bool isSolidRender(bool isServerLevel = false);
@@ -20,4 +30,5 @@ public:
 	static bool isFence(int tile);
 	virtual void registerIcons(IconRegister *iconRegister);
 	virtual bool use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false);
+	int getSpawnResourcesAuxValue(int data);
 };
