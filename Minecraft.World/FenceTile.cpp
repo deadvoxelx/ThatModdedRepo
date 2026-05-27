@@ -2,12 +2,48 @@
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
+#include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.h"
+#include "net.minecraft.h"
 #include "FenceTile.h"
 
-FenceTile::FenceTile(int id, const wstring &texture, Material *material) : Tile( id, material, isSolidRender())
+const unsigned int FenceTile::FENCE_NAMES[6] = { 
+	IDS_TILE_OAK_FENCE,
+	IDS_TILE_SPRUCE_FENCE,
+	IDS_TILE_BIRCH_FENCE,
+	IDS_TILE_JUNGLE_FENCE,
+	IDS_TILE_NETHER_FENCE,
+	IDS_TILE_PURUL_FENCE,
+};
+
+Icon *FenceTile::getTexture(int face, int data)
 {
-	this->texture = texture;
+	if (data == TYPE_SPRUCE)
+	{
+		return Tile::wood->getTexture(face, TreeTile::DARK_TRUNK);
+	}
+	if (data == TYPE_BIRCH)
+	{
+		return Tile::wood->getTexture(face, TreeTile::BIRCH_TRUNK);
+	}
+	if (data == TYPE_JUNGLE)
+	{
+		return Tile::wood->getTexture(face, TreeTile::JUNGLE_TRUNK);
+	}
+	if (data == TYPE_NETHER)
+	{
+		return Tile::netherPlanks->getTexture(face);
+	}
+	if (data == TYPE_PURUL)
+	{
+		return Tile::purulPlanks->getTexture(face);
+	}
+	return Tile::wood->getTexture(face, 0);
+}
+
+FenceTile::FenceTile(int id, Tile *baseTile) : Tile(id, baseTile->material, isSolidRender())
+{
+	//this->texture = texture;
 }
 
 void FenceTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source)
@@ -144,11 +180,15 @@ bool FenceTile::isFence(int tile)
 
 void FenceTile::registerIcons(IconRegister *iconRegister)
 {
-	icon = iconRegister->registerIcon(texture);
+	//icon = iconRegister->registerIcon(texture);
 }
 
 bool FenceTile::shouldRenderFace(LevelSource *level, int x, int y, int z, int face)
 {
+	if (face == Facing::DOWN)
+	{
+		return Tile::shouldRenderFace(level, x, y, z, face);
+	}
 	return true;
 }
 
@@ -160,4 +200,9 @@ bool FenceTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player
 		return true;
 	}
 	return false;
+}
+
+int FenceTile::getSpawnResourcesAuxValue(int data)
+{
+	return data;
 }
