@@ -363,6 +363,7 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MultiPlayerGameMode.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MultiPlayerLevel.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MultiPlayerLocalPlayer.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MoobloomRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MushroomCowRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/NameEntryScreen.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/NetherPortalParticle.cpp"
