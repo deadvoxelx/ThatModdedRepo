@@ -4598,6 +4598,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_JUNGLE_FENCE, L"Jungle Fence");
 		m_stringTable->registerString(IDS_TILE_NETHER_FENCE, L"Nether Fence");
 		m_stringTable->registerString(IDS_TILE_PURUL_FENCE, L"Purul Fence");
+		m_stringTable->registerString(IDS_MOOBLOOM, L"Moobloom");
 
 	}
 	else
@@ -10333,4 +10334,3 @@ bool CMinecraftApp::HasReachedMainMenu()
 	return m_hasReachedMainMenu;
 }
 #endif
-
