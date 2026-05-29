@@ -140,6 +140,7 @@ enum eINSTANCEOF
 
 							eTYPE_COW				= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | BIT_COW,
 								eTYPE_MUSHROOMCOW	= eTYPE_COW | 0x1,
+								eTYPE_MOOBLOOM		= eTYPE_COW | 0x2,
 
 							
 					eTYPE_WATERANIMAL	= eTYPE_PATHFINDER_MOB | BIT_WATER_MOB, //0x100,
@@ -226,6 +227,7 @@ enum eINSTANCEOF
 			eTYPE_THROWNPOTION		= eTYPE_THROWABLE | 0x4,
 			eTYPE_THROWNEXPBOTTLE	= eTYPE_THROWABLE | 0x5,
 			eTYPE_HELLSPHERE		= eTYPE_THROWABLE | 0x6,
+			//eTYPE_SLIMEBALL			= eTYPE_THROWABLE | 0x7,
 
 
 		eTYPE_HANGING_ENTITY		= eTYPE_ENTITY | BIT_HANGING_ENTITY,
@@ -425,6 +427,9 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_CHICKEN				)->addParent( eTYPE_ANIMAL  ) );
 		classes->push_back( SUBCLASS(eTYPE_COW					)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
 		classes->push_back( SUBCLASS(eTYPE_MUSHROOMCOW			)->addParent( eTYPE_COW ) );
+
+		classes->push_back( SUBCLASS(eTYPE_MOOBLOOM				)->addParent( eTYPE_COW ) );
+
 		classes->push_back( SUBCLASS(eTYPE_WATERANIMAL			)->addParent(eTYPE_PATHFINDER_MOB) );
 		classes->push_back( SUBCLASS(eTYPE_SQUID				)->addParent( eTYPE_WATERANIMAL ) );
 		classes->push_back( SUBCLASS(eTYPE_GOLEM				)->addParent( eTYPE_PATHFINDER_MOB ) );
@@ -482,6 +487,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_SNOWBALL				)->addParent( eTYPE_THROWABLE ) );
 
 		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
+		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
 
 		classes->push_back( SUBCLASS(eTYPE_THROWNEGG			)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_THROWNENDERPEARL		)->addParent( eTYPE_THROWABLE ) );
