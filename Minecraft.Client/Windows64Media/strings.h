@@ -2412,3 +2412,4 @@
 #define IDS_TILE_JUNGLE_FENCE								   2406
 #define IDS_TILE_NETHER_FENCE								   2407
 #define IDS_TILE_PURUL_FENCE								   2408
+#define IDS_MOOBLOOM										   2409
