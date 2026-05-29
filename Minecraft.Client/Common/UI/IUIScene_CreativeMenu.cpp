@@ -399,9 +399,10 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 90); // Pig
 		ITEM_AUX(Item::spawnEgg_Id, 91); // Sheep
 		ITEM_AUX(Item::spawnEgg_Id, 92); // Cow
+		ITEM_AUX(Item::spawnEgg_Id, 96); // Mooshroom
+		ITEM_AUX(Item::spawnEgg_Id, 112); // Moobloom
 		ITEM_AUX(Item::spawnEgg_Id, 95); // Wolf
 		ITEM_AUX(Item::spawnEgg_Id, 94); // Squid
-		ITEM_AUX(Item::spawnEgg_Id, 96); // Mooshroom
 		ITEM_AUX(Item::spawnEgg_Id, 98); // Ozelot
 		ITEM_AUX(Item::spawnEgg_Id, 100); // Horse
 		ITEM_AUX(Item::spawnEgg_Id, 100 | ((EntityHorse::TYPE_DONKEY + 1) << 12) ); // Donkey
