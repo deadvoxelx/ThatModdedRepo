@@ -9,6 +9,7 @@
 #include "HellPortalFeature.h"
 #include "FlowerFeature.h"
 #include "HellSpringFeature.h"
+#include "NetherBridgeFeature.h"
 
 class ProgressListener;
 
@@ -28,6 +29,7 @@ private:
 public:
 	HellFlatLevelSource(Level *level, int64_t seed);
 	~HellFlatLevelSource();
+	NetherBridgeFeature *netherBridgeFeature;
 
 private:
 	void prepareHeights(int xOffs, int zOffs, byteArray blocks);

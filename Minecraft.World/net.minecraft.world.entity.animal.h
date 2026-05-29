@@ -21,3 +21,4 @@
 // 1.6.4
 #include "EntityHorse.h"
 #include "Pigman.h"
+#include "Moobloom.h"

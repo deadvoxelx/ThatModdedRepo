@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
+#include "net.minecraft.world.entity.h"
+#include "net.minecraft.world.level.levelgen.feature.h"
 #include "net.minecraft.world.level.storage.h"
+#include "BiomeSource.h"
 #include "HellFlatLevelSource.h"
 
 HellFlatLevelSource::HellFlatLevelSource(Level *level, int64_t seed)
@@ -9,6 +12,8 @@ HellFlatLevelSource::HellFlatLevelSource(Level *level, int64_t seed)
 	int xzSize = level->getLevelData()->getXZSize();
 	int hellScale = level->getLevelData()->getHellScale();
 	m_XZSize = ceil(static_cast<float>(xzSize) / hellScale);
+
+	netherBridgeFeature = new NetherBridgeFeature();
 
 	this->level = level;
 
@@ -20,6 +25,7 @@ HellFlatLevelSource::~HellFlatLevelSource()
 {
 	delete  random;
 	delete pprandom;
+	delete netherBridgeFeature;
 }
 
 void HellFlatLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)
@@ -33,9 +39,13 @@ void HellFlatLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)
 			for (int yc = 0; yc < height; yc++)
 			{
 				int block = 0;
-				if ( (yc <= 6) || ( yc >= 121 ) )
+				if ( (yc <= 3) || ( yc >= 121 ) )
 				{
 					block = Tile::netherRack_Id;
+				}
+				else if ( (yc <= 6) && (yc >= 3) )
+				{
+					block = Tile::netherSoil_Id;
 				}
 
 				blocks[xc << 11 | zc << 7 | yc] = static_cast<byte>(block);
@@ -123,6 +133,8 @@ LevelChunk *HellFlatLevelSource::getChunk(int xOffs, int zOffs)
 	prepareHeights(xOffs, zOffs, blocks);
 	buildSurfaces(xOffs, zOffs, blocks);
 
+	netherBridgeFeature->apply(this, level, xOffs, zOffs, blocks);
+
 	//    caveFeature->apply(this, level, xOffs, zOffs, blocks);
 	// townFeature.apply(this, level, xOffs, zOffs, blocks);
 	// addCaves(xOffs, zOffs, blocks);
@@ -163,6 +175,8 @@ void HellFlatLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
 	pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
+	netherBridgeFeature->postProcess(level, pprandom, xt, zt);
+
 	int count = pprandom->nextInt(pprandom->nextInt(10) + 1) + 1;
 
 	for (int i = 0; i < count; i++)
@@ -170,7 +184,7 @@ void HellFlatLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		int x = xo + pprandom->nextInt(16) + 8;
 		int y = pprandom->nextInt(Level::genDepth - 8) + 4;
 		int z = zo + pprandom->nextInt(16) + 8;
-		HellFireFeature().place(level, pprandom, x, y, z);
+		NetherSoilFireFeature().place(level, pprandom, x, y, z);
 	}
 
 	count = pprandom->nextInt(pprandom->nextInt(10) + 1);
@@ -181,6 +195,105 @@ void HellFlatLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		int z = zo + pprandom->nextInt(16) + 8;
 		LightGemFeature().place(level, pprandom, x, y, z);
 	}
+
+	OreFeature quartzFeature(Tile::netherQuartz_Id, 17, Tile::netherRack_Id);
+	for (int i = 0; i < 19; i++)
+	{
+		int x = xo + pprandom->nextInt(16);
+		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
+		int z = zo + pprandom->nextInt(16);
+		quartzFeature.place(level, pprandom, x, y, z);
+	}
+
+	OreFeature netherDiamondFeature(Tile::netherDiamond_Id, 4, Tile::netherRack_Id);
+	for (int i = 0; i < 16; i++)
+	{
+		int x = xo + pprandom->nextInt(16);
+		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
+		int z = zo + pprandom->nextInt(16);
+		netherDiamondFeature.place(level, pprandom, x, y, z);
+	}
+
+	OreFeature netherGoldFeature(Tile::netherGold_Id, 9, Tile::netherRack_Id);
+	for (int i = 0; i < 32; i++)
+	{
+		int x = xo + pprandom->nextInt(16);
+		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
+		int z = zo + pprandom->nextInt(16);
+		netherGoldFeature.place(level, pprandom, x, y, z);
+	}
+
+	OreFeature netherGravelFeature(Tile::gravel_Id, 24, Tile::netherRack_Id);
+	for (int i = 0; i < 16; i++)
+	{
+		int x = xo + pprandom->nextInt(16);
+		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
+		int z = zo + pprandom->nextInt(16);
+		netherGravelFeature.place(level, pprandom, x, y, z);
+	}
+
+	OreFeature goldenclinFeature(Tile::goldenclin_Id, 24, Tile::netherRack_Id);
+	for (int i = 0; i < 18; i++)
+	{
+		int x = xo + pprandom->nextInt(16);
+		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
+		int z = zo + pprandom->nextInt(16);
+		goldenclinFeature.place(level, pprandom, x, y, z);
+	}
+
+	OreFeature nethaniumFeature(Tile::nethaniumOre_Id, 8, Tile::netherRack_Id);
+	for (int i = 0; i < 16; i++)
+	{
+		int x = xo + pprandom->nextInt(16);
+		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
+		int z = zo + pprandom->nextInt(16);
+		nethaniumFeature.place(level, pprandom, x, y, z);
+	}
+
+	/*for (int i = 0; i < 96; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth - 8) + 4;
+		int z = zo + pprandom->nextInt(16) + 8;
+		NetherTreeFeature().place(level, pprandom, x, y, z);
+	}
+
+	for (int i = 0; i < 64; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth - 8) + 4;
+		int z = zo + pprandom->nextInt(16) + 8;
+		NetherMushroomHugeFeature().place(level, pprandom, x, y, z);
+	}*/
+
+	count = pprandom->nextInt(pprandom->nextInt(1) + 1);
+
+	if (pprandom->nextInt(1) == 0)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth);
+		int z = zo + pprandom->nextInt(16) + 8;
+		FlowerFeature(Tile::mushroom_brown_Id).place(level, pprandom, x, y, z);
+	}
+
+	if (pprandom->nextInt(1) == 0)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth);
+		int z = zo + pprandom->nextInt(16) + 8;
+		FlowerFeature(Tile::mushroom_red_Id).place(level, pprandom, x, y, z);
+	}
+
+	PIXBeginNamedEvent(0,"Nether house");
+	for (int i = 0; i < 12; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth);
+		int z = zo + pprandom->nextInt(16) + 8;
+		HouseFeature mrf;
+		mrf.place(level, pprandom, x, y, z);
+	}
+	PIXEndNamedEvent();
 
 	HeavyTile::instaFall = false;
 
@@ -210,19 +323,33 @@ wstring HellFlatLevelSource::gatherStats()
 
 vector<Biome::MobSpawnerData *> *HellFlatLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
-	Biome *biome = level->getBiome(x, z);
-	if (biome == nullptr)
+	// check if the coordinates is within a netherbridge
+	if (mobCategory == MobCategory::monster)
 	{
-		return nullptr;
+		if(netherBridgeFeature->isInsideFeature(x, y, z))
+		{
+			return netherBridgeFeature->getBridgeEnemies();
+		}
+		if ((netherBridgeFeature->isInsideBoundingFeature(x, y, z) && level->getTile(x, y - 1, z) == Tile::netherBrick_Id))
+		{
+			return netherBridgeFeature->getBridgeEnemies();
+		}
+	}
+
+	Biome *biome = level->getBiome(x, z);
+	if (biome == NULL)
+	{
+		return NULL;
 	}
 	return biome->getMobs(mobCategory);
 }
 
 TilePos *HellFlatLevelSource::findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z)
 {
-	return nullptr;
+	return NULL;
 }
 
 void HellFlatLevelSource::recreateLogicStructuresForChunk(int chunkX, int chunkZ)
 {
+	netherBridgeFeature->apply(this, level, chunkX, chunkZ, NULL);
 }

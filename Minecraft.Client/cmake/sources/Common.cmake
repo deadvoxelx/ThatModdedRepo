@@ -856,6 +856,8 @@ set(_MINECRAFT_CLIENT_COMMON_NET_MINECRAFT_CLIENT_RENDERER_ENTITY
   "${CMAKE_CURRENT_SOURCE_DIR}/MinecartSpawnerRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/MobRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/MobRenderer.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/MoobloomRenderer.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/MoobloomRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/MushroomCowRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/MushroomCowRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/OcelotRenderer.cpp"

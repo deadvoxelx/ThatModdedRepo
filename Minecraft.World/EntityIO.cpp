@@ -116,6 +116,9 @@ void EntityIO::staticCtor()
 	setId(Evupul::create, eTYPE_EVUPUL,	L"Evupul",	108 | ((Evupul::TYPE_GOLD + 1) << 12), eMinecraftColour_Mob_Horse_Colour2, eMinecraftColour_Mob_Horse_Colour2, IDS_EVUPULGOLD);
 	setId(AphalafBoss::create, eTYPE_APHALAF_BOSS, L"AphalafBoss", 109, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Enderman_Colour1, IDS_APHALAF_BOSS);
 	setId(AphalafPlant::create, eTYPE_APHALAF_PLANT, L"AphalafPlant", 110, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_CaveSpider_Colour1, IDS_APHALAF_PLANT);
+	//setId(SlimeBall::create, eTYPE_SLIMEBALL, L"slimeBall", 111);
+	setId(Moobloom::create, eTYPE_MOOBLOOM, L"Moobloom", 112, eMinecraftColour_Mob_Blaze_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_MOOBLOOM);
+
 
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
 

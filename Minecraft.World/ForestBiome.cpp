@@ -8,6 +8,8 @@
 ForestBiome::ForestBiome(int id) : Biome(id)
 {
 	friendlies_wolf.push_back(new MobSpawnerData(eTYPE_WOLF, 5, 4, 4));		// 4J - moved to their own category
+    friendlies.push_back(new MobSpawnerData(eTYPE_MOOBLOOM, 5, 1, 2));
+
 	decorator->treeCount = 10;
 	decorator->grassCount = 2;
 }
