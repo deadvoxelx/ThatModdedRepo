@@ -1,12 +1,17 @@
 #include "stdafx.h"
 #include "com.mojang.nbt.h"
+#include "net.minecraft.world.h"
+#include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.ai.attributes.h"
+#include "net.minecraft.world.entity.ai.navigation.h"
 #include "net.minecraft.world.entity.ai.goal.h"
-#include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.item.h"
+#include "net.minecraft.world.entity.player.h"
+#include "net.minecraft.world.entity.monster.h"
+#include "net.minecraft.stats.h"
 #include "Chicken.h"
 #include "..\Minecraft.Client\Textures.h"
 #include "SoundTypes.h"
@@ -139,11 +144,13 @@ void Chicken::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 	}
 }
 
-void Chicken::addAdditonalSaveData(CompoundTag *tag)
+void Chicken::addAdditonalSaveData(CompoundTag *entityTag, CompoundTag *tag)
 {
 	Animal::addAdditonalSaveData(tag);
 
 	if (isChickenJockey) tag->putBoolean(L"IsChickenJockey", true);
+
+	entityTag->putByte(L"ChickenType", (byte) getChickenType());
 }
 
 void Chicken::readAdditionalSaveData(CompoundTag *tag)
@@ -151,6 +158,12 @@ void Chicken::readAdditionalSaveData(CompoundTag *tag)
 	Animal::readAdditionalSaveData(tag);
 
 	if (tag->getBoolean(L"IsChickenJockey")) isChickenJockey = true;
+
+	if (tag->contains(L"ChickenType"))
+	{
+		int value = tag->getByte(L"ChickenType");
+		setChickenType(value);
+	}
 }
 
 shared_ptr<AgableMob> Chicken::getBreedOffspring(shared_ptr<AgableMob> target)
@@ -169,4 +182,41 @@ shared_ptr<AgableMob> Chicken::getBreedOffspring(shared_ptr<AgableMob> target)
 bool Chicken::isFood(shared_ptr<ItemInstance> itemInstance)
 {
 	return (itemInstance->id == Item::seeds_wheat_Id) || (itemInstance->id == Item::netherwart_seeds_Id) || (itemInstance->id == Item::seeds_melon_Id) || (itemInstance->id == Item::seeds_pumpkin_Id);
+}
+
+void Chicken::defineSynchedData()
+{
+	Animal::defineSynchedData();
+
+	entityData->define(DATA_TYPE_ID, static_cast<byte>(0));
+}
+
+int Chicken::getChickenType()
+{
+	return (int) entityData->getByte(DATA_TYPE_ID);
+}
+
+void Chicken::setChickenType(int type)
+{
+	entityData->set(DATA_TYPE_ID, (byte) type);
+}
+
+MobGroupData *Chicken::finalizeMobSpawn(MobGroupData *groupData, int extraData)
+{
+	groupData = Animal::finalizeMobSpawn(groupData);
+
+	if (getRandom()->nextInt(3) == 0)
+	{
+		setChickenType(TYPE_DEFAULT);
+	}
+	if (getRandom()->nextInt(3) == 1)
+	{
+		setChickenType(TYPE_BLACK);
+	}
+	if (getRandom()->nextInt(3) == 2)
+	{
+		setChickenType(TYPE_RED);
+	}
+
+	return groupData;
 }
