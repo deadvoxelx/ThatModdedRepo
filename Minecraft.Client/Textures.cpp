@@ -177,6 +177,9 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/aphalaf_boss",
 	L"mob/aphalaf_plant",
 	L"mob/moobloom",
+	L"mob/cow_brown",
+	L"mob/cow_black",
+	L"mob/cow_invert",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
