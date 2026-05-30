@@ -46,7 +46,7 @@ void Evupul::defineSynchedData()
 {
 	FlyingMob::defineSynchedData();
 
-	entityData->define(DATA_TYPE_ID, (byte) TYPE_DEFAULT);
+	entityData->define(DATA_TYPE_ID, static_cast<byte>(0));
 }
 
 void Evupul::registerAttributes()
@@ -192,4 +192,21 @@ MobGroupData *Evupul::finalizeMobSpawn(MobGroupData *groupData, int extraData)
 	}
 
 	return groupData;
+}
+
+void Evupul::readAdditionalSaveData(CompoundTag *tag)
+{
+	FlyingMob::readAdditionalSaveData(tag);
+
+	if (tag->contains(L"EvupulType"))
+	{
+		int value = tag->getByte(L"EvupulType");
+		setEvupulType(value);
+	}
+}
+
+void Evupul::addAdditonalSaveData(CompoundTag *entityTag)
+{
+	FlyingMob::addAdditonalSaveData(entityTag);
+	entityTag->putByte(L"EvupulType", (byte) getEvupulType());
 }
