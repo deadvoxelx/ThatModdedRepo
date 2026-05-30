@@ -47,4 +47,8 @@ protected:
 
 protected:
 	virtual bool removeWhenFarAway();
+
+public:
+	virtual void readAdditionalSaveData(CompoundTag *tag);
+	virtual void addAdditonalSaveData(CompoundTag *entityTag);
 };
