@@ -141,7 +141,7 @@ void Cow::defineSynchedData()
 {
 	Animal::defineSynchedData();
 
-	entityData->define(DATA_TYPE_ID, (byte) TYPE_DEFAULT);
+	entityData->define(DATA_TYPE_ID, static_cast<byte>(0));
 }
 
 int Cow::getCowType()
@@ -176,4 +176,21 @@ MobGroupData *Cow::finalizeMobSpawn(MobGroupData *groupData, int extraData)
 	}
 
 	return groupData;
+}
+
+void Cow::readAdditionalSaveData(CompoundTag *tag)
+{
+	Animal::readAdditionalSaveData(tag);
+
+	if (tag->contains(L"CowType"))
+	{
+		int value = tag->getByte(L"CowType");
+		setCowType(value);
+	}
+}
+
+void Cow::addAdditonalSaveData(CompoundTag *entityTag)
+{
+	Animal::addAdditonalSaveData(entityTag);
+	entityTag->putByte(L"CowType", (byte) getCowType());
 }
