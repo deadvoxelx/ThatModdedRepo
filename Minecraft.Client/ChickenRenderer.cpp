@@ -4,6 +4,8 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.animal.h"
 
 ResourceLocation ChickenRenderer::CHICKEN_LOCATION = ResourceLocation(TN_MOB_CHICKEN);
+ResourceLocation ChickenRenderer::CHICKEN_BLACK_LOCATION = ResourceLocation(TN_MOB_CHICKEN_BLACK);
+ResourceLocation ChickenRenderer::CHICKEN_RED_LOCATION = ResourceLocation(TN_MOB_CHICKEN_RED);
 
 ChickenRenderer::ChickenRenderer(Model *model, float shadow) : MobRenderer(model,shadow)
 {
@@ -27,5 +29,18 @@ float ChickenRenderer::getBob(shared_ptr<LivingEntity> _mob, float a)
 
 ResourceLocation *ChickenRenderer::getTextureLocation(shared_ptr<Entity> mob)
 {
-    return &CHICKEN_LOCATION;
+    shared_ptr<Chicken> chicken = dynamic_pointer_cast<Chicken>(mob);
+
+    if (chicken->getChickenType() == Chicken::TYPE_DEFAULT)
+	{
+        return &CHICKEN_LOCATION;
+    }
+    if (chicken->getChickenType() == Chicken::TYPE_BLACK)
+	{
+        return &CHICKEN_BLACK_LOCATION;
+    }
+    if (chicken->getChickenType() == Chicken::TYPE_RED)
+	{
+        return &CHICKEN_RED_LOCATION;
+    }
 }
