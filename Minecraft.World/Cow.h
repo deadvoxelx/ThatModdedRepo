@@ -45,4 +45,7 @@ protected:
 public:
 	virtual bool mobInteract(shared_ptr<Player> player);
 	virtual shared_ptr<AgableMob> getBreedOffspring(shared_ptr<AgableMob> target);
+
+	virtual void readAdditionalSaveData(CompoundTag *tag);
+	virtual void addAdditonalSaveData(CompoundTag *entityTag);
 };
