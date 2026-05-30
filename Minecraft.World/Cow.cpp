@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "com.mojang.nbt.h"
+#include "net.minecraft.world.h"
+#include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.ai.attributes.h"
 #include "net.minecraft.world.entity.ai.navigation.h"
 #include "net.minecraft.world.entity.ai.goal.h"
@@ -13,8 +15,6 @@
 #include "Cow.h"
 #include "..\Minecraft.Client\Textures.h"
 #include "MobCategory.h"
-
-
 
 Cow::Cow(Level *level) : Animal( level )
 {
@@ -135,4 +135,45 @@ shared_ptr<AgableMob> Cow::getBreedOffspring(shared_ptr<AgableMob> target)
 	{
 		return nullptr;
 	}
+}
+
+void Cow::defineSynchedData()
+{
+	Animal::defineSynchedData();
+
+	entityData->define(DATA_TYPE_ID, (byte) TYPE_DEFAULT);
+}
+
+int Cow::getCowType()
+{
+	return (int) entityData->getByte(DATA_TYPE_ID);
+}
+
+void Cow::setCowType(int type)
+{
+	entityData->set(DATA_TYPE_ID, (byte) type);
+}
+
+MobGroupData *Cow::finalizeMobSpawn(MobGroupData *groupData, int extraData)
+{
+	groupData = Animal::finalizeMobSpawn(groupData);
+
+	if (getRandom()->nextInt(4) == 0)
+	{
+		setCowType(TYPE_DEFAULT);
+	}
+	if (getRandom()->nextInt(4) == 1)
+	{
+		setCowType(TYPE_BROWN);
+	}
+	if (getRandom()->nextInt(4) == 2)
+	{
+		setCowType(TYPE_BLACK);
+	}
+	if (getRandom()->nextInt(4) == 3)
+	{
+		setCowType(TYPE_INVERT);
+	}
+
+	return groupData;
 }
