@@ -180,6 +180,8 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/cow_brown",
 	L"mob/cow_black",
 	L"mob/cow_invert",
+	L"mob/chicken_black",
+	L"mob/chicken_red",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
