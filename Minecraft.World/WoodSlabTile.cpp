@@ -7,10 +7,13 @@
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.stats.h"
 
-const unsigned int WoodSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {	IDS_TILE_STONESLAB_OAK,
+const unsigned int WoodSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {
+	IDS_TILE_STONESLAB_OAK,
 	IDS_TILE_STONESLAB_SPRUCE,
 	IDS_TILE_STONESLAB_BIRCH,
 	IDS_TILE_STONESLAB_JUNGLE,
+	IDS_TILE_NETHER_SLAB,
+	IDS_TILE_PURUL_SLAB,
 };
 
 // 	public static final String[] WOOD_NAMES = {
@@ -23,7 +26,23 @@ WoodSlabTile::WoodSlabTile(int id, bool fullSize) : HalfSlabTile(id, fullSize, M
 
 Icon *WoodSlabTile::getTexture(int face, int data)
 {
-	return Tile::wood->getTexture(face, data & TYPE_MASK);
+	int type = data & TYPE_MASK;
+
+	switch(type)
+	{	
+	case OAK_SLAB:
+		return Tile::wood->getTexture(face, /*data & TYPE_MASK*/ 0);
+	case SPRUCE_SLAB:
+		return Tile::wood->getTexture(face, /*data & TYPE_MASK*/ 1);
+	case BIRCH_SLAB:
+		return Tile::wood->getTexture(face, /*data & TYPE_MASK*/ 2);
+	case JUNGLE_SLAB:
+		return Tile::wood->getTexture(face, /*data & TYPE_MASK*/ 3);
+	case NETHER_SLAB:
+		return Tile::netherPlanks->getTexture(face);
+	case PURUL_SLAB:
+		return Tile::purulPlanks->getTexture(face);
+	}
 }
 
 int WoodSlabTile::getResource(int data, Random *random, int playerBonusLevel)
