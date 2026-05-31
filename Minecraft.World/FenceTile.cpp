@@ -32,11 +32,11 @@ Icon *FenceTile::getTexture(int face, int data)
 	}
 	if (data == TYPE_NETHER)
 	{
-		return Tile::netherPlanks->getTexture(face);
+		return Tile::netherPlanks->getTexture(face, 0);
 	}
 	if (data == TYPE_PURUL)
 	{
-		return Tile::purulPlanks->getTexture(face);
+		return Tile::netherPlanks->getTexture(face, 1);
 	}
 	return Tile::wood->getTexture(face, 0);
 }
