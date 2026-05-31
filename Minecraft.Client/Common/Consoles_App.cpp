@@ -4599,6 +4599,8 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_NETHER_FENCE, L"Nether Fence");
 		m_stringTable->registerString(IDS_TILE_PURUL_FENCE, L"Purul Fence");
 		m_stringTable->registerString(IDS_MOOBLOOM, L"Moobloom");
+		m_stringTable->registerString(IDS_TILE_NETHER_SLAB, L"Nether Slab");
+		m_stringTable->registerString(IDS_TILE_PURUL_SLAB, L"Purul Slab");
 
 	}
 	else
