@@ -35,8 +35,8 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::emeraldOre_Id, new ItemInstance(Item::emerald), 1);
 	addFurnaceRecipy(Item::potato_Id, new ItemInstance(Item::potatoBaked), .35f);
 	addFurnaceRecipy(Tile::netherRack_Id, new ItemInstance(Tile::netherBrick), .1f);
-	addFurnaceRecipy(Tile::goldenclin_Id, new ItemInstance(Tile::goldenclinBricks), .1f);
-	addFurnaceRecipy(Tile::endStone_Id, new ItemInstance(Tile::endStoneSmooth), .1f);
+	addFurnaceRecipy(Tile::goldenclin_Id, new ItemInstance(Tile::goldenclin, 1, 1), .1f);
+	addFurnaceRecipy(Tile::endStone_Id, new ItemInstance(Tile::endStone, 1, 1), .1f);
 	addFurnaceRecipy(Tile::netherWood_Id, new ItemInstance(Item::coal, 1, CoalItem::CHAR_COAL), .15f);
 	addFurnaceRecipy(Tile::purulLog_Id, new ItemInstance(Item::coal, 1, CoalItem::CHAR_COAL), .15f);
 	addFurnaceRecipy(Tile::endoriumOre_Id, new ItemInstance(Item::endorium), 1);
