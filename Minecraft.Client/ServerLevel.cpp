@@ -120,7 +120,7 @@ ServerLevel::ServerLevel(MinecraftServer *server, shared_ptr<LevelStorage>levelS
 	chunkMap = new PlayerChunkMap(this, dimension, server->getPlayers()->getViewDistance());
 
 	mobSpawner = new MobSpawner();
-	portalForcer = new PortalForcer(this);
+	portalForcer = new PortalForcer();
 	scoreboard = new ServerScoreboard(server);
 
 	//shared_ptr<ScoreboardSaveData> scoreboardSaveData = dynamic_pointer_cast<ScoreboardSaveData>( savedDataStorage->get(typeid(ScoreboardSaveData), ScoreboardSaveData::FILE_ID) );
@@ -309,7 +309,7 @@ void ServerLevel::tick()
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Tick portal forcer");
-	portalForcer->tick(getGameTime());
+	//portalForcer->tick(getGameTime());
 	PIXEndNamedEvent();
 
 	// repeat after tile ticks

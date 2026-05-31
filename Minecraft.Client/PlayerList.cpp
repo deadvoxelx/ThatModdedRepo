@@ -1041,7 +1041,7 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 			entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 			newLevel->tick(entity, false);
 			newLevel->cache->autoCreate = true;
-			newLevel->getPortalForcer()->force(entity, xOriginal, yOriginal, zOriginal, yRotOriginal);
+			newLevel->getPortalForcer()->force(newLevel, entity, lastDimension);
 			newLevel->cache->autoCreate = false;
 		}
 	}

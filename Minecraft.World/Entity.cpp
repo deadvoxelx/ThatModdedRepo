@@ -341,6 +341,7 @@ void Entity::_init(bool useSmallId, Level *level)
 
 	changingDimensionDelay = 0;
 	isInsidePortal = false;
+	isInsideAetherPortal = false;
 	portalTime = 0;
 	dimension = 0;
 	portalEntranceDir = 0;
@@ -567,6 +568,30 @@ void Entity::baseTick()
 					}
 					isInsidePortal = false;
 				}
+			}
+			else if (isInsideAetherPortal)
+			{
+				if (riding == nullptr)
+				{
+					if (portalTime++ >= waitTime)
+					{
+						portalTime = waitTime;
+						changingDimensionDelay = getDimensionChangingDelay();
+
+						int targetDimension;
+
+						if (level->dimension->id == 2)
+						{
+							targetDimension = 0;
+						}
+						else
+						{
+							targetDimension = 2;
+						}
+						changeDimension(targetDimension);
+					}
+				}
+				isInsideAetherPortal = false;
 			}
 			else
 			{
@@ -1609,8 +1634,12 @@ void Entity::rideTick()
 
 	// jeb: This caused the crosshair to "drift" while riding horses. For now I've just disabled it,
 	//      because I can't figure out what it's needed for. Riding boats and minecarts seem unaffected...
-	// yRot += yra;
-	// xRot += xra;
+	// 3UR: re-enabled this for TU20 but only for rideable minecarts
+	if (riding->instanceof(eTYPE_MINECART_RIDEABLE))
+	{
+		yRot += yra;
+		xRot += xra;
+	}
 }
 
 void Entity::positionRider()
@@ -1708,6 +1737,25 @@ void Entity::handleInsidePortal()
 	}
 
 	isInsidePortal = true;
+}
+
+void Entity::handleInsideAetherPortal()
+{
+	if (changingDimensionDelay > 0)
+	{
+		changingDimensionDelay = getDimensionChangingDelay();
+		return;
+	}
+
+	double xd = xo - x;
+	double zd = zo - z;
+
+	if (!level->isClientSide && !isInsideAetherPortal)
+	{
+		portalEntranceDir = Direction::getDirection(xd, zd);
+	}
+
+	isInsideAetherPortal = true;
 }
 
 int Entity::getDimensionChangingDelay()

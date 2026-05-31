@@ -183,14 +183,6 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', Tile::netherPlanks,
 		L'S');
 
-	r->addShapedRecipy(new ItemInstance(Tile::workBench), //
-		L"ssctg",
-		L"##", //
-		L"##", //
-
-		L'#', Tile::purulPlanks,
-		L'S');
-	
 	r->addShapedRecipy(new ItemInstance(Tile::furnace), //
 		L"sssctg",
 		L"###", //
@@ -243,15 +235,6 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L"###", //
 
 		L'#', Tile::netherPlanks,
-		L'S');
-
-	r->addShapedRecipy(new ItemInstance((Tile*)Tile::chest), //
-		L"sssctg",
-		L"###", //
-		L"# #", //
-		L"###", //
-
-		L'#', Tile::purulPlanks,
 		L'S');
 
 	r->addShapedRecipy(new ItemInstance(Tile::chest_trap), //

@@ -3,73 +3,62 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.dimension.h"
-#include "..\Minecraft.Client\ServerLevel.h"
 #include "PortalForcer.h"
 
-PortalForcer::PortalPosition::PortalPosition(int x, int y, int z, int64_t time) : Pos(x, y, z)
+PortalForcer::PortalForcer()
 {
-	lastUsed = time;
+	random = new Random();
 }
 
-PortalForcer::PortalForcer(ServerLevel *level)
+void PortalForcer::force(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
-	this->level = level;
-	random = new Random(level->getSeed());
-}
-
-PortalForcer::~PortalForcer()
-{
-	for(auto& it : cachedPortals)
+    if (level->dimension->id == 1)
 	{
-		delete it.second;
-	}
-}
+        int x = Mth::floor(e->x);
+        int y = Mth::floor(e->y) - 1;
+        int z = Mth::floor(e->z);
 
-void PortalForcer::force(shared_ptr<Entity> e, double xOriginal, double yOriginal, double zOriginal, float yRotOriginal)
-{
-	if (level->dimension->id == 1)
-	{
-		int x = Mth::floor(e->x);
-		int y = Mth::floor(e->y) - 1;
-		int z = Mth::floor(e->z);
-
-		int xa = 1;
-		int za = 0;
-		for (int b = -2; b <= 2; b++)
+        int xa = 1;
+        int za = 0;
+        for (int b = -2; b <= 2; b++)
 		{
-			for (int s = -2; s <= 2; s++)
+            for (int s = -2; s <= 2; s++)
 			{
-				for (int h = -1; h < 3; h++)
+                for (int h = -1; h < 3; h++)
 				{
-					int xt = x + s * xa + b * za;
-					int yt = y + h;
-					int zt = z + s * za - b * xa;
+                    int xt = x + s * xa + b * za;
+                    int yt = y + h;
+                    int zt = z + s * za - b * xa;
 
-					bool border = h < 0;
+                    bool border = h < 0;
 
-					level->setTileAndUpdate(xt, yt, zt, border ? Tile::obsidian_Id : 0);
-				}
-			}
-		}
+                    level->setTileAndData(xt, yt, zt, border ? Tile::obsidian_Id : 0, 0, Tile::UPDATE_CLIENTS);
+                }
+            }
+        }
 
-		e->moveTo(x, y, z, e->yRot, 0);
-		e->xd = e->yd = e->zd = 0;
+        e->moveTo(x, y, z, e->yRot, 0);
+        e->xd = e->yd = e->zd = 0;
 
-		return;
-	}
+        return;
+    }
 
-	if (findPortal(e, xOriginal, yOriginal, zOriginal, yRotOriginal))
+	if (findPortal(level, e, lastDimension))
 	{
 		return;
 	}
 
-	createPortal(e);
-	findPortal(e, xOriginal, yOriginal, zOriginal, yRotOriginal);
+	createPortal(level, e, lastDimension);
+	findPortal(level, e, lastDimension);
 }
 
 
-bool PortalForcer::findPortal(shared_ptr<Entity> e, double xOriginal, double yOriginal, double zOriginal, float yRotOriginal)
+bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
+	// Determine which portal tile to search for based on dimension
+	bool isAether = (level->dimension->id == 2 || lastDimension == 2);
+	int portalTileId = isAether ? Tile::aetherPortal_Id : Tile::portalTile_Id;
+
 	// 4J Stu - Decrease the range at which we search for a portal in the nether given our smaller nether
 	int r = 16;//* 8;
 	if(level->dimension->id == -1)
@@ -93,47 +82,29 @@ bool PortalForcer::findPortal(shared_ptr<Entity> e, double xOriginal, double yOr
 	int xc = Mth::floor(e->x);
 	int zc = Mth::floor(e->z);
 
-	long hash = ChunkPos::hashCode(xc >> 4, zc >> 4);
-	bool updateCache = true;
-
-    auto it = cachedPortals.find(hash);
-    if (it != cachedPortals.end())
+	for (int x = xc - r; x <= xc + r; x++)
 	{
-		PortalPosition *pos = it->second;
-
-		closest = 0;
-		xTarget = pos->x;
-		yTarget = pos->y;
-		zTarget = pos->z;
-		pos->lastUsed = level->getGameTime();
-		updateCache = false;
-	}
-	else
-	{
-		for (int x = xc - r; x <= xc + r; x++)
+		double xd = (x + 0.5) - e->x;
+		for (int z = zc - r; z <= zc + r; z++)
 		{
-			double xd = (x + 0.5) - e->x;
-			for (int z = zc - r; z <= zc + r; z++)
+			double zd = (z + 0.5) - e->z;
+			for (int y = level->getHeight() - 1; y >= 0; y--)
 			{
-				double zd = (z + 0.5) - e->z;
-				for (int y = level->getHeight() - 1; y >= 0; y--)
+				if (level->getTile(x, y, z) == portalTileId)
 				{
-					if (level->getTile(x, y, z) == Tile::portalTile_Id)
+					while (level->getTile(x, y - 1, z) == portalTileId)
 					{
-						while (level->getTile(x, y - 1, z) == Tile::portalTile_Id)
-						{
-							y--;
-						}
+						y--;
+					}
 
-						double yd = (y + 0.5) - e->y;
-						double dist = xd * xd + yd * yd + zd * zd;
-						if (closest < 0 || dist < closest)
-						{
-							closest = dist;
-							xTarget = x;
-							yTarget = y;
-							zTarget = z;
-						}
+					double yd = (y + 0.5) - e->y;
+					double dist = xd * xd + yd * yd + zd * zd;
+					if (closest < 0 || dist < closest)
+					{
+						closest = dist;
+						xTarget = x;
+						yTarget = y;
+						zTarget = z;
 					}
 				}
 			}
@@ -146,119 +117,18 @@ bool PortalForcer::findPortal(shared_ptr<Entity> e, double xOriginal, double yOr
 		int y = yTarget;
 		int z = zTarget;
 
-		if (updateCache)
-		{
-			auto existing = cachedPortals.find(hash);
-			if (existing != cachedPortals.end())
-			{
-				delete existing->second;
-				existing->second = new PortalPosition(x, y, z, level->getGameTime());
-			}
-			else
-			{
-				cachedPortals[hash] = new PortalPosition(x, y, z, level->getGameTime());
-				cachedPortalKeys.push_back(hash);
-			}
-		}
-
 		double xt = x + 0.5;
 		double yt = y + 0.5;
 		double zt = z + 0.5;
-		int dir = Direction::UNDEFINED;
 
-		if (level->getTile(x - 1, y, z) == Tile::portalTile_Id) dir = Direction::NORTH;
-		if (level->getTile(x + 1, y, z) == Tile::portalTile_Id) dir = Direction::SOUTH;
-		if (level->getTile(x, y, z - 1) == Tile::portalTile_Id) dir = Direction::EAST;
-		if (level->getTile(x, y, z + 1) == Tile::portalTile_Id) dir = Direction::WEST;
+		if (level->getTile(x - 1, y, z) == portalTileId) xt -= 0.5;
+		if (level->getTile(x + 1, y, z) == portalTileId) xt += 0.5;
 
-		int originalDir = e->getPortalEntranceDir();
+		if (level->getTile(x, y, z - 1) == portalTileId) zt -= 0.5;
+		if (level->getTile(x, y, z + 1) == portalTileId) zt += 0.5;
 
-		if (dir > Direction::UNDEFINED)
-		{
-			int leftDir = Direction::DIRECTION_COUNTER_CLOCKWISE[dir];
-			int forwardsx = Direction::STEP_X[dir];
-			int forwardsz = Direction::STEP_Z[dir];
-			int leftx = Direction::STEP_X[leftDir];
-			int leftz = Direction::STEP_Z[leftDir];
-
-			bool leftBlocked = !level->isEmptyTile(x + forwardsx + leftx, y, z + forwardsz + leftz) || !level->isEmptyTile(x + forwardsx + leftx, y + 1, z + forwardsz + leftz);
-			bool rightBlocked = !level->isEmptyTile(x + forwardsx, y, z + forwardsz) || !level->isEmptyTile(x + forwardsx, y + 1, z + forwardsz);
-
-			if (leftBlocked && rightBlocked)
-			{
-				dir = Direction::DIRECTION_OPPOSITE[dir];
-				leftDir = Direction::DIRECTION_OPPOSITE[leftDir];
-				forwardsx = Direction::STEP_X[dir];
-				forwardsz = Direction::STEP_Z[dir];
-				leftx = Direction::STEP_X[leftDir];
-				leftz = Direction::STEP_Z[leftDir];
-
-				x -= leftx;
-				xt -= leftx;
-				z -= leftz;
-				zt -= leftz;
-				leftBlocked = !level->isEmptyTile(x + forwardsx + leftx, y, z + forwardsz + leftz) || !level->isEmptyTile(x + forwardsx + leftx, y + 1, z + forwardsz + leftz);
-				rightBlocked = !level->isEmptyTile(x + forwardsx, y, z + forwardsz) || !level->isEmptyTile(x + forwardsx, y + 1, z + forwardsz);
-			}
-
-			float offsetLeft = 0.5f;
-			float offsetForwards = 0.5f;
-
-			if (!leftBlocked && rightBlocked)
-			{
-				offsetLeft = 1;
-			}
-			else if (leftBlocked && !rightBlocked)
-			{
-				offsetLeft = 0;
-			}
-			else if (leftBlocked && rightBlocked)
-			{
-				offsetForwards = 0;
-			}
-
-			// Center them in the frame and push them out forwards
-			xt += (leftx * offsetLeft) + (offsetForwards * forwardsx);
-			zt += (leftz * offsetLeft) + (offsetForwards * forwardsz);
-
-			float xx = 0;
-			float zz = 0;
-			float xz = 0;
-			float zx = 0;
-
-			if (dir == originalDir)
-			{
-				xx = 1;
-				zz = 1;
-			}
-			else if (dir == Direction::DIRECTION_OPPOSITE[originalDir])
-			{
-				xx = -1;
-				zz = -1;
-			}
-			else if (dir == Direction::DIRECTION_CLOCKWISE[originalDir])
-			{
-				xz = 1;
-				zx = -1;
-			}
-			else
-			{
-				xz = -1;
-				zx = 1;
-			}
-
-			double xd = e->xd;
-			double zd = e->zd;
-			e->xd = xd * xx + zd * zx;
-			e->zd = xd * xz + zd * zz;
-			e->yRot = (yRotOriginal - originalDir * 90) + (dir * 90);
-		}
-		else
-		{
-			e->xd = e->yd = e->zd = 0;
-		}
-
-		e->moveTo(xt, yt, zt, e->yRot, e->xRot);
+		e->moveTo(xt, yt, zt, e->yRot, 0);
+		e->xd = e->yd = e->zd = 0;
 		return true;
 	}
 
@@ -266,8 +136,13 @@ bool PortalForcer::findPortal(shared_ptr<Entity> e, double xOriginal, double yOr
 }
 
 
-bool PortalForcer::createPortal(shared_ptr<Entity> e)
+bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
+	// Determine which portal/frame tiles to use based on dimension
+	bool isAether = (level->dimension->id == 2 || lastDimension == 2);
+	int frameTileId = isAether ? Tile::glowstone_Id : Tile::obsidian_Id;
+	int portalTileId = isAether ? Tile::aetherPortal_Id : Tile::portalTile_Id;
+
 	// 4J Stu - Increase the range at which we try and create a portal to stop creating them floating in mid air over lava
 	int r = 16 * 3;
 	double closest = -1;
@@ -280,7 +155,7 @@ bool PortalForcer::createPortal(shared_ptr<Entity> e)
 	int XZSIZE = level->dimension->getXZSize() * 16; // XZSize is chunks, convert to blocks
 	int XZOFFSET = (XZSIZE / 2) - 4; // Subtract 4 to stay away from the edges // TODO Make the 4 a constant in HellRandomLevelSource
 
-	// Move the positions that we want to check away from the edge of the world
+	// Move the positions that we want to check away from the edge of the world	
 	if( (xc - r) < -XZOFFSET )
 	{
 		app.DebugPrintf("Adjusting portal creation x due to being too close to the edge\n");
@@ -348,7 +223,7 @@ bool PortalForcer::createPortal(shared_ptr<Entity> e)
 										int yt = y + h;
 										int zt = z + (s - 1) * za - b * xa;
 
-										// 4J Stu - Changes to stop Portals being created at the border of the nether inside the bedrock
+										// 4J Stu - Changes to stop Portals being created at the border of the nether inside the bedrock		
 										if( ( xt < -XZOFFSET ) || ( xt >= XZOFFSET ) || ( zt < -XZOFFSET ) || ( zt >= XZOFFSET ) )
 										{
 											app.DebugPrintf("Skipping possible portal location as at least one block is too close to the edge\n");
@@ -373,7 +248,7 @@ bool PortalForcer::createPortal(shared_ptr<Entity> e)
 							}
 						}
 					}
-next_first: continue;
+					next_first: continue;
 				}
 			}
 		}
@@ -408,7 +283,7 @@ next_first: continue;
 									int yt = y + h;
 									int zt = z + (s - 1) * za;
 
-									// 4J Stu - Changes to stop Portals being created at the border of the nether inside the bedrock
+									// 4J Stu - Changes to stop Portals being created at the border of the nether inside the bedrock		
 									if( ( xt < -XZOFFSET ) || ( xt >= XZOFFSET ) || ( zt < -XZOFFSET ) || ( zt >= XZOFFSET ) )
 									{
 										app.DebugPrintf("Skipping possible portal location as at least one block is too close to the edge\n");
@@ -432,7 +307,7 @@ next_first: continue;
 							}
 						}
 					}
-next_second: continue;
+					next_second: continue;
 				}
 			}
 		}
@@ -474,7 +349,7 @@ next_second: continue;
 
 					bool border = h < 0;
 
-					level->setTileAndUpdate(xt, yt, zt, border ? Tile::obsidian_Id : 0);
+					level->setTileAndData(xt, yt, zt, border ? frameTileId : 0, 0, Tile::UPDATE_CLIENTS);
 				}
 			}
 		}
@@ -491,7 +366,7 @@ next_second: continue;
 				int zt = z + (s - 1) * za;
 
 				bool border = s == 0 || s == 3 || h == -1 || h == 3;
-				level->setTileAndData(xt, yt, zt, border ? Tile::obsidian_Id : Tile::portalTile_Id, 0, Tile::UPDATE_CLIENTS);
+				level->setTileAndData(xt, yt, zt, border ? frameTileId : portalTileId, 0, Tile::UPDATE_CLIENTS);
 			}
 		}
 
@@ -508,30 +383,15 @@ next_second: continue;
 		}
 	}
 
-	return true;
-}
-
-void PortalForcer::tick(int64_t time)
-{
-	if (time % (SharedConstants::TICKS_PER_SECOND * 5) == 0)
+	// For Aether portals with no solid ground: extend glowstone platform on both sides
+	if (isAether && closest < 0)
 	{
-		int64_t cutoff = time - SharedConstants::TICKS_PER_SECOND * 30;
-
-        for (auto it = cachedPortalKeys.begin(); it != cachedPortalKeys.end();)
-        {
-			int64_t key = *it;
-			PortalPosition *pos = cachedPortals[key];
-
-			if (pos == nullptr || pos->lastUsed < cutoff)
-			{
-				delete pos;
-				it = cachedPortalKeys.erase(it);
-				cachedPortals.erase(key);
-			}
-			else
-			{
-				++it;
-			}
+		for (int ext = 1; ext <= 2; ext++)
+		{
+			level->setTileAndData(x + (-1 - ext) * xa, y - 1, z + (-1 - ext) * za, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
+			level->setTileAndData(x + (2 + ext) * xa, y - 1, z + (2 + ext) * za, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
 		}
 	}
+
+	return true;
 }
