@@ -561,7 +561,7 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		FlowerFeature(Tile::mushroom_red_Id).place(level, pprandom, x, y, z);
 	}
 
-	OreFeature quartzFeature(Tile::netherQuartz_Id, 17, Tile::netherRack_Id);
+	OreFeature quartzFeature(Tile::netherQuartz_Id, 0, 17, Tile::netherRack_Id);
 	for (int i = 0; i < 19; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
@@ -570,7 +570,7 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		quartzFeature.place(level, pprandom, x, y, z);
 	}
 
-	OreFeature netherDiamondFeature(Tile::netherDiamond_Id, 4, Tile::netherRack_Id);
+	OreFeature netherDiamondFeature(Tile::netherDiamond_Id, 0, 4, Tile::netherRack_Id);
 	for (int i = 0; i < 16; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
@@ -579,7 +579,7 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		netherDiamondFeature.place(level, pprandom, x, y, z);
 	}
 
-	OreFeature netherGoldFeature(Tile::netherGold_Id, 9, Tile::netherRack_Id);
+	OreFeature netherGoldFeature(Tile::netherGold_Id, 0, 9, Tile::netherRack_Id);
 	for (int i = 0; i < 32; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
@@ -588,7 +588,7 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		netherGoldFeature.place(level, pprandom, x, y, z);
 	}
 
-	OreFeature netherGravelFeature(Tile::gravel_Id, 24, Tile::netherRack_Id);
+	OreFeature netherGravelFeature(Tile::gravel_Id, 0, 24, Tile::netherRack_Id);
 	for (int i = 0; i < 16; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
@@ -597,7 +597,7 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		netherGravelFeature.place(level, pprandom, x, y, z);
 	}
 
-	OreFeature goldenclinFeature(Tile::goldenclin_Id, 24, Tile::netherRack_Id);
+	OreFeature goldenclinFeature(Tile::goldenclin_Id, 0, 24, Tile::netherRack_Id);
 	for (int i = 0; i < 18; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
@@ -606,7 +606,7 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		goldenclinFeature.place(level, pprandom, x, y, z);
 	}
 
-	OreFeature nethaniumFeature(Tile::nethaniumOre_Id, 8, Tile::netherRack_Id);
+	OreFeature nethaniumFeature(Tile::nethaniumOre_Id, 0, 8, Tile::netherRack_Id);
 	for (int i = 0; i < 16; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
