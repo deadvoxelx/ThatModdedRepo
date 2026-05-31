@@ -317,19 +317,19 @@ Recipes::Recipes()
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_GOLDENCLIN), //
-		L"ssctg",
+		L"ssczg",
 		L"###", //
 		L"###", //
 
-		L'#', Tile::goldenclin,
+		L'#', new ItemInstance(Tile::goldenclin, 1, GoldenclinTile::TYPE_DEFAULT),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_GOLDENCLINBRICK), //
-		L"ssctg",
+		L"ssczg",
 		L"###", //
 		L"###", //
 
-		L'#', Tile::goldenclinBricks,
+		L'#', new ItemInstance(Tile::goldenclin, 1, GoldenclinTile::TYPE_BRICK),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_QUARTZ), //
@@ -365,35 +365,35 @@ Recipes::Recipes()
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDSTONE), //
-		L"ssctg",
+		L"ssczg",
 		L"###", //
 		L"###", //
 
-		L'#', Tile::endStone,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_DEFAULT),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDSTONE_MOSSY), //
-		L"ssctg",
+		L"ssczg",
 		L"###", //
 		L"###", //
 
-		L'#', Tile::endStoneMossy,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDBRICK), //
-		L"ssctg",
+		L"ssczg",
 		L"###", //
 		L"###", //
 
-		L'#', Tile::endBricks,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_BRICK),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_ENDBRICK_MOSSY), //
-		L"ssctg",
+		L"ssczg",
 		L"###", //
 		L"###", //
 
-		L'#', Tile::endBricksMossy,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY_BRICK),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stairs_wood, 6), //
@@ -519,11 +519,46 @@ Recipes::Recipes()
 		L'#', Tile::endSand,
 		L'T');
 
-	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::SAND_SLAB), //
+	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, WoodSlabTile::OAK_SLAB), //
+		L"sczg",
+		L"###", //
+
+		L'#', new ItemInstance(Tile::wood, 1, 0),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, WoodSlabTile::SPRUCE_SLAB), //
+		L"sczg",
+		L"###", //
+
+		L'#', new ItemInstance(Tile::wood, 1, TreeTile::DARK_TRUNK),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, WoodSlabTile::BIRCH_SLAB), //
+		L"sczg",
+		L"###", //
+
+		L'#', new ItemInstance(Tile::wood, 1, TreeTile::BIRCH_TRUNK),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, WoodSlabTile::JUNGLE_SLAB), //
+		L"sczg",
+		L"###", //
+
+		L'#', new ItemInstance(Tile::wood, 1, TreeTile::JUNGLE_TRUNK),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, WoodSlabTile::NETHER_SLAB), //
 		L"sctg",
 		L"###", //
 
-		L'#', Tile::sandStone,
+		L'#', Tile::netherPlanks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, WoodSlabTile::PURUL_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::purulPlanks,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::STONE_SLAB), //
@@ -537,6 +572,13 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', Tile::cobblestone,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::SAND_SLAB), //
+		L"sctg",
+		L"###", //
+
+		L'#', Tile::sandStone,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::BRICK_SLAB), //
@@ -575,77 +617,46 @@ Recipes::Recipes()
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::GOLDENCLIN_SLAB), //
-		L"sctg",
+		L"sczg",
 		L"###", //
 
-		L'#', Tile::goldenclin,
+		L'#', new ItemInstance(Tile::goldenclin, 1, GoldenclinTile::TYPE_DEFAULT),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::GOLDENCLINBRICK_SLAB), //
-		L"sctg",
+		L"sczg",
 		L"###", //
 
-		L'#', Tile::goldenclinBricks,
+		L'#', new ItemInstance(Tile::goldenclin, 1, GoldenclinTile::TYPE_BRICK),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDSTONE_SLAB), //
-		L"sctg",
+		L"sczg",
 		L"###", //
 
-		L'#', Tile::endStone,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_DEFAULT),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDSTONE_MOSSY_SLAB), //
-		L"sctg",
+		L"sczg",
 		L"###", //
 
-		L'#', Tile::endStoneMossy,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDBRICK_SLAB), //
-		L"sctg",
+		L"sczg",
 		L"###", //
 
-		L'#', Tile::endBricks,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_BRICK),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::ENDBRICK_MOSSY_SLAB), //
-		L"sctg",
-		L"###", //
-
-		L'#', Tile::endBricksMossy,
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, 0), //
 		L"sczg",
 		L"###", //
 
-		L'#', new ItemInstance(Tile::wood, 1, 0),
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY_BRICK),
 		L'S');
-	// TU9 - adding wood slabs
-
-	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, TreeTile::BIRCH_TRUNK), //
-		L"sczg",
-		L"###", //
-
-		L'#', new ItemInstance(Tile::wood, 1, TreeTile::BIRCH_TRUNK),
-		L'S');
-
-
-	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, TreeTile::DARK_TRUNK), //
-		L"sczg",
-		L"###", //
-
-		L'#', new ItemInstance(Tile::wood, 1, TreeTile::DARK_TRUNK),
-		L'S');
-
-	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, TreeTile::JUNGLE_TRUNK), //
-		L"sczg",
-		L"###", //
-
-		L'#', new ItemInstance(Tile::wood, 1, TreeTile::JUNGLE_TRUNK),
-		L'S');
-
 
 	//iCount=getRecipies()->size();
 
@@ -1016,10 +1027,10 @@ Recipes::Recipes()
 		L'M');
 
 	addShapedRecipy(new ItemInstance(Tile::endStoneButton, 1), //
-		L"sctg",
+		L"sczg",
 		L"#", //
 
-		L'#', Tile::endStone,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_DEFAULT),
 		L'M');
 
 	addShapedRecipy(new ItemInstance(Tile::button_wood, 1), //
