@@ -46,11 +46,11 @@ Icon *WallTile::getTexture(int face, int data)
 	}
 	if (data == TYPE_GOLDENCLIN)
 	{
-		return Tile::goldenclin->getTexture(face);
+		return Tile::goldenclin->getTexture(face, 0);
 	}
 	if (data == TYPE_GOLDENCLINBRICK)
 	{
-		return Tile::goldenclinBricks->getTexture(face);
+		return Tile::goldenclin->getTexture(face, 1);
 	}
 	if (data == TYPE_QUARTZ)
 	{
@@ -70,19 +70,19 @@ Icon *WallTile::getTexture(int face, int data)
 	}
 	if (data == TYPE_ENDSTONE)
 	{
-		return Tile::endStone->getTexture(face);
+		return Tile::endStone->getTexture(face, 0);
 	}
 	if (data == TYPE_ENDSTONE_MOSSY)
 	{
-		return Tile::endStoneMossy->getTexture(face);
+		return Tile::endStone->getTexture(face, 2);
 	}
 	if (data == TYPE_ENDBRICK)
 	{
-		return Tile::endBricks->getTexture(face);
+		return Tile::endStone->getTexture(face, 3);
 	}
 	if (data == TYPE_ENDBRICK_MOSSY)
 	{
-		return Tile::endBricksMossy->getTexture(face);
+		return Tile::endStone->getTexture(face, 4);
 	}
 	return Tile::cobblestone->getTexture(face);
 }
