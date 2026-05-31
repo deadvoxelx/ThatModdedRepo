@@ -96,6 +96,7 @@ public:
 		eMaterial_ice,
 		eMaterial_stick,
 		eMaterial_tnt,
+		eMaterial_endStone,
 
 	}
 	eMaterial;

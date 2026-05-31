@@ -150,3 +150,5 @@
 #include "EndStoneButtonTile.h"
 #include "StoneSlab2Tile.h"
 #include "StoneFenceTile.h"
+#include "EndStoneTile.h"
+#include "GoldenclinTile.h"

@@ -23,7 +23,7 @@ TheOuterEndBiomeDecorator::TheOuterEndBiomeDecorator(Biome *biome) : BiomeDecora
 	veloettShrubFeature = new VeloettShrubFeature();
 	veloettFlowerFeature = new VeloettFlowerFeature();
 
-	endTowerFeature = new EndTowerFeature(Tile::endBricks_Id);
+	endTowerFeature = new EndTowerFeature(Tile::endStone_Id);
 }
 
 void TheOuterEndBiomeDecorator::decorate()
@@ -109,7 +109,7 @@ void TheOuterEndBiomeDecorator::decorate()
 		VeloettFlowerFeature().place(level, random, x, y, z);
 	}
 
-	OreFeature endoriumOreFeature(Tile::endoriumOre_Id, 5, Tile::endStone_Id);
+	OreFeature endoriumOreFeature(Tile::endoriumOre_Id, 0, 5, Tile::endStone_Id);
 	for (int i = 0; i < 5; i++)
 	{
 		int x = xo + random->nextInt(16);
@@ -118,7 +118,7 @@ void TheOuterEndBiomeDecorator::decorate()
 		endoriumOreFeature.place(level, random, x, y, z);
 	}
 
-	OreFeature mossyEndStoneFeature(Tile::endStoneMossy_Id, 24, Tile::endStone_Id);
+	OreFeature mossyEndStoneFeature(Tile::endStone_Id, EndStoneTile::TYPE_MOSSY, 24, Tile::endStone_Id);
 	for (int i = 0; i < 17; i++)
 	{
 		int x = xo + random->nextInt(16);
