@@ -1044,7 +1044,7 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(21,	7,	L"purul_veloett");
 	ADD_ICON(21,	8,	L"purul_log_side");
 	ADD_ICON(21,	9,	L"purul_log_top");
-	ADD_ICON(21,	10,	L"purul_planks");
+	ADD_ICON(21,	10,	L"planks_nether_purul");
 	ADD_ICON(21,	11,	L"endactus_side");
 	ADD_ICON(21,	12,	L"endactus_top");
 	ADD_ICON(21,	13,	L"endactus_bottom");
