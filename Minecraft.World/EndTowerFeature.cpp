@@ -167,30 +167,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y, z + 4, Tile::endStone_Id, 3);
 		
 		//Floor 2
 		placeBlock(level, x + 2, y + 4, z + 2, Tile::purulPlanks_Id, 0);
@@ -243,30 +243,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 4, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 4, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 4, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 4, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 4, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 4, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 4, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 4, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 4, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 4, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 4, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 4, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 4, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 4, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 4, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 4, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 4, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 4, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 4, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 4, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 4, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 4, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 4, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 4, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 4, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 4, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 4, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 4, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 4, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 4, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 4, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 4, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 4, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 4, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 4, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 4, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 4, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 4, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -358,30 +358,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 8, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 8, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 8, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 8, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 8, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 8, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 8, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 8, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 8, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 8, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 8, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 8, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 8, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 8, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 8, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 8, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 8, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 8, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 8, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 8, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 8, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 8, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 8, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 8, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 8, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 8, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 8, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 8, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 8, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 8, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 8, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 8, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 8, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 8, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 8, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 8, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 8, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 8, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -473,30 +473,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 12, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 12, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 12, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 12, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 12, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 12, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 12, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 12, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 12, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 12, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 12, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 12, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 12, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 12, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 12, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 12, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 12, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 12, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 12, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 12, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 12, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 12, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 12, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 12, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 12, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 12, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 12, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 12, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 12, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 12, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 12, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 12, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 12, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 12, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 12, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 12, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 12, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 12, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -588,30 +588,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 16, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 16, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 16, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 16, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 16, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 16, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 16, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 16, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 16, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 16, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 16, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 16, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 16, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 16, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 16, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 16, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 16, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 16, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 16, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 16, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 16, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 16, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 16, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 16, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 16, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 16, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 16, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 16, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 16, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 16, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 16, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 16, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 16, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 16, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 16, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 16, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 16, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 16, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -703,30 +703,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 20, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 20, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 20, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 20, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 20, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 20, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 20, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 20, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 20, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 20, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 20, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 20, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 20, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 20, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 20, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 20, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 20, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 20, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 20, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 20, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 20, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 20, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 20, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 20, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 20, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 20, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 20, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 20, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 20, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 20, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 20, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 20, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 20, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 20, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 20, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 20, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 20, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 20, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1044,29 +1044,29 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 1, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 1, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 1, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 1, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 1, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 1, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 1, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 1, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 1, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 1, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 1, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 1, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 1, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 1, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 1, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 1, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 1, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 1, z + 1, Tile::endStone_Id, 3);
 
-		placeBlock(level, x + 2, y + 1, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 1, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 1, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 1, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 1, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 1, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 1, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 1, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 1, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 1, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 1, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 1, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 1, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 1, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 1, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 1, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 1, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 1, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 1, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 1, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 1, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 1, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1075,25 +1075,25 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 2, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 2, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 2, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 2, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 2, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 2, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 2, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 2, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 2, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 2, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 2, z + 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 2, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 4, y + 2, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 2, z + 1, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 4, y + 2, z + 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 2, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 4, y + 2, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 2, z + 1, Tile::endStone_Id, 5);
 
-		placeBlock(level, x + 2, y + 2, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 2, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 2, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 2, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 2, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 2, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 2, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 2, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 2, z + 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 2, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 1, y + 2, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 2, z + 4, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 1, y + 2, z + 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 2, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 1, y + 2, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 2, z + 4, Tile::endStone_Id, 5);
 		
 		placeBlock(level, x + 4, y + 2, z, Tile::stained_glass_Id, 2);
 	    placeBlock(level, x - 4, y + 2, z, Tile::stained_glass_Id, 2);
@@ -1106,30 +1106,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 3, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 3, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 3, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 3, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 3, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 3, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 3, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 3, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 3, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 3, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 3, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 3, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 3, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 3, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 3, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 3, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 3, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 3, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 3, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 3, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 3, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 3, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 3, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 3, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 3, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 3, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 3, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 3, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 3, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 3, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 3, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 3, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 3, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 3, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 3, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 3, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 3, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 3, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 3, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 3, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 3, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 3, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1138,30 +1138,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 5, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 5, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 5, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 5, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 5, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 5, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 5, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 5, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 5, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 5, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 5, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 5, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 5, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 5, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 5, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 5, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 5, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 5, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 5, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 5, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 5, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 5, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 5, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 5, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 5, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 5, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 5, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 5, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 5, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 5, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 5, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 5, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 5, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 5, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 5, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 5, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 5, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 5, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 5, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 5, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 5, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 5, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1170,25 +1170,25 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 6, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 6, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 6, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 6, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 6, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 6, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 6, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 6, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 6, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 6, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 6, z + 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 6, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 4, y + 6, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 6, z + 1, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 4, y + 6, z + 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 6, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 4, y + 6, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 6, z + 1, Tile::endStone_Id, 5);
 
-		placeBlock(level, x + 2, y + 6, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 6, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 6, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 6, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 6, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 6, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 6, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 6, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 6, z + 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 6, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 1, y + 6, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 6, z + 4, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 1, y + 6, z + 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 6, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 1, y + 6, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 6, z + 4, Tile::endStone_Id, 5);
 		
 		placeBlock(level, x + 4, y + 6, z, Tile::stained_glass_Id, 2);
 	    placeBlock(level, x - 4, y + 6, z, Tile::stained_glass_Id, 2);
@@ -1202,30 +1202,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 7, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 7, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 7, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 7, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 7, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 7, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 7, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 7, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 7, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 7, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 7, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 7, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 7, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 7, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 7, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 7, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 7, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 7, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 7, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 7, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 7, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 7, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 7, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 7, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 7, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 7, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 7, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 7, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 7, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 7, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 7, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 7, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 7, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 7, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 7, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 7, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 7, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 7, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 7, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 7, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 7, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 7, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1234,30 +1234,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 9, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 9, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 9, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 9, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 9, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 9, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 9, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 9, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 9, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 9, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 9, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 9, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 9, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 9, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 9, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 9, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 9, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 9, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 9, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 9, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 9, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 9, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 9, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 9, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 9, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 9, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 9, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 9, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 9, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 9, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 9, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 9, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 9, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 9, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 9, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 9, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 9, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 9, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 9, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 9, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 9, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 9, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1266,25 +1266,25 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 10, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 10, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 10, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 10, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 10, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 10, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 10, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 10, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 10, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 10, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 10, z + 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 10, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 4, y + 10, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 10, z + 1, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 4, y + 10, z + 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 10, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 4, y + 10, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 10, z + 1, Tile::endStone_Id, 5);
 
-		placeBlock(level, x + 2, y + 10, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 10, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 10, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 10, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 10, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 10, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 10, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 10, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 10, z + 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 10, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 1, y + 10, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 10, z + 4, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 1, y + 10, z + 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 10, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 1, y + 10, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 10, z + 4, Tile::endStone_Id, 5);
 		
 		placeBlock(level, x + 4, y + 10, z, Tile::stained_glass_Id, 2);
 	    placeBlock(level, x - 4, y + 10, z, Tile::stained_glass_Id, 2);
@@ -1298,30 +1298,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 11, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 11, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 11, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 11, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 11, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 11, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 11, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 11, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 11, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 11, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 11, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 11, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 11, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 11, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 11, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 11, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 11, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 11, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 11, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 11, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 11, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 11, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 11, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 11, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 11, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 11, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 11, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 11, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 11, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 11, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 11, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 11, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 11, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 11, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 11, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 11, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 11, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 11, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 11, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 11, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 11, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 11, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1330,30 +1330,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 13, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 13, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 13, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 13, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 13, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 13, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 13, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 13, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 13, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 13, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 13, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 13, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 13, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 13, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 13, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 13, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 13, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 13, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 13, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 13, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 13, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 13, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 13, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 13, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 13, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 13, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 13, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 13, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 13, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 13, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 13, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 13, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 13, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 13, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 13, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 13, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 13, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 13, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 13, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 13, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 13, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 13, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1362,25 +1362,25 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 14, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 14, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 14, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 14, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 14, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 14, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 14, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 14, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 14, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 14, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 14, z + 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 14, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 4, y + 14, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 14, z + 1, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 4, y + 14, z + 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 14, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 4, y + 14, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 14, z + 1, Tile::endStone_Id, 5);
 
-		placeBlock(level, x + 2, y + 14, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 14, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 14, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 14, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 14, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 14, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 14, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 14, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 14, z + 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 14, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 1, y + 14, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 14, z + 4, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 1, y + 14, z + 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 14, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 1, y + 14, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 14, z + 4, Tile::endStone_Id, 5);
 		
 		placeBlock(level, x + 4, y + 14, z, Tile::stained_glass_Id, 2);
 	    placeBlock(level, x - 4, y + 14, z, Tile::stained_glass_Id, 2);
@@ -1394,30 +1394,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 15, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 15, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 15, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 15, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 15, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 15, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 15, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 15, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 15, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 15, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 15, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 15, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 15, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 15, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 15, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 15, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 15, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 15, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 15, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 15, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 15, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 15, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 15, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 15, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 15, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 15, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 15, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 15, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 15, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 15, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 15, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 15, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 15, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 15, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 15, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 15, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 15, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 15, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 15, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 15, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 15, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 15, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1426,30 +1426,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 17, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 17, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 17, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 17, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 17, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 17, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 17, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 17, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 17, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 17, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 17, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 17, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 17, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 17, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 17, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 17, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 17, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 17, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 17, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 17, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 17, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 17, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 17, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 17, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 17, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 17, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 17, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 17, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 17, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 17, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 17, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 17, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 17, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 17, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 17, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 17, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 17, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 17, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 17, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 17, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 17, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 17, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1458,25 +1458,25 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 18, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 18, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 18, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 18, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 18, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 18, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 18, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 18, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 18, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 18, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 18, z + 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 18, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 4, y + 18, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 18, z + 1, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 4, y + 18, z + 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 18, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 4, y + 18, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 18, z + 1, Tile::endStone_Id, 5);
 
-		placeBlock(level, x + 2, y + 18, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 18, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 18, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 18, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 18, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 18, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 18, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 18, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 18, z + 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 18, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 1, y + 18, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 18, z + 4, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 1, y + 18, z + 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 18, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 1, y + 18, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 18, z + 4, Tile::endStone_Id, 5);
 		
 		placeBlock(level, x + 4, y + 18, z, Tile::stained_glass_Id, 2);
 	    placeBlock(level, x - 4, y + 18, z, Tile::stained_glass_Id, 2);
@@ -1490,30 +1490,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 19, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 19, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 19, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 19, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 19, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 19, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 19, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 19, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 19, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 19, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 19, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 19, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 19, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 19, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 19, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 19, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 19, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 19, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 19, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 19, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 19, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 19, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 19, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 19, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 19, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 19, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 19, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 19, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 19, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 19, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 19, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 19, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 19, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 19, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 19, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 19, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 19, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 19, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 19, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 19, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 19, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 19, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1522,30 +1522,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 21, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 21, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 21, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 21, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 21, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 21, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 21, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 21, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 21, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 21, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 21, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 21, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 21, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 21, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 21, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 21, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 21, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 21, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 21, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 21, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 21, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 21, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 21, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 21, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 21, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 21, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 21, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 21, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 21, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 21, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 21, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 21, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 21, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 21, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 21, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 21, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 21, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 21, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 21, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 21, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 21, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 21, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
@@ -1554,25 +1554,25 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 22, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 22, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 22, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 22, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 22, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 22, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 22, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 22, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 22, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 22, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 22, z + 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 22, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 4, y + 22, z - 1, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 4, y + 22, z + 1, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 4, y + 22, z + 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 22, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 4, y + 22, z - 1, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 4, y + 22, z + 1, Tile::endStone_Id, 5);
 
-		placeBlock(level, x + 2, y + 22, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 22, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 22, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 22, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 22, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 22, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 22, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 22, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 22, z + 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 22, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x + 1, y + 22, z - 4, Tile::endBricksChiseled_Id, 0);
-	    placeBlock(level, x - 1, y + 22, z + 4, Tile::endBricksChiseled_Id, 0);
+		placeBlock(level, x + 1, y + 22, z + 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 22, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x + 1, y + 22, z - 4, Tile::endStone_Id, 5);
+	    placeBlock(level, x - 1, y + 22, z + 4, Tile::endStone_Id, 5);
 		
 		placeBlock(level, x + 4, y + 22, z, Tile::stained_glass_Id, 2);
 	    placeBlock(level, x - 4, y + 22, z, Tile::stained_glass_Id, 2);
@@ -1586,30 +1586,30 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 3, y + 23, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 23, z + 3, Tile::purulLog_Id, 0);
 		
-		placeBlock(level, x + 4, y + 23, z + 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 23, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 23, z - 2, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 23, z + 2, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 23, z + 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 23, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 23, z - 2, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 23, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 23, z + 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 23, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 4, y + 23, z - 1, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 23, z + 1, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 23, z + 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 23, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 4, y + 23, z - 1, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 23, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 23, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 23, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 2, y + 23, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 2, y + 23, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 2, y + 23, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 23, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 2, y + 23, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 2, y + 23, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 23, z + 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 23, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x + 1, y + 23, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 1, y + 23, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 1, y + 23, z + 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 23, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x + 1, y + 23, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 1, y + 23, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 23, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x - 4, y + 23, z, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 23, z - 4, Tile::endBricks_Id, 0);
-	    placeBlock(level, x, y + 23, z + 4, Tile::endBricks_Id, 0);
+		placeBlock(level, x + 4, y + 23, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x - 4, y + 23, z, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 23, z - 4, Tile::endStone_Id, 3);
+	    placeBlock(level, x, y + 23, z + 4, Tile::endStone_Id, 3);
 		
 		
 		
