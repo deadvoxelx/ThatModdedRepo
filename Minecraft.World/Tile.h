@@ -316,7 +316,7 @@ public:
 	static const int endPortalTile_Id = 119;
 	static const int endPortalFrameTile_Id = 120;
 
-	static const int endStone_Id = 121;
+	static const int endStone_Id = 121;		//end stone
 	static const int dragonEgg_Id = 122;
 	static const int redstoneLight_Id = 123;
 	static const int redstoneLight_lit_Id = 124;
@@ -371,7 +371,7 @@ public:
 	static const int netherDiamond_Id = 174;
 	static const int netherGold_Id = 175;
 	static const int goldenclin_Id = 176;
-	static const int goldenclinBricks_Id = 177;
+	//static const int goldenclinBricks_Id = 177;
 	static const int netherSoil_Id = 178;
 	static const int lavaRock_Id = 179;
 	static const int netherLeaves_Id = 180;
@@ -384,18 +384,18 @@ public:
 	static const int netherSapling_Id = 187;
 	static const int nether_furnace_Id = 188;
 	static const int nether_furnace_lit_Id = 189;
-	static const int endBricks_Id = 190;
-	static const int endBricksChiseled_Id = 191;
-	static const int endStoneSmooth_Id = 192;
-	static const int endStoneMossy_Id = 193;
-	static const int endBricksMossy_Id = 194;
+	//static const int endBricks_Id = 190;
+	//static const int endBricksChiseled_Id = 191;
+	//static const int endStoneSmooth_Id = 192;
+	//static const int endStoneMossy_Id = 193;
+	//static const int endBricksMossy_Id = 194;
 	static const int veloettGrass_Id = 195;
 	static const int endSand_Id = 196;
 	static const int endoriumOre_Id = 197;
 	static const int endoriumBlock_Id = 198;
 	static const int endoriumGrate_Id = 199;
-	static const int endGateway_Id = 200;
-	static const int endoriumLamp_Id = 201;
+	static const int endoriumLamp_Id = 200;
+	static const int endGateway_Id = 201;
 	static const int purulVeloett_Id = 202;
 	static const int purulLog_Id = 203;
 	static const int purulPlanks_Id = 204;
@@ -592,7 +592,7 @@ public:
 	static Tile *netherDiamond;
 	static Tile *netherGold;
 	static Tile *goldenclin;
-	static Tile *goldenclinBricks;
+	//static Tile *goldenclinBricks;
 	static Tile *netherSoil;
 	static Tile *lavaRock;
 	static Tile *netherLeaves;
@@ -605,11 +605,11 @@ public:
 	static Tile *netherSapling;
 	static Tile *nether_furnace;
 	static Tile *nether_furnace_lit;
-	static Tile *endBricks;
-	static Tile *endBricksChiseled;
-	static Tile *endStoneSmooth;
-	static Tile *endStoneMossy;
-	static Tile *endBricksMossy;
+	//static Tile *endBricks;
+	//static Tile *endBricksChiseled;
+	//static Tile *endStoneSmooth;
+	//static Tile *endStoneMossy;
+	//static Tile *endBricksMossy;
 	static Tile *veloettGrass;
 	static Tile *endSand;
 	static Tile *endoriumOre;
