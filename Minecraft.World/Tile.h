@@ -39,6 +39,7 @@ class TileEntity;
 class HalfSlabTile;
 class Icon;
 class IconRegister;
+class AetherPortalTile;
 
 class ChunkRebuildData;
 
@@ -371,7 +372,7 @@ public:
 	static const int netherDiamond_Id = 174;
 	static const int netherGold_Id = 175;
 	static const int goldenclin_Id = 176;
-	//static const int goldenclinBricks_Id = 177;
+	static const int aetherPortal_Id = 177;
 	static const int netherSoil_Id = 178;
 	static const int lavaRock_Id = 179;
 	static const int netherLeaves_Id = 180;
@@ -398,7 +399,7 @@ public:
 	static const int endGateway_Id = 201;
 	static const int purulVeloett_Id = 202;
 	static const int purulLog_Id = 203;
-	static const int purulPlanks_Id = 204;
+	//static const int purulPlanks_Id = 204;
 	static const int endactus_Id = 205;
 	static const int endesertBush_Id = 206;
 	static const int veloettShrub_Id = 207;
@@ -619,7 +620,7 @@ public:
 	static Tile *endoriumLamp;
 	static Tile *purulVeloett;
 	static Tile *purulLog;
-	static Tile *purulPlanks;
+	static AetherPortalTile *aetherPortal;
 	static Tile *endactus;
 	static Tile *endesertBush;
 	static Tile *veloettShrub;
