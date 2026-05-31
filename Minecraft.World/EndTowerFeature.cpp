@@ -6,8 +6,7 @@
 #include "net.minecraft.world.item.h"
 #include "WeighedTreasure.h"
 
-EndTowerFeature::EndTowerFeature(int blockId)
-    : Feature(blockId)
+EndTowerFeature::EndTowerFeature(int blockId) : Feature(blockId)
 {
 }
 
@@ -106,61 +105,61 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	
 	
 		//Floor 1
-	    placeBlock(level, x, y, z, Tile::purulPlanks_Id, 0);
-        placeBlock(level, x + 1, y, z, Tile::purulPlanks_Id, 0);
-        placeBlock(level, x - 1, y, z, Tile::purulPlanks_Id, 0);
-        placeBlock(level, x, y, z + 1, Tile::purulPlanks_Id, 0);
-        placeBlock(level, x, y, z - 1, Tile::purulPlanks_Id, 0);
+	    placeBlock(level, x, y, z, Tile::netherPlanks_Id, 1);
+        placeBlock(level, x + 1, y, z, Tile::netherPlanks_Id, 1);
+        placeBlock(level, x - 1, y, z, Tile::netherPlanks_Id, 1);
+        placeBlock(level, x, y, z + 1, Tile::netherPlanks_Id, 1);
+        placeBlock(level, x, y, z - 1, Tile::netherPlanks_Id, 1);
 		
-	    placeBlock(level, x + 1, y, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y, z + 1, Tile::purulPlanks_Id, 0);
+	    placeBlock(level, x + 1, y, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y, z - 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y, z - 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y, z + 3, Tile::netherPlanks_Id, 1);
 		
 		placeBlock(level, x + 3, y, z + 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y, z - 3, Tile::purulLog_Id, 0);
@@ -193,50 +192,50 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x, y, z + 4, Tile::endStone_Id, 3);
 		
 		//Floor 2
-		placeBlock(level, x + 2, y + 4, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 4, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 4, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 4, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 4, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 4, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 4, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 4, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 4, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 4, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 4, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 4, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 4, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 4, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 4, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 4, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 4, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 4, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 4, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 4, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 4, z - 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 4, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 4, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 4, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 4, z - 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 4, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 4, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 4, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 4, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 4, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 4, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 4, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 4, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 4, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 4, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 4, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 4, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 4, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 4, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 4, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 4, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 4, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 4, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 4, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 4, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 4, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 4, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 4, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 4, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 4, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 4, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 4, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 4, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 4, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 4, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 4, z + 3, Tile::netherPlanks_Id, 1);
 		
 		placeBlock(level, x + 3, y + 4, z + 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 4, z - 3, Tile::purulLog_Id, 0);
@@ -308,50 +307,50 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Floor 3
-		placeBlock(level, x + 2, y + 8, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 8, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 8, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 8, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 8, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 8, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 8, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 8, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 8, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 8, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 8, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 8, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 8, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 8, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 8, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 8, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 8, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 8, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 8, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 8, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 8, z - 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 8, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 8, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 8, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 8, z - 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 8, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 8, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 8, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 8, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 8, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 8, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 8, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 8, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 8, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 8, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 8, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 8, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 8, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 8, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 8, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 8, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 8, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 8, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 8, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 8, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 8, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 8, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 8, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 8, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 8, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 8, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 8, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 8, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 8, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 8, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 8, z + 3, Tile::netherPlanks_Id, 1);
 		
 		placeBlock(level, x + 3, y + 8, z + 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 8, z - 3, Tile::purulLog_Id, 0);
@@ -423,50 +422,50 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Floor 4
-		placeBlock(level, x + 2, y + 12, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 12, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 12, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 12, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 12, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 12, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 12, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 12, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 12, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 12, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 12, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 12, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 12, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 12, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 12, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 12, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 12, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 12, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 12, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 12, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 12, z - 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 12, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 12, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 12, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 12, z - 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 12, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 12, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 12, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 12, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 12, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 12, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 12, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 12, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 12, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 12, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 12, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 12, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 12, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 12, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 12, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 12, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 12, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 12, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 12, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 12, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 12, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 12, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 12, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 12, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 12, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 12, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 12, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 12, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 12, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 12, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 12, z + 3, Tile::netherPlanks_Id, 1);
 		
 		placeBlock(level, x + 3, y + 12, z + 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 12, z - 3, Tile::purulLog_Id, 0);
@@ -538,50 +537,50 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Floor 5
-		placeBlock(level, x + 2, y + 16, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 16, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 16, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 16, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 16, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 16, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 16, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 16, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 16, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 16, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 16, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 16, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 16, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 16, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 16, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 16, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 16, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 16, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 16, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 16, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 16, z - 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 16, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 16, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 16, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 16, z - 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 16, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 16, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 16, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 16, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 16, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 16, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 16, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 16, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 16, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 16, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 16, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 16, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 16, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 16, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 16, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 16, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 16, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 16, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 16, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 16, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 16, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 16, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 16, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 16, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 16, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 16, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 16, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 16, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 16, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 16, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 16, z + 3, Tile::netherPlanks_Id, 1);
 		
 		placeBlock(level, x + 3, y + 16, z + 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 16, z - 3, Tile::purulLog_Id, 0);
@@ -653,50 +652,50 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Floor 6
-		placeBlock(level, x + 2, y + 20, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 20, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 20, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 20, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 20, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 20, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 20, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 20, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 20, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 20, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 20, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 20, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 20, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 20, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 20, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 20, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 20, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 20, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 20, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 20, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 20, z - 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 20, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 20, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 20, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 20, z - 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 20, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 20, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 20, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 20, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 20, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 20, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 20, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 20, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 20, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 20, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 20, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 20, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 20, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 20, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 20, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 20, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 20, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 20, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 20, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 20, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 20, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 20, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 20, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 20, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 20, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 20, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 20, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 20, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 20, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 20, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 20, z + 3, Tile::netherPlanks_Id, 1);
 		
 		placeBlock(level, x + 3, y + 20, z + 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 20, z - 3, Tile::purulLog_Id, 0);
@@ -768,80 +767,80 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Floor 7
-		placeBlock(level, x + 2, y + 24, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 24, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 24, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 24, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 24, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 24, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 24, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 24, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 24, z - 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 24, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 24, z - 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 24, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 24, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 24, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 24, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 24, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 24, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 24, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 3, y + 24, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 24, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 3, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 24, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 24, z + 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 24, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 24, z + 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 24, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 24, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 24, z + 3, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 3, y + 24, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 24, z - 3, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 24, z + 3, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 3, y + 24, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 3, y + 24, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 24, z - 3, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 24, z + 3, Tile::netherPlanks_Id, 1);
 		
 		placeBlock(level, x + 3, y + 24, z + 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 24, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x + 3, y + 24, z - 3, Tile::purulLog_Id, 0);
 	    placeBlock(level, x - 3, y + 24, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 24, z + 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 4, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 4, y + 24, z - 2, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 4, y + 24, z + 2, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 4, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 4, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 4, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 4, y + 24, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 4, y + 24, z + 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 4, y + 24, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 4, y + 24, z - 1, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 4, y + 24, z + 1, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 4, y + 24, z + 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 4, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 4, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 4, y + 24, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 24, z + 4, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z - 4, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 2, y + 24, z - 4, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z + 4, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 2, y + 24, z + 4, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 2, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 2, y + 24, z + 4, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 24, z + 4, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z - 4, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x + 1, y + 24, z - 4, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z + 4, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 1, y + 24, z + 4, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x + 1, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 1, y + 24, z + 4, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 4, y + 24, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x - 4, y + 24, z, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 24, z - 4, Tile::purulPlanks_Id, 0);
-	    placeBlock(level, x, y + 24, z + 4, Tile::purulPlanks_Id, 0);
+		placeBlock(level, x + 4, y + 24, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x - 4, y + 24, z, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+	    placeBlock(level, x, y + 24, z + 4, Tile::netherPlanks_Id, 1);
 		
 		
 		
