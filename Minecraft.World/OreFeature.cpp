@@ -3,21 +3,29 @@
 #include "net.minecraft.world.level.tile.h"
 #include "OreFeature.h"
 
-void OreFeature::_init(int tile, int count, int targetTile)
+static thread_local bool s_oreFeaturePlacing = false;
+
+void OreFeature::_init(int tile, int data, int count, int targetTile)
 {
 	this->tile = tile;
+	this->data = data;
 	this->count = count;
 	this->targetTile = targetTile;
 }
 
 OreFeature::OreFeature(int tile, int count)
 {
-	_init(tile, count, Tile::stone_Id);
+	_init(tile, 0, count, Tile::stone_Id);
 }
 
-OreFeature::OreFeature(int tile, int count, int targetTile)
+OreFeature::OreFeature(int tile, int data, int count)
 {
-	_init(tile, count, targetTile);
+	_init(tile, data, count, Tile::stone_Id);
+}
+
+OreFeature::OreFeature(int tile, int data, int count, int targetTile)
+{
+	_init(tile, data, count, targetTile);
 }
 
 bool OreFeature::place(Level *level, Random *random, int x, int y, int z)
@@ -134,7 +142,7 @@ bool OreFeature::place(Level *level, Random *random, int x, int y, int z)
 							{
                                 if ( level->getTile(x2, y2, z2) == targetTile)
 								{									
-									level->setTileAndData(x2, y2, z2, tile, 0, Tile::UPDATE_INVISIBLE_NO_LIGHT);
+									level->setTileAndData(x2, y2, z2, tile, data, Tile::UPDATE_INVISIBLE_NO_LIGHT);
 								}
                             }
                         }
@@ -145,5 +153,7 @@ bool OreFeature::place(Level *level, Random *random, int x, int y, int z)
     }
 
 	PIXEndNamedEvent();
+
+	s_oreFeaturePlacing = false;
     return true;
 }
