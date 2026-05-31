@@ -39,9 +39,9 @@ Icon *WoodSlabTile::getTexture(int face, int data)
 	case JUNGLE_SLAB:
 		return Tile::wood->getTexture(face, /*data & TYPE_MASK*/ 3);
 	case NETHER_SLAB:
-		return Tile::netherPlanks->getTexture(face);
+		return Tile::netherPlanks->getTexture(face, 0);
 	case PURUL_SLAB:
-		return Tile::purulPlanks->getTexture(face);
+		return Tile::netherPlanks->getTexture(face, 1);
 	}
 }
 
