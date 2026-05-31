@@ -30,11 +30,11 @@ Icon *StoneSlab2Tile::getTexture(int face, int data)
 	}
 	if (data == GOLDENCLIN_SLAB)
 	{
-		return Tile::goldenclin->getTexture(face);
+		return Tile::goldenclin->getTexture(face, 0);
 	}
 	if (data == GOLDENCLINBRICK_SLAB)
 	{
-		return Tile::goldenclinBricks->getTexture(face);
+		return Tile::goldenclin->getTexture(face, 1);
 	}
 	if (data == NETHERBRICK_MOSSY_SLAB)
 	{
@@ -42,19 +42,19 @@ Icon *StoneSlab2Tile::getTexture(int face, int data)
 	}
 	if (data == ENDSTONE_SLAB)
 	{
-		return Tile::endStone->getTexture(face);
+		return Tile::endStone->getTexture(face, 0);
 	}
 	if (data == ENDSTONE_MOSSY_SLAB)
 	{
-		return Tile::endStoneMossy->getTexture(face);
+		return Tile::endStone->getTexture(face, 2);
 	}
 	if (data == ENDBRICK_SLAB)
 	{
-		return Tile::endBricks->getTexture(face);
+		return Tile::endStone->getTexture(face, 3);
 	}
 	if (data == ENDBRICK_MOSSY_SLAB)
 	{
-		return Tile::endBricksMossy->getTexture(face);
+		return Tile::endStone->getTexture(face, 4);
 	}
 	//if (data == QUARTZ_SLAB)
 	//{
