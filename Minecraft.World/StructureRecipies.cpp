@@ -102,28 +102,28 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', Tile::netherBrick, L'-', Tile::netherVine,
 		L'S');
 
-	r->addShapedRecipy(new ItemInstance(Tile::endBricks, 4), //
-		L"ssctg",
+	r->addShapedRecipy(new ItemInstance(Tile::endStone, 4, EndStoneTile::TYPE_BRICK), //
+		L"ssczg",
 		L"##", //
 		L"##", //
 
-		L'#', Tile::endStone,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_DEFAULT),
 		L'S');
 
-	r->addShapedRecipy(new ItemInstance(Tile::endBricksChiseled, 4), //
-		L"ssctg",
+	r->addShapedRecipy(new ItemInstance(Tile::endStone, 4, EndStoneTile::TYPE_CHISELED), //
+		L"ssczg",
 		L"##", //
 		L"##", //
 
-		L'#', Tile::endBricks,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_BRICK),
 		L'S');
 
-	r->addShapedRecipy(new ItemInstance(Tile::endBricksMossy, 4), //
-		L"ssctg",
+	r->addShapedRecipy(new ItemInstance(Tile::endStone, 4, EndStoneTile::TYPE_MOSSY_BRICK), //
+		L"ssczg",
 		L"##", //
 		L"##", //
 
-		L'#', Tile::endStoneMossy,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY),
 		L'S');
 
 	r->addShapedRecipy(new ItemInstance(Tile::endoriumGrate, 1), //
@@ -201,21 +201,21 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'S');
 
 	r->addShapedRecipy(new ItemInstance(Tile::furnace), //
-		L"sssctg",
+		L"sssczg",
 		L"###", //
 		L"# #", //
 		L"###", //
 
-		L'#', Tile::goldenclin,
+		L'#', new ItemInstance(Tile::goldenclin, 1, GoldenclinTile::TYPE_DEFAULT),
 		L'S');
 
 	r->addShapedRecipy(new ItemInstance(Tile::furnace), //
-		L"sssctg",
+		L"sssczg",
 		L"###", //
 		L"# #", //
 		L"###", //
 
-		L'#', Tile::endStone,
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_DEFAULT),
 		L'S');
 
 	r->addShapedRecipy(new ItemInstance(Tile::nether_furnace), //
