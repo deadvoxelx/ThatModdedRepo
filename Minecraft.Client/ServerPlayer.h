@@ -68,7 +68,7 @@ public:
 	void doTick(bool sendChunks, bool dontDelayChunks = false, bool ignorePortal = false);
 	void doTickA();
 	void doChunkSendingTick(bool dontDelayChunks);
-	void doTickB();
+	void doTickB(bool ignorePortal);
 	virtual void changeDimension(int i);
 private:
 	void broadcast(shared_ptr<TileEntity> te, bool delay = false);
