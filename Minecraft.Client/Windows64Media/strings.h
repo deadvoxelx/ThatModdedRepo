@@ -2413,3 +2413,5 @@
 #define IDS_TILE_NETHER_FENCE								   2407
 #define IDS_TILE_PURUL_FENCE								   2408
 #define IDS_MOOBLOOM										   2409
+#define IDS_TILE_NETHER_SLAB								   2410
+#define IDS_TILE_PURUL_SLAB									   2411
