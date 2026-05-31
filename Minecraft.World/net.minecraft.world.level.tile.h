@@ -152,3 +152,4 @@
 #include "StoneFenceTile.h"
 #include "EndStoneTile.h"
 #include "GoldenclinTile.h"
+#include "AetherPortalTile.h"
