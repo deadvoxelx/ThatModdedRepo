@@ -1028,11 +1028,11 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(20,	8,	L"nether_furnace_side");
 	ADD_ICON(20,	9,	L"nether_furnace_front");
 	ADD_ICON(20,	10,	L"nether_furnace_front_lit");
-	ADD_ICON(20,	11,	L"end_bricks");
-	ADD_ICON(20,	12,	L"end_bricks_chiseled");
+	ADD_ICON(20,	11,	L"end_stone_bricks");
+	ADD_ICON(20,	12,	L"end_stone_chiseled");
 	ADD_ICON(20,	13,	L"end_stone_smooth");
 	ADD_ICON(20,	14,	L"end_stone_mossy");
-	ADD_ICON(20,	15,	L"end_bricks_mossy");
+	ADD_ICON(20,	15,	L"end_stone_bricksMossy");
 
 	ADD_ICON(21,	0,	L"veloett_grass_side");
 	ADD_ICON(21,	1,	L"veloett_grass_top");
