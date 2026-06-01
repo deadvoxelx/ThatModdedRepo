@@ -94,6 +94,13 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::purulLog, 1, 0),
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::netherPlanks, 4, NetherPlanksTile::TYPE_SKYROOT), //
+		L"sczg",
+		L"#", //
+
+		L'#', new ItemInstance(Tile::skyrootLog, 1, 0),
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Item::stick, 4), //
 		L"ssctg",
 		L"#", //
@@ -228,11 +235,27 @@ Recipes::Recipes()
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::fence, 6, FenceTile::TYPE_NETHER), //
-		L"ssctcig",
+		L"ssczcig",
 		L"#-#", //
 		L"#-#", //
 
-		L'#', Tile::netherPlanks, L'-', Item::stick,
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_DEFAULT), L'-', Item::stick,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::fence, 6, FenceTile::TYPE_PURUL), //
+		L"ssczcig",
+		L"#-#", //
+		L"#-#", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_PURUL), L'-', Item::stick,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::fence, 6, FenceTile::TYPE_SKYROOT), //
+		L"ssczcig",
+		L"#-#", //
+		L"#-#", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_SKYROOT), L'-', Item::stick,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::fenceGate, 1), //
@@ -526,6 +549,13 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_PURUL),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::woodSlabHalf, 6, WoodSlabTile::SKYROOT_SLAB), //
+		L"sczg",
+		L"###", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_SKYROOT),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::STONE_SLAB), //
