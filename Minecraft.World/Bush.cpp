@@ -33,7 +33,7 @@ bool Bush::mayPlace(Level *level, int x, int y, int z)
 
 bool Bush::mayPlaceOn(int tile)
 {
-	return tile == Tile::grass_Id || tile == Tile::dirt_Id || tile == Tile::farmland_Id || tile == Tile::netherSoil_Id;
+	return tile == Tile::grass_Id || tile == Tile::dirt_Id || tile == Tile::farmland_Id || tile == Tile::netherSoil_Id || tile == Tile::aetherGrass_Id;
 }
 
 void Bush::neighborChanged(Level *level, int x, int y, int z, int type)
