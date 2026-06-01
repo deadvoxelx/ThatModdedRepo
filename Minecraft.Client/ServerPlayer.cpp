@@ -524,7 +524,7 @@ void ServerPlayer::doTickB(bool ignorePortal)
 	}
 #endif
 
-	if(!ignorePortal)
+	/*if(!ignorePortal)
 	{
 		if (isInsidePortal)
 		{
@@ -599,7 +599,7 @@ void ServerPlayer::doTickB(bool ignorePortal)
 			if (portalTime < 0) portalTime = 0;
 		}
 		if (changingDimensionDelay > 0) changingDimensionDelay--;
-	}
+	}*/
 
 	if (getHealth() != lastSentHealth || lastSentFood != foodData.getFoodLevel() || ((foodData.getSaturationLevel() == 0) != lastFoodSaturationZero))
 	{
