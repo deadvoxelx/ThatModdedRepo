@@ -50,3 +50,5 @@
 #include "HerobrineFeature.h"
 #include "EndTowerFeature.h"
 #include "SwampMushroomHugeFeature.h"
+#include "SkyrootTreeFeature.h"
+#include "GoldenOakTreeFeature.h"
