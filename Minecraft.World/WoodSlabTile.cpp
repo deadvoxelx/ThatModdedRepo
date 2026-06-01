@@ -14,6 +14,7 @@ const unsigned int WoodSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {
 	IDS_TILE_STONESLAB_JUNGLE,
 	IDS_TILE_NETHER_SLAB,
 	IDS_TILE_PURUL_SLAB,
+	IDS_TILE_SKYROOT_SLAB,
 };
 
 // 	public static final String[] WOOD_NAMES = {
@@ -42,6 +43,8 @@ Icon *WoodSlabTile::getTexture(int face, int data)
 		return Tile::netherPlanks->getTexture(face, 0);
 	case PURUL_SLAB:
 		return Tile::netherPlanks->getTexture(face, 1);
+	case SKYROOT_SLAB:
+		return Tile::netherPlanks->getTexture(face, 2);
 	}
 }
 
