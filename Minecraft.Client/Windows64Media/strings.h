@@ -2415,3 +2415,17 @@
 #define IDS_MOOBLOOM										   2409
 #define IDS_TILE_NETHER_SLAB								   2410
 #define IDS_TILE_PURUL_SLAB									   2411
+#define IDS_TILE_SKYROOT_PLANKS								   2412
+#define IDS_TILE_SKYROOT_SLAB								   2413
+#define IDS_TILE_SKYROOT_FENCE								   2414
+#define IDS_TILE_HOLYSTONE									   2415
+#define IDS_TILE_HOLYSTONE_MOSSY							   2416
+#define IDS_TILE_AETHER_DIRT								   2417
+#define IDS_TILE_AETHER_GRASS								   2418
+#define IDS_TILE_ICESTONE									   2419
+#define IDS_TILE_SKYROOT_LOG								   2420
+#define IDS_TILE_SKYROOT_LEAVES								   2421
+#define IDS_TILE_SKYROOT_SAPLING							   2422
+#define IDS_TILE_GOLDENOAK_LOG								   2423
+#define IDS_TILE_GOLDENOAK_LEAVES							   2424
+#define IDS_TILE_GOLDENOAK_SAPLING							   2425
