@@ -4601,6 +4601,20 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_MOOBLOOM, L"Moobloom");
 		m_stringTable->registerString(IDS_TILE_NETHER_SLAB, L"Nether Slab");
 		m_stringTable->registerString(IDS_TILE_PURUL_SLAB, L"Purul Slab");
+		m_stringTable->registerString(IDS_TILE_SKYROOT_PLANKS, L"Skyroot Planks");
+		m_stringTable->registerString(IDS_TILE_SKYROOT_SLAB, L"Skyroot Slab");
+		m_stringTable->registerString(IDS_TILE_SKYROOT_FENCE, L"Skyroot Fence");
+		m_stringTable->registerString(IDS_TILE_HOLYSTONE, L"Holystone");
+		m_stringTable->registerString(IDS_TILE_HOLYSTONE_MOSSY, L"Mossy Holystone");
+		m_stringTable->registerString(IDS_TILE_AETHER_DIRT, L"Aether Dirt");
+		m_stringTable->registerString(IDS_TILE_AETHER_GRASS, L"Aether Grass");
+		m_stringTable->registerString(IDS_TILE_ICESTONE, L"Icestone");
+		m_stringTable->registerString(IDS_TILE_SKYROOT_LOG, L"Skyroot Log");
+		m_stringTable->registerString(IDS_TILE_GOLDENOAK_LOG, L"Golden Oak Log");
+		m_stringTable->registerString(IDS_TILE_SKYROOT_LEAVES, L"Skyroot Leaves");
+		m_stringTable->registerString(IDS_TILE_GOLDENOAK_LEAVES, L"Golden Oak Leaves");
+		m_stringTable->registerString(IDS_TILE_SKYROOT_SAPLING, L"Skyroot Sapling");
+		m_stringTable->registerString(IDS_TILE_GOLDENOAK_SAPLING, L"Golden Oak Sapling");
 
 	}
 	else
