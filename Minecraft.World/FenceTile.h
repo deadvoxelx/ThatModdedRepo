@@ -14,8 +14,9 @@ public:
 	static const int TYPE_JUNGLE = 3;
 	static const int TYPE_NETHER = 4;
 	static const int TYPE_PURUL = 5;
+	static const int TYPE_SKYROOT = 6;
 
-	static const unsigned int FENCE_NAMES[6];
+	static const unsigned int FENCE_NAMES[7];
 
 	FenceTile(int id, Tile *baseTile);
 	Icon *getTexture(int face, int data);
