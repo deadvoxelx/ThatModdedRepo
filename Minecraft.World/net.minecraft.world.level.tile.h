@@ -153,3 +153,6 @@
 #include "EndStoneTile.h"
 #include "GoldenclinTile.h"
 #include "AetherPortalTile.h"
+#include "AetherGrassTile.h"
+#include "AetherSaplingTile.h"
+#include "GoldenOakTile.h"
