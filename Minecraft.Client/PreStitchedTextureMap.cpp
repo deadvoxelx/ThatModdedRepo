@@ -1058,5 +1058,50 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(22,	4,	L"packed_ice");
 	ADD_ICON(22,	5,	L"blue_ice");
 	ADD_ICON(22,	6,	L"packed_glass");
+
+	ADD_ICON(23,	0,	L"aercloud");
+	ADD_ICON(23,	1,	L"aerogel");
+	ADD_ICON(23,	2,	L"aetherDirt");
+	ADD_ICON(23,	3,	L"aetherGrass_side");
+	ADD_ICON(23,	4,	L"aetherGrass_top");
+	ADD_ICON(23,	5,	L"holystone");
+	ADD_ICON(23,	6,	L"holystone_mossy");
+	ADD_ICON(23,	7,	L"ambrosiumOre");
+	ADD_ICON(23,	8,	L"gravititeOre");
+	ADD_ICON(23,	9,	L"zaniteOre");
+	ADD_ICON(23,	10,	L"carvedStone");
+	ADD_ICON(23,	11,	L"carvedStone_light");
+	ADD_ICON(23,	12,	L"angelicStone");
+	ADD_ICON(23,	13,	L"angelicStone_light");
+	ADD_ICON(23,	14,	L"hellfireStone");
+	ADD_ICON(23,	15,	L"hellfireStone_light");
+
+	ADD_ICON(24,	0,	L"icestone");
+	ADD_ICON(24,	1,	L"quicksoil");
+	ADD_ICON(24,	2,	L"quicksoilGlass");
+	ADD_ICON(24,	3,	L"pillar_top");
+	ADD_ICON(24,	4,	L"pillar_side");
+	ADD_ICON(24,	5,	L"pillar_carved");
+	ADD_ICON(24,	6,	L"skyrootLog_side");
+	ADD_ICON(24,	7,	L"skyrootLog_top");
+	ADD_ICON(24,	8,	L"planks_nether_skyroot");
+	ADD_ICON(24,	9,	L"skyrootLeaves");
+	ADD_ICON(24,	10,	L"skyrootSapling");
+	ADD_ICON(24,	11,	L"goldenOakLog_side");
+	ADD_ICON(24,	12,	L"goldenOakLeaves");
+	ADD_ICON(24,	13,	L"goldenOakSapling");
+	ADD_ICON(24,	14,	L"flower_purple");
+	ADD_ICON(24,	15,	L"flower_white");
+
+	ADD_ICON(25,	0,	L"skyrootBookshelf_side");
+	ADD_ICON(25,	1,	L"incubator_top");
+	ADD_ICON(25,	2,	L"skyrootBookshelf_top");
+	ADD_ICON(25,	3,	L"incubator_side");
+	ADD_ICON(25,	4,	L"altar_side");
+	ADD_ICON(25,	5,	L"freezer_side");
+	ADD_ICON(25,	6,	L"freezer_top");
+	ADD_ICON(25,	7,	L"treasureChest_front");
+	ADD_ICON(25,	8,	L"treasureChest_side");
+	ADD_ICON(25,	9,	L"ambrosiumTorch");
 	}
 }
