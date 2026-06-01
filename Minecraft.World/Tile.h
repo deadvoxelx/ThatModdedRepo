@@ -389,7 +389,7 @@ public:
 	//static const int endBricksChiseled_Id = 191;
 	//static const int endStoneSmooth_Id = 192;
 	//static const int endStoneMossy_Id = 193;
-	//static const int endBricksMossy_Id = 194;
+	static const int aetherGrass_Id = 194;
 	static const int veloettGrass_Id = 195;
 	static const int endSand_Id = 196;
 	static const int endoriumOre_Id = 197;
@@ -399,7 +399,7 @@ public:
 	static const int endGateway_Id = 201;
 	static const int purulVeloett_Id = 202;
 	static const int purulLog_Id = 203;
-	//static const int purulPlanks_Id = 204;
+	static const int icestone_Id = 204;
 	static const int endactus_Id = 205;
 	static const int endesertBush_Id = 206;
 	static const int veloettShrub_Id = 207;
@@ -410,7 +410,12 @@ public:
 	//static const int melonLit_Id = 212;
 	static const int stoneSlab2_Id = 213;
 	static const int stoneSlab2Half_Id = 214;
-
+	static const int skyrootLog_Id = 215;
+	static const int goldenOakLog_Id = 216;
+	static const int skyrootLeaves_Id = 217;
+	static const int goldenOakLeaves_Id = 218;
+	static const int skyrootSapling_Id = 219;
+	static const int goldenOakSapling_Id = 220;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -593,7 +598,7 @@ public:
 	static Tile *netherDiamond;
 	static Tile *netherGold;
 	static Tile *goldenclin;
-	//static Tile *goldenclinBricks;
+	static AetherPortalTile *aetherPortal;
 	static Tile *netherSoil;
 	static Tile *lavaRock;
 	static Tile *netherLeaves;
@@ -610,7 +615,7 @@ public:
 	//static Tile *endBricksChiseled;
 	//static Tile *endStoneSmooth;
 	//static Tile *endStoneMossy;
-	//static Tile *endBricksMossy;
+	static Tile *aetherGrass;
 	static Tile *veloettGrass;
 	static Tile *endSand;
 	static Tile *endoriumOre;
@@ -620,7 +625,7 @@ public:
 	static Tile *endoriumLamp;
 	static Tile *purulVeloett;
 	static Tile *purulLog;
-	static AetherPortalTile *aetherPortal;
+	static Tile *icestone;
 	static Tile *endactus;
 	static Tile *endesertBush;
 	static Tile *veloettShrub;
@@ -631,6 +636,12 @@ public:
 	//static Tile *melonLit;
 	static HalfSlabTile *stoneSlab2;
 	static HalfSlabTile *stoneSlab2Half;
+	static Tile *skyrootLog;
+	static Tile *goldenOakLog;
+	static Tile *skyrootLeaves;
+	static Tile *goldenOakLeaves;
+	static Tile *skyrootSapling;
+	static Tile *goldenOakSapling;
 
 	static void staticCtor();
 
