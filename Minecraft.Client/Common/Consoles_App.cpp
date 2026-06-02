@@ -4615,6 +4615,23 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_GOLDENOAK_LEAVES, L"Golden Oak Leaves");
 		m_stringTable->registerString(IDS_TILE_SKYROOT_SAPLING, L"Skyroot Sapling");
 		m_stringTable->registerString(IDS_TILE_GOLDENOAK_SAPLING, L"Golden Oak Sapling");
+		m_stringTable->registerString(IDS_ITEM_GOLDEN_AMBER, L"Golden Amber");
+		m_stringTable->registerString(IDS_TILE_AMBROSIUM_ORE, L"Ambrosium Ore");
+		m_stringTable->registerString(IDS_TILE_ZANITE_ORE, L"Zanite Ore");
+		m_stringTable->registerString(IDS_TILE_GRAVITITE_ORE, L"Gravitite Ore");
+		m_stringTable->registerString(IDS_TILE_AERCLOUD, L"Aercloud");
+		m_stringTable->registerString(IDS_TILE_AERCLOUD_BLUE, L"Blue Aercloud");
+		m_stringTable->registerString(IDS_TILE_AERCLOUD_GOLD, L"Gold Aercloud");
+		m_stringTable->registerString(IDS_TILE_QUICKSOIL, L"Quicksoil");
+		m_stringTable->registerString(IDS_TILE_GLASS_SOUL, L"Soul Glass");
+		m_stringTable->registerString(IDS_TILE_GLASS_QUICKSOIL, L"Quicksoil Glass");
+		m_stringTable->registerString(IDS_ITEM_AMBROSIUM_SHARD, L"Ambrosium Shard");
+		m_stringTable->registerString(IDS_ITEM_ZANITE_GEMSTONE, L"Zanite Gemstone");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_PLATE, L"Gravitite Plate");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_SWORD, L"Gravitite Sword");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_PICKAXE, L"Gravitite Pickaxe");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_AXE, L"Gravitite Axe");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_SHOVEL, L"Gravitite Shovel");
 
 	}
 	else
