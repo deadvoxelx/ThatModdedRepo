@@ -3,7 +3,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 
-AerCloudFeature::AerCloudFeature(int tileId, int minRadius, int maxRadius, int minHeight, int maxHeight, bool islandBottom)
+AerCloudFeature::AerCloudFeature(int tileId, int data,int minRadius, int maxRadius, int minHeight, int maxHeight, bool islandBottom)
 	: Feature(false)
 {
 	this->tileId = tileId;
@@ -22,7 +22,7 @@ int AerCloudFeature::findIslandBottom(Level *level, int x, int startY, int z)
 		int tile = level->getTile(x, yy, z);
 		if (tile != 0)
 		{
-			// Found solid — now find the bottom of this solid section
+			// Found solid â€” now find the bottom of this solid section
 			for (int by = yy; by >= 1; by--)
 			{
 				int belowTile = level->getTile(x, by - 1, z);
@@ -128,7 +128,7 @@ bool AerCloudFeature::place(Level *level, Random *random, int x, int y, int z)
 	else
 	{
 		// Small floating cloud in the sky at the given position
-		// Only place in air — verify the position is actually open
+		// Only place in air â€” verify the position is actually open
 		if (level->getTile(x, y, z) != 0) return false;
 
 		int rx = minRadius + random->nextInt(maxRadius - minRadius + 1);
