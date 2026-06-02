@@ -288,10 +288,10 @@ Item *Item::goldenAmber = NULL;
 Item *Item::ambrosiumShard = NULL;
 Item *Item::zaniteGemstone = NULL;
 Item *Item::gravititePlate = NULL;
-Item *Item::gravititeSword = NULL;
-Item *Item::gravititePickaxe = NULL;
-Item *Item::gravititeAxe = NULL;
-Item *Item::gravititeShovel = NULL;
+//Item *Item::gravititeSword = NULL;
+//Item *Item::gravititePickaxe = NULL;
+//Item *Item::gravititeAxe = NULL;
+//Item *Item::gravititeShovel = NULL;
 
 
 void Item::staticCtor()
@@ -303,7 +303,7 @@ void Item::staticCtor()
 	Item::sword_gold		= ( new WeaponItem(27, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_gold)		->setIconName(L"swordGold")->setDescriptionId(IDS_ITEM_SWORD_GOLD)->setUseDescriptionId(IDS_DESC_SWORD);
 	Item::nethaniumSword	= ( new WeaponItem(167, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_nethanium)->setIconName(L"nethaniumSword")->setDescriptionId(IDS_ITEM_NETHANIUMSWORD)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumSword		= ( new WeaponItem(183, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_endorium)	->setIconName(L"endorium_sword")->setDescriptionId(IDS_ITEM_ENDORIUMSWORD)->setUseDescriptionId(IDS_DESC_ENDORIUM);
-	Item::gravititeSword	= ( new WeaponItem(201, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_gravitite)->setIconName(L"gravititeSword")->setDescriptionId(IDS_ITEM_GRAVITITE_SWORD)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SWORD);
+	//Item::gravititeSword	= ( new WeaponItem(201, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_gravitite)->setIconName(L"gravititeSword")->setDescriptionId(IDS_ITEM_GRAVITITE_SWORD)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SWORD);
 
 	Item::shovel_wood		= ( new ShovelItem(13, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_wood)		->setIconName(L"shovelWood")->setDescriptionId(IDS_ITEM_SHOVEL_WOOD)->setUseDescriptionId(IDS_DESC_SHOVEL);
 	Item::shovel_stone		= ( new ShovelItem(17, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_stone)	->setIconName(L"shovelStone")->setDescriptionId(IDS_ITEM_SHOVEL_STONE)->setUseDescriptionId(IDS_DESC_SHOVEL);
@@ -312,7 +312,7 @@ void Item::staticCtor()
 	Item::shovel_gold		= ( new ShovelItem(28, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_gold)		->setIconName(L"shovelGold")->setDescriptionId(IDS_ITEM_SHOVEL_GOLD)->setUseDescriptionId(IDS_DESC_SHOVEL);
 	Item::nethaniumShovel	= ( new ShovelItem(170, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_nethanium)->setIconName(L"nethaniumShovel")->setDescriptionId(IDS_ITEM_NETHANIUMSHOVEL)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumShovel	= ( new ShovelItem(186, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_endorium)	->setIconName(L"endorium_shovel")->setDescriptionId(IDS_ITEM_ENDORIUMSHOVEL)->setUseDescriptionId(IDS_DESC_ENDORIUM);
-	Item::gravititeShovel	= ( new ShovelItem(204, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_gravitite)->setIconName(L"gravititeShovel")->setDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL);
+	//Item::gravititeShovel	= ( new ShovelItem(204, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_gravitite)->setIconName(L"gravititeShovel")->setDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL);
 
 	Item::pickAxe_wood		= ( new PickaxeItem(14, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_wood)		->setIconName(L"pickaxeWood")->setDescriptionId(IDS_ITEM_PICKAXE_WOOD)->setUseDescriptionId(IDS_DESC_PICKAXE);
 	Item::pickAxe_stone		= ( new PickaxeItem(18, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_stone)	->setIconName(L"pickaxeStone")->setDescriptionId(IDS_ITEM_PICKAXE_STONE)->setUseDescriptionId(IDS_DESC_PICKAXE);
@@ -321,7 +321,7 @@ void Item::staticCtor()
 	Item::pickAxe_gold		= ( new PickaxeItem(29, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_gold)		->setIconName(L"pickaxeGold")->setDescriptionId(IDS_ITEM_PICKAXE_GOLD)->setUseDescriptionId(IDS_DESC_PICKAXE);
 	Item::nethaniumPickaxe	= ( new PickaxeItem(169, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_nethanium)->setIconName(L"nethaniumPickaxe")->setDescriptionId(IDS_ITEM_NETHANIUMPICKAXE)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumPickaxe	= ( new PickaxeItem(185, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_endorium)	->setIconName(L"endorium_pickaxe")->setDescriptionId(IDS_ITEM_ENDORIUMPICKAXE)->setUseDescriptionId(IDS_DESC_ENDORIUM);
-	Item::gravititePickaxe	= ( new PickaxeItem(202, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_gravitite)->setIconName(L"gravititePickaxe")->setDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE);
+	//Item::gravititePickaxe	= ( new PickaxeItem(202, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_gravitite)->setIconName(L"gravititePickaxe")->setDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE);
 
 	Item::hatchet_wood		= ( new HatchetItem(15, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_wood)		->setIconName(L"hatchetWood")->setDescriptionId(IDS_ITEM_HATCHET_WOOD)->setUseDescriptionId(IDS_DESC_HATCHET);
 	Item::hatchet_stone		= ( new HatchetItem(19, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_stone)	->setIconName(L"hatchetStone")->setDescriptionId(IDS_ITEM_HATCHET_STONE)->setUseDescriptionId(IDS_DESC_HATCHET);
@@ -330,7 +330,7 @@ void Item::staticCtor()
 	Item::hatchet_gold		= ( new HatchetItem(30, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_gold)		->setIconName(L"hatchetGold")->setDescriptionId(IDS_ITEM_HATCHET_GOLD)->setUseDescriptionId(IDS_DESC_HATCHET);
 	Item::nethaniumAxe		= ( new HatchetItem(168, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_nethanium)->setIconName(L"nethaniumAxe")->setDescriptionId(IDS_ITEM_NETHANIUMAXE)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumAxe		= ( new HatchetItem(184, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_endorium)	->setIconName(L"endorium_axe")->setDescriptionId(IDS_ITEM_ENDORIUMAXE)->setUseDescriptionId(IDS_DESC_ENDORIUM);
-	Item::gravititeAxe		= ( new HatchetItem(203, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_gravitite)->setIconName(L"gravititeAxe")->setDescriptionId(IDS_ITEM_GRAVITITE_AXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_AXE);
+	//Item::gravititeAxe		= ( new HatchetItem(203, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_gravitite)->setIconName(L"gravititeAxe")->setDescriptionId(IDS_ITEM_GRAVITITE_AXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_AXE);
 
 	Item::hoe_wood			= ( new HoeItem(34, _Tier::WOOD) )			->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_wood)		->setIconName(L"hoeWood")->setDescriptionId(IDS_ITEM_HOE_WOOD)->setUseDescriptionId(IDS_DESC_HOE);
 	Item::hoe_stone			= ( new HoeItem(35, _Tier::STONE) )			->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_stone)	->setIconName(L"hoeStone")->setDescriptionId(IDS_ITEM_HOE_STONE)->setUseDescriptionId(IDS_DESC_HOE);
