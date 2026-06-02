@@ -43,7 +43,7 @@ bool SkyrootTreeFeature::place(Level *level, Random *random, int x, int y, int z
 				if (yy >= 0 && yy < Level::maxBuildHeight)
 				{
 					int tt = level->getTile(xx, yy, zz);
-					if (tt != 0 && tt != Tile::skyrootLeaves_Id && tt != Tile::aetherGrass_Id && tt != Tile::dirt_Id && tt != Tile::skyrootLog_Id) free = false;
+					if (tt != 0 && tt != Tile::netherLeaves_Id && tt != Tile::aetherGrass_Id && tt != Tile::dirt_Id && tt != Tile::skyrootLog_Id) free = false;
 				}
 				else
 				{
@@ -75,7 +75,7 @@ bool SkyrootTreeFeature::place(Level *level, Random *random, int x, int y, int z
 			{
 				int zo = zz - (z);
 				if (abs(xo) == offs && abs(zo) == offs && (random->nextInt(2) == 0 || yo == 0)) continue;
-				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::skyrootLeaves_Id, 0);
+				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::netherLeaves_Id, 1);
 			}
 		}
 	}
@@ -85,7 +85,7 @@ bool SkyrootTreeFeature::place(Level *level, Random *random, int x, int y, int z
 	for (int hh = 0; hh < treeHeight; hh++)
 	{
 		int t = level->getTile(x, y + hh, z);
-		if (t == 0 || t == Tile::skyrootLeaves_Id)
+		if (t == 0 || t == Tile::netherLeaves_Id)
 		{
 			placeBlock(level, x, y + hh, z, Tile::skyrootLog_Id, 0);
 		}
