@@ -20,8 +20,9 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::ironOre_Id, new ItemInstance(Item::ironIngot), .7f);
 	addFurnaceRecipy(Tile::goldOre_Id, new ItemInstance(Item::goldIngot), 1);
 	addFurnaceRecipy(Tile::diamondOre_Id, new ItemInstance(Item::diamond), 1);
-	addFurnaceRecipy(Tile::sand_Id, new ItemInstance(Tile::glass), .1f);
-	addFurnaceRecipy(Tile::soulsand_Id, new ItemInstance(Tile::glass), .1f);
+	addFurnaceRecipy(Tile::sand_Id, new ItemInstance(Tile::glass, 1, 0), .1f);
+	addFurnaceRecipy(Tile::soulsand_Id, new ItemInstance(Tile::glass, 1, 1), .1f);
+	addFurnaceRecipy(Tile::quicksoil_Id, new ItemInstance(Tile::glass, 1, 2), .1f);
 	addFurnaceRecipy(Tile::endSand_Id, new ItemInstance(Tile::glass), .1f);
 	addFurnaceRecipy(Item::porkChop_raw_Id, new ItemInstance(Item::porkChop_cooked), .35f);
 	addFurnaceRecipy(Item::beef_raw_Id, new ItemInstance(Item::beef_cooked), .35f);
@@ -44,6 +45,9 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::netherGold_Id, new ItemInstance(Item::goldIngot), 1);
 	addFurnaceRecipy(Tile::nethaniumOre_Id, new ItemInstance(Item::nethanium), 1);
 	addFurnaceRecipy(Tile::stoneBrick_Id, new ItemInstance(Tile::stoneBrick, 1, 2), 1);
+	addFurnaceRecipy(Tile::ambrosiumOre_Id, new ItemInstance(Item::ambrosiumShard), 1);
+	addFurnaceRecipy(Tile::zaniteOre_Id, new ItemInstance(Item::zaniteGemstone), 1);
+	addFurnaceRecipy(Tile::gravititeOre_Id, new ItemInstance(Item::gravititePlate), 1);
 	
 	// special silk touch related recipes:
 	addFurnaceRecipy(Tile::coalOre_Id, new ItemInstance(Item::coal), .1f);
