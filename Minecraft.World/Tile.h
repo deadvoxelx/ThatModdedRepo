@@ -412,10 +412,13 @@ public:
 	static const int stoneSlab2Half_Id = 214;
 	static const int skyrootLog_Id = 215;
 	static const int goldenOakLog_Id = 216;
-	static const int skyrootLeaves_Id = 217;
-	static const int goldenOakLeaves_Id = 218;
-	static const int skyrootSapling_Id = 219;
-	static const int goldenOakSapling_Id = 220;
+	static const int skyrootSapling_Id = 217;
+	static const int goldenOakSapling_Id = 218;
+	static const int ambrosiumOre_Id = 219;
+	static const int zaniteOre_Id = 220;
+	static const int gravititeOre_Id = 221;
+	static const int aercloud_Id = 222;
+	static const int quicksoil_Id = 223;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -638,10 +641,13 @@ public:
 	static HalfSlabTile *stoneSlab2Half;
 	static Tile *skyrootLog;
 	static Tile *goldenOakLog;
-	static Tile *skyrootLeaves;
-	static Tile *goldenOakLeaves;
 	static Tile *skyrootSapling;
 	static Tile *goldenOakSapling;
+	static Tile *ambrosiumOre;
+	static Tile *zaniteOre;
+	static Tile *gravititeOre;
+	static Tile *aercloud;
+	static Tile *quicksoil;
 
 	static void staticCtor();
 
