@@ -8,7 +8,7 @@ public:
 	// minRadius/maxRadius: horizontal radius range for the cloud blob
 	// minHeight/maxHeight: vertical thickness range
 	// islandBottom: if true, generates large clouds at island undersides; if false, generates floating sky clouds
-	AerCloudFeature(int tileId, int minRadius, int maxRadius, int minHeight, int maxHeight, bool islandBottom);
+	AerCloudFeature(int tileId, int data, int minRadius, int maxRadius, int minHeight, int maxHeight, bool islandBottom);
 
 	virtual bool place(Level *level, Random *random, int x, int y, int z);
 
