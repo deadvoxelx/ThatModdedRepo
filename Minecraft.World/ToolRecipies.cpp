@@ -36,6 +36,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[0],Item::goldIngot);
 	ADD_OBJECT(map[0],Item::nethanium);
 	ADD_OBJECT(map[0],Item::endorium);
+	ADD_OBJECT(map[0],Item::gravititePlate);
 
 	ADD_OBJECT(map[1],Item::pickAxe_wood);
 	ADD_OBJECT(map[1],Item::pickAxe_stone);
@@ -44,6 +45,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[1],Item::pickAxe_gold);
 	ADD_OBJECT(map[1],Item::nethaniumPickaxe);
 	ADD_OBJECT(map[1],Item::endoriumPickaxe);
+	ADD_OBJECT(map[1],Item::gravititePickaxe);
 
 	ADD_OBJECT(map[2],Item::shovel_wood);
 	ADD_OBJECT(map[2],Item::shovel_stone);
@@ -52,6 +54,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[2],Item::shovel_gold);
 	ADD_OBJECT(map[2],Item::nethaniumShovel);
 	ADD_OBJECT(map[2],Item::endoriumShovel);
+	ADD_OBJECT(map[2],Item::gravititeShovel);
 
 	ADD_OBJECT(map[3],Item::hatchet_wood);
 	ADD_OBJECT(map[3],Item::hatchet_stone);
@@ -60,6 +63,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[3],Item::hatchet_gold);
 	ADD_OBJECT(map[3],Item::nethaniumAxe);
 	ADD_OBJECT(map[3],Item::endoriumAxe);
+	ADD_OBJECT(map[3],Item::gravititeAxe);
 
 	ADD_OBJECT(map[4],Item::hoe_wood);
 	ADD_OBJECT(map[4],Item::hoe_stone);
