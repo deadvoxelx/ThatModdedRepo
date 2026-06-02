@@ -25,6 +25,7 @@ void WeaponRecipies::_init()
 	ADD_OBJECT(map[0],Item::goldIngot);
 	ADD_OBJECT(map[0],Item::nethanium);
 	ADD_OBJECT(map[0],Item::endorium);
+	ADD_OBJECT(map[0],Item::gravititePlate);
 
 	ADD_OBJECT(map[1],Item::sword_wood);
 	ADD_OBJECT(map[1],Item::sword_stone);
@@ -33,6 +34,7 @@ void WeaponRecipies::_init()
 	ADD_OBJECT(map[1],Item::sword_gold);
 	ADD_OBJECT(map[1],Item::nethaniumSword);
 	ADD_OBJECT(map[1],Item::endoriumSword);
+	ADD_OBJECT(map[1],Item::gravititeSword);
 }
 
 void WeaponRecipies::addRecipes(Recipes *r) 
@@ -78,27 +80,4 @@ void WeaponRecipies::addRecipes(Recipes *r)
 			}
 		}
 	}
-
-	/* 4J-PB - moved out to main recipes so we can avoid them stacking on the group display name
-	r->addShapedRecipy(new ItemInstance(Item::bow, 1), //
-		L"ssscicig",
-		L" #X", //
-		L"# X", //
-		L" #X", //
-
-		L'X', Item::string,// 
-		L'#', Item::stick,
-		L'T');
-
-	r->addShapedRecipy(new ItemInstance(Item::arrow, 4), //
-		L"ssscicicig",
-		L"X", //
-		L"#", //
-		L"Y", //
-
-		L'Y', Item::feather,// 
-		L'X', Item::flint,// 
-		L'#', Item::stick,
-		L'T');
-		*/
 }

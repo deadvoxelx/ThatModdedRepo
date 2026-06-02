@@ -18,6 +18,8 @@ int OreTile::getResource(int data, Random *random, int playerBonusLevel)
 	if (id == Tile::netherGold_Id) return Item::goldNugget_Id;
 	if (id == Tile::nethaniumOre_Id) return Item::nethanium_Id;
 	if (id == Tile::endoriumOre_Id) return Item::endorium_Id;
+	if (id == Tile::ambrosiumOre_Id) return Item::ambrosiumShard_Id;
+	if (id == Tile::zaniteOre_Id) return Item::zaniteGemstone_Id;
     return id;
 }
 
@@ -85,6 +87,14 @@ void OreTile::spawnResources(Level *level, int x, int y, int z, int data, float 
 		else if (id == Tile::endoriumOre_Id)
 		{
 			magicCount = Mth::nextInt(level->random, 5, 7);
+		}
+		else if (id == Tile::ambrosiumOre_Id)
+		{
+			magicCount = Mth::nextInt(level->random, 3, 5);
+		}
+		else if (id == Tile::zaniteOre_Id)
+		{
+			magicCount = Mth::nextInt(level->random, 3, 5);
 		}
 		popExperience(level, x, y, z, magicCount);
 	}

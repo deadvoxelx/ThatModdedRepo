@@ -110,7 +110,7 @@ void AetherPortalTile::neighborChanged(Level *level, int x, int y, int z, int ty
 	// Bottom must be glowstone
 	if (level->getTile(x, yBottom - 1, z) != Tile::glowstone_Id)
 	{
-		level->setTileAndData(x, y, z, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
+		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
 		return;
 	}
 
@@ -121,7 +121,7 @@ void AetherPortalTile::neighborChanged(Level *level, int x, int y, int z, int ty
 
 	if (height != 3 || level->getTile(x, yBottom + height, z) != Tile::glowstone_Id)
 	{
-		level->setTileAndData(x, y, z, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
+		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
 		return;
 	}
 
@@ -130,7 +130,7 @@ void AetherPortalTile::neighborChanged(Level *level, int x, int y, int z, int ty
 	bool ns = level->getTile(x, y, z - 1) == id || level->getTile(x, y, z + 1) == id;
 	if (we && ns)
 	{
-		level->setTileAndData(x, y, z, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
+		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
 		return;
 	}
 
@@ -140,7 +140,7 @@ void AetherPortalTile::neighborChanged(Level *level, int x, int y, int z, int ty
 	(level->getTile(x - xd, y, z - zd) == Tile::glowstone_Id && level->getTile(x + xd, y, z + zd) == id)
 	))
 	{
-		level->setTileAndData(x, y, z, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
+		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
 		return;
 	}
 }

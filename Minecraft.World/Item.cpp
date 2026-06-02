@@ -284,6 +284,14 @@ Item *Item::endoriumLeggings = NULL;
 Item *Item::endoriumBoots = NULL;
 Item *Item::aphalafTooth = NULL;
 Item *Item::aphalafSword = NULL;
+Item *Item::goldenAmber = NULL;
+Item *Item::ambrosiumShard = NULL;
+Item *Item::zaniteGemstone = NULL;
+Item *Item::gravititePlate = NULL;
+Item *Item::gravititeSword = NULL;
+Item *Item::gravititePickaxe = NULL;
+Item *Item::gravititeAxe = NULL;
+Item *Item::gravititeShovel = NULL;
 
 
 void Item::staticCtor()
@@ -295,6 +303,7 @@ void Item::staticCtor()
 	Item::sword_gold		= ( new WeaponItem(27, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_gold)		->setIconName(L"swordGold")->setDescriptionId(IDS_ITEM_SWORD_GOLD)->setUseDescriptionId(IDS_DESC_SWORD);
 	Item::nethaniumSword	= ( new WeaponItem(167, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_nethanium)->setIconName(L"nethaniumSword")->setDescriptionId(IDS_ITEM_NETHANIUMSWORD)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumSword		= ( new WeaponItem(183, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_endorium)	->setIconName(L"endorium_sword")->setDescriptionId(IDS_ITEM_ENDORIUMSWORD)->setUseDescriptionId(IDS_DESC_ENDORIUM);
+	Item::gravititeSword	= ( new WeaponItem(201, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_gravitite)->setIconName(L"gravititeSword")->setDescriptionId(IDS_ITEM_GRAVITITE_SWORD)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SWORD);
 
 	Item::shovel_wood		= ( new ShovelItem(13, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_wood)		->setIconName(L"shovelWood")->setDescriptionId(IDS_ITEM_SHOVEL_WOOD)->setUseDescriptionId(IDS_DESC_SHOVEL);
 	Item::shovel_stone		= ( new ShovelItem(17, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_stone)	->setIconName(L"shovelStone")->setDescriptionId(IDS_ITEM_SHOVEL_STONE)->setUseDescriptionId(IDS_DESC_SHOVEL);
@@ -303,6 +312,7 @@ void Item::staticCtor()
 	Item::shovel_gold		= ( new ShovelItem(28, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_gold)		->setIconName(L"shovelGold")->setDescriptionId(IDS_ITEM_SHOVEL_GOLD)->setUseDescriptionId(IDS_DESC_SHOVEL);
 	Item::nethaniumShovel	= ( new ShovelItem(170, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_nethanium)->setIconName(L"nethaniumShovel")->setDescriptionId(IDS_ITEM_NETHANIUMSHOVEL)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumShovel	= ( new ShovelItem(186, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_endorium)	->setIconName(L"endorium_shovel")->setDescriptionId(IDS_ITEM_ENDORIUMSHOVEL)->setUseDescriptionId(IDS_DESC_ENDORIUM);
+	Item::gravititeShovel	= ( new ShovelItem(204, _Tier::NETHANIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_gravitite)->setIconName(L"gravititeShovel")->setDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL);
 
 	Item::pickAxe_wood		= ( new PickaxeItem(14, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_wood)		->setIconName(L"pickaxeWood")->setDescriptionId(IDS_ITEM_PICKAXE_WOOD)->setUseDescriptionId(IDS_DESC_PICKAXE);
 	Item::pickAxe_stone		= ( new PickaxeItem(18, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_stone)	->setIconName(L"pickaxeStone")->setDescriptionId(IDS_ITEM_PICKAXE_STONE)->setUseDescriptionId(IDS_DESC_PICKAXE);
@@ -311,6 +321,7 @@ void Item::staticCtor()
 	Item::pickAxe_gold		= ( new PickaxeItem(29, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_gold)		->setIconName(L"pickaxeGold")->setDescriptionId(IDS_ITEM_PICKAXE_GOLD)->setUseDescriptionId(IDS_DESC_PICKAXE);
 	Item::nethaniumPickaxe	= ( new PickaxeItem(169, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_nethanium)->setIconName(L"nethaniumPickaxe")->setDescriptionId(IDS_ITEM_NETHANIUMPICKAXE)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumPickaxe	= ( new PickaxeItem(185, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_endorium)	->setIconName(L"endorium_pickaxe")->setDescriptionId(IDS_ITEM_ENDORIUMPICKAXE)->setUseDescriptionId(IDS_DESC_ENDORIUM);
+	Item::gravititePickaxe	= ( new PickaxeItem(202, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_gravitite)->setIconName(L"gravititePickaxe")->setDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE);
 
 	Item::hatchet_wood		= ( new HatchetItem(15, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_wood)		->setIconName(L"hatchetWood")->setDescriptionId(IDS_ITEM_HATCHET_WOOD)->setUseDescriptionId(IDS_DESC_HATCHET);
 	Item::hatchet_stone		= ( new HatchetItem(19, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_stone)	->setIconName(L"hatchetStone")->setDescriptionId(IDS_ITEM_HATCHET_STONE)->setUseDescriptionId(IDS_DESC_HATCHET);
@@ -319,6 +330,7 @@ void Item::staticCtor()
 	Item::hatchet_gold		= ( new HatchetItem(30, _Tier::GOLD) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_gold)		->setIconName(L"hatchetGold")->setDescriptionId(IDS_ITEM_HATCHET_GOLD)->setUseDescriptionId(IDS_DESC_HATCHET);
 	Item::nethaniumAxe		= ( new HatchetItem(168, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_nethanium)->setIconName(L"nethaniumAxe")->setDescriptionId(IDS_ITEM_NETHANIUMAXE)->setUseDescriptionId(IDS_DESC_NETHANIUM);
 	Item::endoriumAxe		= ( new HatchetItem(184, _Tier::ENDORIUM) )	->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_endorium)	->setIconName(L"endorium_axe")->setDescriptionId(IDS_ITEM_ENDORIUMAXE)->setUseDescriptionId(IDS_DESC_ENDORIUM);
+	Item::gravititeAxe		= ( new HatchetItem(203, _Tier::NETHANIUM) )->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_gravitite)->setIconName(L"gravititeAxe")->setDescriptionId(IDS_ITEM_GRAVITITE_AXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_AXE);
 
 	Item::hoe_wood			= ( new HoeItem(34, _Tier::WOOD) )			->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_wood)		->setIconName(L"hoeWood")->setDescriptionId(IDS_ITEM_HOE_WOOD)->setUseDescriptionId(IDS_DESC_HOE);
 	Item::hoe_stone			= ( new HoeItem(35, _Tier::STONE) )			->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_stone)	->setIconName(L"hoeStone")->setDescriptionId(IDS_ITEM_HOE_STONE)->setUseDescriptionId(IDS_DESC_HOE);
@@ -364,8 +376,8 @@ void Item::staticCtor()
 	Item::nethaniumBoots	= (ArmorItem *) ( ( new ArmorItem(176, ArmorItem::ArmorMaterial::NETHANIUM, 5, ArmorItem::SLOT_FEET) )		->setBaseItemTypeAndMaterial(eBaseItemType_boots,	eMaterial_nethanium)	->setIconName(L"nethanium_boots")->setDescriptionId(IDS_ITEM_NETHANIUMBOOTS)->setUseDescriptionId(IDS_ITEM_NETHANIUMBOOTS) );
 	Item::endoriumBoots		= (ArmorItem *) ( ( new ArmorItem(194, ArmorItem::ArmorMaterial::ENDORIUM, 6, ArmorItem::SLOT_FEET) )		->setBaseItemTypeAndMaterial(eBaseItemType_boots,	eMaterial_endorium)		->setIconName(L"endorium_boots")->setDescriptionId(IDS_ITEM_ENDORIUMBOOTS)->setUseDescriptionId(IDS_ITEM_ENDORIUMBOOTS) );
 
-	Item::ironIngot = ( new Item(9) )->setIconName(L"ingotIron")					->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_iron)->setDescriptionId(IDS_ITEM_INGOT_IRON)->setUseDescriptionId(IDS_DESC_INGOT);
-	Item::goldIngot = ( new Item(10) )->setIconName(L"ingotGold")					->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_gold)->setDescriptionId(IDS_ITEM_INGOT_GOLD)->setUseDescriptionId(IDS_DESC_INGOT);
+	Item::ironIngot = ( new Item(9) )->setIconName(L"ingotIron")		->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_iron)->setDescriptionId(IDS_ITEM_INGOT_IRON)->setUseDescriptionId(IDS_DESC_INGOT);
+	Item::goldIngot = ( new Item(10) )->setIconName(L"ingotGold")		->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_gold)->setDescriptionId(IDS_ITEM_INGOT_GOLD)->setUseDescriptionId(IDS_DESC_INGOT);
 
 
 	// 4J-PB - todo - add materials and base types to the ones below
@@ -374,7 +386,7 @@ void Item::staticCtor()
 
 	Item::bucket_water		= ( new BucketItem(70, Tile::water_Id) )	->setIconName(L"bucketWater")->setDescriptionId(IDS_ITEM_BUCKET_WATER)->setCraftingRemainingItem(Item::bucket_empty)->setUseDescriptionId(IDS_DESC_BUCKET_WATER);
 	Item::bucket_lava		= ( new BucketItem(71, Tile::lava_Id) )		->setIconName(L"bucketLava")->setDescriptionId(IDS_ITEM_BUCKET_LAVA)->setCraftingRemainingItem(Item::bucket_empty)->setUseDescriptionId(IDS_DESC_BUCKET_LAVA);
-	Item::bucket_milk				= ( new MilkBucketItem(79) )->setIconName(L"milk")->setDescriptionId(IDS_ITEM_BUCKET_MILK)->setCraftingRemainingItem(Item::bucket_empty)->setUseDescriptionId(IDS_DESC_BUCKET_MILK);
+	Item::bucket_milk				= ( new MilkBucketItem(79) )		->setIconName(L"milk")->setDescriptionId(IDS_ITEM_BUCKET_MILK)->setCraftingRemainingItem(Item::bucket_empty)->setUseDescriptionId(IDS_DESC_BUCKET_MILK);
 
 	Item::bow = (BowItem *)( new BowItem(5) )										->setIconName(L"bow")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)		->setDescriptionId(IDS_ITEM_BOW)->setUseDescriptionId(IDS_DESC_BOW);
 	Item::arrow = ( new Item(6) )													->setIconName(L"arrow")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)	->setDescriptionId(IDS_ITEM_ARROW)->setUseDescriptionId(IDS_DESC_ARROW);
@@ -406,13 +418,13 @@ void Item::staticCtor()
 	Item::painting = ( new HangingEntityItem(65,eTYPE_PAINTING) )								->setBaseItemTypeAndMaterial(eBaseItemType_HangingItem,	eMaterial_cloth)->setIconName(L"painting")->setDescriptionId(IDS_ITEM_PAINTING)->setUseDescriptionId(IDS_DESC_PICTURE);
 
 	Item::apple_gold = ( new GoldenAppleItem(66, 4, FoodConstants::FOOD_SATURATION_SUPERNATURAL, false) )->setCanAlwaysEat()->setEatEffect(MobEffect::regeneration->id, 5, 1, 1.0f)
-																										->setBaseItemTypeAndMaterial(eBaseItemType_giltFruit,eMaterial_apple)->setIconName(L"appleGold")->setDescriptionId(IDS_ITEM_APPLE_GOLD);//->setUseDescriptionId(IDS_DESC_GOLDENAPPLE);
+																								->setBaseItemTypeAndMaterial(eBaseItemType_giltFruit,eMaterial_apple)->setIconName(L"appleGold")->setDescriptionId(IDS_ITEM_APPLE_GOLD);//->setUseDescriptionId(IDS_DESC_GOLDENAPPLE);
 
 	Item::sign = ( new SignItem(67) )															->setBaseItemTypeAndMaterial(eBaseItemType_HangingItem, eMaterial_wood)->setIconName(L"sign")->setDescriptionId(IDS_ITEM_SIGN)->setUseDescriptionId(IDS_DESC_SIGN);
 
 
 
-	Item::minecart = ( new MinecartItem(72, Minecart::TYPE_RIDEABLE) )		->setIconName(L"minecart")->setDescriptionId(IDS_ITEM_MINECART)->setUseDescriptionId(IDS_DESC_MINECART);
+	Item::minecart = ( new MinecartItem(72, Minecart::TYPE_RIDEABLE) )	->setIconName(L"minecart")->setDescriptionId(IDS_ITEM_MINECART)->setUseDescriptionId(IDS_DESC_MINECART);
 	Item::saddle = ( new SaddleItem(73) )								->setIconName(L"saddle")->setDescriptionId(IDS_ITEM_SADDLE)->setUseDescriptionId(IDS_DESC_SADDLE);
 	Item::redStone = ( new RedStoneItem(75) )							->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_redstone)->setIconName(L"redstone")->setDescriptionId(IDS_ITEM_REDSTONE)->setUseDescriptionId(IDS_DESC_REDSTONE_DUST)->setPotionBrewingFormula(PotionBrewing::MOD_REDSTONE);
 	Item::snowBall = ( new SnowballItem(76) )							->setIconName(L"snowball")->setDescriptionId(IDS_ITEM_SNOWBALL)->setUseDescriptionId(IDS_DESC_SNOWBALL);
@@ -425,16 +437,16 @@ void Item::staticCtor()
 	Item::reeds = ( new TilePlanterItem(82, Tile::reeds) )				->setIconName(L"reeds")->setDescriptionId(IDS_ITEM_REEDS)->setUseDescriptionId(IDS_DESC_REEDS);
 	Item::paper = ( new Item(83) )										->setBaseItemTypeAndMaterial(Item::eBaseItemType_paper, Item::eMaterial_paper)->setIconName(L"paper")->setDescriptionId(IDS_ITEM_PAPER)->setUseDescriptionId(IDS_DESC_PAPER);
 	Item::book = ( new BookItem(84) )									->setBaseItemTypeAndMaterial(Item::eBaseItemType_paper, Item::eMaterial_book)->setIconName(L"book")->setDescriptionId(IDS_ITEM_BOOK)->setUseDescriptionId(IDS_DESC_BOOK);
-	Item::slimeBall = ( new Item(85) )									->setIconName(L"slimeball")->setDescriptionId(IDS_ITEM_SLIMEBALL)->setUseDescriptionId(IDS_DESC_SLIMEBALL);
+	Item::slimeBall = ( new /*SlimeBallItem*/Item(85) )							->setIconName(L"slimeball")->setDescriptionId(IDS_ITEM_SLIMEBALL)->setUseDescriptionId(IDS_DESC_SLIMEBALL);
 	Item::minecart_chest = ( new MinecartItem(86, Minecart::TYPE_CHEST) )	->setIconName(L"minecart_chest")->setDescriptionId(IDS_ITEM_MINECART_CHEST)->setUseDescriptionId(IDS_DESC_MINECARTWITHCHEST);
 	Item::minecart_furnace = ( new MinecartItem(87, Minecart::TYPE_FURNACE) )->setIconName(L"minecart_furnace")->setDescriptionId(IDS_ITEM_MINECART_FURNACE)->setUseDescriptionId(IDS_DESC_MINECARTWITHFURNACE);
 	Item::egg = ( new EggItem(88) )										->setIconName(L"egg")->setDescriptionId(IDS_ITEM_EGG)->setUseDescriptionId(IDS_DESC_EGG);
-	Item::fishingRod = (FishingRodItem *)( new FishingRodItem(90) )	->setBaseItemTypeAndMaterial(eBaseItemType_rod, eMaterial_wood)->setIconName(L"fishingRod")->setDescriptionId(IDS_ITEM_FISHING_ROD)->setUseDescriptionId(IDS_DESC_FISHINGROD);
+	Item::fishingRod = (FishingRodItem *)( new FishingRodItem(90) )		->setBaseItemTypeAndMaterial(eBaseItemType_rod, eMaterial_wood)->setIconName(L"fishingRod")->setDescriptionId(IDS_ITEM_FISHING_ROD)->setUseDescriptionId(IDS_DESC_FISHINGROD);
 	Item::yellowDust = ( new Item(92) )									->setIconName(L"yellowDust")->setDescriptionId(IDS_ITEM_YELLOW_DUST)->setUseDescriptionId(IDS_DESC_YELLOW_DUST)->setPotionBrewingFormula(PotionBrewing::MOD_GLOWSTONE);
 	Item::fish_raw = ( new FoodItem(93, 2, FoodConstants::FOOD_SATURATION_LOW, false) )			->setIconName(L"fishRaw")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);
 	Item::fish_cooked = ( new FoodItem(94, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setIconName(L"fishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
 
-	Item::dye_powder = ( new DyePowderItem(95) )			->setBaseItemTypeAndMaterial(eBaseItemType_dyepowder,	eMaterial_dye)->setIconName(L"dyePowder")->setDescriptionId(IDS_ITEM_DYE_POWDER)->setUseDescriptionId(-1);
+	Item::dye_powder = ( new DyePowderItem(95) )						->setBaseItemTypeAndMaterial(eBaseItemType_dyepowder,	eMaterial_dye)->setIconName(L"dyePowder")->setDescriptionId(IDS_ITEM_DYE_POWDER)->setUseDescriptionId(-1);
 
 	Item::bone = ( new Item(96) )										->setIconName(L"bone")->setDescriptionId(IDS_ITEM_BONE)->handEquipped()->setUseDescriptionId(IDS_DESC_BONE);
 	Item::sugar = ( new Item(97) )										->setIconName(L"sugar")->setDescriptionId(IDS_ITEM_SUGAR)->setUseDescriptionId(IDS_DESC_SUGAR)->setPotionBrewingFormula(PotionBrewing::MOD_SUGAR);
@@ -444,7 +456,7 @@ void Item::staticCtor()
 
 	Item::bed = ( new BedItem(99) )										->setMaxStackSize(1)->setIconName(L"bed")->setDescriptionId(IDS_ITEM_BED)->setUseDescriptionId(IDS_DESC_BED);
 
-	Item::repeater = ( new TilePlanterItem(100, (Tile *)Tile::diode_off) )			->setIconName(L"diode")->setDescriptionId(IDS_ITEM_DIODE)->setUseDescriptionId(IDS_DESC_REDSTONEREPEATER);
+	Item::repeater = ( new TilePlanterItem(100, (Tile *)Tile::diode_off) )				->setIconName(L"diode")->setDescriptionId(IDS_ITEM_DIODE)->setUseDescriptionId(IDS_DESC_REDSTONEREPEATER);
 	Item::cookie = ( new FoodItem(101, 2, FoodConstants::FOOD_SATURATION_POOR, false) )	->setIconName(L"cookie")->setDescriptionId(IDS_ITEM_COOKIE)->setUseDescriptionId(IDS_DESC_COOKIE);
 
 
@@ -559,6 +571,10 @@ void Item::staticCtor()
 	Item::isogalRib = (new Item(190))																->setIconName(L"isogal_rib")->setDescriptionId(IDS_ITEM_ISOGAL_RIB)->setUseDescriptionId(IDS_ITEM_ISOGAL_RIB);
 	Item::aphalafTooth = (new Item(195))															->setIconName(L"aphalaf_tooth")->setDescriptionId(IDS_ITEM_APHALAF_TOOTH)->setUseDescriptionId(IDS_ITEM_APHALAF_TOOTH);
 	Item::aphalafSword	= ( new AphalafSwordItem(196, _Tier::NETHANIUM) )							->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_nethanium)->setIconName(L"aphalaf_sword")->setDescriptionId(IDS_ITEM_APHALAF_SWORD)->setUseDescriptionId(IDS_ITEM_APHALAF_SWORD);
+	Item::goldenAmber = (new Item(197))																->setIconName(L"goldenAmber")->setDescriptionId(IDS_ITEM_GOLDEN_AMBER)->setUseDescriptionId(IDS_ITEM_GOLDEN_AMBER);
+	Item::ambrosiumShard = (new Item(198))															->setIconName(L"ambrosiumShard")->setDescriptionId(IDS_ITEM_AMBROSIUM_SHARD)->setUseDescriptionId(IDS_ITEM_AMBROSIUM_SHARD);
+	Item::zaniteGemstone = (new Item(199))															->setIconName(L"zaniteGemstone")->setDescriptionId(IDS_ITEM_ZANITE_GEMSTONE)->setUseDescriptionId(IDS_ITEM_ZANITE_GEMSTONE);
+	Item::gravititePlate = (new Item(200))															->setIconName(L"gravititePlate")->setDescriptionId(IDS_ITEM_GRAVITITE_PLATE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PLATE);
 
 }
 

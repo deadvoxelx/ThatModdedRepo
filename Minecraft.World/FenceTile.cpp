@@ -7,13 +7,14 @@
 #include "net.minecraft.h"
 #include "FenceTile.h"
 
-const unsigned int FenceTile::FENCE_NAMES[6] = { 
+const unsigned int FenceTile::FENCE_NAMES[7] = { 
 	IDS_TILE_OAK_FENCE,
 	IDS_TILE_SPRUCE_FENCE,
 	IDS_TILE_BIRCH_FENCE,
 	IDS_TILE_JUNGLE_FENCE,
 	IDS_TILE_NETHER_FENCE,
 	IDS_TILE_PURUL_FENCE,
+	IDS_TILE_SKYROOT_FENCE,
 };
 
 Icon *FenceTile::getTexture(int face, int data)
@@ -37,6 +38,10 @@ Icon *FenceTile::getTexture(int face, int data)
 	if (data == TYPE_PURUL)
 	{
 		return Tile::netherPlanks->getTexture(face, 1);
+	}
+	if (data == TYPE_SKYROOT)
+	{
+		return Tile::netherPlanks->getTexture(face, 2);
 	}
 	return Tile::wood->getTexture(face, 0);
 }

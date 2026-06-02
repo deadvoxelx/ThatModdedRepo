@@ -183,6 +183,18 @@ bool DyePowderItem::growCrop(shared_ptr<ItemInstance> itemInstance, Level *level
 		}
 		return true;
 	}
+	else if (tile == Tile::skyrootSapling_Id || tile == Tile::goldenOakSapling_Id)
+	{
+		if(!bTestUseOnOnly)
+		{
+			if (!level->isClientSide)
+			{
+				((AetherSaplingTile *) Tile::tiles[tile])->growTree(level, x, y, z, level->random);
+				itemInstance->count--;
+			}
+		}
+		return true;
+	}
 	else if (tile == Tile::mushroom_brown_Id || tile == Tile::mushroom_red_Id || tile == Tile::netherSapling_Id)
 	{
 		if(!bTestUseOnOnly)

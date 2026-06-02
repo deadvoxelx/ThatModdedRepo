@@ -16,10 +16,11 @@ public:
 	static const int JUNGLE_SLAB = 3;
 	static const int NETHER_SLAB = 4;
 	static const int PURUL_SLAB = 5;
+	static const int SKYROOT_SLAB = 6;
 
 	static const int TYPE_MASK = 7;
 	static const int TOP_SLOT_BIT = 8;
-	static const int SLAB_NAMES_LENGTH = 6;
+	static const int SLAB_NAMES_LENGTH = 7;
 	static const unsigned int SLAB_NAMES[SLAB_NAMES_LENGTH];
 
 	WoodSlabTile(int id, bool fullSize);

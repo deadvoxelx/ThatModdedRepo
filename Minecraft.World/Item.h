@@ -97,6 +97,9 @@ public:
 		eMaterial_stick,
 		eMaterial_tnt,
 		eMaterial_endStone,
+		eMaterial_ambrosium,
+		eMaterial_zanite,
+		eMaterial_gravitite,
 
 	}
 	eMaterial;
@@ -455,6 +458,14 @@ public:
 	static Item *endoriumBoots;
 	static Item *aphalafTooth;
 	static Item *aphalafSword;
+	static Item *goldenAmber;
+	static Item *ambrosiumShard;
+	static Item *zaniteGemstone;
+	static Item *gravititePlate;
+	static Item *gravititeSword;
+	static Item *gravititePickaxe;
+	static Item *gravititeAxe;
+	static Item *gravititeShovel;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -692,6 +703,14 @@ public:
 	static const int endoriumBoots_Id = 450;
 	static const int aphalafTooth_Id = 451;
 	static const int aphalafSword_Id = 452;
+	static const int goldenAmber_Id = 453;
+	static const int ambrosiumShard_Id = 454;
+	static const int zaniteGemstone_Id = 455;
+	static const int gravititePlate_Id = 456;
+	static const int gravititeSword_Id = 457;
+	static const int gravititePickaxe_Id = 458;
+	static const int gravititeAxe_Id = 459;
+	static const int gravititeShovel_Id = 460;
 
 public:
 	const int id;

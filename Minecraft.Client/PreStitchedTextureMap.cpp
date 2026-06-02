@@ -615,6 +615,50 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(16,		10,	L"endothanium_shovel")
 		ADD_ICON(16,		11,	L"endothanium_hoe")
 
+		ADD_ICON(17,		0,	L"zanite_helmet")
+		ADD_ICON(17,		1,	L"gravitite_helmet")
+		ADD_ICON(17,		2,	L"zaniteGemstone")
+		ADD_ICON(17,		3,	L"ambrosiumShard")
+		ADD_ICON(17,		4,	L"aechorPetal")
+		ADD_ICON(17,		5,	L"skyrootBucket")
+		ADD_ICON(17,		6,	L"skyrootBucket_water")
+		ADD_ICON(17,		7,	L"skyrootBucket_milk")
+		ADD_ICON(17,		8,	L"skyrootBucket_poison")
+		ADD_ICON(17,		9,	L"cloudParachute")
+		ADD_ICON(17,		10,	L"cloudStaff")
+		ADD_ICON(17,		11,	L"dartEnchanted")
+		ADD_ICON(17,		12,	L"dartGolden")
+		ADD_ICON(17,		13,	L"dartPoison")
+		ADD_ICON(17,		14,	L"goldenAmber")
+		ADD_ICON(17,		15,	L"gummieSwet")
+
+		ADD_ICON(18,		0,	L"zanite_chestplate")
+		ADD_ICON(18,		1,	L"gravitite_chestplate")
+		ADD_ICON(18,		2,	L"flamingGemstone")
+		ADD_ICON(18,		3,	L"skyrootStick")
+		ADD_ICON(18,		4,	L"repulsionShield")
+		ADD_ICON(18,		5,	L"regenerationStone")
+		ADD_ICON(18,		6,	L"pigSlayer")
+		ADD_ICON(18,		7,	L"natureStaff")
+		ADD_ICON(18,		8,	L"moaEgg")
+		ADD_ICON(18,		9,	L"lifeShard")
+		ADD_ICON(18,		10,	L"aetherLance")
+		ADD_ICON(18,		11,	L"dartShooterEnchanted")
+		ADD_ICON(18,		12,	L"dartShooterGolden")
+		ADD_ICON(18,		13,	L"dartShooterPoison")
+		ADD_ICON(18,		14,	L"goldenFeather")
+		ADD_ICON(18,		15,	L"aetherKey")
+
+		ADD_ICON(19,		0,	L"zanite_leggings")
+		ADD_ICON(19,		1,	L"gravitite_leggings")
+		ADD_ICON(19,		2,	L"gravititePlate")
+		ADD_ICON(19,		3,	L"phoenixBow")
+
+		ADD_ICON(20,		0,	L"zanite_boots")
+		ADD_ICON(20,		1,	L"gravitite_boots")
+		ADD_ICON(20,		2,	L"vampireBlade")
+		ADD_ICON(20,		3,	L"lightningKnife")
+
 		// Special cases
 		ClockTexture *dataClock = new ClockTexture();
 		Icon *oldClock = texturesByName[L"clock"];
@@ -1058,5 +1102,50 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(22,	4,	L"packed_ice");
 	ADD_ICON(22,	5,	L"blue_ice");
 	ADD_ICON(22,	6,	L"packed_glass");
+
+	ADD_ICON(23,	0,	L"aercloud");
+	ADD_ICON(23,	1,	L"aerogel");
+	ADD_ICON(23,	2,	L"aetherDirt");
+	ADD_ICON(23,	3,	L"aetherGrass_side");
+	ADD_ICON(23,	4,	L"aetherGrass_top");
+	ADD_ICON(23,	5,	L"holystone");
+	ADD_ICON(23,	6,	L"holystone_mossy");
+	ADD_ICON(23,	7,	L"ambrosiumOre");
+	ADD_ICON(23,	8,	L"gravititeOre");
+	ADD_ICON(23,	9,	L"zaniteOre");
+	ADD_ICON(23,	10,	L"carvedStone");
+	ADD_ICON(23,	11,	L"carvedStone_light");
+	ADD_ICON(23,	12,	L"angelicStone");
+	ADD_ICON(23,	13,	L"angelicStone_light");
+	ADD_ICON(23,	14,	L"hellfireStone");
+	ADD_ICON(23,	15,	L"hellfireStone_light");
+
+	ADD_ICON(24,	0,	L"icestone");
+	ADD_ICON(24,	1,	L"quicksoil");
+	ADD_ICON(24,	2,	L"quicksoilGlass");
+	ADD_ICON(24,	3,	L"pillar_top");
+	ADD_ICON(24,	4,	L"pillar_side");
+	ADD_ICON(24,	5,	L"pillar_carved");
+	ADD_ICON(24,	6,	L"skyrootLog_side");
+	ADD_ICON(24,	7,	L"skyrootLog_top");
+	ADD_ICON(24,	8,	L"planks_nether_skyroot");
+	ADD_ICON(24,	9,	L"skyrootLeaves");
+	ADD_ICON(24,	10,	L"skyrootSapling");
+	ADD_ICON(24,	11,	L"goldenOakLog_side");
+	ADD_ICON(24,	12,	L"goldenOakLeaves");
+	ADD_ICON(24,	13,	L"goldenOakSapling");
+	ADD_ICON(24,	14,	L"flower_purple");
+	ADD_ICON(24,	15,	L"flower_white");
+
+	ADD_ICON(25,	0,	L"skyrootBookshelf_side");
+	ADD_ICON(25,	1,	L"incubator_top");
+	ADD_ICON(25,	2,	L"skyrootBookshelf_top");
+	ADD_ICON(25,	3,	L"incubator_side");
+	ADD_ICON(25,	4,	L"altar_side");
+	ADD_ICON(25,	5,	L"freezer_side");
+	ADD_ICON(25,	6,	L"freezer_top");
+	ADD_ICON(25,	7,	L"treasureChest_front");
+	ADD_ICON(25,	8,	L"treasureChest_side");
+	ADD_ICON(25,	9,	L"ambrosiumTorch");
 	}
 }
