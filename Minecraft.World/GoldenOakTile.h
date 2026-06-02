@@ -8,11 +8,14 @@ class GoldenOakTile : public Tile
 private:
 	Icon *iconTop;
 
-	// 4J Stu - I don't know why this is protected in Java
-	//protected:
 public:
 	GoldenOakTile(int id);
+
 public:
 	virtual Icon *getTexture(int face, int data);
 	void registerIcons(IconRegister *iconRegister);
+	virtual void playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data);
+
+protected:
+	virtual shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
 };
