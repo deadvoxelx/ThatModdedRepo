@@ -48,7 +48,7 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 				if (yy >= 0 && yy < Level::maxBuildHeight)
 				{
 					int tt = level->getTile(xx, yy, zz);
-					if (tt != 0 && tt != Tile::goldenOakLeaves_Id && tt != Tile::skyrootLeaves_Id) free = false;
+					if (tt != 0 && tt != Tile::netherLeaves_Id) free = false;
 				}
 				else
 				{
@@ -81,7 +81,7 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 			{
 				int zo = zz - (z);
 				if (abs(xo) == currentRadius && abs(zo) == currentRadius && currentRadius > 0) continue;
-				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::goldenOakLeaves_Id, 0);
+				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::netherLeaves_Id, 2);
 			}
 		}
 
@@ -106,7 +106,7 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 	for (int hh = 0; hh < treeHeight - topOffset; hh++)
 	{
 		int t = level->getTile(x, y + hh, z);
-		if (t == 0 || t == Tile::goldenOakLeaves_Id || t == Tile::skyrootLeaves_Id) placeBlock(level, x, y + hh, z, Tile::goldenOakLog_Id, 0);
+		if (t == 0 || t == Tile::netherLeaves_Id) placeBlock(level, x, y + hh, z, Tile::goldenOakLog_Id, 0);
 	}
 
 	return true;
