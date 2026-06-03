@@ -274,6 +274,8 @@ Tile *Tile::zaniteOre = NULL;
 Tile *Tile::gravititeOre = NULL;
 Tile *Tile::aercloud = NULL;
 Tile *Tile::quicksoil = NULL;
+Tile *Tile::aetherDirt = NULL;
+Tile *Tile::holystone = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -559,8 +561,10 @@ void Tile::staticCtor()
 	Tile::ambrosiumOre = (new OreTile(219))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"ambrosiumOre")->setDescriptionId(IDS_TILE_AMBROSIUM_ORE)->setUseDescriptionId(IDS_TILE_AMBROSIUM_ORE);
 	Tile::zaniteOre = (new OreTile(220))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"zaniteOre")->setDescriptionId(IDS_TILE_ZANITE_ORE)->setUseDescriptionId(IDS_TILE_ZANITE_ORE);
 	Tile::gravititeOre = (new OreTile(221))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"gravititeOre")->setDescriptionId(IDS_TILE_GRAVITITE_ORE)->setUseDescriptionId(IDS_TILE_GRAVITITE_ORE);
-	Tile::aercloud = (new AercloudTile(222, Material::cloth, false))							->setDestroyTime(0.2f)->setSoundType(SOUND_CLOTH)->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD)->setUseDescriptionId(IDS_TILE_AERCLOUD);
+	Tile::aercloud = (new AercloudTile(222, Material::cloth, false))	->setDestroyTime(0.2f)->setSoundType(SOUND_CLOTH)->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD)->setUseDescriptionId(IDS_TILE_AERCLOUD);
 	Tile::quicksoil = (new QuicksoilTile(223))							->setDestroyTime(0.5f)->setSoundType(SOUND_SAND)->setIconName(L"quicksoil")->setDescriptionId(IDS_TILE_QUICKSOIL)->setUseDescriptionId(IDS_TILE_QUICKSOIL);
+	Tile::aetherDirt = (new DirtTile(224))								->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"aetherDirt")->setDescriptionId(IDS_TILE_AETHER_DIRT)->setUseDescriptionId(IDS_TILE_AETHER_DIRT);
+	Tile::holystone = (new HolystoneTile(225))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE)->setUseDescriptionId(IDS_TILE_HOLYSTONE);
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
@@ -574,13 +578,13 @@ void Tile::staticCtor()
 	Item::items[stoneBrick_Id]			= ( new MultiTextureTileItem(Tile::stoneBrick_Id - 256, stoneBrick,(int *)SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES, 4))->setIconName(L"stonebricksmooth")->setDescriptionId(IDS_TILE_STONE_BRICK_SMOOTH);
 
 	Item::items[stone_Id]				= ( new MultiTextureTileItem(Tile::stone_Id - 256,Tile::stone,(int*)StoneTile::STONE_NAMES, StoneTile::STONE_NAMES_LENGTH))->setIconName(L"stone")->setDescriptionId(IDS_TILE_STONE);
-	Item::items[dirt_Id]				= ( new MultiTextureTileItem(Tile::dirt_Id - 256,Tile::dirt,(int*)DirtTile::DIRT_NAMES, DirtTile::DIRT_NAMES_LENGTH))->setIconName(L"dirt")->setDescriptionId(IDS_TILE_DIRT);
 	Item::items[endStone_Id]			= ( new MultiTextureTileItem(Tile::endStone_Id - 256, endStone,(int *)EndStoneTile::END_STONE_NAMES, 6))->setIconName(L"end_stone")->setDescriptionId(IDS_TILE_WHITESTONE);
 	Item::items[goldenclin_Id]			= ( new MultiTextureTileItem(Tile::goldenclin_Id - 256, goldenclin,(int *)GoldenclinTile::GOLDENCLIN_NAMES, 6))->setIconName(L"goldenclin")->setDescriptionId(IDS_TILE_GOLDENCLIN);
 	Item::items[netherPlanks_Id]		= ( new MultiTextureTileItem(Tile::netherPlanks_Id - 256, netherPlanks,(int *)NetherPlanksTile::NETHER_PLANK_NAMES, 3))->setIconName(L"planks_nether")->setDescriptionId(IDS_TILE_NETHER_PLANKS);
 	Item::items[aercloud_Id]			= ( new MultiTextureTileItem(Tile::aercloud_Id - 256,Tile::aercloud,(int*)AercloudTile::CLOUD_NAMES, AercloudTile::CLOUD_NAMES_LENGTH))->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD);
 	Item::items[glass_Id]				= ( new MultiTextureTileItem(Tile::glass_Id - 256,Tile::glass,(int*)GlassTile::GLASS_NAMES, GlassTile::GLASS_NAMES_LENGTH))->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS);
 	Item::items[netherLeaves_Id]		= ( new MultiTextureTileItem(Tile::netherLeaves_Id - 256,Tile::netherLeaves,(int*)NetherLeavesTile::NETHER_LEAVES_NAMES, NetherLeavesTile::NETHER_LEAVES_NAMES_LENGTH))->setIconName(L"nether_leaves")->setDescriptionId(IDS_TILE_NETHERLEAVES);
+	Item::items[holystone_Id]			= ( new MultiTextureTileItem(Tile::holystone_Id - 256,Tile::holystone,(int*)HolystoneTile::HOLYSTONE_NAMES, HolystoneTile::HOLYSTONE_NAMES_LENGTH))->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE);
 
 	Item::items[sandStone_Id]			= ( new MultiTextureTileItem(sandStone_Id - 256, sandStone, SandStoneTile::SANDSTONE_NAMES, SandStoneTile::SANDSTONE_BLOCK_NAMES) )->setIconName(L"sandStone")->setDescriptionId(IDS_TILE_SANDSTONE)->setUseDescriptionId(IDS_DESC_SANDSTONE);
 	Item::items[quartzBlock_Id]			= ( new MultiTextureTileItem(quartzBlock_Id - 256, quartzBlock, QuartzBlockTile::BLOCK_NAMES, QuartzBlockTile::QUARTZ_BLOCK_NAMES) )->setIconName(L"quartzBlock")->setDescriptionId(IDS_TILE_QUARTZ_BLOCK)->setUseDescriptionId(IDS_DESC_QUARTZ_BLOCK);
