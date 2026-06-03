@@ -158,3 +158,4 @@
 #include "GoldenOakTile.h"
 #include "AercloudTile.h"
 #include "QuicksoilTile.h"
+#include "HolystoneTile.h"
