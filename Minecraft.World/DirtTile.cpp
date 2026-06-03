@@ -3,21 +3,21 @@
 #include "net.minecraft.world.h"
 #include "net.minecraft.h"
 
-const unsigned int DirtTile::DIRT_NAMES[DIRT_NAMES_LENGTH] = {
+/*const unsigned int DirtTile::DIRT_NAMES[DIRT_NAMES_LENGTH] = {
 	IDS_TILE_DIRT,
 	IDS_TILE_AETHER_DIRT,
 };
 
 const wstring DirtTile::TEXTURE_NAMES[] = {
 	L"dirt", L"aetherDirt"
-};
+};*/
 
 DirtTile::DirtTile(int id) : Tile(id, Material::dirt)
 {
-	icons = nullptr;
+	//icons = nullptr;
 }
 
-int DirtTile::getSpawnResourcesAuxValue(int data)
+/*int DirtTile::getSpawnResourcesAuxValue(int data)
 {
 	return data;
 }
@@ -39,4 +39,4 @@ void DirtTile::registerIcons(IconRegister* iconRegister)
 	{
 		icons[i] = iconRegister->registerIcon(TEXTURE_NAMES[i]);
 	}
-}
+}*/

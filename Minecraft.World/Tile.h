@@ -419,6 +419,8 @@ public:
 	static const int gravititeOre_Id = 221;
 	static const int aercloud_Id = 222;
 	static const int quicksoil_Id = 223;
+	static const int aetherDirt_Id = 224;
+	static const int holystone_Id = 225;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -648,6 +650,8 @@ public:
 	static Tile *gravititeOre;
 	static Tile *aercloud;
 	static Tile *quicksoil;
+	static Tile *aetherDirt;
+	static Tile *holystone;
 
 	static void staticCtor();
 

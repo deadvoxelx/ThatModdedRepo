@@ -3,10 +3,11 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 
-AerCloudFeature::AerCloudFeature(int tileId, int data,int minRadius, int maxRadius, int minHeight, int maxHeight, bool islandBottom)
+AerCloudFeature::AerCloudFeature(int tileId, int data, int minRadius, int maxRadius, int minHeight, int maxHeight, bool islandBottom)
 	: Feature(false)
 {
 	this->tileId = tileId;
+	this->data = data;
 	this->minRadius = minRadius;
 	this->maxRadius = maxRadius;
 	this->minHeight = minHeight;
@@ -64,7 +65,7 @@ void AerCloudFeature::generateCloudBlob(Level *level, Random *random, int cx, in
 					// Only place in air
 					if (level->getTile(bx, by, bz) == 0)
 					{
-						placeBlock(level, bx, by, bz, tileId);
+						level->setTileAndData(bx, by, bz, tileId, data, Tile::UPDATE_NONE);
 					}
 				}
 			}

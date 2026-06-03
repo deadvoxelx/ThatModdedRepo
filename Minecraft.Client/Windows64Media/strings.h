@@ -2446,3 +2446,11 @@
 #define IDS_ITEM_GRAVITITE_PICKAXE							   2440
 #define IDS_ITEM_GRAVITITE_AXE								   2441
 #define IDS_ITEM_GRAVITITE_SHOVEL							   2442
+#define IDS_PLAYER_ENTER_AETHER                                2443
+#define IDS_PLAYER_LEAVE_AETHER                                2444
+#define IDS_ITEM_GRAVITITE_HOE								   2445
+#define IDS_ITEM_ZANITE_SWORD								   2446
+#define IDS_ITEM_ZANITE_PICKAXE								   2447
+#define IDS_ITEM_ZANITE_AXE									   2448
+#define IDS_ITEM_ZANITE_SHOVEL								   2449
+#define IDS_ITEM_ZANITE_HOE									   2450

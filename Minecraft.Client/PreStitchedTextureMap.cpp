@@ -659,6 +659,30 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(20,		2,	L"vampireBlade")
 		ADD_ICON(20,		3,	L"lightningKnife")
 
+		ADD_ICON(21,		0,	L"zaniteSword")
+		ADD_ICON(21,		1,	L"gravititeSword")
+		ADD_ICON(21,		2,	L"skyrootSword")
+		ADD_ICON(21,		3,	L"holystoneSword")
+		ADD_ICON(21,		4,	L"phoenixSword")
+
+		ADD_ICON(22,		0,	L"zaniteShovel")
+		ADD_ICON(22,		1,	L"gravititeShovel")
+		ADD_ICON(22,		2,	L"skyrootShovel")
+		ADD_ICON(22,		3,	L"holystoneShovel")
+		ADD_ICON(22,		4,	L"phoenixShovel")
+
+		ADD_ICON(23,		0,	L"zanitePickaxe")
+		ADD_ICON(23,		1,	L"gravititePickaxe")
+		ADD_ICON(23,		2,	L"skyrootPickaxe")
+		ADD_ICON(23,		3,	L"holystonePickaxe")
+		ADD_ICON(23,		4,	L"phoenixPickaxe")
+
+		ADD_ICON(24,		0,	L"zaniteAxe")
+		ADD_ICON(24,		1,	L"gravititeAxe")
+		ADD_ICON(24,		2,	L"skyrootAxe")
+		ADD_ICON(24,		3,	L"holystoneAxe")
+		ADD_ICON(24,		4,	L"phoenixAxe")
+
 		// Special cases
 		ClockTexture *dataClock = new ClockTexture();
 		Icon *oldClock = texturesByName[L"clock"];
