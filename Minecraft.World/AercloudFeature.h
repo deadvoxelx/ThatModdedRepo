@@ -14,6 +14,7 @@ public:
 
 private:
 	int tileId;
+	int data;
 	int minRadius;
 	int maxRadius;
 	int minHeight;
