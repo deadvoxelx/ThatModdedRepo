@@ -889,6 +889,14 @@ Recipes::Recipes()
 		L'#', Item::stick,
 		L'T');
 
+	addShapedRecipy(new ItemInstance(Tile::ambrosiumTorch, 4), //
+		L"sscicig",
+		L"X", //
+		L"#", //
+		L'X', Item::ambrosiumShard,
+		L'#', Item::stick,
+		L'T');
+
 	addShapedRecipy(new ItemInstance(Tile::glowstone, 1), //
 		L"sscig",
 		L"##", //
