@@ -276,6 +276,8 @@ Tile *Tile::aercloud = NULL;
 Tile *Tile::quicksoil = NULL;
 Tile *Tile::aetherDirt = NULL;
 Tile *Tile::holystone = NULL;
+Tile *Tile::ambrosiumTorch = NULL;
+Tile *Tile::enchantedGravitite = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -565,6 +567,8 @@ void Tile::staticCtor()
 	Tile::quicksoil = (new QuicksoilTile(223))							->setDestroyTime(0.5f)->setSoundType(SOUND_SAND)->setIconName(L"quicksoil")->setDescriptionId(IDS_TILE_QUICKSOIL)->setUseDescriptionId(IDS_TILE_QUICKSOIL);
 	Tile::aetherDirt = (new DirtTile(224))								->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"aetherDirt")->setDescriptionId(IDS_TILE_AETHER_DIRT)->setUseDescriptionId(IDS_TILE_AETHER_DIRT);
 	Tile::holystone = (new HolystoneTile(225))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE)->setUseDescriptionId(IDS_TILE_HOLYSTONE);
+	Tile::ambrosiumTorch = (new TorchTile(226))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,	Item::eMaterial_wood)->setDestroyTime(0.0f)->setLightEmission(15 / 16.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"ambrosiumTorch")->setDescriptionId(IDS_TILE_TORCH)->setUseDescriptionId(IDS_DESC_TORCH)->disableMipmap();
+	Tile::enchantedGravitite = (new EnchantedGravititeTile(227))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_gravitite)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"iron_block")->setDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE)->setUseDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE);
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
