@@ -37,6 +37,8 @@ public:
 		static const int diamondArray[];
 		static const int nethaniumArray[];
 		static const int endoriumArray[];
+		static const int zaniteArray[];
+		static const int gravititeArray[];
 	public:
 		static const ArmorMaterial *CLOTH;
 		static const ArmorMaterial *CHAIN;
@@ -45,6 +47,8 @@ public:
 		static const ArmorMaterial *DIAMOND;
 		static const ArmorMaterial *NETHANIUM;
 		static const ArmorMaterial *ENDORIUM;
+		static const ArmorMaterial *ZANITE;
+		static const ArmorMaterial *GRAVITITE;
 
 	private:
 		int durabilityMultiplier;

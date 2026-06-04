@@ -474,6 +474,14 @@ public:
 	static Item *zaniteAxe;
 	static Item *zaniteShovel;
 	static Item *zaniteHoe;
+	static Item *zaniteHelmet;
+	static Item *zaniteChestplate;
+	static Item *zaniteLeggings;
+	static Item *zaniteBoots;
+	static Item *gravititeHelmet;
+	static Item *gravititeChestplate;
+	static Item *gravititeLeggings;
+	static Item *gravititeBoots;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -725,6 +733,14 @@ public:
 	static const int zaniteAxe_Id = 464;
 	static const int zaniteShovel_Id = 465;
 	static const int zaniteHoe_Id = 466;
+	static const int zaniteHelmet_Id = 467;
+	static const int zaniteChestplate_Id = 468;
+	static const int zaniteLeggings_Id = 469;
+	static const int zaniteBoots_Id = 470;
+	static const int gravititeHelmet_Id = 471;
+	static const int gravititeChestplate_Id = 472;
+	static const int gravititeLeggings_Id = 473;
+	static const int gravititeBoots_Id = 474;
 
 public:
 	const int id;

@@ -10,7 +10,7 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.monster.h"
 #include "..\Minecraft.World\net.minecraft.h"
 
-const wstring HumanoidMobRenderer::MATERIAL_NAMES[7] = { L"cloth", L"chain", L"iron", L"diamond", L"gold", L"nethanium", L"endorium" };
+const wstring HumanoidMobRenderer::MATERIAL_NAMES[9] = { L"cloth", L"chain", L"iron", L"diamond", L"gold", L"nethanium", L"endorium", L"zanite", L"gravitite" };
 std::map<wstring, ResourceLocation> HumanoidMobRenderer::ARMOR_LOCATION_CACHE;
 
 void HumanoidMobRenderer::_init(HumanoidModel *humanoidModel, float scale)
@@ -55,6 +55,10 @@ ResourceLocation *HumanoidMobRenderer::getArmorLocation(ArmorItem *armorItem, in
 	case 5:
 		break;
 	case 6:
+		break;
+	case 7:
+		break;
+	case 8:
 		break;
 	};
 	wstring path = wstring(L"armor/" + MATERIAL_NAMES[armorItem->modelIndex]).append(L"_").append(std::to_wstring(layer == 2 ? 2 : 1)).append((overlay ? L"_b" :L"")).append(L".png");

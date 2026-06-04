@@ -300,6 +300,14 @@ Item *Item::zanitePickaxe = NULL;
 Item *Item::zaniteAxe = NULL;
 Item *Item::zaniteShovel = NULL;
 Item *Item::zaniteHoe = NULL;
+Item *Item::zaniteHelmet = NULL;
+Item *Item::zaniteChestplate = NULL;
+Item *Item::zaniteLeggings = NULL;
+Item *Item::zaniteBoots = NULL;
+Item *Item::gravititeHelmet = NULL;
+Item *Item::gravititeChestplate = NULL;
+Item *Item::gravititeLeggings = NULL;
+Item *Item::gravititeBoots = NULL;
 
 
 void Item::staticCtor()
@@ -363,6 +371,8 @@ void Item::staticCtor()
 	Item::helmet_gold		= (ArmorItem *) ( ( new ArmorItem(58, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_HEAD) )			->setBaseItemTypeAndMaterial(eBaseItemType_helmet,	eMaterial_gold)			->setIconName(L"helmetGold")->setDescriptionId(IDS_ITEM_HELMET_GOLD)->setUseDescriptionId(IDS_DESC_HELMET_GOLD) );
 	Item::nethaniumHelmet	= (ArmorItem *) ( ( new ArmorItem(173, ArmorItem::ArmorMaterial::NETHANIUM, 5, ArmorItem::SLOT_HEAD) )		->setBaseItemTypeAndMaterial(eBaseItemType_helmet,	eMaterial_nethanium)	->setIconName(L"nethanium_helmet")->setDescriptionId(IDS_ITEM_NETHANIUMHELMET)->setUseDescriptionId(IDS_ITEM_NETHANIUMHELMET) );
 	Item::endoriumHelmet	= (ArmorItem *) ( ( new ArmorItem(191, ArmorItem::ArmorMaterial::ENDORIUM, 6, ArmorItem::SLOT_HEAD) )		->setBaseItemTypeAndMaterial(eBaseItemType_helmet,	eMaterial_endorium)		->setIconName(L"endorium_helmet")->setDescriptionId(IDS_ITEM_ENDORIUMHELMET)->setUseDescriptionId(IDS_ITEM_ENDORIUMHELMET) );
+	Item::zaniteHelmet		= (ArmorItem *) ( ( new ArmorItem(211, ArmorItem::ArmorMaterial::ZANITE, 7, ArmorItem::SLOT_HEAD) )			->setBaseItemTypeAndMaterial(eBaseItemType_helmet,	eMaterial_zanite)		->setIconName(L"zanite_helmet")->setDescriptionId(IDS_ITEM_ZANITE_HELMET)->setUseDescriptionId(IDS_ITEM_ZANITE_HELMET) );
+	Item::gravititeHelmet	= (ArmorItem *) ( ( new ArmorItem(215, ArmorItem::ArmorMaterial::GRAVITITE, 8, ArmorItem::SLOT_HEAD) )		->setBaseItemTypeAndMaterial(eBaseItemType_helmet,	eMaterial_gravitite)	->setIconName(L"gravitite_helmet")->setDescriptionId(IDS_ITEM_GRAVITITE_HELMET)->setUseDescriptionId(IDS_ITEM_GRAVITITE_HELMET) );
 
 	Item::chestplate_leather	= (ArmorItem *) ( ( new ArmorItem(43, ArmorItem::ArmorMaterial::CLOTH, 0, ArmorItem::SLOT_TORSO) )		->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_cloth)	->setIconName(L"chestplateCloth")->setDescriptionId(IDS_ITEM_CHESTPLATE_CLOTH)->setUseDescriptionId(IDS_DESC_CHESTPLATE_LEATHER) );
 	Item::chestplate_iron		= (ArmorItem *) ( ( new ArmorItem(51, ArmorItem::ArmorMaterial::IRON, 2, ArmorItem::SLOT_TORSO) )		->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_iron)		->setIconName(L"chestplateIron")->setDescriptionId(IDS_ITEM_CHESTPLATE_IRON)->setUseDescriptionId(IDS_DESC_CHESTPLATE_IRON) );
@@ -370,6 +380,8 @@ void Item::staticCtor()
 	Item::chestplate_gold		= (ArmorItem *) ( ( new ArmorItem(59, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_TORSO) )		->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_gold)		->setIconName(L"chestplateGold")->setDescriptionId(IDS_ITEM_CHESTPLATE_GOLD)->setUseDescriptionId(IDS_DESC_CHESTPLATE_GOLD) );
 	Item::nethaniumChestplate	= (ArmorItem *) ( ( new ArmorItem(174, ArmorItem::ArmorMaterial::NETHANIUM, 5, ArmorItem::SLOT_TORSO) )	->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_nethanium)->setIconName(L"nethanium_chestplate")->setDescriptionId(IDS_ITEM_NETHANIUMCHESTPLATE)->setUseDescriptionId(IDS_ITEM_NETHANIUMCHESTPLATE) );
 	Item::endoriumChestplate	= (ArmorItem *) ( ( new ArmorItem(192, ArmorItem::ArmorMaterial::ENDORIUM, 6, ArmorItem::SLOT_TORSO) )	->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_endorium)	->setIconName(L"endorium_chestplate")->setDescriptionId(IDS_ITEM_ENDORIUMCHESTPLATE)->setUseDescriptionId(IDS_ITEM_ENDORIUMCHESTPLATE) );
+	Item::zaniteChestplate		= (ArmorItem *) ( ( new ArmorItem(212, ArmorItem::ArmorMaterial::ZANITE, 7, ArmorItem::SLOT_TORSO) )	->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_zanite)	->setIconName(L"zanite_chestplate")->setDescriptionId(IDS_ITEM_ZANITE_CHESTPLATE)->setUseDescriptionId(IDS_ITEM_ZANITE_CHESTPLATE) );
+	Item::gravititeChestplate	= (ArmorItem *) ( ( new ArmorItem(216, ArmorItem::ArmorMaterial::GRAVITITE, 8, ArmorItem::SLOT_TORSO) )	->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_gravitite)->setIconName(L"gravitite_chestplate")->setDescriptionId(IDS_ITEM_GRAVITITE_CHESTPLATE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_CHESTPLATE) );
 
 	Item::leggings_leather	= (ArmorItem *) ( ( new ArmorItem(44, ArmorItem::ArmorMaterial::CLOTH, 0, ArmorItem::SLOT_LEGS) )			->setBaseItemTypeAndMaterial(eBaseItemType_leggings,	eMaterial_cloth)	->setIconName(L"leggingsCloth")->setDescriptionId(IDS_ITEM_LEGGINGS_CLOTH)->setUseDescriptionId(IDS_DESC_LEGGINGS_LEATHER) );
 	Item::leggings_iron		= (ArmorItem *) ( ( new ArmorItem(52, ArmorItem::ArmorMaterial::IRON, 2, ArmorItem::SLOT_LEGS) )			->setBaseItemTypeAndMaterial(eBaseItemType_leggings,	eMaterial_iron)		->setIconName(L"leggingsIron")->setDescriptionId(IDS_ITEM_LEGGINGS_IRON)->setUseDescriptionId(IDS_DESC_LEGGINGS_IRON) );
@@ -377,6 +389,8 @@ void Item::staticCtor()
 	Item::leggings_gold		= (ArmorItem *) ( ( new ArmorItem(60, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_LEGS) )			->setBaseItemTypeAndMaterial(eBaseItemType_leggings,	eMaterial_gold)		->setIconName(L"leggingsGold")->setDescriptionId(IDS_ITEM_LEGGINGS_GOLD)->setUseDescriptionId(IDS_DESC_LEGGINGS_GOLD) );
 	Item::nethaniumLeggings	= (ArmorItem *) ( ( new ArmorItem(175, ArmorItem::ArmorMaterial::NETHANIUM, 5, ArmorItem::SLOT_LEGS) )		->setBaseItemTypeAndMaterial(eBaseItemType_leggings,	eMaterial_nethanium)->setIconName(L"nethanium_leggings")->setDescriptionId(IDS_ITEM_NETHANIUMLEGGINGS)->setUseDescriptionId(IDS_ITEM_NETHANIUMLEGGINGS) );
 	Item::endoriumLeggings	= (ArmorItem *) ( ( new ArmorItem(193, ArmorItem::ArmorMaterial::ENDORIUM, 6, ArmorItem::SLOT_LEGS) )		->setBaseItemTypeAndMaterial(eBaseItemType_leggings,	eMaterial_endorium)	->setIconName(L"endorium_leggings")->setDescriptionId(IDS_ITEM_ENDORIUMLEGGINGS)->setUseDescriptionId(IDS_ITEM_ENDORIUMLEGGINGS) );
+	Item::zaniteLeggings	= (ArmorItem *) ( ( new ArmorItem(213, ArmorItem::ArmorMaterial::ZANITE, 7, ArmorItem::SLOT_LEGS) )			->setBaseItemTypeAndMaterial(eBaseItemType_leggings,	eMaterial_zanite)	->setIconName(L"zanite_leggings")->setDescriptionId(IDS_ITEM_ZANITE_LEGGINGS)->setUseDescriptionId(IDS_ITEM_ZANITE_LEGGINGS) );
+	Item::gravititeLeggings	= (ArmorItem *) ( ( new ArmorItem(217, ArmorItem::ArmorMaterial::GRAVITITE, 8, ArmorItem::SLOT_LEGS) )		->setBaseItemTypeAndMaterial(eBaseItemType_leggings,	eMaterial_gravitite)->setIconName(L"gravitite_leggings")->setDescriptionId(IDS_ITEM_GRAVITITE_LEGGINGS)->setUseDescriptionId(IDS_ITEM_GRAVITITE_LEGGINGS) );
 
 	Item::helmet_chain		= (ArmorItem *) ( ( new ArmorItem(46, ArmorItem::ArmorMaterial::CHAIN, 1, ArmorItem::SLOT_HEAD) )			->setBaseItemTypeAndMaterial(eBaseItemType_helmet,		eMaterial_chain)	->setIconName(L"helmetChain")->setDescriptionId(IDS_ITEM_HELMET_CHAIN)->setUseDescriptionId(IDS_DESC_HELMET_CHAIN) );
 	Item::chestplate_chain	= (ArmorItem *) ( ( new ArmorItem(47, ArmorItem::ArmorMaterial::CHAIN, 1, ArmorItem::SLOT_TORSO) )			->setBaseItemTypeAndMaterial(eBaseItemType_chestplate,	eMaterial_chain)	->setIconName(L"chestplateChain")->setDescriptionId(IDS_ITEM_CHESTPLATE_CHAIN)->setUseDescriptionId(IDS_DESC_CHESTPLATE_CHAIN) );
@@ -389,6 +403,8 @@ void Item::staticCtor()
 	Item::boots_gold		= (ArmorItem *) ( ( new ArmorItem(61, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_FEET) )			->setBaseItemTypeAndMaterial(eBaseItemType_boots,	eMaterial_gold)			->setIconName(L"bootsGold")->setDescriptionId(IDS_ITEM_BOOTS_GOLD)->setUseDescriptionId(IDS_DESC_BOOTS_GOLD) );
 	Item::nethaniumBoots	= (ArmorItem *) ( ( new ArmorItem(176, ArmorItem::ArmorMaterial::NETHANIUM, 5, ArmorItem::SLOT_FEET) )		->setBaseItemTypeAndMaterial(eBaseItemType_boots,	eMaterial_nethanium)	->setIconName(L"nethanium_boots")->setDescriptionId(IDS_ITEM_NETHANIUMBOOTS)->setUseDescriptionId(IDS_ITEM_NETHANIUMBOOTS) );
 	Item::endoriumBoots		= (ArmorItem *) ( ( new ArmorItem(194, ArmorItem::ArmorMaterial::ENDORIUM, 6, ArmorItem::SLOT_FEET) )		->setBaseItemTypeAndMaterial(eBaseItemType_boots,	eMaterial_endorium)		->setIconName(L"endorium_boots")->setDescriptionId(IDS_ITEM_ENDORIUMBOOTS)->setUseDescriptionId(IDS_ITEM_ENDORIUMBOOTS) );
+	Item::zaniteBoots		= (ArmorItem *) ( ( new ArmorItem(214, ArmorItem::ArmorMaterial::ZANITE, 7, ArmorItem::SLOT_FEET) )			->setBaseItemTypeAndMaterial(eBaseItemType_boots,	eMaterial_zanite)		->setIconName(L"zanite_boots")->setDescriptionId(IDS_ITEM_ZANITE_BOOTS)->setUseDescriptionId(IDS_ITEM_ZANITE_BOOTS) );
+	Item::gravititeBoots	= (ArmorItem *) ( ( new ArmorItem(218, ArmorItem::ArmorMaterial::GRAVITITE, 8, ArmorItem::SLOT_FEET) )		->setBaseItemTypeAndMaterial(eBaseItemType_boots,	eMaterial_gravitite)	->setIconName(L"gravitite_boots")->setDescriptionId(IDS_ITEM_GRAVITITE_BOOTS)->setUseDescriptionId(IDS_ITEM_GRAVITITE_BOOTS) );
 
 	Item::ironIngot = ( new Item(9) )->setIconName(L"ingotIron")		->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_iron)->setDescriptionId(IDS_ITEM_INGOT_IRON)->setUseDescriptionId(IDS_DESC_INGOT);
 	Item::goldIngot = ( new Item(10) )->setIconName(L"ingotGold")		->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_gold)->setDescriptionId(IDS_ITEM_INGOT_GOLD)->setUseDescriptionId(IDS_DESC_INGOT);
@@ -589,7 +605,7 @@ void Item::staticCtor()
 	Item::ambrosiumShard = (new Item(198))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_ambrosium)->setIconName(L"ambrosiumShard")->setDescriptionId(IDS_ITEM_AMBROSIUM_SHARD)->setUseDescriptionId(IDS_ITEM_AMBROSIUM_SHARD);
 	Item::zaniteGemstone = (new Item(199))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_zanite)->setIconName(L"zaniteGemstone")->setDescriptionId(IDS_ITEM_ZANITE_GEMSTONE)->setUseDescriptionId(IDS_ITEM_ZANITE_GEMSTONE);
 	//Item::gravititePlate = (new Item(200))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_gravitite)->setIconName(L"gravititePlate")->setDescriptionId(IDS_ITEM_GRAVITITE_PLATE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PLATE);
-	//211
+	//219
 }
 
 

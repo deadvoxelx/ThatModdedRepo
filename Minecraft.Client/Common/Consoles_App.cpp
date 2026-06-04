@@ -4641,6 +4641,14 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_ZANITE_SHOVEL, L"Zanite Shovel");
 		m_stringTable->registerString(IDS_ITEM_ZANITE_HOE, L"Zanite Hoe");
 		m_stringTable->registerString(IDS_TILE_ENCHANTED_GRAVITITE, L"Enchanted Gravitite");
+		m_stringTable->registerString(IDS_ITEM_ZANITE_HELMET, L"Zanite Helmet");
+		m_stringTable->registerString(IDS_ITEM_ZANITE_CHESTPLATE, L"Zanite Chestplate");
+		m_stringTable->registerString(IDS_ITEM_ZANITE_LEGGINGS, L"Zanite Leggings");
+		m_stringTable->registerString(IDS_ITEM_ZANITE_BOOTS, L"Zanite Boots");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_HELMET, L"Gravitite Helmet");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_CHESTPLATE, L"ZaGravititenite Chestplate");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_LEGGINGS, L"Gravitite Leggings");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_BOOTS, L"Gravitite Boots");
 
 	}
 	else

@@ -68,6 +68,8 @@ const int _ArmorMaterial::goldArray[] = {2, 5, 3, 1};
 const int _ArmorMaterial::diamondArray[] = {3, 8, 6, 3};
 const int _ArmorMaterial::nethaniumArray[] = {3, 8, 6, 3};
 const int _ArmorMaterial::endoriumArray[] = {3, 8, 6, 3};
+const int _ArmorMaterial::zaniteArray[] = {2, 6, 5, 2};
+const int _ArmorMaterial::gravititeArray[] = {3, 8, 6, 3};
 const _ArmorMaterial *_ArmorMaterial::CLOTH = new _ArmorMaterial(5, _ArmorMaterial::clothArray, 15);
 const _ArmorMaterial *_ArmorMaterial::CHAIN = new _ArmorMaterial(15, _ArmorMaterial::chainArray, 12);
 const _ArmorMaterial *_ArmorMaterial::IRON = new _ArmorMaterial(15, _ArmorMaterial::ironArray, 9);
@@ -75,6 +77,8 @@ const _ArmorMaterial *_ArmorMaterial::GOLD = new _ArmorMaterial(7, _ArmorMateria
 const _ArmorMaterial *_ArmorMaterial::DIAMOND = new _ArmorMaterial(33, _ArmorMaterial::diamondArray, 10);
 const _ArmorMaterial *_ArmorMaterial::NETHANIUM = new _ArmorMaterial(33, _ArmorMaterial::nethaniumArray, 15);
 const _ArmorMaterial *_ArmorMaterial::ENDORIUM = new _ArmorMaterial(38, _ArmorMaterial::endoriumArray, 15);
+const _ArmorMaterial *_ArmorMaterial::ZANITE = new _ArmorMaterial(15, _ArmorMaterial::zaniteArray, 9);
+const _ArmorMaterial *_ArmorMaterial::GRAVITITE = new _ArmorMaterial(33, _ArmorMaterial::gravititeArray, 15);
 
 _ArmorMaterial::ArmorMaterial(int durabilityMultiplier, const int slotProtections[], int enchantmentValue)
 {
@@ -133,6 +137,14 @@ int _ArmorMaterial::getTierItemId() const
 	{
 		return Item::endorium_Id;
 	}
+	else if (this == ZANITE)
+	{
+		return Item::zaniteGemstone_Id;
+	}
+	else if (this == GRAVITITE)
+	{
+		return Tile::enchantedGravitite_Id;
+	}
 	return 0;
 }
 
@@ -168,7 +180,9 @@ shared_ptr<ItemInstance> ArmorItem::use(shared_ptr<ItemInstance> instance, Level
 	case Item::eMaterial_diamond: lo = 218; hi = 223; break;
 	case Item::eMaterial_nethanium: lo = 224; hi = 229; break;
 	case Item::eMaterial_endorium: lo = 230; hi = 235; break;
-	default:                      lo = 236; hi = 241; break;
+	case Item::eMaterial_zanite: lo = 236; hi = 241; break;
+	case Item::eMaterial_gravitite: lo = 242; hi = 247; break;
+	default:                      lo = 248; hi = 253; break;
 	}
 
 	std::mt19937 rng(std::random_device{}());

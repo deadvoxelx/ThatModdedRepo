@@ -49,6 +49,8 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[0],Item::goldIngot);
 	ADD_OBJECT(map[0],Item::nethanium);
 	ADD_OBJECT(map[0],Item::endorium);
+	ADD_OBJECT(map[0],Item::zaniteGemstone);
+	ADD_OBJECT(map[0],Tile::enchantedGravitite);
 
 	ADD_OBJECT(map[1],Item::helmet_leather);
 	ADD_OBJECT(map[1],Item::helmet_chain);
@@ -57,6 +59,8 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[1],Item::helmet_gold);
 	ADD_OBJECT(map[1],Item::nethaniumHelmet);
 	ADD_OBJECT(map[1],Item::endoriumHelmet);
+	ADD_OBJECT(map[1],Item::zaniteHelmet);
+	ADD_OBJECT(map[1],Item::gravititeHelmet);
 
 	ADD_OBJECT(map[2],Item::chestplate_leather);
 	ADD_OBJECT(map[2],Item::chestplate_chain);
@@ -65,6 +69,8 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[2],Item::chestplate_gold);
 	ADD_OBJECT(map[2],Item::nethaniumChestplate);
 	ADD_OBJECT(map[2],Item::endoriumChestplate);
+	ADD_OBJECT(map[2],Item::zaniteChestplate);
+	ADD_OBJECT(map[2],Item::gravititeChestplate);
 
 	ADD_OBJECT(map[3],Item::leggings_leather);
 	ADD_OBJECT(map[3],Item::leggings_chain);
@@ -73,6 +79,8 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[3],Item::leggings_gold);
 	ADD_OBJECT(map[3],Item::nethaniumLeggings);
 	ADD_OBJECT(map[3],Item::endoriumLeggings);
+	ADD_OBJECT(map[3],Item::zaniteLeggings);
+	ADD_OBJECT(map[3],Item::gravititeLeggings);
 
 	ADD_OBJECT(map[4],Item::boots_leather);
 	ADD_OBJECT(map[4],Item::boots_chain);
@@ -81,6 +89,8 @@ void ArmorRecipes::_init()
 	ADD_OBJECT(map[4],Item::boots_gold);
 	ADD_OBJECT(map[4],Item::nethaniumBoots);
 	ADD_OBJECT(map[4],Item::endoriumBoots);
+	ADD_OBJECT(map[4],Item::zaniteBoots);
+	ADD_OBJECT(map[4],Item::gravititeBoots);
 }
 
 // 4J-PB added for quick equip in the inventory
