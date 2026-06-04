@@ -4640,6 +4640,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_ZANITE_AXE, L"Zanite Axe");
 		m_stringTable->registerString(IDS_ITEM_ZANITE_SHOVEL, L"Zanite Shovel");
 		m_stringTable->registerString(IDS_ITEM_ZANITE_HOE, L"Zanite Hoe");
+		m_stringTable->registerString(IDS_TILE_ENCHANTED_GRAVITITE, L"Enchanted Gravitite");
 
 	}
 	else
