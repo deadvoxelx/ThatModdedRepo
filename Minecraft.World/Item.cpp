@@ -289,7 +289,7 @@ Item *Item::aphalafSword = NULL;
 Item *Item::goldenAmber = NULL;
 Item *Item::ambrosiumShard = NULL;
 Item *Item::zaniteGemstone = NULL;
-Item *Item::gravititePlate = NULL;
+//Item *Item::gravititePlate = NULL;
 Item *Item::gravititeSword = NULL;
 Item *Item::gravititePickaxe = NULL;
 Item *Item::gravititeAxe = NULL;
@@ -588,7 +588,7 @@ void Item::staticCtor()
 	Item::goldenAmber = (new Item(197))																->setIconName(L"goldenAmber")->setDescriptionId(IDS_ITEM_GOLDEN_AMBER)->setUseDescriptionId(IDS_ITEM_GOLDEN_AMBER);
 	Item::ambrosiumShard = (new Item(198))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_ambrosium)->setIconName(L"ambrosiumShard")->setDescriptionId(IDS_ITEM_AMBROSIUM_SHARD)->setUseDescriptionId(IDS_ITEM_AMBROSIUM_SHARD);
 	Item::zaniteGemstone = (new Item(199))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_zanite)->setIconName(L"zaniteGemstone")->setDescriptionId(IDS_ITEM_ZANITE_GEMSTONE)->setUseDescriptionId(IDS_ITEM_ZANITE_GEMSTONE);
-	Item::gravititePlate = (new Item(200))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_gravitite)->setIconName(L"gravititePlate")->setDescriptionId(IDS_ITEM_GRAVITITE_PLATE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PLATE);
+	//Item::gravititePlate = (new Item(200))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_gravitite)->setIconName(L"gravititePlate")->setDescriptionId(IDS_ITEM_GRAVITITE_PLATE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PLATE);
 	//211
 }
 
