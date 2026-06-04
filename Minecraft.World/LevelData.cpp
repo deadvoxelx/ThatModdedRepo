@@ -221,7 +221,7 @@ LevelData::LevelData(LevelSettings *levelSettings, const wstring& levelName)
 	lastPlayed = 0;
 	sizeOnDisk = 0;
 	//    this->loadedPlayerTag = nullptr;	// 4J - we don't store this anymore
-	dimension = 2;
+	dimension = 0;
 	version = 0;
 	rainTime = 0;
 	raining = false;
