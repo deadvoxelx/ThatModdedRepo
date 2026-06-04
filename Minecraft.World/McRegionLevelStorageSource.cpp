@@ -124,6 +124,8 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
     ArrayList<File> enderBaseFolders = new ArrayList<File>();
 	ArrayList<ChunkFile> outerEndRegions = new ArrayList<ChunkFile>();
     ArrayList<File> outerEndBaseFolders = new ArrayList<File>();
+	ArrayList<ChunkFile> aetherRegions = new ArrayList<ChunkFile>();
+    ArrayList<File> aetherBaseFolders = new ArrayList<File>();
 
 	//File baseFolder = File(baseDir, levelId);
 	//File netherFolder = File(baseFolder, LevelStorage::HELL_FOLDER);
@@ -151,7 +153,12 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
         addRegions(outerEndFolder, outerEndRegions, outerEndBaseFolders);
     }
 
-	int totalCount = normalRegions->size() + netherRegions->size() + enderRegions.size() + outerEndRegions.size() + normalBaseFolders->size() + netherBaseFolders->size() + enderBaseFolders.size() + outerEndBaseFolders.size();
+	if (aetherFolder.exists())
+	{
+        addRegions(aetherFolder, aetherRegions, aetherBaseFolders);
+    }
+
+	int totalCount = normalRegions->size() + netherRegions->size() + enderRegions.size() + outerEndRegions.size() + aetherRegions.size() + normalBaseFolders->size() + netherBaseFolders->size() + enderBaseFolders.size() + outerEndBaseFolders.size() + aetherBaseFolders.size();
 
 	// System.out.println("Total conversion count is " + totalCount); 4J Jev, TODO
 
@@ -163,6 +170,8 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
     convertRegions(enderFolder, enderRegions, normalRegions.size() + netherRegions.size(), totalCount, progress);
 	// convert outer end world
 	convertRegions(outerEndFolder, outerEndRegions, normalRegions.size() + netherRegions.size() + enderRegions.size(), totalCount, progress);
+	// convert aether world
+	convertRegions(aetherFolder, aetherRegions, normalRegions.size() + netherRegions.size() + enderRegions.size() + outerEndRegions.size(), totalCount, progress);
 
 	LevelData *levelData = getDataTagFor(levelId);
 	levelData->setVersion(McRegionLevelStorage::MCREGION_VERSION_ID);
