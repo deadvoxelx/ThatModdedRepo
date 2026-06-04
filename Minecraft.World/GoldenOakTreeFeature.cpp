@@ -62,7 +62,7 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 
 	// Must stand on aether ground
 	int belowTile = level->getTile(x, y - 1, z);
-	if ((belowTile != Tile::aetherGrass_Id && belowTile != Tile::dirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
+	if ((belowTile != Tile::aetherGrass_Id && belowTile != Tile::aetherDirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
 
 	placeBlock(level, x, y - 1, z, Tile::dirt_Id, 1);
 

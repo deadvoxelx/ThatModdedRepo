@@ -43,7 +43,7 @@ bool SkyrootTreeFeature::place(Level *level, Random *random, int x, int y, int z
 				if (yy >= 0 && yy < Level::maxBuildHeight)
 				{
 					int tt = level->getTile(xx, yy, zz);
-					if (tt != 0 && tt != Tile::netherLeaves_Id && tt != Tile::aetherGrass_Id && tt != Tile::dirt_Id && tt != Tile::skyrootLog_Id) free = false;
+					if (tt != 0 && tt != Tile::netherLeaves_Id && tt != Tile::aetherGrass_Id && tt != Tile::aetherDirt_Id && tt != Tile::skyrootLog_Id) free = false;
 				}
 				else
 				{
@@ -56,9 +56,9 @@ bool SkyrootTreeFeature::place(Level *level, Random *random, int x, int y, int z
 	if (!free) return false;
 
 	int belowTile = level->getTile(x, y - 1, z);
-	if ((belowTile != Tile::aetherGrass_Id && belowTile != Tile::dirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
+	if ((belowTile != Tile::aetherGrass_Id && belowTile != Tile::aetherDirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
 
-	placeBlock(level, x, y - 1, z, Tile::dirt_Id, 1);
+	placeBlock(level, x, y - 1, z, Tile::aetherDirt_Id);
 
 	PIXBeginNamedEvent(0, "Placing SkyrootTreeFeature leaves");
 	int grassHeight = 3;

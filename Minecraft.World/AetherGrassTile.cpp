@@ -17,14 +17,14 @@ AetherGrassTile::AetherGrassTile(int id) : Tile(id, Material::grass)
 Icon *AetherGrassTile::getTexture(int face, int data)
 {
 	if (face == Facing::UP) return iconTop;
-	if (face == Facing::DOWN) return Tile::dirt->getTexture(face, 1);
+	if (face == Facing::DOWN) return Tile::aetherDirt->getTexture(face, 1);
 	return icon;
 }
 
 Icon *AetherGrassTile::getTexture(LevelSource *level, int x, int y, int z, int face)
 {
 	if (face == Facing::UP) return iconTop;
-	if (face == Facing::DOWN) return Tile::dirt->getTexture(face, 1);
+	if (face == Facing::DOWN) return Tile::aetherDirt->getTexture(face, 1);
 	return icon;
 }
 
@@ -40,7 +40,7 @@ void AetherGrassTile::tick(Level *level, int x, int y, int z, Random *random)
 
 	if (level->getRawBrightness(x, y + 1, z) < MIN_BRIGHTNESS && Tile::lightBlock[level->getTile(x, y + 1, z)] > 2)
 	{
-		level->setTileAndData(x, y, z, Tile::dirt_Id, 1, Tile::UPDATE_CLIENTS);
+		level->setTileAndData(x, y, z, Tile::aetherDirt_Id, 1, Tile::UPDATE_CLIENTS);
 	}
 	else
 	{
@@ -52,7 +52,7 @@ void AetherGrassTile::tick(Level *level, int x, int y, int z, Random *random)
 				int yt = y + random->nextInt(5) - 3;
 				int zt = z + random->nextInt(3) - 1;
 				int above = level->getTile(xt, yt + 1, zt);
-				if (level->getTile(xt, yt, zt) == Tile::dirt_Id && level->getRawBrightness(xt, yt + 1, zt) >= MIN_BRIGHTNESS && Tile::lightBlock[above] <= 2)
+				if (level->getTile(xt, yt, zt) == Tile::aetherDirt_Id && level->getRawBrightness(xt, yt + 1, zt) >= MIN_BRIGHTNESS && Tile::lightBlock[above] <= 2)
 				{
 					level->setTileAndData(x, y, z, Tile::aetherGrass_Id, 0, Tile::UPDATE_CLIENTS);
 				}
@@ -63,7 +63,7 @@ void AetherGrassTile::tick(Level *level, int x, int y, int z, Random *random)
 
 int AetherGrassTile::getResource(int data, Random *random, int playerBonusLevel)
 {
-	return Tile::dirt->getResource(1, random, playerBonusLevel);
+	return Tile::aetherDirt->getResource(1, random, playerBonusLevel);
 }
 
 bool AetherGrassTile::shouldTileTick(Level *level, int x,int y,int z)
