@@ -43,6 +43,9 @@ int _MapDataMappings::getDimension(int id)
 	case 3:
 		returnVal = 2; // Outer End
 		break;
+	//case 4:
+	//	returnVal = 3; // Aether
+	//	break;
 	default:
 #ifndef _CONTENT_PACKAGE
 		printf("Read invalid dimension from MapDataMapping\n");
@@ -67,14 +70,17 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension)
 		//dimensions[id>>2] &= ~( 2 << offset );
 		break;
 	case -1: // Nether
-		dimensions[id>>4] |= ( 1 << offset );
+		dimensions[id>>5] |= ( 1 << offset );
 		break;
 	case 1: // End
-		dimensions[id>>4] |= ( 2 << offset );
+		dimensions[id>>5] |= ( 2 << offset );
 		break;
 	case 2: // Outer End
-		dimensions[id>>4] |= ( 3 << offset );
+		dimensions[id>>5] |= ( 3 << offset );
 		break;
+	//case 3: // Aether
+	//	dimensions[id>>5] |= ( 4 << offset );
+	//	break;
 	default:
 #ifndef _CONTENT_PACKAGE
 		printf("Trying to set a MapDataMapping for an invalid dimension.\n");
@@ -238,6 +244,12 @@ ChunkStorage *DirectoryLevelStorage::createChunkStorage(Dimension *dimension)
 	if (dynamic_cast<TheOuterEndDimension *>(dimension) != nullptr)
 	{
 		const File dir2 = File(dir, LevelStorage::OUTEREND_FOLDER);
+		//dir2.mkdirs(); // 4J Removed
+		return new OldChunkStorage(dir2, true);
+	}
+	if (dynamic_cast<AetherDimension *>(dimension) != nullptr)
+	{
+		const File dir2 = File(dir, LevelStorage::AETHER_FOLDER);
 		//dir2.mkdirs(); // 4J Removed
 		return new OldChunkStorage(dir2, true);
 	}

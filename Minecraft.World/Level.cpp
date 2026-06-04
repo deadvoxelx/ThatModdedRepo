@@ -692,7 +692,7 @@ void Level::_init(shared_ptr<LevelStorage>levelStorage, const wstring& levelName
 	//}
 	else
 	{
-		dimension = Dimension::getNew(2);
+		dimension = Dimension::getNew(3);
 	}
 
 	if (levelData == nullptr)

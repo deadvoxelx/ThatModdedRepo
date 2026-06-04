@@ -580,13 +580,13 @@ void Entity::baseTick()
 
 						int targetDimension;
 
-						if (level->dimension->id == 2)
+						if (level->dimension->id == 3)
 						{
 							targetDimension = 0;
 						}
 						else
 						{
-							targetDimension = 2;
+							targetDimension = 3;
 						}
 						changeDimension(targetDimension);
 					}

@@ -835,6 +835,11 @@ shared_ptr<ServerPlayer> PlayerList::respawn(shared_ptr<ServerPlayer> serverPlay
 		player->displayClientMessage(IDS_PLAYER_LEAVE_OUTER_END);
 	}
 
+	if( oldDimension == 3 && player->dimension != 3 )
+	{
+		player->displayClientMessage(IDS_PLAYER_LEAVE_AETHER);
+	}
+
 	return player;
 
 }
@@ -912,6 +917,15 @@ void PlayerList::toggleDimension(shared_ptr<ServerPlayer> player, int targetDime
 	//	player->displayClientMessage(IDS_PLAYER_LEAVE_OUTER_END);
 	//}
 
+	//else if(player->dimension != 3 && targetDimension == 3)
+	//{
+	//	player->displayClientMessage(IDS_PLAYER_ENTERED_AETHER);
+	//}
+	//else if( player->dimension == 3 )
+	//{
+	//	player->displayClientMessage(IDS_PLAYER_LEAVE_AETHER);
+	//}
+
 	player->dimension = targetDimension;
 
 	ServerLevel *newLevel = server->getLevel(player->dimension);
@@ -978,8 +992,18 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 	}
 	else if (entity->dimension == 0)
 	{
-		xt *= scale;
-		zt *= scale;
+		if (lastDimension == -1)
+		{
+			// Coming from the Nether; we want coordinate scaling here
+			xt *= scale;
+			zt *= scale;
+		}
+		else if (lastDimension == 3)
+		{
+			// Coming from the Aether; we want to keep coordinate scaling in line with the Overworld
+			xt == scale;
+			zt == scale;
+		}
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		if (entity->isAlive())
 		{
@@ -991,6 +1015,16 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 	{
 		/*xt *= scale;
 		zt *= scale;*/
+		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
+		if (entity->isAlive())
+		{
+			oldLevel->tick(entity, false);
+		}
+	}
+	else if (entity->dimension == 3)
+	{
+		xt == scale;
+		zt == scale;
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		if (entity->isAlive())
 		{
@@ -1142,7 +1176,7 @@ void PlayerList::tick()
 	LeaveCriticalSection(&m_kickPlayersCS);
 
 	// Check our receiving players, and if they are dead see if we can replace them
-	for(unsigned int dim = 0; dim < 4; ++dim)
+	for(unsigned int dim = 0; dim < 5; ++dim)
 	{
 		for(unsigned int i = 0; i < receiveAllPlayers[dim].size(); ++i)
 		{
@@ -1562,6 +1596,7 @@ shared_ptr<ServerPlayer> PlayerList::findAlivePlayerOnSystem(shared_ptr<ServerPl
 	if( dimIndex == -1 ) dimIndex = 1;
 	else if( dimIndex == 1) dimIndex = 2;
 	else if( dimIndex == 2) dimIndex = 3;
+	else if( dimIndex == 3) dimIndex = 4;
 
 	INetworkPlayer *thisPlayer = player->connection->getNetworkPlayer();
 	if( thisPlayer )
@@ -1592,6 +1627,7 @@ void PlayerList::removePlayerFromReceiving(shared_ptr<ServerPlayer> player, bool
 	if( dimIndex == -1 ) dimIndex = 1;
 	else if( dimIndex == 1) dimIndex = 2;
 	else if( dimIndex == 2) dimIndex = 3;
+	else if( dimIndex == 3) dimIndex = 4;
 
 #ifndef _CONTENT_PACKAGE
 	app.DebugPrintf("Requesting remove player %ls as primary in dimension %d\n", player->name.c_str(), dimIndex);
@@ -1646,6 +1682,7 @@ void PlayerList::removePlayerFromReceiving(shared_ptr<ServerPlayer> player, bool
 				if( newPlayer->dimension == -1 ) newPlayerDim = 1;
 				else if( newPlayer->dimension == 1) newPlayerDim = 2;
 				else if( newPlayer->dimension == 2) newPlayerDim = 3;
+				else if( newPlayer->dimension == 3) newPlayerDim = 4;
 				bool foundPrimary = false;
 				for(auto& primaryPlayer : receiveAllPlayers[newPlayerDim])
 				{
@@ -1674,6 +1711,7 @@ void PlayerList::addPlayerToReceiving(shared_ptr<ServerPlayer> player)
 	if( player->dimension == -1 ) playerDim = 1;
 	else if( player->dimension == 1) playerDim = 2;
 	else if( player->dimension == 2) playerDim = 3;
+	else if( player->dimension == 3) playerDim = 4;
 
 #ifndef _CONTENT_PACKAGE
 	app.DebugPrintf("Requesting add player %ls as primary in dimension %d\n", player->name.c_str(), playerDim);
@@ -1718,6 +1756,7 @@ bool PlayerList::canReceiveAllPackets(shared_ptr<ServerPlayer> player)
 	if( player->dimension == -1 ) playerDim = 1;
 	else if( player->dimension == 1) playerDim = 2;
 	else if( player->dimension == 2) playerDim = 3;
+	else if( player->dimension == 3) playerDim = 4;
 	for(const auto& newPlayer : receiveAllPlayers[playerDim])
 	{
 		if(newPlayer == player)

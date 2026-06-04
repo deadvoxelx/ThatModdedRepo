@@ -56,7 +56,7 @@ void PortalForcer::force(Level *level, shared_ptr<Entity> e, int lastDimension)
 bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
 	// Determine which portal tile to search for based on dimension
-	bool isAether = (level->dimension->id == 2 || lastDimension == 2);
+	bool isAether = (level->dimension->id == 3 || lastDimension == 3);
 	int portalTileId = isAether ? Tile::aetherPortal_Id : Tile::portalTile_Id;
 
 	// 4J Stu - Decrease the range at which we search for a portal in the nether given our smaller nether
@@ -139,7 +139,7 @@ bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimens
 bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
 	// Determine which portal/frame tiles to use based on dimension
-	bool isAether = (level->dimension->id == 2 || lastDimension == 2);
+	bool isAether = (level->dimension->id == 3 || lastDimension == 3);
 	int frameTileId = isAether ? Tile::glowstone_Id : Tile::obsidian_Id;
 	int portalTileId = isAether ? Tile::aetherPortal_Id : Tile::portalTile_Id;
 

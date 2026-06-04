@@ -2454,3 +2454,4 @@
 #define IDS_ITEM_ZANITE_AXE									   2448
 #define IDS_ITEM_ZANITE_SHOVEL								   2449
 #define IDS_ITEM_ZANITE_HOE									   2450
+#define IDS_TILE_ENCHANTED_GRAVITITE						   2451

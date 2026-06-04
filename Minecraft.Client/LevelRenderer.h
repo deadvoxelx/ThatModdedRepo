@@ -216,8 +216,8 @@ public:
 	// 4J - added for new render list handling
 	// This defines the maximum size of renderable level, must be big enough to cope with actual size of level + view distance at each side
 	// so that we can render the "infinite" sea at the edges
-	static const int	MAX_LEVEL_RENDER_SIZE[4];
-	static const int    DIMENSION_OFFSETS[4];
+	static const int	MAX_LEVEL_RENDER_SIZE[5];
+	static const int    DIMENSION_OFFSETS[5];
 	// This is the TOTAL area of columns of chunks to be allocated for render round the players. So for one player, it would be a region of
 	// sqrt(PLAYER_RENDER_AREA) x sqrt(PLAYER_RENDER_AREA)
 #ifdef _LARGE_WORLDS

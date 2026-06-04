@@ -18,6 +18,7 @@ public:
 	static const wstring NETHER_FOLDER;
 	static const wstring ENDER_FOLDER;
     static const wstring OUTEREND_FOLDER;
+    static const wstring AETHER_FOLDER;
 
     virtual LevelData *prepareLevel() = 0;
     virtual void checkSession() = 0;

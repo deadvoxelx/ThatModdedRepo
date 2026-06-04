@@ -1,0 +1,27 @@
+#pragma once
+#include "BiomeDecorator.h"
+
+class AerCloudFeature;
+
+class AetherBiomeDecorator : public BiomeDecorator
+{
+public:
+	AetherBiomeDecorator(Biome *biome);
+
+protected:
+	Feature *ambrosiumOreFeature;
+	Feature *zaniteOreFeature;
+	Feature *gravititeOreFeature;
+	Feature *icestoneFeature;
+	Feature *mossyHolystoneFeature;
+
+	Feature *quicksoilShelfFeature;
+
+	Feature *largeAerCloudFeature;
+	Feature *smallAerCloudFeature;
+	Feature *smallGoldAerCloudFeature;
+	Feature *smallBlueAerCloudFeature;
+
+	virtual void decorate();
+	void decorateAetherOres();
+};

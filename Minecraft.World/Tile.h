@@ -421,6 +421,8 @@ public:
 	static const int quicksoil_Id = 223;
 	static const int aetherDirt_Id = 224;
 	static const int holystone_Id = 225;
+	static const int ambrosiumTorch_Id = 226;
+	static const int enchantedGravitite_Id = 227;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -652,6 +654,8 @@ public:
 	static Tile *quicksoil;
 	static Tile *aetherDirt;
 	static Tile *holystone;
+	static Tile *ambrosiumTorch;
+	static Tile *enchantedGravitite;
 
 	static void staticCtor();
 

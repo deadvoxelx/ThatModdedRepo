@@ -43,6 +43,7 @@ Biome *Biome::jungle = nullptr;
 Biome *Biome::jungleHills = nullptr;
 
 Biome *Biome::outerIslands = nullptr;
+Biome *Biome::aether = nullptr;
 
 
 void Biome::staticCtor()
@@ -82,6 +83,7 @@ void Biome::staticCtor()
 	Biome::jungleHills = (new JungleBiome(22))->setColor(0x2c4205)->setName(L"JungleHills")->setLeafColor(0x537b09)->setTemperatureAndDownfall(1.2f, 0.9f)->setDepthAndScale(0.1f, 2)->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_JungleHills, eMinecraftColour_Foliage_JungleHills, eMinecraftColour_Water_JungleHills,eMinecraftColour_Sky_JungleHills);
 
 	Biome::outerIslands = (new TheOuterEndBiome(23))->setColor(0x8080ff)->setName(L"OuterIslands")->setNoRain()->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Sky, eMinecraftColour_Foliage_Sky, eMinecraftColour_Water_Sky,eMinecraftColour_Sky_Sky);
+	Biome::aether = (new AetherBiome(24))->setColor(0x7ec8e3)->setName(L"Aether")->setNoRain()->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Sky, eMinecraftColour_Foliage_Sky, eMinecraftColour_Water_Sky,eMinecraftColour_Sky_Sky);
 }
 
 Biome::Biome(int id) : id(id)

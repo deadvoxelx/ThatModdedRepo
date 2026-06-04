@@ -26,7 +26,7 @@ void WeaponRecipies::_init()
 	ADD_OBJECT(map[0],Item::nethanium);
 	ADD_OBJECT(map[0],Item::endorium);
 	ADD_OBJECT(map[0],Item::zaniteGemstone);
-	ADD_OBJECT(map[0],Item::gravititePlate);
+	ADD_OBJECT(map[0],Tile::enchantedGravitite);
 
 	ADD_OBJECT(map[1],Item::sword_wood);
 	ADD_OBJECT(map[1],Item::sword_stone);

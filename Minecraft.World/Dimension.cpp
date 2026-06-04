@@ -11,6 +11,7 @@
 #include "NormalDimension.h"
 #include "TheEndDimension.h"
 #include "TheOuterEndDimension.h"
+#include "AetherDimension.h"
 #include "net.minecraft.world.level.tile.h"
 #include "..\Minecraft.Client\Minecraft.h"
 #include "..\Minecraft.Client\Common\Colours\ColourTable.h"
@@ -193,6 +194,7 @@ Dimension *Dimension::getNew(int id)
 	if (id == 0) return new NormalDimension();
 	if (id == 1) return new TheEndDimension();
 	if (id == 2) return new TheOuterEndDimension();
+	if (id == 3) return new AetherDimension();
 
 	return nullptr;
 }
