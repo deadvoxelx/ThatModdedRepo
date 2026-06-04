@@ -169,6 +169,28 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::OUTEREND_FOLDER);
 	}
 
+	if (dynamic_cast<AetherDimension *>(dimension))
+	{
+		int iSaveVersion=m_saveFile->getSaveVersion();
+
+		if((iSaveVersion!=0) && (iSaveVersion < SAVE_FILE_VERSION_NEW_END))
+		{
+			app.DebugPrintf("Loaded save version number is: %d, required to keep The End is: %d\n",m_saveFile->getSaveVersion(), SAVE_FILE_VERSION_NEW_END);
+
+			vector<FileEntry *> *aetherFiles = m_saveFile->getFilesWithPrefix(LevelStorage::AETHER_FOLDER);
+
+			if(aetherFiles!=nullptr)
+			{
+				for(auto& aetherFile : *aetherFiles)
+				{
+					m_saveFile->deleteFile(aetherFile);
+				}
+				delete aetherFiles;
+			}
+		}
+		return new McRegionChunkStorage(m_saveFile, LevelStorage::AETHER_FOLDER);
+	}
+
     return new McRegionChunkStorage(m_saveFile, L"");
 }
 
