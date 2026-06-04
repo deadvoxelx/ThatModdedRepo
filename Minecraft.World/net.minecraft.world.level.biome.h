@@ -33,3 +33,5 @@
 
 #include "TheOuterEndBiome.h"
 #include "TheOuterEndBiomeDecorator.h"
+#include "AetherBiome.h"
+#include "AetherBiomeDecorator.h"
