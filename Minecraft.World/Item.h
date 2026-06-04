@@ -463,7 +463,7 @@ public:
 	static Item *goldenAmber;
 	static Item *ambrosiumShard;
 	static Item *zaniteGemstone;
-	static Item *gravititePlate;
+	//static Item *gravititePlate;
 	static Item *gravititeSword;
 	static Item *gravititePickaxe;
 	static Item *gravititeAxe;
@@ -714,7 +714,7 @@ public:
 	static const int goldenAmber_Id = 453;
 	static const int ambrosiumShard_Id = 454;
 	static const int zaniteGemstone_Id = 455;
-	static const int gravititePlate_Id = 456;
+	//static const int gravititePlate_Id = 456;
 	static const int gravititeSword_Id = 457;
 	static const int gravititePickaxe_Id = 458;
 	static const int gravititeAxe_Id = 459;
