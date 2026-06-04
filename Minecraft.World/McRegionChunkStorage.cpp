@@ -8,7 +8,7 @@ CRITICAL_SECTION		McRegionChunkStorage::cs_memory;
 
 std::deque<DataOutputStream *> McRegionChunkStorage::s_chunkDataQueue;
 int McRegionChunkStorage::s_runningThreadCount = 0;
-C4JThread *McRegionChunkStorage::s_saveThreads[3];
+C4JThread *McRegionChunkStorage::s_saveThreads[5];
 
 
 McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstring &prefix) : m_prefix( prefix )
@@ -22,6 +22,7 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstr
 		m_saveFile->createFile(ConsoleSavePath(L"DIM-1r.0.-1.mcr"));
 		m_saveFile->createFile(ConsoleSavePath(L"DIM-1r.0.0.mcr"));
 		m_saveFile->createFile(ConsoleSavePath(L"DIM-1r.-1.0.mcr"));
+
 		m_saveFile->createFile(ConsoleSavePath(L"DIM1/r.-1.-1.mcr"));
 		m_saveFile->createFile(ConsoleSavePath(L"DIM1/r.0.-1.mcr"));
 		m_saveFile->createFile(ConsoleSavePath(L"DIM1/r.0.0.mcr"));
@@ -31,6 +32,11 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstr
 		m_saveFile->createFile(ConsoleSavePath(L"DIM2/r.0.-1.mcr"));
 		m_saveFile->createFile(ConsoleSavePath(L"DIM2/r.0.0.mcr"));
 		m_saveFile->createFile(ConsoleSavePath(L"DIM2/r.-1.0.mcr"));
+
+		m_saveFile->createFile(ConsoleSavePath(L"DIM3/r.-1.-1.mcr"));
+		m_saveFile->createFile(ConsoleSavePath(L"DIM3/r.0.-1.mcr"));
+		m_saveFile->createFile(ConsoleSavePath(L"DIM3/r.0.0.mcr"));
+		m_saveFile->createFile(ConsoleSavePath(L"DIM3/r.-1.0.mcr"));
 
 		m_saveFile->createFile(ConsoleSavePath(L"r.-1.-1.mcr"));
 		m_saveFile->createFile(ConsoleSavePath(L"r.0.-1.mcr"));
