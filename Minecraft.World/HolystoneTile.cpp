@@ -6,10 +6,11 @@
 const unsigned int HolystoneTile::HOLYSTONE_NAMES[HOLYSTONE_NAMES_LENGTH] = {
 	IDS_TILE_HOLYSTONE,
 	IDS_TILE_HOLYSTONE_MOSSY,
+	IDS_TILE_HOLYSTONE_BRICK,
 };
 
 const wstring HolystoneTile::TEXTURE_NAMES[] = {
-	L"holystone", L"holystone_mossy"
+	L"holystone", L"holystone_mossy", L"holystoneBricks"
 };
 
 HolystoneTile::HolystoneTile(int id) : Tile(id, Material::stone)
