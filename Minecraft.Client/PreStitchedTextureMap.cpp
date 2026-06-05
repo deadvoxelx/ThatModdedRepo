@@ -1171,5 +1171,13 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(25,	7,	L"treasureChest_front");
 	ADD_ICON(25,	8,	L"treasureChest_side");
 	ADD_ICON(25,	9,	L"ambrosiumTorch");
+	ADD_ICON(25,	10,	L"berryBushStem");
+	ADD_ICON(25,	11,	L"berryBush");
+	ADD_ICON(25,	12,	L"holidayLeaves");
+	ADD_ICON(25,	13,	L"holidayLeavesDecorated");
+	ADD_ICON(25,	14,	L"sunAltar_top");
+	ADD_ICON(25,	15,	L"sunAltar_side");
+
+	ADD_ICON(26,	0,	L"holystoneBricks");
 	}
 }
