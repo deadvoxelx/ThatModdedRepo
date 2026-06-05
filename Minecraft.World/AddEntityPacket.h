@@ -29,6 +29,8 @@ public:
 	static const int FISH_HOOK = 90;
 
 	static const int HELLSPHERE = 101;
+	//static const int SLIMEBALL = 111;
+	static const int ZEPHYRBALL = 117;
 
 	// 4J Added TU9
 	static const int DRAGON_FIRE_BALL = 200;

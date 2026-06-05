@@ -560,6 +560,12 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 		e = std::make_shared<DragonFireball>(level, x, y, z, packet->xa / 8000.0, packet->ya / 8000.0, packet->za / 8000.0);
 		packet->data = 0;
 		break;
+
+	case AddEntityPacket::ZEPHYRBALL:
+		e = std::make_shared<ZephyrFireball>(level, x, y, z, packet->xa / 8000.0, packet->ya / 8000.0, packet->za / 8000.0);
+		packet->data = 0;
+		break;
+
 	case AddEntityPacket::EGG:
 		e = std::make_shared<ThrownEgg>(level, x, y, z);
 		break;

@@ -8,8 +8,9 @@ class HolystoneTile : public Tile
 public:
 	static const int TYPE_DEFAULT = 0;
 	static const int TYPE_MOSSY = 1;
+	static const int TYPE_BRICK = 2;
 
-	static const int HOLYSTONE_NAMES_LENGTH = 2;
+	static const int HOLYSTONE_NAMES_LENGTH = 3;
 
 	static const unsigned int HOLYSTONE_NAMES[HOLYSTONE_NAMES_LENGTH];
 	static const wstring TEXTURE_NAMES[];

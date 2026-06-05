@@ -91,6 +91,12 @@
 #include "AphalafPlantModel.h"
 #include "AphalafPlantRenderer.h"
 #include "MoobloomRenderer.h"
+#include "SheepuffRenderer.h"
+#include "SheepuffModel.h"
+#include "SheepuffFurModel.h"
+#include "FlyingCowRenderer.h"
+#include "FlyingCowModel.h"
+#include "ZephyrRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -112,13 +118,13 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 
 	renderers[eTYPE_PIGMAN] = new PigmanRenderer();
 	renderers[eTYPE_WATCHER] = new WatcherRenderer();
+	renderers[eTYPE_MOOBLOOM] = new MoobloomRenderer(new CowModel(), 0.7f);
+	renderers[eTYPE_SHEEPUFF] = new SheepuffRenderer(new SheepuffModel(), new SheepuffFurModel(), 0.7f);
+	renderers[eTYPE_FLYING_COW] = new FlyingCowRenderer(new FlyingCowModel(), 0.7f);
 
 	renderers[eTYPE_SHEEP] = new SheepRenderer(new SheepModel(), new SheepFurModel(), 0.7f);
 	renderers[eTYPE_COW] = new CowRenderer(new CowModel(), 0.7f);
 	renderers[eTYPE_MUSHROOMCOW] = new MushroomCowRenderer(new CowModel(), 0.7f);
-
-	renderers[eTYPE_MOOBLOOM] = new MoobloomRenderer(new CowModel(), 0.7f);
-
 	renderers[eTYPE_WOLF] = new WolfRenderer(new WolfModel(), new WolfModel(), 0.5f);
 	renderers[eTYPE_CHICKEN] = new ChickenRenderer(new ChickenModel(), 0.3f);
 	renderers[eTYPE_OCELOT] = new OcelotRenderer(new OcelotModel(), 0.4f);
@@ -131,6 +137,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_EVUPUL] = new EvupulRenderer();
 	renderers[eTYPE_APHALAF_BOSS] = new AphalafBossRenderer();
 	renderers[eTYPE_APHALAF_PLANT] = new AphalafPlantRenderer();
+	renderers[eTYPE_ZEPHYR] = new ZephyrRenderer();
 
 	renderers[eTYPE_SNOWMAN] = new SnowManRenderer();
 	renderers[eTYPE_SKELETON] = new SkeletonRenderer();
@@ -168,6 +175,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
+	renderers[eTYPE_ZEPHYRBALL] = new FireballRenderer(2.0f);
 
 	renderers[eTYPE_THROWNENDERPEARL] = new ItemSpriteRenderer(Item::enderPearl);
 	renderers[eTYPE_EYEOFENDERSIGNAL] = new ItemSpriteRenderer(Item::eyeOfEnder);

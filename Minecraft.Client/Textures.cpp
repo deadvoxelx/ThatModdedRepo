@@ -182,6 +182,10 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/cow_invert",
 	L"mob/chicken_black",
 	L"mob/chicken_red",
+	L"mob/sheepuff",
+	L"mob/sheepuff_fur",
+	L"mob/flyingCow",
+	L"mob/zephyr",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",

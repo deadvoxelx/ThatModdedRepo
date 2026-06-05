@@ -2463,3 +2463,11 @@
 #define IDS_ITEM_GRAVITITE_CHESTPLATE						   2457
 #define IDS_ITEM_GRAVITITE_LEGGINGS							   2458
 #define IDS_ITEM_GRAVITITE_BOOTS							   2459
+#define IDS_TILE_AEROGEL									   2460
+#define IDS_TILE_HOLYSTONE_BRICK							   2461
+#define IDS_TILE_BERRY_BUSH									   2462
+#define IDS_TILE_HOLIDAY_LEAVES								   2463
+#define IDS_TILE_HOLIDAY_LEAVES_FANCY						   2464
+#define IDS_SHEEPUFF										   2465
+#define IDS_FLYING_COW										   2466
+#define IDS_ZEPHYR											   2467

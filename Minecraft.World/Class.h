@@ -137,10 +137,12 @@ enum eINSTANCEOF
 							eTYPE_PIG				= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x3,
 							eTYPE_CHICKEN			= eTYPE_ANIMAL                                   | 0x4,
 							eTYPE_PIGMAN			= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x5,
+							eTYPE_SHEEPUFF			= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x6,
 
 							eTYPE_COW				= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | BIT_COW,
 								eTYPE_MUSHROOMCOW	= eTYPE_COW | 0x1,
 								eTYPE_MOOBLOOM		= eTYPE_COW | 0x2,
+								eTYPE_FLYING_COW	= eTYPE_COW | 0x3,
 
 							
 					eTYPE_WATERANIMAL	= eTYPE_PATHFINDER_MOB | BIT_WATER_MOB, //0x100,
@@ -177,6 +179,7 @@ enum eINSTANCEOF
 						eTYPE_EVUPUL		= eTYPE_MONSTER | eTYPE_VALID_IN_SPAWNER_FLAG | 0x12,
 						eTYPE_APHALAF_BOSS	= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x13,
 						eTYPE_APHALAF_PLANT	= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x14,
+						eTYPE_ZEPHYR		= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x15,
 
 
 				eTYPE_AMBIENT			= eTYPE_MOB | BIT_AMBIENT_MOB,
@@ -217,6 +220,7 @@ enum eINSTANCEOF
 			eTYPE_WITHER_SKULL      = eTYPE_FIREBALL | 0x2,
 			eTYPE_LARGE_FIREBALL    = eTYPE_FIREBALL | 0x3,
 			eTYPE_SMALL_FIREBALL	= eTYPE_FIREBALL | 0x4,
+			eTYPE_ZEPHYRBALL		= eTYPE_FIREBALL | 0x5,
 	
 
 		eTYPE_THROWABLE				= eTYPE_ENTITY | eTYPE_PROJECTILE | BIT_THROWABLE,
@@ -423,12 +427,14 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_PIG					)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK  ) );
 
 		classes->push_back( SUBCLASS(eTYPE_PIGMAN				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK  ) );
+		classes->push_back( SUBCLASS(eTYPE_SHEEPUFF				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
 
 		classes->push_back( SUBCLASS(eTYPE_CHICKEN				)->addParent( eTYPE_ANIMAL  ) );
 		classes->push_back( SUBCLASS(eTYPE_COW					)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
 		classes->push_back( SUBCLASS(eTYPE_MUSHROOMCOW			)->addParent( eTYPE_COW ) );
 
 		classes->push_back( SUBCLASS(eTYPE_MOOBLOOM				)->addParent( eTYPE_COW ) );
+		classes->push_back( SUBCLASS(eTYPE_FLYING_COW			)->addParent( eTYPE_COW ) );
 
 		classes->push_back( SUBCLASS(eTYPE_WATERANIMAL			)->addParent(eTYPE_PATHFINDER_MOB) );
 		classes->push_back( SUBCLASS(eTYPE_SQUID				)->addParent( eTYPE_WATERANIMAL ) );
@@ -488,6 +494,8 @@ public:
 
 		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
 		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
+		classes->push_back( SUBCLASS(eTYPE_ZEPHYRBALL			)->addParent( eTYPE_FIREBALL ) );
+
 
 		classes->push_back( SUBCLASS(eTYPE_THROWNEGG			)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_THROWNENDERPEARL		)->addParent( eTYPE_THROWABLE ) );

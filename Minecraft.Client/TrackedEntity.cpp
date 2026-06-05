@@ -696,6 +696,11 @@ shared_ptr<Packet> TrackedEntity::getAddEntityPacket()
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::HELLSPHERE, yRotp, xRotp, xp, yp, zp);
 	}
 
+	//else if (e->instanceof(eTYPE_SLIMEBALL))
+	//{
+	//	return std::make_shared<AddEntityPacket>(e, AddEntityPacket::SLIMEBALL, yRotp, xRotp, xp, yp, zp);
+	//}
+
 	else if (e->instanceof(eTYPE_THROWNPOTION))
 	{
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::THROWN_POTION, ((dynamic_pointer_cast<ThrownPotion>(e))->getPotionValue()), yRotp, xRotp, xp, yp, zp);
@@ -731,6 +736,10 @@ shared_ptr<Packet> TrackedEntity::getAddEntityPacket()
 		else if (classType == eTYPE_WITHER_SKULL)
 		{
 			type = AddEntityPacket::WITHER_SKULL;
+		}
+		else if (classType == eTYPE_ZEPHYRBALL)
+		{
+			type = AddEntityPacket::ZEPHYRBALL;
 		}
 
 		shared_ptr<Fireball> fb = dynamic_pointer_cast<Fireball>(e);

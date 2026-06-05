@@ -217,7 +217,7 @@ int LiquidTile::getTickDelay(Level *level)
 	if (material == Material::water) return 5;
 	if (material == Material::lava)
 	{
-		if (level->dimension->hasCeiling)
+		if (level->dimension->ultraWarm)
 		{
 			return 10;
 		}
@@ -382,7 +382,14 @@ void LiquidTile::updateLiquid(Level *level, int x, int y, int z)
 			int data = level->getData(x, y, z);
 			if (data == 0)
 			{
-				level->setTileAndUpdate(x, y, z, Tile::obsidian_Id);
+				if (level->dimension->id == 3)
+				{
+					level->setTileAndUpdate(x, y, z, Tile::aerogel_Id);
+				}
+				else
+				{
+					level->setTileAndUpdate(x, y, z, Tile::obsidian_Id);
+				}
 			}
 			else if (data <= 4)
 			{

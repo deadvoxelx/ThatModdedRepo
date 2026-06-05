@@ -278,6 +278,8 @@ Tile *Tile::aetherDirt = NULL;
 Tile *Tile::holystone = NULL;
 Tile *Tile::ambrosiumTorch = NULL;
 Tile *Tile::enchantedGravitite = NULL;
+Tile *Tile::aerogel = NULL;
+DeadBushTile *Tile::berryBushStem = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -519,7 +521,7 @@ void Tile::staticCtor()
 	Tile::aetherPortal = (AetherPortalTile *) ((new AetherPortalTile(177))->setDestroyTime(-1)->setSoundType(Tile::SOUND_GLASS)->setLightEmission(0.75f))->setIconName(L"water");
 	Tile::netherSoil = (new NetherSoilTile(178))						->setDestroyTime(0.4f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"nether_soil")->setDescriptionId(IDS_TILE_NETHERSOIL)->setUseDescriptionId(IDS_DESC_NETHERSOIL);
 	Tile::lavaRock = (new /*LavaRockTile*/HeavyTile(179))				->setDestroyTime(0.6f)->setLightEmission(7 / 16.0f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"lava_rock")->setDescriptionId(IDS_TILE_LAVAROCK)->setUseDescriptionId(IDS_DESC_LAVAROCK);
-	Tile::netherLeaves = (new NetherLeavesTile(180))					->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"nether_leaves")->setDescriptionId(IDS_TILE_NETHERLEAVES)->setUseDescriptionId(IDS_DESC_NETHERLEAVES);
+	Tile::netherLeaves = (new NetherLeavesTile(180))					->setDestroyTime(0.2f)->setLightBlock(1)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"nether_leaves")->setDescriptionId(IDS_TILE_NETHERLEAVES)->setUseDescriptionId(IDS_DESC_NETHERLEAVES);
 	Tile::netherWood = (new NetherWoodTile(181))						->setDestroyTime(2.0f)->setSoundType(SOUND_WOOD)->setIconName(L"nether_log")->setDescriptionId(IDS_TILE_LOG_NETHER)->setUseDescriptionId(IDS_DESC_LOG_NETHER);
 	Tile::netherPlanks = (new NetherPlanksTile(182))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structwoodstuff,	Item::eMaterial_wood)->setDestroyTime(2.0f)->setSoundType(SOUND_WOOD)->setIconName(L"planks_nether")->setDescriptionId(IDS_TILE_NETHER_PLANKS)->setUseDescriptionId(IDS_DESC_NETHER_PLANKS);
 	Tile::netherVine = (new NetherVineTile(183))						->setDestroyTime(0.2f)->setSoundType(SOUND_GRASS)->setIconName(L"nether_vine")->setDescriptionId(IDS_TILE_VINE)->setUseDescriptionId(IDS_DESC_VINE)->sendTileData()->disableMipmap();
@@ -563,12 +565,14 @@ void Tile::staticCtor()
 	Tile::ambrosiumOre = (new OreTile(219))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"ambrosiumOre")->setDescriptionId(IDS_TILE_AMBROSIUM_ORE)->setUseDescriptionId(IDS_TILE_AMBROSIUM_ORE);
 	Tile::zaniteOre = (new OreTile(220))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"zaniteOre")->setDescriptionId(IDS_TILE_ZANITE_ORE)->setUseDescriptionId(IDS_TILE_ZANITE_ORE);
 	Tile::gravititeOre = (new OreTile(221))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"gravititeOre")->setDescriptionId(IDS_TILE_GRAVITITE_ORE)->setUseDescriptionId(IDS_TILE_GRAVITITE_ORE);
-	Tile::aercloud = (new AercloudTile(222, Material::cloth, false))	->setDestroyTime(0.2f)->setSoundType(SOUND_CLOTH)->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD)->setUseDescriptionId(IDS_TILE_AERCLOUD);
+	Tile::aercloud = (new AercloudTile(222, Material::cloth, false))	->setDestroyTime(0.2f)->setLightBlock(1)->setSoundType(SOUND_CLOTH)->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD)->setUseDescriptionId(IDS_TILE_AERCLOUD);
 	Tile::quicksoil = (new QuicksoilTile(223))							->setDestroyTime(0.5f)->setSoundType(SOUND_SAND)->setIconName(L"quicksoil")->setDescriptionId(IDS_TILE_QUICKSOIL)->setUseDescriptionId(IDS_TILE_QUICKSOIL);
 	Tile::aetherDirt = (new DirtTile(224))								->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"aetherDirt")->setDescriptionId(IDS_TILE_AETHER_DIRT)->setUseDescriptionId(IDS_TILE_AETHER_DIRT);
 	Tile::holystone = (new HolystoneTile(225))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE)->setUseDescriptionId(IDS_TILE_HOLYSTONE);
 	Tile::ambrosiumTorch = (new TorchTile(226))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,	Item::eMaterial_wood)->setDestroyTime(0.0f)->setLightEmission(15 / 16.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"ambrosiumTorch")->setDescriptionId(IDS_TILE_TORCH)->setUseDescriptionId(IDS_DESC_TORCH)->disableMipmap();
 	Tile::enchantedGravitite = (new EnchantedGravititeTile(227))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_gravitite)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"iron_block")->setDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE)->setUseDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE);
+	Tile::aerogel = (new AerogelTile(228))								->setDestroyTime(1.0f)->setLightBlock(3)->setExplodeable(1200)->setSoundType(Tile::SOUND_STONE)->setIconName(L"aerogel")->setDescriptionId(IDS_TILE_AEROGEL)->setUseDescriptionId(IDS_TILE_AEROGEL);
+	Tile::berryBushStem = (DeadBushTile *)(new DeadBushTile(229))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"berryBushStem")->setDescriptionId(IDS_TILE_BERRY_BUSH)->setUseDescriptionId(IDS_TILE_BERRY_BUSH)->disableMipmap();
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);

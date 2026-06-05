@@ -423,6 +423,8 @@ public:
 	static const int holystone_Id = 225;
 	static const int ambrosiumTorch_Id = 226;
 	static const int enchantedGravitite_Id = 227;
+	static const int aerogel_Id = 228;
+	static const int berryBushStem_Id = 229;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -656,6 +658,8 @@ public:
 	static Tile *holystone;
 	static Tile *ambrosiumTorch;
 	static Tile *enchantedGravitite;
+	static Tile *aerogel;
+	static DeadBushTile *berryBushStem;
 
 	static void staticCtor();
 

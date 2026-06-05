@@ -126,6 +126,14 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY),
 		L'S');
 
+	r->addShapedRecipy(new ItemInstance(Tile::holystone, 4, HolystoneTile::TYPE_BRICK), //
+		L"ssczg",
+		L"##", //
+		L"##", //
+
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_DEFAULT),
+		L'S');
+
 	r->addShapedRecipy(new ItemInstance(Tile::endoriumGrate, 1), //
 		L"ssscig",
 		L" R ", //

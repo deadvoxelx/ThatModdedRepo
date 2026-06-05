@@ -22,3 +22,5 @@
 #include "EntityHorse.h"
 #include "Pigman.h"
 #include "Moobloom.h"
+#include "Sheepuff.h"
+#include "FlyingCow.h"
