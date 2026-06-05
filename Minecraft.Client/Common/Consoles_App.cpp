@@ -4646,9 +4646,17 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_ZANITE_LEGGINGS, L"Zanite Leggings");
 		m_stringTable->registerString(IDS_ITEM_ZANITE_BOOTS, L"Zanite Boots");
 		m_stringTable->registerString(IDS_ITEM_GRAVITITE_HELMET, L"Gravitite Helmet");
-		m_stringTable->registerString(IDS_ITEM_GRAVITITE_CHESTPLATE, L"ZaGravititenite Chestplate");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_CHESTPLATE, L"Gravitite Chestplate");
 		m_stringTable->registerString(IDS_ITEM_GRAVITITE_LEGGINGS, L"Gravitite Leggings");
 		m_stringTable->registerString(IDS_ITEM_GRAVITITE_BOOTS, L"Gravitite Boots");
+		m_stringTable->registerString(IDS_TILE_AEROGEL, L"Aerogel");
+		m_stringTable->registerString(IDS_TILE_HOLYSTONE_BRICK, L"Holystone Bricks");
+		m_stringTable->registerString(IDS_TILE_BERRY_BUSH, L"Berry Bush");
+		m_stringTable->registerString(IDS_TILE_HOLIDAY_LEAVES, L"Holiday Leaves");
+		m_stringTable->registerString(IDS_TILE_HOLIDAY_LEAVES_FANCY, L"Decorated Holiday Leaves");
+		m_stringTable->registerString(IDS_SHEEPUFF, L"Sheepuff");
+		m_stringTable->registerString(IDS_FLYING_COW, L"Flying Cow");
+		m_stringTable->registerString(IDS_ZEPHYR, L"Zephyr");
 
 	}
 	else
