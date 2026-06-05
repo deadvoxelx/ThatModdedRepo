@@ -118,6 +118,10 @@ void EntityIO::staticCtor()
 	setId(AphalafPlant::create, eTYPE_APHALAF_PLANT, L"AphalafPlant", 110, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_CaveSpider_Colour1, IDS_APHALAF_PLANT);
 	//setId(SlimeBall::create, eTYPE_SLIMEBALL, L"slimeBall", 111);
 	setId(Moobloom::create, eTYPE_MOOBLOOM, L"Moobloom", 112, eMinecraftColour_Mob_Blaze_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_MOOBLOOM);
+	setId(Sheepuff::create, eTYPE_SHEEPUFF, L"Sheepuff", 113, eMinecraftColour_Mob_Sheep_Colour1, eMinecraftColour_Mob_Ghast_Colour2, IDS_SHEEPUFF);
+	setId(FlyingCow::create, eTYPE_FLYING_COW, L"FlyingCow", 114, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_LavaSlime_Colour2, IDS_FLYING_COW);
+	setId(Zephyr::create, eTYPE_ZEPHYR, L"Zephyr", 116, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_ZEPHYR);
+	setId(ZephyrFireball::create, eTYPE_ZEPHYRBALL, L"Zephyrball", 117);
 
 
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
