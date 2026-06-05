@@ -73,6 +73,13 @@ void QuadrupedModel::render(shared_ptr<Entity> entity, float time, float r, floa
 	}
 }
 
+void QuadrupedModel::setRotation(ModelPart *model, float x, float y, float z)
+{
+	model->xRot = x;
+	model->yRot = y;
+	model->zRot = z;
+}
+
 void QuadrupedModel::setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, shared_ptr<Entity> entity, unsigned int uiBitmaskOverrideAnim)
 {
 	float rad = (float) (180 / PI);
