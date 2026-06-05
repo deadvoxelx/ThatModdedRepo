@@ -13,6 +13,10 @@ AetherBiome::AetherBiome(int id) : Biome(id)
 	friendlies_wolf.clear();
 	waterFriendlies.clear();
 
+	friendlies.push_back(new MobSpawnerData(eTYPE_SHEEPUFF, 10, 1, 3));
+	friendlies.push_back(new MobSpawnerData(eTYPE_FLYING_COW, 10, 1, 3));
+	enemies.push_back(new MobSpawnerData(eTYPE_ZEPHYR, 5, 1, 1));
+
 	delete decorator;
 	decorator = new AetherBiomeDecorator(this);
 }
