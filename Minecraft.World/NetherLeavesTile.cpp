@@ -2,6 +2,7 @@
 #include "NetherLeavesTile.h"
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.world.level.h"
+#include "net.minecraft.world.item.enchantment.h"
 #include "net.minecraft.world.h"
 #include "net.minecraft.h"
 
@@ -9,11 +10,13 @@ const unsigned int NetherLeavesTile::NETHER_LEAVES_NAMES[NETHER_LEAVES_NAMES_LEN
 	IDS_TILE_NETHERLEAVES,
 	IDS_TILE_SKYROOT_LEAVES,
 	IDS_TILE_GOLDENOAK_LEAVES,
-
+	IDS_TILE_BERRY_BUSH,
+	IDS_TILE_HOLIDAY_LEAVES,
+	IDS_TILE_HOLIDAY_LEAVES_FANCY,
 };
 
 const wstring NetherLeavesTile::TEXTURE_NAMES[] = {
-	L"nether_leaves", L"skyrootLeaves", L"goldenOakLeaves"
+	L"nether_leaves", L"skyrootLeaves", L"goldenOakLeaves", L"berryBush", L"holidayLeaves", L"holidayLeavesDecorated"
 };
 
 NetherLeavesTile::NetherLeavesTile(int id) : TransparentTile(id, Material::leaves, true)
