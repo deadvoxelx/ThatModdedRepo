@@ -81,6 +81,7 @@ public:
 	virtual void ate();
 
 	MobGroupData *finalizeMobSpawn(MobGroupData *groupData, int extraData = 0);
+	virtual bool canSpawn();
 
 private:
 	int getOffspringColor(shared_ptr<Animal> animal, shared_ptr<Animal> partner);

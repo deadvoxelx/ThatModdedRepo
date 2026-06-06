@@ -49,6 +49,14 @@ bool FlyingCow::mobInteract(shared_ptr<Player> player)
 	return Cow::mobInteract(player);
 }
 
+bool FlyingCow::canSpawn()
+{
+	int xt = Mth::floor(x);
+	int yt = Mth::floor(bb->y0);
+	int zt = Mth::floor(z);
+	return ( level->getTile(xt, yt - 1, zt) == Tile::grass_Id || level->getTile(xt, yt - 1, zt) == Tile::aetherGrass_Id ) && level->getDaytimeRawBrightness(xt, yt, zt) > 8 && PathfinderMob::canSpawn();
+}
+
 shared_ptr<AgableMob> FlyingCow::getBreedOffspring(shared_ptr<AgableMob> target)
 {
 	if( level->canCreateMore( GetType(), Level::eSpawnType_Breed) )
