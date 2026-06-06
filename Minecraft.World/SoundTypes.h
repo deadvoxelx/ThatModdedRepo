@@ -216,6 +216,8 @@ enum eSOUND_TYPE
 	eSoundType_DAMAGE_CRITICAL,
 
 	eSoundType_MOB_APHALAF_HURT,
+	eSoundType_MOB_AERWHALE_CALL,
+	eSoundType_MOB_AERWHALE_DEATH,
 
 	eSoundType_MAX
 };
