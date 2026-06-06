@@ -203,7 +203,7 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 		// 4J - early out for non-main dimensions, if spawning anything friendly
 		if( mobCategory->isFriendly() )
 		{
-			if( level->dimension->id != 0 )
+			if( (level->dimension->id != 0) && (level->dimension->id != 3) )
 			{
 				continue;
 			}
