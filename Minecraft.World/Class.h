@@ -180,6 +180,7 @@ enum eINSTANCEOF
 						eTYPE_APHALAF_BOSS	= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x13,
 						eTYPE_APHALAF_PLANT	= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x14,
 						eTYPE_ZEPHYR		= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x15,
+						eTYPE_AERWHALE		= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x16,
 
 
 				eTYPE_AMBIENT			= eTYPE_MOB | BIT_AMBIENT_MOB,
@@ -425,17 +426,30 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_HORSE				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
 		classes->push_back( SUBCLASS(eTYPE_SHEEP				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
 		classes->push_back( SUBCLASS(eTYPE_PIG					)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK  ) );
-
-		classes->push_back( SUBCLASS(eTYPE_PIGMAN				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK  ) );
-		classes->push_back( SUBCLASS(eTYPE_SHEEPUFF				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
-
 		classes->push_back( SUBCLASS(eTYPE_CHICKEN				)->addParent( eTYPE_ANIMAL  ) );
 		classes->push_back( SUBCLASS(eTYPE_COW					)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
 		classes->push_back( SUBCLASS(eTYPE_MUSHROOMCOW			)->addParent( eTYPE_COW ) );
-
+		//
+		classes->push_back( SUBCLASS(eTYPE_PIGMAN				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK  ) );
 		classes->push_back( SUBCLASS(eTYPE_MOOBLOOM				)->addParent( eTYPE_COW ) );
 		classes->push_back( SUBCLASS(eTYPE_FLYING_COW			)->addParent( eTYPE_COW ) );
+		classes->push_back( SUBCLASS(eTYPE_SHEEPUFF				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
 
+		classes->push_back( SUBCLASS(eTYPE_HUSK					)->addParent( eTYPE_ZOMBIE ) );
+		classes->push_back( SUBCLASS(eTYPE_ZOMBICE				)->addParent( eTYPE_ZOMBIE ) );
+		classes->push_back( SUBCLASS(eTYPE_WATCHER				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
+		classes->push_back( SUBCLASS(eTYPE_WHITE_ENDERMAN		)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
+		classes->push_back( SUBCLASS(eTYPE_EVUPULDARK			)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
+		classes->push_back( SUBCLASS(eTYPE_EVUPUL				)->addParent( eTYPE_FLYING_MOB )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
+		classes->push_back( SUBCLASS(eTYPE_APHALAF_BOSS			)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
+		classes->push_back( SUBCLASS(eTYPE_APHALAF_PLANT		)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
+		classes->push_back( SUBCLASS(eTYPE_ZEPHYR				)->addParent( eTYPE_FLYING_MOB )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG)->addParent(eTYPE_ENEMY ) );
+		classes->push_back( SUBCLASS(eTYPE_AERWHALE				)->addParent( eTYPE_FLYING_MOB )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG)->addParent(eTYPE_ENEMY ) );
+
+		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
+		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
+		classes->push_back( SUBCLASS(eTYPE_ZEPHYRBALL			)->addParent( eTYPE_FIREBALL ) );
+		//
 		classes->push_back( SUBCLASS(eTYPE_WATERANIMAL			)->addParent(eTYPE_PATHFINDER_MOB) );
 		classes->push_back( SUBCLASS(eTYPE_SQUID				)->addParent( eTYPE_WATERANIMAL ) );
 		classes->push_back( SUBCLASS(eTYPE_GOLEM				)->addParent( eTYPE_PATHFINDER_MOB ) );
@@ -446,21 +460,10 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_CAVESPIDER			)->addParent( eTYPE_SPIDER  ) );
 		classes->push_back( SUBCLASS(eTYPE_ZOMBIE				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
 		classes->push_back( SUBCLASS(eTYPE_PIGZOMBIE			)->addParent( eTYPE_ZOMBIE ) );
-
-		classes->push_back( SUBCLASS(eTYPE_HUSK					)->addParent( eTYPE_ZOMBIE ) );
-		classes->push_back( SUBCLASS(eTYPE_ZOMBICE				)->addParent( eTYPE_ZOMBIE ) );
-
 		classes->push_back( SUBCLASS(eTYPE_CREEPER				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
 		classes->push_back( SUBCLASS(eTYPE_GIANT				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
 		classes->push_back( SUBCLASS(eTYPE_SKELETON				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
 		classes->push_back( SUBCLASS(eTYPE_ENDERMAN				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
-
-		classes->push_back( SUBCLASS(eTYPE_WHITE_ENDERMAN		)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
-		classes->push_back( SUBCLASS(eTYPE_EVUPULDARK			)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
-		classes->push_back( SUBCLASS(eTYPE_EVUPUL				)->addParent( eTYPE_FLYING_MOB )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
-		classes->push_back( SUBCLASS(eTYPE_APHALAF_BOSS			)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
-		classes->push_back( SUBCLASS(eTYPE_APHALAF_PLANT		)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
-
 		classes->push_back( SUBCLASS(eTYPE_SILVERFISH			)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
 		classes->push_back( SUBCLASS(eTYPE_BLAZE				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
 		classes->push_back( SUBCLASS(eTYPE_WITCH				)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
@@ -491,12 +494,6 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_SMALL_FIREBALL		)->addParent( eTYPE_FIREBALL ) );
 		classes->push_back( SUBCLASS(eTYPE_THROWABLE			)->addParent( eTYPE_ENTITY)->addParent(eTYPE_PROJECTILE ) );
 		classes->push_back( SUBCLASS(eTYPE_SNOWBALL				)->addParent( eTYPE_THROWABLE ) );
-
-		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
-		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
-		classes->push_back( SUBCLASS(eTYPE_ZEPHYRBALL			)->addParent( eTYPE_FIREBALL ) );
-
-
 		classes->push_back( SUBCLASS(eTYPE_THROWNEGG			)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_THROWNENDERPEARL		)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_THROWNPOTION			)->addParent( eTYPE_THROWABLE ) );
