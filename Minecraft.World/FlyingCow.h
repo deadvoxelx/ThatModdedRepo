@@ -12,6 +12,7 @@ public:
 	FlyingCow(Level *level);
 
 	virtual bool mobInteract(shared_ptr<Player> player);
+	virtual bool canSpawn();
 	virtual shared_ptr<AgableMob> getBreedOffspring(shared_ptr<AgableMob> target);
 
 protected:
