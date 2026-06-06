@@ -302,6 +302,14 @@ MobGroupData *Sheepuff::finalizeMobSpawn(MobGroupData *groupData, int extraData)
 	return groupData;
 }
 
+bool Sheepuff::canSpawn()
+{
+	int xt = Mth::floor(x);
+	int yt = Mth::floor(bb->y0);
+	int zt = Mth::floor(z);
+	return ( level->getTile(xt, yt - 1, zt) == Tile::grass_Id || level->getTile(xt, yt - 1, zt) == Tile::aetherGrass_Id ) && level->getDaytimeRawBrightness(xt, yt, zt) > 8 && PathfinderMob::canSpawn();
+}
+
 int Sheepuff::getOffspringColor(shared_ptr<Animal> animal, shared_ptr<Animal> partner)
 {
 	int parent1DyeColor = getDyeColor(animal);
