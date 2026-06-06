@@ -226,6 +226,8 @@ const WCHAR *ConsoleSoundEngine::wchSoundNames[eSoundType_MAX]=
 
 	L"damage.critical",				//eSoundType_DAMAGE_CRITICAL,
 	L"mob.aphalafhurt",
+	L"mob.aerwhalecall",
+	L"mob.aerwhaledeath",
 };
 
 

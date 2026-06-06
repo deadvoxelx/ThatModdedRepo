@@ -19,9 +19,6 @@ void Aerwhale::_init()
 {
 	floatDuration = 0;
 	target = nullptr;
-	//retargetTime = 0;
-	//oCharge = 0;
-	//charge = 0;
 
 	xTarget = 0.0f;
 	yTarget = 0.0f;
@@ -41,10 +38,20 @@ Aerwhale::Aerwhale(Level *level) : FlyingMob( level )
 	xpReward = Enemy::XP_REWARD_MEDIUM;
 }
 
-//bool Aerwhale::isCharging()
-//{
-//	return entityData->getByte(DATA_IS_CHARGING) != 0;
-//}
+int Aerwhale::getAmbientSound() 
+{
+	return eSoundType_MOB_AERWHALE_CALL;
+}
+
+int Aerwhale::getHurtSound() 
+{
+	return eSoundType_MOB_AERWHALE_CALL;
+}
+
+int Aerwhale::getDeathSound() 
+{
+	return eSoundType_MOB_AERWHALE_DEATH;
+}
 
 bool Aerwhale::hurt(DamageSource *source, float dmg)
 {
@@ -56,8 +63,6 @@ bool Aerwhale::hurt(DamageSource *source, float dmg)
 void Aerwhale::defineSynchedData() 
 {
 	FlyingMob::defineSynchedData();
-
-	//entityData->define(DATA_IS_CHARGING, static_cast<byte>(0));
 }
 
 void Aerwhale::registerAttributes()
@@ -71,7 +76,6 @@ void Aerwhale::serverAiStep()
 {
 	checkDespawn();
 
-	//oCharge = charge;
 	double xd = xTarget - x;
 	double yd = yTarget - y;
 	double zd = zTarget - z;
@@ -105,39 +109,9 @@ void Aerwhale::serverAiStep()
 		}
 	}
 
-	/*if (target != nullptr && target->removed) target = nullptr;
-	if (target == nullptr || retargetTime-- <= 0)
-	{
-		target = level->getNearestAttackablePlayer(shared_from_this(), 100);
-		if (target != nullptr) 
-		{
-			retargetTime = 20;
-		}
-	}*/
-
-	//double maxDist = 32.0f;
-	/*if (target != nullptr && target->distanceToSqr(shared_from_this()) < maxDist * maxDist) 
-	{
-		double xdd = target->x - x;
-		double ydd = (target->bb->y0 + target->bbHeight / 2) - (y + bbHeight / 2);
-		double zdd = target->z - z;
-		yBodyRot = yRot = -static_cast<float>(atan2(xdd, zdd)) * 180 / PI;
-	}
-	else*/
 	{
 		yBodyRot = yRot = -static_cast<float>(atan2(this->xd, this->zd)) * 180 / PI;
-		//if (charge > 0) charge--;
 	}
-
-	/*if (!level->isClientSide) 
-	{
-		byte old = entityData->getByte(DATA_IS_CHARGING);
-		byte current = static_cast<byte>(charge > 10 ? 1 : 0);
-		if (old != current)
-		{
-			entityData->set(DATA_IS_CHARGING, current);
-		}
-	}*/
 }
 
 bool Aerwhale::canReach(double xt, double yt, double zt, double dist) 

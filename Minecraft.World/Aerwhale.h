@@ -12,40 +12,23 @@ class Aerwhale : public FlyingMob, public Enemy
 public:
 	eINSTANCEOF GetType() { return eTYPE_AERWHALE; }
 	static Entity *create(Level *level) { return new Aerwhale(level); }
-
-//private:
-	//static const int DATA_IS_CHARGING = 16;
-
-public:
 	int floatDuration;
     double xTarget, yTarget, zTarget;
+	Aerwhale(Level *level);
+	virtual bool hurt(DamageSource *source, float dmg);
 
 private: 
 	shared_ptr<Entity> target;
-    //int retargetTime;
-
-//public:
-	//int oCharge;
-    //int charge;
-
-private:
 	void _init();
-
-public:
-	Aerwhale(Level *level);
-
-	//virtual bool isCharging();
-	virtual bool hurt(DamageSource *source, float dmg);
+	virtual bool canReach(double xt, double yt, double zt, double dist);
 
 protected:
+	virtual int getAmbientSound();
+	virtual int getHurtSound();
+	virtual int getDeathSound();
 	virtual void defineSynchedData();
 	virtual void registerAttributes();
-
-protected:
 	virtual void serverAiStep();
-
-private:
-	virtual bool canReach(double xt, double yt, double zt, double dist);
 
 public:
 	virtual bool canSpawn();
