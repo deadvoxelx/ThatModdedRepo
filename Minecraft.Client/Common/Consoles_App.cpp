@@ -4657,6 +4657,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_SHEEPUFF, L"Sheepuff");
 		m_stringTable->registerString(IDS_FLYING_COW, L"Flying Cow");
 		m_stringTable->registerString(IDS_ZEPHYR, L"Zephyr");
+		m_stringTable->registerString(IDS_AERWHALE, L"Aerwhale");
 
 	}
 	else
