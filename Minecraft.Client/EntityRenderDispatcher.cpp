@@ -97,6 +97,7 @@
 #include "FlyingCowRenderer.h"
 #include "FlyingCowModel.h"
 #include "ZephyrRenderer.h"
+#include "AerwhaleRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -115,40 +116,43 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_SPIDER] = new SpiderRenderer();
 	renderers[eTYPE_CAVESPIDER] = new CaveSpiderRenderer();
 	renderers[eTYPE_PIG] = new PigRenderer(new PigModel(), new PigModel(0.5f), 0.7f);
-
-	renderers[eTYPE_PIGMAN] = new PigmanRenderer();
-	renderers[eTYPE_WATCHER] = new WatcherRenderer();
-	renderers[eTYPE_MOOBLOOM] = new MoobloomRenderer(new CowModel(), 0.7f);
-	renderers[eTYPE_SHEEPUFF] = new SheepuffRenderer(new SheepuffModel(), new SheepuffFurModel(), 0.7f);
-	renderers[eTYPE_FLYING_COW] = new FlyingCowRenderer(new FlyingCowModel(), 0.7f);
-
 	renderers[eTYPE_SHEEP] = new SheepRenderer(new SheepModel(), new SheepFurModel(), 0.7f);
 	renderers[eTYPE_COW] = new CowRenderer(new CowModel(), 0.7f);
 	renderers[eTYPE_MUSHROOMCOW] = new MushroomCowRenderer(new CowModel(), 0.7f);
 	renderers[eTYPE_WOLF] = new WolfRenderer(new WolfModel(), new WolfModel(), 0.5f);
 	renderers[eTYPE_CHICKEN] = new ChickenRenderer(new ChickenModel(), 0.3f);
 	renderers[eTYPE_OCELOT] = new OcelotRenderer(new OcelotModel(), 0.4f);
-	renderers[eTYPE_SILVERFISH] = new SilverfishRenderer();
-	renderers[eTYPE_CREEPER] = new CreeperRenderer();
-	renderers[eTYPE_ENDERMAN] = new EndermanRenderer();
+	renderers[eTYPE_HORSE] = new HorseRenderer(new ModelHorse(), .75f);
+	//
+	renderers[eTYPE_PIGMAN] = new PigmanRenderer();
+	renderers[eTYPE_MOOBLOOM] = new MoobloomRenderer(new CowModel(), 0.7f);
+	renderers[eTYPE_SHEEPUFF] = new SheepuffRenderer(new SheepuffModel(), new SheepuffFurModel(), 0.7f);
+	renderers[eTYPE_FLYING_COW] = new FlyingCowRenderer(new FlyingCowModel(), 0.7f);
 
+	renderers[eTYPE_HUSK] = new ZombieRenderer();
+	renderers[eTYPE_ZOMBICE] = new ZombieRenderer();
+	renderers[eTYPE_WATCHER] = new WatcherRenderer();
 	renderers[eTYPE_WHITE_ENDERMAN] = new WhiteEndermanRenderer();
 	renderers[eTYPE_EVUPULDARK] = new EvupulRenderer();
 	renderers[eTYPE_EVUPUL] = new EvupulRenderer();
 	renderers[eTYPE_APHALAF_BOSS] = new AphalafBossRenderer();
 	renderers[eTYPE_APHALAF_PLANT] = new AphalafPlantRenderer();
 	renderers[eTYPE_ZEPHYR] = new ZephyrRenderer();
+	renderers[eTYPE_AERWHALE] = new AerwhaleRenderer();
 
+	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
+	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
+	renderers[eTYPE_ZEPHYRBALL] = new FireballRenderer(2.0f);
+	//
 	renderers[eTYPE_SNOWMAN] = new SnowManRenderer();
 	renderers[eTYPE_SKELETON] = new SkeletonRenderer();
+	renderers[eTYPE_SILVERFISH] = new SilverfishRenderer();
+	renderers[eTYPE_CREEPER] = new CreeperRenderer();
+	renderers[eTYPE_ENDERMAN] = new EndermanRenderer();
 	renderers[eTYPE_WITCH] = new WitchRenderer();
 	renderers[eTYPE_BLAZE] = new BlazeRenderer();
 	renderers[eTYPE_ZOMBIE] = new ZombieRenderer();
 	renderers[eTYPE_PIGZOMBIE] = new ZombieRenderer();
-
-	renderers[eTYPE_HUSK] = new ZombieRenderer();
-	renderers[eTYPE_ZOMBICE] = new ZombieRenderer();
-
 	renderers[eTYPE_SLIME] = new SlimeRenderer(new SlimeModel(16), new SlimeModel(0), 0.25f);
 	renderers[eTYPE_LAVASLIME] = new LavaSlimeRenderer();
 	renderers[eTYPE_PLAYER] = new PlayerRenderer();
@@ -172,11 +176,6 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_LEASHFENCEKNOT] = new LeashKnotRenderer();
 	renderers[eTYPE_ARROW] = new ArrowRenderer();
 	renderers[eTYPE_SNOWBALL] = new ItemSpriteRenderer(Item::snowBall);
-
-	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
-	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
-	renderers[eTYPE_ZEPHYRBALL] = new FireballRenderer(2.0f);
-
 	renderers[eTYPE_THROWNENDERPEARL] = new ItemSpriteRenderer(Item::enderPearl);
 	renderers[eTYPE_EYEOFENDERSIGNAL] = new ItemSpriteRenderer(Item::eyeOfEnder);
 	renderers[eTYPE_THROWNEGG] = new ItemSpriteRenderer(Item::egg);
@@ -202,8 +201,6 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 
 	renderers[eTYPE_BOAT] = new BoatRenderer();
 	renderers[eTYPE_FISHINGHOOK] = new FishingHookRenderer();
-
-	renderers[eTYPE_HORSE] = new HorseRenderer(new ModelHorse(), .75f);
 
 	renderers[eTYPE_LIGHTNINGBOLT] = new LightningBoltRenderer();
 	glDisable(GL_LIGHTING);

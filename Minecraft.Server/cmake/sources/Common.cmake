@@ -3,6 +3,8 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AchievementPopup.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AchievementScreen.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AllowAllCuller.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AerwhaleModel.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AerwhaleRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AphalafBossModel.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AphalafBossRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/AphalafPlantModel.cpp"

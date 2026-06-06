@@ -136,3 +136,23 @@ void EndGatewayTile::registerIcons(IconRegister *iconRegister)
 	// don't register null, because of particles
 	icon = iconRegister->registerIcon(L"portal");
 }
+
+int EndGatewayTile::getColor() const
+{
+	return 0x000000;
+}
+
+int EndGatewayTile::getColor(int auxData)
+{
+	return 0x000000;
+}
+
+int EndGatewayTile::getColor(LevelSource *level, int x, int y, int z)
+{
+	return 0x000000;
+}
+
+int EndGatewayTile::getColor(LevelSource *level, int x, int y, int z, int data)
+{
+	return 0x000000;
+}

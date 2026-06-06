@@ -2471,3 +2471,4 @@
 #define IDS_SHEEPUFF										   2465
 #define IDS_FLYING_COW										   2466
 #define IDS_ZEPHYR											   2467
+#define IDS_AERWHALE										   2468

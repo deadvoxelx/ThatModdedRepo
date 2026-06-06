@@ -59,10 +59,8 @@ void EntityIO::staticCtor()
 	setId(ThrownExpBottle::create, eTYPE_THROWNEXPBOTTLE, L"ThrownExpBottle", 17);
 	setId(ItemFrame::create, eTYPE_ITEM_FRAME, L"ItemFrame", 18);
 	setId(WitherSkull::create, eTYPE_WITHER_SKULL, L"WitherSkull", 19);
-
 	setId(PrimedTnt::create, eTYPE_PRIMEDTNT, L"PrimedTnt", 20);
 	setId(FallingTile::create, eTYPE_FALLINGTILE, L"FallingSand", 21);
-
 	setId(FireworksRocketEntity::create, eTYPE_FIREWORKS_ROCKET, L"FireworksRocketEntity", 22);
 
 	setId(Boat::create, eTYPE_BOAT, L"Boat", 41);
@@ -72,10 +70,8 @@ void EntityIO::staticCtor()
 	setId(MinecartTNT::create, eTYPE_MINECART_TNT, L"MinecartTNT", 45);
 	setId(MinecartHopper::create, eTYPE_MINECART_HOPPER, L"MinecartHopper", 46);
 	setId(MinecartSpawner::create, eTYPE_MINECART_SPAWNER, L"MinecartSpawner", 47);
-
 	setId(Mob::create, eTYPE_MOB, L"Mob", 48);
 	setId(Monster::create, eTYPE_MONSTER, L"Monster", 49);
-
 	setId(Creeper::create, eTYPE_CREEPER, L"Creeper", 50, eMinecraftColour_Mob_Creeper_Colour1, eMinecraftColour_Mob_Creeper_Colour2, IDS_CREEPER);
 	setId(Skeleton::create, eTYPE_SKELETON, L"Skeleton", 51, eMinecraftColour_Mob_Skeleton_Colour1, eMinecraftColour_Mob_Skeleton_Colour2, IDS_SKELETON);
 	setId(Spider::create, eTYPE_SPIDER, L"Spider", 52, eMinecraftColour_Mob_Spider_Colour1, eMinecraftColour_Mob_Spider_Colour2, IDS_SPIDER);
@@ -105,6 +101,7 @@ void EntityIO::staticCtor()
 	setId(Ocelot::create, eTYPE_OCELOT, L"Ozelot", 98, eMinecraftColour_Mob_Ocelot_Colour1, eMinecraftColour_Mob_Ocelot_Colour2, IDS_OZELOT);
 	setId(VillagerGolem::create, eTYPE_VILLAGERGOLEM, L"VillagerGolem", 99);
 	setId(EntityHorse::create, eTYPE_HORSE, L"EntityHorse", 100, eMinecraftColour_Mob_Horse_Colour1, eMinecraftColour_Mob_Horse_Colour2, IDS_HORSE);
+	//
 	setId(HellSphere::create, eTYPE_HELLSPHERE, L"hellsphere", 101);
 	setId(Pigman::create, eTYPE_PIGMAN, L"Pigman", 102, eMinecraftColour_Mob_Pig_Colour1, eMinecraftColour_Mob_Pig_Colour2, IDS_PIGMAN);
 	setId(Watcher::create, eTYPE_WATCHER, L"Watcher", 103, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Slime_Colour2, IDS_WATCHER);
@@ -122,7 +119,8 @@ void EntityIO::staticCtor()
 	setId(FlyingCow::create, eTYPE_FLYING_COW, L"FlyingCow", 114, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_LavaSlime_Colour2, IDS_FLYING_COW);
 	setId(Zephyr::create, eTYPE_ZEPHYR, L"Zephyr", 116, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_ZEPHYR);
 	setId(ZephyrFireball::create, eTYPE_ZEPHYRBALL, L"Zephyrball", 117);
-
+	setId(Aerwhale::create, eTYPE_AERWHALE, L"Aerwhale", 118, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Zombie_Colour1, IDS_AERWHALE);
+	//
 
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
 

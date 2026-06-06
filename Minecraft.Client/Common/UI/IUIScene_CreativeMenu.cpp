@@ -480,7 +480,8 @@ void IUIScene_CreativeMenu::staticCtor()
 		//ITEM_AUX(Item::spawnEgg_Id, 108 | ((Evupul::TYPE_GOLD + 1) << 12) ); // Golden Evupul
 		ITEM_AUX(Item::spawnEgg_Id, 107); // Dark Evupul
 		ITEM_AUX(Item::spawnEgg_Id, 110); // Aphalaf Plant
-		ITEM_AUX(Item::spawnEgg_Id, 109); // Aphalaf Boss 
+		ITEM_AUX(Item::spawnEgg_Id, 109); // Aphalaf Boss
+		ITEM_AUX(Item::spawnEgg_Id, 118); // Aerwhale
 		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr 
 		//ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon - doesnt work
 		ITEM_AUX(Item::spawnEgg_Id, 64); // Wither
