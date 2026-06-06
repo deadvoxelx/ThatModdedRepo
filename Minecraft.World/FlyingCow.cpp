@@ -18,6 +18,20 @@ FlyingCow::FlyingCow(Level *level) : Cow(level)
 	setSize(0.9f, 1.3f);
 }
 
+void FlyingCow::aiStep()
+{
+	Cow::aiStep();
+
+	if (!onGround && yd < 0) 
+	{
+		yd *= 0.6;
+	}
+}
+
+void FlyingCow::causeFallDamage(float distance) 
+{
+}
+
 int FlyingCow::getDeathLoot() 
 {
 	return Item::leather->id;
