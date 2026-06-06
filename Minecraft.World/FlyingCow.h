@@ -11,11 +11,14 @@ public:
 public:
 	FlyingCow(Level *level);
 
+	virtual void aiStep();
+
 	virtual bool mobInteract(shared_ptr<Player> player);
 	virtual bool canSpawn();
 	virtual shared_ptr<AgableMob> getBreedOffspring(shared_ptr<AgableMob> target);
 
 protected:
+	virtual void causeFallDamage(float distance);
 	virtual int getDeathLoot();
 	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 };
