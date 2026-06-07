@@ -23,8 +23,11 @@ public:
 	static const int TYPE_ENDSTONE_MOSSY = 10;
 	static const int TYPE_ENDBRICK = 11;
 	static const int TYPE_ENDBRICK_MOSSY = 12;
+	static const int TYPE_HOLYSTONE = 13;
+	static const int TYPE_HOLYSTONE_MOSSY = 14;
+	static const int TYPE_HOLYSTONE_BRICK = 15;
 
-	static const unsigned int COBBLE_NAMES[13];
+	static const unsigned int COBBLE_NAMES[16];
 
 	WallTile(int id, Tile *baseTile);
 

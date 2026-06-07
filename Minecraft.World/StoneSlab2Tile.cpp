@@ -14,7 +14,7 @@ const unsigned int StoneSlab2Tile::SLAB2_NAMES[SLAB2_NAMES_LENGTH] = {
 	IDS_TILE_ENDSTONE_MOSSY_SLAB,
 	IDS_TILE_ENDBRICK_SLAB,
 	IDS_TILE_ENDBRICK_MOSSY_SLAB,
-	//IDS_TILE_STONESLAB_QUARTZ,
+	IDS_TILE_HOLYSTONE_BRICK_SLAB,
 };
 
 StoneSlab2Tile::StoneSlab2Tile(int id, bool fullSize) : HalfSlabTile(id, fullSize, Material::stone)
@@ -56,10 +56,10 @@ Icon *StoneSlab2Tile::getTexture(int face, int data)
 	{
 		return Tile::endStone->getTexture(face, 4);
 	}
-	//if (data == QUARTZ_SLAB)
-	//{
-	//	return Tile::quartzBlock->getTexture(face);
-	//}
+	if (data == HOLYSTONE_BRICK_SLAB)
+	{
+		return Tile::holystone->getTexture(face, HolystoneTile::TYPE_BRICK);
+	}
 	
 	return icon;
 }

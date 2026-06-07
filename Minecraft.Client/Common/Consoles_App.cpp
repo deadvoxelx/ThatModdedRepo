@@ -4658,6 +4658,12 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_FLYING_COW, L"Flying Cow");
 		m_stringTable->registerString(IDS_ZEPHYR, L"Zephyr");
 		m_stringTable->registerString(IDS_AERWHALE, L"Aerwhale");
+		m_stringTable->registerString(IDS_TILE_HOLYSTONE_BRICK_SLAB, L"Holystone Brick Slab");
+		m_stringTable->registerString(IDS_TILE_HOLYSTONE_WALL, L"Holystone Wall");
+		m_stringTable->registerString(IDS_TILE_HOLYSTONE_MOSSY_WALL, L"Mossy Holystone Wall");
+		m_stringTable->registerString(IDS_TILE_HOLYSTONE_BRICK_WALL, L"Holystone Brick Wall");
+		m_stringTable->registerString(IDS_ITEM_DART, L"Dart");
+		m_stringTable->registerString(IDS_ITEM_DART_SHOOTER, L"Dart Shooter");
 
 	}
 	else

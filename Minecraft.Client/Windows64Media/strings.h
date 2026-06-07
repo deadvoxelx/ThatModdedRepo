@@ -2472,3 +2472,9 @@
 #define IDS_FLYING_COW										   2466
 #define IDS_ZEPHYR											   2467
 #define IDS_AERWHALE										   2468
+#define IDS_TILE_HOLYSTONE_BRICK_SLAB						   2469
+#define IDS_TILE_HOLYSTONE_WALL								   2470
+#define IDS_TILE_HOLYSTONE_MOSSY_WALL						   2471
+#define IDS_TILE_HOLYSTONE_BRICK_WALL						   2472
+#define IDS_ITEM_DART										   2473
+#define IDS_ITEM_DART_SHOOTER								   2474
