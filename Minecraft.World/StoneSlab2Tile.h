@@ -16,9 +16,9 @@ public:
 	static const int ENDSTONE_MOSSY_SLAB = 4;
 	static const int ENDBRICK_SLAB = 5;
 	static const int ENDBRICK_MOSSY_SLAB = 6;
-	//static const int QUARTZ_SLAB = 7;
+	static const int HOLYSTONE_BRICK_SLAB = 7;
 
-	static const int SLAB2_NAMES_LENGTH = 7;
+	static const int SLAB2_NAMES_LENGTH = 8;
 
 	static const unsigned int SLAB2_NAMES[SLAB2_NAMES_LENGTH];
 
