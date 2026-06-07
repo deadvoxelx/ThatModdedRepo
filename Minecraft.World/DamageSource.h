@@ -7,6 +7,7 @@ class Arrow;
 class Fireball;
 class Player;
 class Explosion;
+class Dart;
 
 #include "ChatPacket.h"
 
@@ -32,6 +33,9 @@ public:
 	static DamageSource *mobAttack(shared_ptr<LivingEntity> mob);
 	static DamageSource *playerAttack(shared_ptr<Player> player);
 	static DamageSource *arrow(shared_ptr<Arrow> arrow, shared_ptr<Entity> owner);
+	//
+	static DamageSource *dart(shared_ptr<Dart> dart, shared_ptr<Entity> owner);
+	//
 	static DamageSource *fireball(shared_ptr<Fireball> fireball, shared_ptr<Entity> owner);
 	static DamageSource *thrown(shared_ptr<Entity> entity, shared_ptr<Entity> owner);
 	static DamageSource *indirectMagic(shared_ptr<Entity> entity, shared_ptr<Entity> owner);
