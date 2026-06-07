@@ -46,6 +46,7 @@ void EntityTracker::addEntity(shared_ptr<Entity> e)
 	else if (e->instanceof(eTYPE_DRAGON_FIREBALL)) addEntity(e, 16 * 4, 10, false); // 4J Added TU9
 	else if (e->instanceof(eTYPE_ZEPHYRBALL)) addEntity(e, 16 * 4, 10, false);
     else if (e->instanceof(eTYPE_ARROW)) addEntity(e, 16 * 4, 20, false);
+	else if (e->instanceof(eTYPE_DART)) addEntity(e, 16 * 4, 20, false);
     else if (e->instanceof(eTYPE_FIREBALL)) addEntity(e, 16 * 4, 10, false);
     else if (e->instanceof(eTYPE_SNOWBALL)) addEntity(e, 16 * 4, 10, true);
 	else if (e->instanceof(eTYPE_HELLSPHERE)) addEntity(e, 16 * 4, 10, true);
