@@ -386,6 +386,30 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY_BRICK),
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_HOLYSTONE), //
+		L"ssczg",
+		L"###", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_DEFAULT),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_HOLYSTONE_MOSSY), //
+		L"ssczg",
+		L"###", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_MOSSY),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_HOLYSTONE_BRICK), //
+		L"ssczg",
+		L"###", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_BRICK),
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Tile::stairs_wood, 6), //
 		L"sssczg",
 		L"#  ", //
@@ -564,6 +588,14 @@ Recipes::Recipes()
 
 		L'#', Tile::stone,
 		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::STONE_SLAB), //
+		L"sczg",
+		L"###", //
+
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_DEFAULT),
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::COBBLESTONE_SLAB), //
 		L"sctg",
 		L"###", //
@@ -653,6 +685,13 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY_BRICK),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stoneSlab2Half, 6, StoneSlab2Tile::HOLYSTONE_BRICK_SLAB), //
+		L"sczg",
+		L"###", //
+
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_BRICK),
 		L'S');
 
 	//iCount=getRecipies()->size();
@@ -826,6 +865,16 @@ Recipes::Recipes()
 		L'#', Item::stick,
 		L'T');
 
+	addShapedRecipy(new ItemInstance((Item *)Item::dartShooterGold, 1), //
+		L"sssczcig",
+		L"#", //
+		L"#", //
+		L"X", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_SKYROOT),
+		L'X', Item::goldenAmber,
+		L'T');
+
 	addShapedRecipy(new ItemInstance(Item::arrow, 4), //
 		L"ssscicicig",
 		L"X", //
@@ -835,6 +884,17 @@ Recipes::Recipes()
 		L'Y', Item::feather,//
 		L'X', Item::flint,//
 		L'#', Item::stick,
+		L'T');
+
+	addShapedRecipy(new ItemInstance(Item::dartGold, 4), //
+		L"ssscicicig",
+		L"X", //
+		L"#", //
+		L"Y", //
+
+		L'X', Item::goldenAmber,
+		L'#', Item::stick,
+		L'Y', Item::feather,
 		L'T');
 
 	pWeaponRecipies->addRecipes(this);
