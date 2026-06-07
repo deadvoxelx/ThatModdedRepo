@@ -27,13 +27,11 @@ public:
 	static const int FIREWORKS = 76;
 	static const int LEASH_KNOT = 77;
 	static const int FISH_HOOK = 90;
-
 	static const int HELLSPHERE = 101;
 	//static const int SLIMEBALL = 111;
 	static const int ZEPHYRBALL = 117;
-
-	// 4J Added TU9
 	static const int DRAGON_FIRE_BALL = 200;
+	static const int DART = 201;
 
 	int id;
 	int x, y, z;
