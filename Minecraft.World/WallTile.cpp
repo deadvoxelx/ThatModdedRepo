@@ -11,7 +11,7 @@ const float WallTile::WALL_HEIGHT = 13.0f / 16.0f;
 const float WallTile::POST_WIDTH = 4.0f / 16.0f;
 const float WallTile::POST_HEIGHT = 16.0f / 16.0f;
 
-const unsigned int WallTile::COBBLE_NAMES[13] = { 
+const unsigned int WallTile::COBBLE_NAMES[16] = { 
 	IDS_TILE_COBBLESTONE_WALL,
 	IDS_TILE_COBBLESTONE_WALL_MOSSY,
 	IDS_TILE_STONEBRICK_WALL,
@@ -25,6 +25,9 @@ const unsigned int WallTile::COBBLE_NAMES[13] = {
 	IDS_TILE_ENDSTONE_MOSSY_WALL,
 	IDS_TILE_ENDBRICK_WALL,
 	IDS_TILE_ENDBRICK_MOSSY_WALL,
+	IDS_TILE_HOLYSTONE_WALL,
+	IDS_TILE_HOLYSTONE_MOSSY_WALL,
+	IDS_TILE_HOLYSTONE_BRICK_WALL,
 };
 
 WallTile::WallTile(int id, Tile *baseTile) : Tile(id, baseTile->material, isSolidRender())
@@ -83,6 +86,18 @@ Icon *WallTile::getTexture(int face, int data)
 	if (data == TYPE_ENDBRICK_MOSSY)
 	{
 		return Tile::endStone->getTexture(face, 4);
+	}
+	if (data == TYPE_HOLYSTONE)
+	{
+		return Tile::holystone->getTexture(face, HolystoneTile::TYPE_DEFAULT);
+	}
+	if (data == TYPE_HOLYSTONE_MOSSY)
+	{
+		return Tile::holystone->getTexture(face, HolystoneTile::TYPE_MOSSY);
+	}
+	if (data == TYPE_HOLYSTONE_BRICK)
+	{
+		return Tile::holystone->getTexture(face, HolystoneTile::TYPE_BRICK);
 	}
 	return Tile::cobblestone->getTexture(face);
 }
