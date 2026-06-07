@@ -947,6 +947,8 @@ source_group("net/minecraft/world/entity/player" FILES ${_MINECRAFT_WORLD_COMMON
 set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_ENTITY_PROJECTILE
   "${CMAKE_CURRENT_SOURCE_DIR}/Arrow.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/Arrow.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Dart.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Dart.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/DragonFireball.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/DragonFireball.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/EyeOfEnderSignal.cpp"
