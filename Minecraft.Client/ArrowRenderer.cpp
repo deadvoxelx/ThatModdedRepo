@@ -1,16 +1,24 @@
 #include "stdafx.h"
 #include "ArrowRenderer.h"
-#include "..\Minecraft.World\net.minecraft.world.entity.projectile.h"
 #include "..\Minecraft.World\Mth.h"
+#include "..\Minecraft.World\net.minecraft.world.entity.projectile.h"
 
 ResourceLocation ArrowRenderer::ARROW_LOCATION = ResourceLocation(TN_ITEM_ARROWS);
+ResourceLocation ArrowRenderer::DART_LOCATION = ResourceLocation(TN_MOB_DART);
 
-void ArrowRenderer::render(shared_ptr<Entity> _arrow, double x, double y, double z, float rot, float a)
+void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, double z, float rot, float a)
 {
-	// 4J - original version used generics and thus had an input parameter of type Arrow rather than shared_ptr<Entity>  we have here - 
-	// do some casting around instead
-	shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(_arrow);
-    bindTexture(_arrow); // 4J - was L"/item/arrows.png"
+	shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(_entity);
+    shared_ptr<Dart> dart = dynamic_pointer_cast<Dart>(_entity);
+
+    if (shared_ptr<Entity>(arrow))
+	{
+        bindTexture(_entity);
+    }
+    if (shared_ptr<Entity>(dart))
+	{
+        bindTexture(_entity);
+    }
 
     glPushMatrix();
 
@@ -28,31 +36,32 @@ void ArrowRenderer::render(shared_ptr<Entity> _arrow, double x, double y, double
     glRotatef(xRotO + (xRot - xRotO) * a, 0, 0, 1);
 
     Tesselator *t = Tesselator::getInstance();
-    int type = 0;
 
+    int type = 0;
     float u0 = 0 / 32.0f;
     float u1 = 16 / 32.0f;
     float v0 = (0 + type * 10) / 32.0f;
     float v1 = (5 + type * 10) / 32.0f;
-
     float u02 = 0 / 32.0f;
     float u12 = 5 / 32.0f;
     float v02 = (5 + type * 10) / 32.0f;
     float v12 = (10 + type * 10) / 32.0f;
     float ss = 0.9f / 16.0f;
+
     glEnable(GL_RESCALE_NORMAL);
+
     float shake = arrow->shakeTime-a;
+
     if (shake>0)
     {
         float pow = -Mth::sin(shake*3)*shake;
         glRotatef(pow, 0, 0, 1);
     }
+
     glRotatef(45, 1, 0, 0);
     glScalef(ss, ss, ss);
-
     glTranslatef(-4, 0, 0);
 
-//    glNormal3f(ss, 0, 0);		// 4J - changed to use tesselator
     t->begin();
 	t->normal(1,0,0);
     t->vertexUV(static_cast<float>(-7), static_cast<float>(-2), static_cast<float>(-2), (float)( u02), (float)( v02));
@@ -61,7 +70,6 @@ void ArrowRenderer::render(shared_ptr<Entity> _arrow, double x, double y, double
     t->vertexUV(static_cast<float>(-7), static_cast<float>(+2), static_cast<float>(-2), (float)( u02), (float)( v12));
     t->end();
 
-//    glNormal3f(-ss, 0, 0);	// 4J - changed to use tesselator
     t->begin();
 	t->normal(-1,0,0);
     t->vertexUV(static_cast<float>(-7), static_cast<float>(+2), static_cast<float>(-2), (float)( u02), (float)( v02));
@@ -74,7 +82,7 @@ void ArrowRenderer::render(shared_ptr<Entity> _arrow, double x, double y, double
 	{
 
         glRotatef(90, 1, 0, 0);
-//        glNormal3f(0, 0, ss);		// 4J - changed to use tesselator
+
         t->begin();
 		t->normal(0,0,1);
         t->vertexUV(static_cast<float>(-8), static_cast<float>(-2), static_cast<float>(0), (float)( u0), (float)( v0));
@@ -83,11 +91,22 @@ void ArrowRenderer::render(shared_ptr<Entity> _arrow, double x, double y, double
         t->vertexUV(static_cast<float>(-8), static_cast<float>(+2), static_cast<float>(0), (float)( u0), (float)( v1));
         t->end();
     }
+
     glDisable(GL_RESCALE_NORMAL);
     glPopMatrix();
 }
 
-ResourceLocation *ArrowRenderer::getTextureLocation(shared_ptr<Entity> mob)
+ResourceLocation *ArrowRenderer::getTextureLocation(shared_ptr<Entity> entity)
 {
-    return &ARROW_LOCATION;
+    shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(entity);
+    shared_ptr<Dart> dart = dynamic_pointer_cast<Dart>(entity);
+
+    if (entity->instanceof(eTYPE_ARROW))
+	{
+        return &ARROW_LOCATION;
+    }
+    if (entity->instanceof(eTYPE_DART))
+	{
+        return &DART_LOCATION;
+    }
 }
