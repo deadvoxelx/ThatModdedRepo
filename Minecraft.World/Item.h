@@ -21,6 +21,9 @@ class BowItem;
 class FishingRodItem;
 class EnchantedBookItem;
 class EmptyMapItem;
+class DartShooterGoldItem;
+//class DartShooterPoisonItem;
+//class DartShooterEnchantedItem;
 
 #define ITEM_ICON_COLUMNS 16
 
@@ -482,6 +485,12 @@ public:
 	static Item *gravititeChestplate;
 	static Item *gravititeLeggings;
 	static Item *gravititeBoots;
+	static DartShooterGoldItem *dartShooterGold;
+	//static DartShooterPoisonItem *dartShooterPoison;
+	//static DartShooterGoldItem *dartShooterEnchanted;
+	static Item *dartGold;
+	static Item *dartPoison;
+	static Item *dartEnchanted;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -741,6 +750,12 @@ public:
 	static const int gravititeChestplate_Id = 472;
 	static const int gravititeLeggings_Id = 473;
 	static const int gravititeBoots_Id = 474;
+	static const int dartShooterGold_Id = 475;
+	//static const int dartShooterPoison_Id = 476;
+	//static const int dartShooterEnchanted_Id = 477;
+	static const int dartGold_Id = 478;
+	static const int dartPoison_Id = 479;
+	static const int dartEnchanted_Id = 480;
 
 public:
 	const int id;
