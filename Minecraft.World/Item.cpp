@@ -308,7 +308,12 @@ Item *Item::gravititeHelmet = NULL;
 Item *Item::gravititeChestplate = NULL;
 Item *Item::gravititeLeggings = NULL;
 Item *Item::gravititeBoots = NULL;
-
+DartShooterGoldItem *Item::dartShooterGold = NULL;
+//DartShooterGoldItem *Item::dartShooterPoison = NULL;
+//DartShooterGoldItem *Item::dartShooterEnchanted = NULL;
+Item *Item::dartGold = NULL;
+Item *Item::dartPoison = NULL;
+Item *Item::dartEnchanted = NULL;
 
 void Item::staticCtor()
 {
@@ -604,8 +609,14 @@ void Item::staticCtor()
 	Item::goldenAmber = (new Item(197))																->setIconName(L"goldenAmber")->setDescriptionId(IDS_ITEM_GOLDEN_AMBER)->setUseDescriptionId(IDS_ITEM_GOLDEN_AMBER);
 	Item::ambrosiumShard = (new Item(198))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_ambrosium)->setIconName(L"ambrosiumShard")->setDescriptionId(IDS_ITEM_AMBROSIUM_SHARD)->setUseDescriptionId(IDS_ITEM_AMBROSIUM_SHARD);
 	Item::zaniteGemstone = (new Item(199))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_zanite)->setIconName(L"zaniteGemstone")->setDescriptionId(IDS_ITEM_ZANITE_GEMSTONE)->setUseDescriptionId(IDS_ITEM_ZANITE_GEMSTONE);
-	//Item::gravititePlate = (new Item(200))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_gravitite)->setIconName(L"gravititePlate")->setDescriptionId(IDS_ITEM_GRAVITITE_PLATE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PLATE);
-	//219
+	//Item::gravititePlate = (new Item(200))														->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_gravitite)->setIconName(L"gravititePlate")->setDescriptionId(IDS_ITEM_GRAVITITE_PLATE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PLATE);
+	Item::dartShooterGold = (DartShooterGoldItem *)( new DartShooterGoldItem(219) )					->setIconName(L"dartShooterGolden")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
+	//Item::dartShooterPoison = (DartShooterGoldItem *)( new DartShooterGoldItem(220) )				->setIconName(L"dartShooterPoison")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
+	//Item::dartShooterEnchanted = (DartShooterGoldItem *)( new DartShooterGoldItem(221) )			->setIconName(L"dartShooterEnchanted")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
+	Item::dartGold = (new Item(222))																->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartGolden")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
+	Item::dartPoison = (new Item(223))																->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartPoison")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
+	Item::dartEnchanted = (new Item(224))															->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartEnchanted")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
+	
 }
 
 
