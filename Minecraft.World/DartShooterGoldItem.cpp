@@ -16,9 +16,9 @@ DartShooterGoldItem::DartShooterGoldItem(int id) : Item( id )
 
 void DartShooterGoldItem::releaseUsing(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player, int durationLeft)
 {
-	bool infiniteArrows = player->abilities.instabuild || EnchantmentHelper::getEnchantmentLevel(Enchantment::arrowInfinite->id, itemInstance) > 0;
+	bool infiniteDarts = player->abilities.instabuild || EnchantmentHelper::getEnchantmentLevel(Enchantment::arrowInfinite->id, itemInstance) > 0;
 
-	if (infiniteArrows || player->inventory->hasResource(Item::dartGold_Id))
+	if (infiniteDarts || player->inventory->hasResource(Item::dartGold_Id))
 	{
 		int timeHeld = getUseDuration(itemInstance) - durationLeft;
 		float pow = timeHeld / static_cast<float>(MAX_DRAW_DURATION);
@@ -26,20 +26,20 @@ void DartShooterGoldItem::releaseUsing(shared_ptr<ItemInstance> itemInstance, Le
 		if (pow < 0.1) return;
 		if (pow > 1) pow = 1;
 
-		shared_ptr<Arrow> arrow = std::make_shared<Arrow>(level, player, pow * 2.0f);
-		if (pow == 1) arrow->setCritArrow(true);
+		shared_ptr<Dart> dart = std::make_shared<Dart>(level, player, pow * 2.0f);
+		if (pow == 1) dart->setCritDart(true);
 
 		level->playEntitySound(player, eSoundType_RANDOM_BOW, 1.0f, 1 / (random->nextFloat() * 0.4f + 1.2f) + pow * 0.5f);
 
-		if (infiniteArrows)
+		if (infiniteDarts)
 		{
-			arrow->pickup = Arrow::PICKUP_CREATIVE_ONLY;
+			dart->pickup = Dart::PICKUP_CREATIVE_ONLY;
 		}
 		else
 		{
 			player->inventory->removeResource(Item::dartGold_Id);
 		}
-		if (!level->isClientSide) level->addEntity(arrow);
+		if (!level->isClientSide) level->addEntity(dart);
 	}
 }
 
