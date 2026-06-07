@@ -523,6 +523,11 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 	case AddEntityPacket::ARROW:
 		e = std::make_shared<Arrow>(level, x, y, z);
 		break;
+
+	case AddEntityPacket::DART:
+		e = std::make_shared<Arrow>(level, x, y, z);
+		break;
+
 	case AddEntityPacket::SNOWBALL:
 		e = std::make_shared<Snowball>(level, x, y, z);
 		break;
@@ -733,6 +738,31 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 				shared_ptr<Entity> owner = getEntity(packet->data);
 
 				// 4J - check all local players to find match
+				if( owner == nullptr )
+				{
+					for( int i = 0; i < XUSER_MAX_COUNT; i++ )
+					{
+						if( minecraft->localplayers[i] )
+						{
+							if( minecraft->localplayers[i]->entityId == packet->data )
+							{
+								owner = minecraft->localplayers[i];
+								break;
+							}
+						}
+					}
+				}
+
+				if ( owner != nullptr && owner->instanceof(eTYPE_LIVINGENTITY) )
+				{
+					dynamic_pointer_cast<Arrow>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
+				}
+			}
+
+			if (packet->type == AddEntityPacket::DART)
+			{
+				shared_ptr<Entity> owner = getEntity(packet->data);
+
 				if( owner == nullptr )
 				{
 					for( int i = 0; i < XUSER_MAX_COUNT; i++ )

@@ -259,6 +259,7 @@ enum eINSTANCEOF
 	eTYPE_MULTIENTITY_MOB_PART	= (eTYPE_OTHER_ENTITIES + 12),
 	eTYPE_NETHER_SPHERE			= (eTYPE_OTHER_ENTITIES + 13),
 	eTYPE_ENDER_CRYSTAL			= (eTYPE_OTHER_ENTITIES + 14),
+	eTYPE_DART					= (eTYPE_OTHER_ENTITIES + 15) | eTYPE_PROJECTILE,
 	
 	
 	// === PARTICLES === //
@@ -449,6 +450,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
 		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_ZEPHYRBALL			)->addParent( eTYPE_FIREBALL ) );
+		classes->push_back( SUBCLASS(eTYPE_DART					)->addParent( eTYPE_ENTITY )->addParent(eTYPE_PROJECTILE ) );
 		//
 		classes->push_back( SUBCLASS(eTYPE_WATERANIMAL			)->addParent(eTYPE_PATHFINDER_MOB) );
 		classes->push_back( SUBCLASS(eTYPE_SQUID				)->addParent( eTYPE_WATERANIMAL ) );

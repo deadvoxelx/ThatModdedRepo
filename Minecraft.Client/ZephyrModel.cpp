@@ -9,7 +9,7 @@ void ZephyrModel::_init(float g)
 	//texHeight = 64;
 
     body = new ModelPart(this, 0, 0);
-    body->addBox(-8, -4, -8, 10, 7, 12, g);
+    body->addBox(-5, -7, -6, 10, 7, 12, g);
     body->setPos(0, 24, 0);
 
 	body->compile(1.0f/16.0f);

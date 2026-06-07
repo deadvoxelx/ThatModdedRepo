@@ -142,7 +142,7 @@ void TrackedEntity::tick(EntityTracker *tracker, vector<shared_ptr<Player> > *pl
 			// skip first tick since position is sent in addEntity packet
 			// FallingTile depends on this because it removes its source block in the first tick()
 
-			if (tickCount > 0 || e->instanceof(eTYPE_ARROW) || e->instanceof(eTYPE_PLAYER)) // 4J: Modifed, see above
+			if (tickCount > 0 || e->instanceof(eTYPE_ARROW) || e->instanceof(eTYPE_DART) || e->instanceof(eTYPE_PLAYER)) // 4J: Modifed, see above
 			{
 				if (xa < -128 || xa >= 128 || ya < -128 || ya >= 128 || za < -128 || za >= 128 || wasRiding
 					// 4J Stu - I fixed the initialisation of teleportDelay in the ctor, but we managed this far without out
@@ -685,6 +685,11 @@ shared_ptr<Packet> TrackedEntity::getAddEntityPacket()
 	{
 		shared_ptr<Entity> owner = (dynamic_pointer_cast<Arrow>(e))->owner;
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::ARROW, owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp, yp, zp);
+	}
+	else if (e->instanceof(eTYPE_DART))
+	{
+		shared_ptr<Entity> owner = (dynamic_pointer_cast<Dart>(e))->owner;
+		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::DART, owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp, yp, zp);
 	}
 	else if (e->instanceof(eTYPE_SNOWBALL))
 	{

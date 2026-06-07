@@ -38,6 +38,11 @@ DamageSource *DamageSource::arrow(shared_ptr<Arrow> arrow, shared_ptr<Entity> ow
 	return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathArrow, ChatPacket::e_ChatDeathArrowItem, arrow, owner))->setProjectile();
 }
 
+DamageSource *DamageSource::dart(shared_ptr<Dart> dart, shared_ptr<Entity> owner)
+{
+	return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathArrow, ChatPacket::e_ChatDeathArrowItem, dart, owner))->setProjectile();
+}
+
 DamageSource *DamageSource::fireball(shared_ptr<Fireball> fireball, shared_ptr<Entity> owner)
 {
 	if (owner == nullptr)
