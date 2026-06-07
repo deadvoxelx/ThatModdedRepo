@@ -121,12 +121,16 @@ void EntityIO::staticCtor()
 	setId(ZephyrFireball::create, eTYPE_ZEPHYRBALL, L"Zephyrball", 117);
 	setId(Aerwhale::create, eTYPE_AERWHALE, L"Aerwhale", 118, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Zombie_Colour1, IDS_AERWHALE);
 	//
-
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
 
 	setId(EnderCrystal::create, eTYPE_ENDER_CRYSTAL, L"EnderCrystal", 200);
 
-	// 4J Added
+	// DARTS
+	setId(Dart::create, eTYPE_DART, L"Dart", 201);
+	//setId(Dart::create, eTYPE_DARTPOISON, L"Dart", 202);
+	//setId(Dart::create, eTYPE_DARTENCHANTED, L"Dart", 203);
+	 
+	 
 	setId(DragonFireball::create, eTYPE_DRAGON_FIREBALL, L"DragonFireball", 1000);
 
 	// 4J-PB - moved to allow the eggs to be named and coloured in the Creative Mode menu
