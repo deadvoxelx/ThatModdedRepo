@@ -156,13 +156,12 @@ void NetherLeavesTile::spawnResources(Level *level, int x, int y, int z, int dat
 	{
 		if (!level->isClientSide)
 		{
-			if (playerBonusLevel > 0)
+			popResource(level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Tile::berryBushStem_Id, 1, 0)));
+
+			int count = 2 + Mth::nextInt(level->random, 1, 3);
+			for (int i = 0; i < count; i++)
 			{
-				int count = 2 + Mth::nextInt(level->random, 1, 3);
-				for (int i = 0; i < count; i++)
-				{
-					popResource(level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Item::blueBerry_Id, 1, 0)));
-				}
+				popResource(level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Item::blueBerry_Id, 1, 0)));
 			}
 		}
 	}
