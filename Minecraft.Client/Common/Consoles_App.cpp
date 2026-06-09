@@ -4666,6 +4666,9 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_DART_SHOOTER, L"Dart Shooter");
 		m_stringTable->registerString(IDS_COCKATRICE, L"Cockatrice");
 		m_stringTable->registerString(IDS_MOA, L"Moa");
+		m_stringTable->registerString(IDS_ITEM_BLUEBERRY, L"Berry");
+		m_stringTable->registerString(IDS_ITEM_AECHORPETAL, L"Aechor Petal");
+		m_stringTable->registerString(IDS_ITEM_SWETBALL, L"Swet Ball");
 
 	}
 	else
