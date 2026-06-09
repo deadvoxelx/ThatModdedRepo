@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "net.minecraft.world.level.h"
+#include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.biome.h"
+#include "net.minecraft.world.level.storage.h"
 #include "net.minecraft.world.level.levelgen.h"
+#include "net.minecraft.world.level.levelgen.synth.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "net.minecraft.world.level.levelgen.structure.h"
-#include "net.minecraft.world.level.levelgen.synth.h"
-#include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.entity.h"
-#include "net.minecraft.world.level.storage.h"
 #include "BiomeSource.h"
 #include "AetherLevelSource.h"
 
@@ -412,6 +412,18 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 
 	Biome *biome = level->getBiome(xo + 16, zo + 16);
 	biome->decorate(level, pprandom, xo, zo);
+
+	PIXBeginNamedEvent(0,"Lakes");
+	if (pprandom->nextInt(4) == 0)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth);
+		int z = zo + pprandom->nextInt(16) + 8;
+
+		LakeFeature calmWater(Tile::calmWater_Id);
+		calmWater.place(level, pprandom, x, y, z);
+	}
+	PIXEndNamedEvent();
 
 	HeavyTile::instaFall = false;
 
