@@ -35,3 +35,4 @@
 #include "AphalafPlant.h"
 #include "Zephyr.h"
 #include "Aerwhale.h"
+#include "Cockatrice.h"
