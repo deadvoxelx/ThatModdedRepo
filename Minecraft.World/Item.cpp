@@ -314,6 +314,9 @@ DartShooterGoldItem *Item::dartShooterGold = NULL;
 Item *Item::dartGold = NULL;
 Item *Item::dartPoison = NULL;
 Item *Item::dartEnchanted = NULL;
+Item *Item::blueBerry = NULL;
+Item *Item::aechorPetal = NULL;
+Item *Item::swetBall = NULL;
 
 void Item::staticCtor()
 {
@@ -616,6 +619,9 @@ void Item::staticCtor()
 	Item::dartGold = (new Item(222))																->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartGolden")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
 	Item::dartPoison = (new Item(223))																->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartPoison")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
 	Item::dartEnchanted = (new Item(224))															->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartEnchanted")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
+	Item::blueBerry = ( new FoodItem(225, 4, FoodConstants::FOOD_SATURATION_NORMAL, false) )		->setIconName(L"blueBerry")->setDescriptionId(IDS_ITEM_BLUEBERRY)->setUseDescriptionId(IDS_ITEM_BLUEBERRY);
+	Item::aechorPetal = (new Item(226))																->setIconName(L"aechorPetal")->setDescriptionId(IDS_ITEM_AECHORPETAL)->setUseDescriptionId(IDS_ITEM_AECHORPETAL);
+	Item::swetBall = (new Item(227))																->setIconName(L"swetBall")->setDescriptionId(IDS_ITEM_SWETBALL)->setUseDescriptionId(IDS_ITEM_SWETBALL);
 	
 }
 
