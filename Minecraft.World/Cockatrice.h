@@ -1,0 +1,25 @@
+#pragma once
+
+using namespace std;
+
+#include "Enemy.h"
+
+class Player;
+class RangedAttackGoal;
+
+class Cockatrice : public Monster, public RangedAttackMob
+{
+public:
+	eINSTANCEOF GetType() { return eTYPE_COCKATRICE; }
+	static Entity *create(Level *level) { return new Cockatrice(level); }
+
+public:
+	Cockatrice(Level *level);
+	virtual bool useNewAi();
+	virtual void aiStep();
+	virtual void performRangedAttack(shared_ptr<LivingEntity> target, float power);
+
+protected:
+	virtual void registerAttributes();
+	virtual void newServerAiStep();
+};
