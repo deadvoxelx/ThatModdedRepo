@@ -547,7 +547,7 @@ void Tile::staticCtor()
 
 	Tile::purulVeloett = (new PurulVeloettTile(202))					->setDestroyTime(0.3f)->setLightEmission(7 / 16.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"purul_veloett")->setDescriptionId(IDS_TILE_PURULVELOETT)->setUseDescriptionId(IDS_DESC_NETHERLEAVES);
 	Tile::purulLog = (new NetherWoodTile(203))							->setDestroyTime(2.0f)->setLightEmission(7 / 16.0f)->setSoundType(SOUND_WOOD)->setIconName(L"purul_log")->setDescriptionId(IDS_TILE_PURULLOG)->setUseDescriptionId(IDS_DESC_LOG_NETHER);
-	Tile::icestone = (new Tile(204, Material::stone))					->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(SOUND_STONE)->setIconName(L"icestone")->setDescriptionId(IDS_TILE_ICESTONE)->setUseDescriptionId(IDS_TILE_ICESTONE);
+	Tile::icestone = (new IcestoneTile(204))							->setDestroyTime(1.5f)->setExplodeable(5)->setSoundType(SOUND_STONE)->setIconName(L"icestone")->setDescriptionId(IDS_TILE_ICESTONE)->setUseDescriptionId(IDS_TILE_ICESTONE);
 	Tile::endactus = (new EndactusTile(205))							->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"endactus")->setDescriptionId(IDS_TILE_ENDACTUS)->setUseDescriptionId(IDS_DESC_CACTUS)->disableMipmap();
 	Tile::endesertBush = (EndesertBushTile *)(new EndesertBushTile(206))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"endesert_bush")->setDescriptionId(IDS_TILE_DEAD_BUSH)->setUseDescriptionId(IDS_DESC_DEAD_BUSH)->disableMipmap();
 	Tile::veloettShrub = (VeloettShrubTile *)(new VeloettShrubTile(207))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"veloett_shrub")->setDescriptionId(IDS_TILE_SHRUB)->setUseDescriptionId(IDS_DESC_TALL_GRASS)->disableMipmap();
