@@ -2,3 +2,4 @@
 
 #include "AmbientCreature.h"
 #include "Bat.h"
+#include "CockatriceSpawner.h"

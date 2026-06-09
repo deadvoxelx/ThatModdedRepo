@@ -4664,6 +4664,8 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_HOLYSTONE_BRICK_WALL, L"Holystone Brick Wall");
 		m_stringTable->registerString(IDS_ITEM_DART, L"Dart");
 		m_stringTable->registerString(IDS_ITEM_DART_SHOOTER, L"Dart Shooter");
+		m_stringTable->registerString(IDS_COCKATRICE, L"Cockatrice");
+		m_stringTable->registerString(IDS_MOA, L"Moa");
 
 	}
 	else
@@ -8707,6 +8709,10 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_APHALAF_BOSS);
 	case eTYPE_APHALAF_PLANT:
 		return app.GetString(IDS_APHALAF_PLANT);
+	case eTYPE_ZEPHYR:
+		return app.GetString(IDS_ZEPHYR);
+	case eTYPE_COCKATRICE:
+		return app.GetString(IDS_COCKATRICE);
 	};
 
 	return L"";

@@ -190,6 +190,7 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/dart",
 	L"mob/dartPoison",
 	L"mob/dartEnchanted",
+	L"mob/cockatrice",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",

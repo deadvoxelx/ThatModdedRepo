@@ -2478,3 +2478,5 @@
 #define IDS_TILE_HOLYSTONE_BRICK_WALL						   2472
 #define IDS_ITEM_DART										   2473
 #define IDS_ITEM_DART_SHOOTER								   2474
+#define IDS_COCKATRICE										   2475
+#define IDS_MOA												   2476
