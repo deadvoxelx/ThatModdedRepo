@@ -356,6 +356,8 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/Minecraft.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MinecraftServer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/Minimap.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MoaModel.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MoaRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MobRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MobSkinMemTextureProcessor.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/MobSkinTextureProcessor.cpp"
