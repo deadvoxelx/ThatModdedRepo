@@ -486,7 +486,8 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 110); // Aphalaf Plant
 		ITEM_AUX(Item::spawnEgg_Id, 109); // Aphalaf Boss
 		ITEM_AUX(Item::spawnEgg_Id, 118); // Aerwhale
-		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr 
+		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr
+		ITEM_AUX(Item::spawnEgg_Id, 119); // Cockatrice 
 		//ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon - doesnt work
 		ITEM_AUX(Item::spawnEgg_Id, 64); // Wither
 		ITEM(Item::record_01_Id)
