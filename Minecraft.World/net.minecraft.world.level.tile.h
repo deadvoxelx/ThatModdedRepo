@@ -161,3 +161,4 @@
 #include "HolystoneTile.h"
 #include "EnchantedGravititeTile.h"
 #include "AerogelTile.h"
+#include "IcestoneTile.h"
