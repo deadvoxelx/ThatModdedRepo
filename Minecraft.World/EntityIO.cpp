@@ -120,8 +120,9 @@ void EntityIO::staticCtor()
 	setId(Zephyr::create, eTYPE_ZEPHYR, L"Zephyr", 116, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_ZEPHYR);
 	setId(ZephyrFireball::create, eTYPE_ZEPHYRBALL, L"Zephyrball", 117);
 	setId(Aerwhale::create, eTYPE_AERWHALE, L"Aerwhale", 118, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Zombie_Colour1, IDS_AERWHALE);
-	//
+	setId(Cockatrice::create, eTYPE_COCKATRICE, L"Cockatrice", 119, eMinecraftColour_Mob_Zombie_Colour2, eMinecraftColour_Mob_CaveSpider_Colour1, IDS_COCKATRICE);
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
+	setId(CockatriceSpawner::create, eTYPE_COCKATRICESPAWNER, L"CockatriceSpawner", 121);
 
 	setId(EnderCrystal::create, eTYPE_ENDER_CRYSTAL, L"EnderCrystal", 200);
 
