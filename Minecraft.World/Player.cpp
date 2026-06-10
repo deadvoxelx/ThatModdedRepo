@@ -306,7 +306,7 @@ void Player::tick()
 
 	if ((isSneaking()) && (!isSleeping()))
 	{
-		setSize(0.6f, 1.5f);
+		setSize(0.6f, 1.489f);
 	}
 	else if ((!isSneaking()) && (!isSleeping()))
 	{
@@ -1204,7 +1204,7 @@ void Player::setDefaultHeadHeight()
 {
 	if ((isSneaking()) && (!isSleeping()))
 	{
-		heightOffset = 1.38f;
+		heightOffset = 1.30f;
 	}
 	else if ((!isSneaking()) && (!isSleeping()))
 	{
