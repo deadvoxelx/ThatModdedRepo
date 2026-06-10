@@ -659,7 +659,7 @@ public:
 	static Tile *ambrosiumTorch;
 	static Tile *enchantedGravitite;
 	static Tile *aerogel;
-	static DeadBushTile *berryBushStem;
+	static Tile *berryBushStem;
 
 	static void staticCtor();
 
