@@ -36,14 +36,10 @@
 #include "Inventory.h"
 #include "Player.h"
 #include "ParticleTypes.h"
-
+#include "SoundTypes.h"
 #include "..\Minecraft.Client\Textures.h"
-
 #include "..\Minecraft.Client\LocalPlayer.h"
 #include "..\Minecraft.Client\HumanoidModel.h"
-#include "SoundTypes.h"
-
-
 
 void Player::_init()
 {
@@ -112,8 +108,6 @@ void Player::_init()
 
 Player::Player(Level *level, const wstring &name) : LivingEntity( level )
 {
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that
-	// the derived version of the function is called
 	this->defineSynchedData();
 
 	this->name = name;
@@ -132,36 +126,23 @@ Player::Player(Level *level, const wstring &name) : LivingEntity( level )
 
 	rotOffs = 180;
 	flameTime = 20;
-
 	m_skinIndex = eDefaultSkins_Skin0;
 	m_playerIndex = 0;
 	m_dwSkinId = 0;
 	m_dwCapeId = 0;
-
-	// 4J Added
 	m_xuid = INVALID_XUID;
 	m_OnlineXuid = INVALID_XUID;
-	//m_bShownOnMaps = true;
 	setShowOnMaps(app.GetGameHostOption(eGameHostOption_Gamertags)!=0?true:false);
 	m_bIsGuest = false;
 
 #ifndef _XBOX_ONE
-	// 4J: Set UUID to name on none-XB1 consoles, may change in future but for now
-	// ownership of animals on these consoles is done by name
 	setUUID(name);
 #endif
 }
 
 Player::~Player()
 {
-	// TODO 4J
-	//printf("A player has been destroyed.\n");
 	delete inventoryMenu;
-
-	// 4J Stu - Fix for #10938 - CRASH - Game hardlocks when client has an open chest and Xbox Guide while host exits without saving.
-	// If the container menu is not the inventory menu, then the player has a menu open. These get deleted when the xui scene
-	// is destroyed, so we can not delete it here
-	//if( containerMenu != inventoryMenu ) delete containerMenu;
 }
 
 void Player::registerAttributes()
@@ -210,7 +191,6 @@ void Player::releaseUsingItem()
 	{
 		useItem->releaseUsing(level, dynamic_pointer_cast<Player>( shared_from_this() ), useItemDuration);
 
-		// 4J Stu - Fix for various bugs where an incorrect bow was displayed when it broke (#70859,#93972,#93974)
 		if (useItem->count == 0)
 		{
 			removeSelectedItem();
@@ -234,15 +214,12 @@ bool Player::isBlocking()
 	return isUsingItem() && Item::items[useItem->id]->getUseAnimation(useItem) == UseAnim_block;
 }
 
-// 4J Stu - Added for things that should only be ticked once per simulation frame
 void Player::updateFrameTick()
 {
 	if (useItem != nullptr)
 	{
 		shared_ptr<ItemInstance> item = inventory->getSelected();
-		// 4J Stu - Fix for #45508 - TU5: Gameplay: Eating one piece of food will result in a second piece being eaten as well
-		// Original code was item != useItem. Changed this now to use the equals function, and add the nullptr check as well for the other possible not equals (useItem is not nullptr if we are here)
-		// This is because the useItem and item could be different objects due to an inventory update from the server, but still be the same item (with the same id,count and auxvalue)
+
 		if (item == nullptr || !item->equals(useItem) )
 		{
 			stopUsingItem();
@@ -308,7 +285,6 @@ void Player::tick()
 {
 	if(level->isClientSide)
 	{
-		// 4J Stu - Server player calls this differently so that it only happens once per simulation tick
 		updateFrameTick();
 	}
 
@@ -371,7 +347,6 @@ void Player::tick()
 		foodData.tick(dynamic_pointer_cast<Player>(shared_from_this()));
 	}
 
-	// 4J Stu Debugging
 	if (!level->isClientSide)
 	{
 		static int count = 0;
@@ -407,59 +382,6 @@ void Player::tick()
 			this->drop( shared_ptr<ItemInstance>(new ItemInstance( Item::pickAxe_diamond, 1 )) );
 #endif
 #endif
-			// 4J-PB - Throw items out at the start of the level
-			//this->drop( new ItemInstance( Item::pickAxe_diamond, 1 ) );
-			//this->drop( new ItemInstance( Tile::workBench, 1 ) );
-			//this->drop( new ItemInstance( Tile::treeTrunk, 8 ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Item::milk, 3 ) ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Item::sugar, 2 ) ) );
-			//this->drop( new ItemInstance( Tile::stoneBrick, 8 ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Item::wheat, 3 ) ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Item::egg, 1 ) ) );
-			//this->drop( new ItemInstance( Item::bow, 1 ) );
-			//this->drop( new ItemInstance( Item::arrow, 10 ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Item::saddle, 10 ) ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Tile::fence, 64 ) ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Tile::fence, 64 ) ) );
-			//this->drop( shared_ptr<ItemInstance>( new ItemInstance( Tile::fence, 64 ) ) );
-
-
-			//shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(Pig::_class->newInstance( level ));
-			//mob->moveTo(x+1, y, z+1, level->random->nextFloat() * 360, 0);
-			//level->addEntity(mob);
-
-			// 4J : WESTY : Spawn some wolves to befriend!
-			/*
-			shared_ptr<Mob> mob1 = dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-			mob1->moveTo(x+1, y, z+1, level->random->nextFloat() * 360, 0);
-			level->addEntity(mob1);
-
-			shared_ptr<Mob> mob2 = dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-			mob2->moveTo(x+2, y, z+1, level->random->nextFloat() * 360, 0);
-			level->addEntity(mob2);
-
-			shared_ptr<Mob> mob3 = dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-			mob3->moveTo(x+1, y, z+2, level->random->nextFloat() * 360, 0);
-			level->addEntity(mob3);
-
-			shared_ptr<Mob> mob4 = dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-			mob4->moveTo(x+3, y, z+1, level->random->nextFloat() * 360, 0);
-			level->addEntity(mob4);
-
-			shared_ptr<Mob> mob5 = dynamic_pointer_cast<Mob>(Wolf::_class->newInstance( level ));
-			mob5->moveTo(x+1, y, z+3, level->random->nextFloat() * 360, 0);
-			level->addEntity(mob5);
-			*/
-
-			//        inventory.add(new ItemInstance(Item.potion, 1, PotionBrewing.THROWABLE_MASK | 0xc));
-			//        addEffect(new MobEffectInstance(MobEffect.blindness.id, 60));
-			//        increaseXp(10);
-
-			{
-				//            ItemInstance itemInstance = new ItemInstance(Item.pickAxe_diamond);
-				//            itemInstance.enchant(Enchantment.diggingBonus, 3);
-				//            inventory.add(itemInstance);
-			}
 		}
 #if 0
 		// 4J Stu - This makes a tunnel with a powered track just over length to get the On A Rail achievement
@@ -532,7 +454,6 @@ void Player::tick()
 		}
 #endif
 	}
-	//End 4J sTU
 }
 
 int Player::getPortalWaitTime()
@@ -547,8 +468,6 @@ int Player::getDimensionChangingDelay()
 
 void Player::playSound(int iSound, float volume, float pitch)
 {
-	// this sound method will play locally for the local player, and
-	// broadcast to remote players
 	level->playPlayerSound(dynamic_pointer_cast<Player>(shared_from_this()), iSound, volume, pitch);
 }
 
@@ -575,7 +494,6 @@ void Player::spawnEatParticles(shared_ptr<ItemInstance> useItem, int count)
 			level->addParticle(PARTICLE_ICONCRACK(useItem->getItem()->id,0), p->x, p->y, p->z, d->x, d->y + 0.05, d->z);
 		}
 
-		// 4J Stu - Was L"mob.eat" which doesnt exist
 		playSound(eSoundType_RANDOM_EAT, 0.5f + 0.5f * random->nextInt(2), (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);
 	}
 }
@@ -655,7 +573,6 @@ void Player::setCustomSkin(DWORD skinId)
 #endif
 	EDefaultSkins playerSkin = eDefaultSkins_ServerSelected;
 
-	// reset the idle
 	setIsIdle(false);
 
 	setAnimOverrideBitmask(getSkinAnimOverrideBitmask(skinId));
@@ -675,56 +592,14 @@ void Player::setCustomSkin(DWORD skinId)
 		playerSkin = static_cast<EDefaultSkins>(m_playerIndex + 1);
 	}
 
-	// We always set a default skin, since we may be waiting for the player's custom skin to be transmitted
 	setPlayerDefaultSkin( playerSkin );
 
 	m_dwSkinId = skinId;
 	this->customTextureUrl = app.getSkinPathFromId(skinId);
 
-	// set the new player additional boxes
-	/*vector<ModelPart *> *pvModelParts=app.GetAdditionalModelParts(m_dwSkinId);
-
-	if(pvModelParts==nullptr)
-	{
-	// we don't have the data from the dlc skin yet
-	app.DebugPrintf("Couldn't get model parts for skin %X\n",m_dwSkinId);
-
-	// do we have it from the DLC pack?
-	DLCSkinFile *pDLCSkinFile = app.m_dlcManager.getSkinFile(this->customTextureUrl);
-
-	if(pDLCSkinFile!=nullptr)
-	{
-	DWORD dwBoxC=pDLCSkinFile->getAdditionalBoxesCount();
-	if(dwBoxC!=0)
-	{
-	app.DebugPrintf("Got model parts from DLCskin for skin %X\n",m_dwSkinId);
-	pvModelParts=app.SetAdditionalSkinBoxes(m_dwSkinId,pDLCSkinFile->getAdditionalBoxes());
-	this->SetAdditionalModelParts(pvModelParts);
-	}
-	else
-	{
-	this->SetAdditionalModelParts(nullptr);
-	}
-	app.SetAnimOverrideBitmask(pDLCSkinFile->getSkinID(),pDLCSkinFile->getAnimOverrideBitmask());
-	}
-	else
-	{
-	this->SetAdditionalModelParts(nullptr);
-	}
-	}
-	else
-	{
-	app.DebugPrintf("Got model parts from app.GetAdditionalModelParts for skin %X\n",m_dwSkinId);
-
-	this->SetAdditionalModelParts(pvModelParts);
-	}*/
-
-	// reset the check for model parts
 	m_bCheckedForModelParts=false;
 	m_bCheckedDLCForModelParts=false;
 	this->SetAdditionalModelParts(nullptr);
-
-
 }
 
 unsigned int Player::getSkinAnimOverrideBitmask(DWORD skinId)
@@ -812,7 +687,6 @@ void Player::setCustomCape(DWORD capeId)
 					this->customTextureUrl2= wstring(L"");
 				}
 			}
-
 		}
 		else
 		{
@@ -857,12 +731,9 @@ DWORD Player::getCapeIdFromPath(const wstring &cape)
 
 wstring Player::getCapePathFromId(DWORD capeId)
 {
-	// 4J Stu - This function maps the encoded DWORD we store in the player profile
-	// to a filename that is stored as a memory texture and shared between systems in game
 	wchar_t chars[256];
 	if( GET_IS_DLC_SKIN_FROM_BITMASK(capeId) )
 	{
-		// 4J Stu - DLC skins are numbered using decimal rather than hex to make it easier to number manually
 		swprintf(chars,256,L"dlccape%08d.png",GET_DLC_SKIN_ID_FROM_BITMASK(capeId));
 
 	}
@@ -916,38 +787,9 @@ void Player::prepareCustomTextures()
 		{
 			this->customTextureUrl= pMojangData->wchSkin;
 		}
-
-		// 4J Stu - Don't update the cape here, it gets set elsewhere
-		// Cape
-		//if(pMojangData->wchCape)
-		//{
-		//	this->customTextureUrl2= pMojangData->wchCape;
-		//}
-		//else
-		//{
-		//	if(app.DefaultCapeExists())
-		//	{
-		//		this->customTextureUrl2= wstring(L"Default_Cape.png");
-		//	}
-		//	else
-		//	{
-		//		this->customTextureUrl2= wstring(L"");
-		//	}
-		//}
-
 	}
 	else
 	{
-		// 4J Stu - Don't update the cape here, it gets set elsewhere
-		// if there is a custom default cloak, then set it here
-		//if(app.DefaultCapeExists())
-		//{
-		//	this->customTextureUrl2= wstring(L"Default_Cape.png");
-		//}
-		//else
-		//{
-		//	this->customTextureUrl2 =wstring(L"");
-		//}
 	}
 
 	/*cloakTexture = wstring(L"http://s3.amazonaws.com/MinecraftCloaks/").append( name ).append( L".png" );*/
@@ -972,13 +814,8 @@ void Player::rideTick()
 
 	checkRidingStatistiscs(x - preX, y - preY, z - preZ);
 
-	// riding can be set to null inside 'Entity::rideTick()'.
 	if ( riding != nullptr	&& (riding->GetType() & eTYPE_PIG) == eTYPE_PIG )
 	{
-		// 4J Stu - I don't know why we would want to do this, but it means that the players head is locked in position and can't move around
-		//xRot = preXRot;
-		//yRot = preYRot;
-
 		shared_ptr<Pig> pig = dynamic_pointer_cast<Pig>(riding);
 		yBodyRot = pig->yBodyRot;
 
@@ -988,7 +825,6 @@ void Player::rideTick()
 			yBodyRotO += 360;
 	}
 }
-
 
 void Player::resetPos()
 {
@@ -1004,7 +840,6 @@ void Player::serverAiStep()
 	updateSwingTime();
 }
 
-
 void Player::aiStep()
 {
 	if (jumpTriggerTime > 0) jumpTriggerTime--;
@@ -1016,7 +851,6 @@ void Player::aiStep()
 			if ((level->difficulty == Difficulty::PEACEFUL)) {
 				heal(1);
 			}
-
 		};
 	}
 	inventory->tick();
@@ -1036,7 +870,6 @@ void Player::aiStep()
 
 	float tBob = static_cast<float>(sqrt(xd * xd + zd * zd));
 
-	// 4J added - we were getting a NaN with zero xd & zd
 	if(( xd * xd + zd * zd ) < 0.00001f )
 	{
 		tBob = 0.0f;
@@ -1079,7 +912,6 @@ void Player::aiStep()
 	}
 }
 
-
 void Player::touch(shared_ptr<Entity> entity)
 {
 	entity->playerTouch( dynamic_pointer_cast<Player>( shared_from_this() ) );
@@ -1108,7 +940,6 @@ void Player::die(DamageSource *source)
 	setPos(x, y, z);
 	yd = 0.1f;
 
-	// 4J - TODO need to use a xuid
 	if ( app.isXuidNotch( m_xuid ) )
 	{
 		drop(std::make_shared<ItemInstance>(Item::apple, 1), true);
@@ -1134,16 +965,6 @@ void Player::awardKillScore(shared_ptr<Entity> victim, int awardPoints)
 {
 	increaseScore(awardPoints);
 	vector<Objective *> *objectives = getScoreboard()->findObjectiveFor(ObjectiveCriteria::KILL_COUNT_ALL);
-
-	//if (victim instanceof Player)
-	//{
-	//	awardStat(Stats::playerKills, 1);
-	//	objectives.addAll(getScoreboard().findObjectiveFor(ObjectiveCriteria::KILL_COUNT_PLAYERS));
-	//}
-	//else
-	//{
-	//	awardStat(Stats::mobKills, 1);
-	//}
 
 	if(objectives)
 	{
@@ -1219,12 +1040,10 @@ shared_ptr<ItemEntity> Player::drop(shared_ptr<ItemInstance> item, bool randomly
 	return thrownItem;
 }
 
-
 void Player::reallyDrop(shared_ptr<ItemEntity> thrownItem)
 {
 	level->addEntity(thrownItem);
 }
-
 
 float Player::getDestroySpeed(Tile *tile, bool hasProperTool)
 {
@@ -1260,11 +1079,6 @@ float Player::getDestroySpeed(Tile *tile, bool hasProperTool)
 	}
 
 	if (isUnderLiquid(Material::water) && !EnchantmentHelper::hasWaterWorkerBonus(dynamic_pointer_cast<LivingEntity>(shared_from_this()))) speed /= 5;
-
-	// 4J Stu - onGround is set to true on the client when we are flying, which means
-	// the dig speed is out of sync with the server. Removing this speed change when
-	// flying so that we always dig as the same speed
-	//if (!onGround) speed /= 5;
 
 	return speed;
 }
@@ -1309,7 +1123,6 @@ void Player::readAdditionalSaveData(CompoundTag *entityTag)
 		enderChestInventory->setItemsByTag(enderItemsList);
 	}
 
-	// 4J Added
 	m_uiGamePrivileges = entityTag->getInt(L"GamePrivileges");
 }
 
@@ -1339,9 +1152,7 @@ void Player::addAdditonalSaveData(CompoundTag *entityTag)
 
 	entityTag->put(L"EnderItems", enderChestInventory->createTag());
 
-	// 4J Added
 	entityTag->putInt(L"GamePrivileges",m_uiGamePrivileges);
-
 }
 
 bool Player::openContainer(shared_ptr<Container> container)
@@ -1389,10 +1200,16 @@ float Player::getHeadHeight()
 	return 0.12f;
 }
 
-
 void Player::setDefaultHeadHeight()
 {
-	heightOffset = 1.62f;
+	if ((isSneaking()) && (!isSleeping()))
+	{
+		heightOffset = 1.38f;
+	}
+	else if ((!isSneaking()) && (!isSleeping()))
+	{
+		heightOffset = 1.62f;
+	}
 }
 
 bool Player::hurt(DamageSource *source, float dmg)
@@ -1429,7 +1246,6 @@ bool Player::hurt(DamageSource *source, float dmg)
 			attacker = arrow->owner;
 		}
 	}
-
 	return LivingEntity::hurt(source, dmg);
 }
 
@@ -1526,11 +1342,6 @@ bool Player::openTrading(shared_ptr<Merchant> traderTarget, const wstring &name)
 	return true;
 }
 
-/**
-* Opens an iteminstance-dependent user interface.
-*
-* @param itemInstance
-*/
 void Player::openItemInstanceGui(shared_ptr<ItemInstance> itemInstance)
 {
 }
@@ -1719,11 +1530,6 @@ void Player::attack(shared_ptr<Entity> entity)
 
 		causeFoodExhaustion(FoodConstants::EXHAUSTION_ATTACK);
 	}
-
-	// if (SharedConstants::INGAME_DEBUG_OUTPUT)
-	// {
-	// 		//sendMessage(ChatMessageComponent.forPlainText("DMG " + dmg + ", " + magicBoost + ", " + knockback));
-	// }
 }
 
 void Player::crit(shared_ptr<Entity> entity)
@@ -1739,7 +1545,6 @@ void Player::respawn()
 	deathFadeCounter=0;
 }
 
-
 void Player::animateRespawn(shared_ptr<Player> player, Level *level)
 {
 
@@ -1751,7 +1556,6 @@ void Player::animateRespawn(shared_ptr<Player> player, Level *level)
 
 		level->addParticle(eParticleType_netherportal, player->x + xo, player->y - player->heightOffset + 1.62f - i * .05f, player->z + zo, 0, 0, 0);
 	}
-
 }
 
 Slot *Player::getInventorySlot(int slotId)
@@ -1879,10 +1683,8 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z, bool bTes
 	{
 		level->updateSleepingPlayerList();
 	}
-
 	return OK;
 }
-
 
 void Player::setBedOffset(int bedDirection)
 {
@@ -1907,22 +1709,8 @@ void Player::setBedOffset(int bedDirection)
 	}
 }
 
-
-/**
-*
-* @param forcefulWakeUp
-*            If the player has been forced to wake up. When this happens,
-*            the client will skip the wake-up animation. For example, when
-*            the player is hurt or the bed is destroyed.
-* @param updateLevelList
-*            If the level's sleeping player list needs to be updated. This
-*            is usually the case.
-* @param saveRespawnPoint
-*            TODO
-*/
 void Player::stopSleepInBed(bool forcefulWakeUp, bool updateLevelList, bool saveRespawnPoint)
 {
-
 	setSize(0.6f, 1.8f);
 	setDefaultHeadHeight();
 
@@ -1959,12 +1747,10 @@ void Player::stopSleepInBed(bool forcefulWakeUp, bool updateLevelList, bool save
 	}
 }
 
-
 bool Player::checkBed()
 {
 	return (level->getTile(bedPosition->x, bedPosition->y, bedPosition->z) == Tile::bed_Id);
 }
-
 
 Pos *Player::checkBedValidRespawnPosition(Level *level, Pos *pos, bool forced)
 {
@@ -2031,7 +1817,6 @@ int Player::getSleepTimer()
 	return sleepCounter;
 }
 
-// 4J-PB - added for death fade
 int Player::getDeathFadeTimer()
 {
 	return deathFadeCounter;
@@ -2055,12 +1840,6 @@ void Player::setPlayerFlag(int flag, bool value)
 	}
 }
 
-
-/**
-* This method is currently only relevant to client-side players. It will
-* try to load the messageId from the language file and display it to the
-* client.
-*/
 void Player::displayClientMessage(int messageId)
 {
 
@@ -2098,13 +1877,9 @@ void Player::awardStat(Stat *stat, byteArray paramBlob)
 	}
 }
 
-
 void Player::jumpFromGround()
 {
 	LivingEntity::jumpFromGround();
-
-	// 4J Stu - This seems to have been missed from 1.7.3, but do we care?
-	//awardStat(Stats::jump, 1);
 
 	if (isSprinting())
 	{
@@ -2115,7 +1890,6 @@ void Player::jumpFromGround()
 		causeFoodExhaustion(FoodConstants::EXHAUSTION_JUMP);
 	}
 }
-
 
 void Player::travel(float xa, float ya)
 {
@@ -2145,7 +1919,6 @@ float Player::getSpeed()
 
 void Player::checkMovementStatistiscs(double dx, double dy, double dz)
 {
-
 	if (riding != nullptr)
 	{
 		return;
@@ -2211,7 +1984,6 @@ void Player::checkMovementStatistiscs(double dx, double dy, double dz)
 	}
 }
 
-
 void Player::checkRidingStatistiscs(double dx, double dy, double dz)
 {
 	if (riding != nullptr)
@@ -2264,7 +2036,6 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz)
 					}
 #endif
 				}
-
 			}
 			else if ( riding->instanceof(eTYPE_BOAT) )
 			{
@@ -2290,7 +2061,6 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz)
 	}
 }
 
-
 void Player::causeFallDamage(float distance)
 {
 	if (abilities.mayfly) return;
@@ -2307,7 +2077,6 @@ void Player::causeFallDamage(float distance)
 	}
 	LivingEntity::causeFallDamage(distance);
 }
-
 
 void Player::killed(shared_ptr<LivingEntity> mob)
 {
@@ -2437,7 +2206,6 @@ void Player::giveExperienceLevels(int amount)
 
 int Player::getXpNeededForNextLevel()
 {
-	// Update xp calculations from 1.3
 	if (experienceLevel >= 30)
 	{
 		return 17 + 15 * 3 + (experienceLevel - 30) * 7;
@@ -2449,15 +2217,6 @@ int Player::getXpNeededForNextLevel()
 	return 17;
 }
 
-/**
-* This method adds on to the player's exhaustion, which may decrease the
-* player's food level.
-*
-* @param amount
-*            Amount of exhaustion to add, between 0 and 20 (setting it to
-*            20 will guarantee that at least 1, and at most 4, food points
-*            are deducted). See FoodConstants for cost suggestions.
-*/
 void Player::causeFoodExhaustion(float amount)
 {
 	if( isAllowedToIgnoreExhaustion() || ( isAllowedToFly() && abilities.flying) ) return;
@@ -2622,15 +2381,11 @@ wstring Player::getName()
 
 wstring Player::getDisplayName()
 {
-	//PlayerTeam.formatNameForTeam(getTeam(), name);
-
-	// If player display name is not set, return name
 	return m_displayName.size() > 0 ? m_displayName : name;
 }
 
 wstring Player::getNetworkName()
 {
-	// 4J: We can only transmit gamertag in network packets
 	return name;
 }
 
@@ -2742,7 +2497,6 @@ bool Player::eq_test(const shared_ptr<Player> x, const shared_ptr<Player> y)
 	// TODO 4J Stu - Should we just be using the pointers and comparing them for equality?
 	return x->name.compare( y->name ) == 0; // 4J Stu - Names are completely unique?
 }
-
 
 unsigned int Player::getPlayerGamePrivilege(EPlayerGamePrivileges privilege)
 {
@@ -2893,7 +2647,6 @@ bool Player::isAllowedToUse(Tile *tile)
 			}
 		}
 	}
-
 	return allowed;
 }
 
@@ -2937,7 +2690,6 @@ bool Player::isAllowedToUse(shared_ptr<ItemInstance> item)
 			break;
 		}
 	}
-
 	return allowed;
 }
 
@@ -2954,7 +2706,6 @@ bool Player::isAllowedToInteract(shared_ptr<Entity> target)
 				if (minecart->getType() == Minecart::TYPE_CHEST)
 					allowed = false;
 			}
-
 		}
 		else
 		{
@@ -2969,7 +2720,6 @@ bool Player::isAllowedToInteract(shared_ptr<Entity> target)
 			}
 		}
 	}
-
 	return allowed;
 }
 
@@ -3172,7 +2922,6 @@ void Player::SetPlayerNameValidState(bool bState)
 	else
 	{
 		m_ePlayerNameValidState=ePlayerNameValid_False;
-
 	}
 }
 #endif
