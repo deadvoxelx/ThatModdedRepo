@@ -593,6 +593,7 @@ void Tile::staticCtor()
 	Item::items[glass_Id]				= ( new MultiTextureTileItem(Tile::glass_Id - 256,Tile::glass,(int*)GlassTile::GLASS_NAMES, GlassTile::GLASS_NAMES_LENGTH))->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS);
 	Item::items[netherLeaves_Id]		= ( new MultiTextureTileItem(Tile::netherLeaves_Id - 256,Tile::netherLeaves,(int*)NetherLeavesTile::NETHER_LEAVES_NAMES, NetherLeavesTile::NETHER_LEAVES_NAMES_LENGTH))->setIconName(L"nether_leaves")->setDescriptionId(IDS_TILE_NETHERLEAVES);
 	Item::items[holystone_Id]			= ( new MultiTextureTileItem(Tile::holystone_Id - 256,Tile::holystone,(int*)HolystoneTile::HOLYSTONE_NAMES, HolystoneTile::HOLYSTONE_NAMES_LENGTH))->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE);
+	Item::items[quicksoil_Id]			= ( new MultiTextureTileItem(Tile::quicksoil_Id - 256,Tile::quicksoil,(int*)QuicksoilTile::QUICKSOIL_NAMES, QuicksoilTile::QUICKSOIL_NAMES_LENGTH))->setIconName(L"quicksoil")->setDescriptionId(IDS_TILE_QUICKSOIL);
 
 	Item::items[sandStone_Id]			= ( new MultiTextureTileItem(sandStone_Id - 256, sandStone, SandStoneTile::SANDSTONE_NAMES, SandStoneTile::SANDSTONE_BLOCK_NAMES) )->setIconName(L"sandStone")->setDescriptionId(IDS_TILE_SANDSTONE)->setUseDescriptionId(IDS_DESC_SANDSTONE);
 	Item::items[quartzBlock_Id]			= ( new MultiTextureTileItem(quartzBlock_Id - 256, quartzBlock, QuartzBlockTile::BLOCK_NAMES, QuartzBlockTile::QUARTZ_BLOCK_NAMES) )->setIconName(L"quartzBlock")->setDescriptionId(IDS_TILE_QUARTZ_BLOCK)->setUseDescriptionId(IDS_DESC_QUARTZ_BLOCK);
