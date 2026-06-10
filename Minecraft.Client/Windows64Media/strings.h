@@ -2483,3 +2483,4 @@
 #define IDS_ITEM_BLUEBERRY									   2477
 #define IDS_ITEM_AECHORPETAL								   2478
 #define IDS_ITEM_SWETBALL									   2479
+#define IDS_TILE_ZANITE_BLOCK								   2480
