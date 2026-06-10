@@ -79,6 +79,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Tile::endoriumBlock_Id)
 		ITEM(Tile::endoriumGrate_Id)
 		ITEM(Tile::endoriumLamp_Id)
+		ITEM(Tile::zaniteBlock_Id)
 		ITEM(Tile::enchantedGravitite_Id)
 
 		ITEM(Tile::netherRack_Id)
@@ -297,39 +298,39 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Tile::woolCarpet_Id,13)	// Green
 		ITEM_AUX(Tile::woolCarpet_Id,12)	// Brown
 
-		ITEM_AUX(Tile::stained_glass_Id,14)	// Red
-		ITEM_AUX(Tile::stained_glass_Id,1)	// Orange
-		ITEM_AUX(Tile::stained_glass_Id,4)	// Yellow
-		ITEM_AUX(Tile::stained_glass_Id,5)	// Lime
-		ITEM_AUX(Tile::stained_glass_Id,3)	// Light Blue
-		ITEM_AUX(Tile::stained_glass_Id,9)	// Cyan
-		ITEM_AUX(Tile::stained_glass_Id,11)	// Blue
-		ITEM_AUX(Tile::stained_glass_Id,10)	// Purple
-		ITEM_AUX(Tile::stained_glass_Id,2)	// Magenta
-		ITEM_AUX(Tile::stained_glass_Id,6)	// Pink
-		ITEM_AUX(Tile::stained_glass_Id,0)	// White
-		ITEM_AUX(Tile::stained_glass_Id,8)	// Light Gray
-		ITEM_AUX(Tile::stained_glass_Id,7)	// Gray
-		ITEM_AUX(Tile::stained_glass_Id,15)	// Black
-		ITEM_AUX(Tile::stained_glass_Id,13)	// Green
-		ITEM_AUX(Tile::stained_glass_Id,12)	// Brown
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::WHITE)	// White
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::RED)	// Red
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::ORANGE)	// Orange
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::YELLOW)	// Yellow
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::LIME)	// Lime
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::GREEN)	// Green
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::CYAN)	// Cyan
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::LIGHTBLUE)	// Light Blue
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::BLUE)	// Blue
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::PURPLE)	// Purple
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::MAGENTA)	// Magenta
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::PINK)	// Pink
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::BROWN)	// Brown
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::LIGHTGRAY)	// Light Gray
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::GRAY)	// Gray
+		ITEM_AUX(Tile::stained_glass_Id, StainedGlassBlock::BLACK)	// Black
 
-		ITEM_AUX(Tile::stained_glass_pane_Id,14)	// Red
-		ITEM_AUX(Tile::stained_glass_pane_Id,1)	// Orange
-		ITEM_AUX(Tile::stained_glass_pane_Id,4)	// Yellow
-		ITEM_AUX(Tile::stained_glass_pane_Id,5)	// Lime
-		ITEM_AUX(Tile::stained_glass_pane_Id,3)	// Light Blue
-		ITEM_AUX(Tile::stained_glass_pane_Id,9)	// Cyan
-		ITEM_AUX(Tile::stained_glass_pane_Id,11)	// Blue
-		ITEM_AUX(Tile::stained_glass_pane_Id,10)	// Purple
-		ITEM_AUX(Tile::stained_glass_pane_Id,2)	// Magenta
-		ITEM_AUX(Tile::stained_glass_pane_Id,6)	// Pink
-		ITEM_AUX(Tile::stained_glass_pane_Id,0)	// White
-		ITEM_AUX(Tile::stained_glass_pane_Id,8)	// Light Gray
-		ITEM_AUX(Tile::stained_glass_pane_Id,7)	// Gray
-		ITEM_AUX(Tile::stained_glass_pane_Id,15)	// Black
-		ITEM_AUX(Tile::stained_glass_pane_Id,13)	// Green
-		ITEM_AUX(Tile::stained_glass_pane_Id,12)	// Brown
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::WHITE)	// White
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::RED)	// Red
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::ORANGE)	// Orange
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::YELLOW)	// Yellow
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::LIME)	// Lime
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::GREEN)	// Green
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::CYAN)	// Cyan
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::LIGHTBLUE)	// Light Blue
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::BLUE)	// Blue
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::PURPLE)	// Purple
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::MAGENTA)	// Magenta
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::PINK)	// Pink
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::BROWN)	// Brown
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::LIGHTGRAY)	// Light Gray
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::GRAY)	// Gray
+		ITEM_AUX(Tile::stained_glass_pane_Id, StainedGlassPaneBlock::BLACK)	// Black
 
 		ITEM(Tile::clayHardened_Id)
 		ITEM_AUX(Tile::clayHardened_colored_Id,14)	// Red
