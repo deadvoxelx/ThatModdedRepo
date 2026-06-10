@@ -35,7 +35,6 @@ bool RemotePlayer::hurt(DamageSource *source, float dmg)
 
 void RemotePlayer::lerpTo(double x, double y, double z, float yRot, float xRot, int steps)
 {
-//        heightOffset = 0;
     lx = x;
     ly = y;
     lz = z;
@@ -69,18 +68,6 @@ void RemotePlayer::tick()
 		stopUsingItem();
 		hasStartedUsingItem = false;
 	}
-
-	//        if (eatItem != null) {
-	//            if (eatItemTickCount <= 25 && eatItemTickCount % 4 == 0) {
-	//                spawnEatParticles(eatItem, 5);
-	//            }
-	//            eatItemTickCount--;
-	//            if (eatItemTickCount <= 0) {
-	//                spawnEatParticles(eatItem, 16);
-	//                swing();
-	//                eatItem = null;
-	//            }
-	//        }
 }
 
 float RemotePlayer::getShadowHeightOffs()
@@ -137,12 +124,15 @@ void RemotePlayer::setEquippedSlot(int slot, shared_ptr<ItemInstance> item)
 
 void RemotePlayer::animateRespawn()
 {
-//        Player.animateRespawn(this, level);
 }
 
 float RemotePlayer::getHeadHeight()
 {
-	return 1.82f;
+    if (!isSneaking() && !isSleeping())
+	{
+		return 1.82f;
+	}
+	return 1.509f;
 }
 
 Pos RemotePlayer::getCommandSenderWorldPosition()
