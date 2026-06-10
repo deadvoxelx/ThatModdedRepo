@@ -279,7 +279,7 @@ Tile *Tile::holystone = NULL;
 Tile *Tile::ambrosiumTorch = NULL;
 Tile *Tile::enchantedGravitite = NULL;
 Tile *Tile::aerogel = NULL;
-DeadBushTile *Tile::berryBushStem = NULL;
+Tile *Tile::berryBushStem = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -572,7 +572,7 @@ void Tile::staticCtor()
 	Tile::ambrosiumTorch = (new TorchTile(226))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,	Item::eMaterial_wood)->setDestroyTime(0.0f)->setLightEmission(15 / 16.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"ambrosiumTorch")->setDescriptionId(IDS_TILE_TORCH)->setUseDescriptionId(IDS_DESC_TORCH)->disableMipmap();
 	Tile::enchantedGravitite = (new EnchantedGravititeTile(227))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_gravitite)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"iron_block")->setDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE)->setUseDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE);
 	Tile::aerogel = (new AerogelTile(228))								->setDestroyTime(1.0f)->setLightBlock(3)->setExplodeable(1200)->setSoundType(Tile::SOUND_STONE)->setIconName(L"aerogel")->setDescriptionId(IDS_TILE_AEROGEL)->setUseDescriptionId(IDS_TILE_AEROGEL);
-	Tile::berryBushStem = (DeadBushTile *)(new DeadBushTile(229))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"berryBushStem")->setDescriptionId(IDS_TILE_BERRY_BUSH)->setUseDescriptionId(IDS_TILE_BERRY_BUSH)->disableMipmap();
+	Tile::berryBushStem = (Bush *)(new BerryStemTile(229))				->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"berryBushStem")->setDescriptionId(IDS_TILE_BERRY_BUSH)->setUseDescriptionId(IDS_TILE_BERRY_BUSH)->disableMipmap();
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
