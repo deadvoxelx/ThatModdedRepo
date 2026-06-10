@@ -1130,6 +1130,15 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(22,	4,	L"packed_ice");
 	ADD_ICON(22,	5,	L"blue_ice");
 	ADD_ICON(22,	6,	L"packed_glass");
+	ADD_ICON(22,	7,	L"prismarine");
+	ADD_ICON(22,	8,	L"prismarineBricks");
+	ADD_ICON(22,	9,	L"prismarineDark");
+	ADD_ICON(22,	10,	L"seaLantern");
+	ADD_ICON(22,	11,	L"slimeBlock");
+	ADD_ICON(22,	12,	L"barrier");
+	ADD_ICON(22,	13,	L"ironTrapdoor");
+	ADD_ICON(22,	14,	L"stainedGlass");
+	ADD_ICON(22,	15,	L"stainedGlass_top");
 
 	ADD_ICON(23,	0,	L"aercloud");
 	ADD_ICON(23,	1,	L"aerogel");
@@ -1183,5 +1192,6 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(25,	15,	L"sunAltar_side");
 
 	ADD_ICON(26,	0,	L"holystoneBricks");
+	ADD_ICON(26,	1,	L"zaniteBlock");
 	}
 }
