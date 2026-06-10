@@ -273,19 +273,292 @@ void StructureRecipies::addRecipes(Recipes *r)
 // Stained Glass block + pane per color
 for (int i = 0; i < 16; i++)
 {
-    r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, ColoredTile::getItemAuxValueForTileData(i)),
+    r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::WHITE),
         L"sssczczg",
         L"###",
         L"#X#",
         L"###",
         L'#', new ItemInstance(Tile::glass),
-        L'X', new ItemInstance(Item::dye_powder, 1, i),
+        L'X', new ItemInstance(Item::dye_powder, 1, 15),
         L'D');
-    r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 16, ColoredTile::getItemAuxValueForTileData(i)),
-        L"ssczg",
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::RED),
+        L"sssczczg",
         L"###",
+        L"#X#",
         L"###",
-        L'#', new ItemInstance(Tile::stained_glass, 1, ColoredTile::getItemAuxValueForTileData(i)),
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 1),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::ORANGE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 14),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::YELLOW),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 11),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::LIME),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 10),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::GREEN),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 2),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::CYAN),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 6),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::LIGHTBLUE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 12),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::BLUE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 4),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::PURPLE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 5),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::MAGENTA),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 13),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::PINK),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 9),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::BROWN),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 3),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::LIGHTGRAY),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 7),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::GRAY),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 8),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass, 8, StainedGlassBlock::BLACK),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::glass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 0),
+        L'D');
+
+    r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::WHITE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 15),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::RED),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 1),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::ORANGE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 14),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::YELLOW),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 11),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::LIME),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 10),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::GREEN),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 2),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::CYAN),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 6),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::LIGHTBLUE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 12),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::BLUE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 4),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::PURPLE),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 5),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::MAGENTA),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 13),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::PINK),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 9),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::BROWN),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 3),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::LIGHTGRAY),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 7),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::GRAY),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 8),
+        L'D');
+
+	r->addShapedRecipy(new ItemInstance(Tile::stained_glass_pane, 8, StainedGlassBlock::BLACK),
+        L"sssczczg",
+        L"###",
+        L"#X#",
+        L"###",
+        L'#', new ItemInstance(Tile::thinGlass),
+        L'X', new ItemInstance(Item::dye_powder, 1, 0),
         L'D');
 }
 
