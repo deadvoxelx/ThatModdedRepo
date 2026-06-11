@@ -1,0 +1,107 @@
+#include "stdafx.h"
+#include "net.minecraft.world.level.h"
+#include "net.minecraft.world.level.tile.h"
+#include "HolidayTreeFeature.h"
+
+HolidayTreeFeature::HolidayTreeFeature(bool doUpdate) : Feature(doUpdate)
+{
+}
+
+bool HolidayTreeFeature::place(Level *level, Random *random, int x, int y, int z)
+{
+	int treeHeight = random->nextInt(4) + 6;
+	int trunkHeight = 1 + random->nextInt(2);
+	int topHeight = treeHeight - trunkHeight;
+	int leafRadius = 2 + random->nextInt(2);
+
+	bool free = true;
+	if (y < 1 || y + treeHeight + 1 > Level::maxBuildHeight) return false;
+
+	if (app.getLevelGenerationOptions() != NULL)
+	{
+		LevelGenerationOptions *levelGenOptions = app.getLevelGenerationOptions();
+		bool intersects = levelGenOptions->checkIntersects(x - leafRadius, y - 1, z - leafRadius, x + leafRadius, y + treeHeight, z + leafRadius);
+		if (intersects)
+		{
+			return false;
+		}
+	}
+
+	for (int yy = y; yy <= y + 1 + treeHeight && free; yy++)
+	{
+		int r = 1;
+		if ((yy - y) < trunkHeight)
+		{
+			r = 0;
+		}
+		else
+		{
+			r = leafRadius;
+		}
+		for (int xx = x - r; xx <= x + r && free; xx++)
+		{
+			for (int zz = z - r; zz <= z + r && free; zz++)
+			{
+				if (yy >= 0 && yy < Level::maxBuildHeight)
+				{
+					int tt = level->getTile(xx, yy, zz);
+					if (tt != 0 && tt != Tile::netherLeaves_Id) free = false;
+				}
+				else
+				{
+					free = false;
+				}
+			}
+		}
+	}
+
+	if (!free) return false;
+
+	int belowTile = level->getTile(x, y - 1, z);
+	if ((belowTile != Tile::aetherGrass_Id && belowTile != Tile::aetherDirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
+
+	placeBlock(level, x, y - 1, z, Tile::aetherDirt_Id, 0);
+
+	int currentRadius = random->nextInt(2);
+	int maxRadius = 1;
+	int minRadius = 0;
+	for (int heightPos = 0; heightPos <= topHeight; heightPos++)
+	{
+		const int yy = y + treeHeight - heightPos;
+
+		for (int xx = x - currentRadius; xx <= x + currentRadius; xx++)
+		{
+			int xo = xx - (x);
+			for (int zz = z - currentRadius; zz <= z + currentRadius; zz++)
+			{
+				int zo = zz - (z);
+				if (abs(xo) == currentRadius && abs(zo) == currentRadius && currentRadius > 0) continue;
+				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::netherLeaves_Id, 4);
+			}
+		}
+
+		if (currentRadius >= maxRadius)
+		{
+			currentRadius = minRadius;
+			minRadius = 1;
+			maxRadius += 1;
+			if (maxRadius > leafRadius)
+			{
+				maxRadius = leafRadius;
+			}
+		}
+		else
+		{
+			currentRadius = currentRadius + 1;
+		}
+	}
+
+	int topOffset = random->nextInt(3);
+	for (int hh = 0; hh < treeHeight - topOffset; hh++)
+	{
+		int t = level->getTile(x, y + hh, z);
+		if (t == 0 || t == Tile::netherLeaves_Id) placeBlock(level, x, y + hh, z, Tile::skyrootLog_Id, 0);
+	}
+
+	return true;
+}

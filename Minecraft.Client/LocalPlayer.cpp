@@ -235,7 +235,7 @@ void LocalPlayer::aiStep()
 	// this.heightOffset = input.sneaking?1.30f:1.62f;	// 4J - this was already commented out
 	if (input->sneaking)	// 4J - removed - TODO replace
 	{
-		if (ySlideOffset < 0.2f) ySlideOffset = 0.2f;
+		if (ySlideOffset < 0.45f) ySlideOffset = 0.45f;
 	}
 
 	checkInTile(x - bbWidth * 0.35, bb->y0 + 0.5, z + bbWidth * 0.35);

@@ -54,3 +54,5 @@
 #include "GoldenOakTreeFeature.h"
 #include "QuicksoilShelfFeature.h"
 #include "AercloudFeature.h"
+#include "BerryBushFeature.h"
+#include "HolidayTreeFeature.h"

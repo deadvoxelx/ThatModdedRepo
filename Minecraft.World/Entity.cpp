@@ -1,20 +1,18 @@
 #include "stdafx.h"
 #include "com.mojang.nbt.h"
+#include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.item.h"
+#include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.item.enchantment.h"
 #include "net.minecraft.world.level.h"
-#include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.phys.h"
-#include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.level.material.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.damagesource.h"
 #include "SynchedEntityData.h"
 #include "EntityIO.h"
 #include "SharedConstants.h"
-
 #include "ParticleTypes.h"
-
 #include "EntityPos.h"
 #include "Entity.h"
 #include "SoundTypes.h"
@@ -541,7 +539,15 @@ void Entity::baseTick()
 			MinecraftServer *server = dynamic_cast<ServerLevel *>(level)->getServer();
 			int waitTime = getPortalWaitTime();
 
-			if (isInsidePortal)
+			if (dimension == 3 && y < 8 && changingDimensionDelay <= 0)
+			{
+				changingDimensionDelay = 10;
+				yd *= 0.6;
+				changeDimension(0);
+				moveTo(x, 192, z, yRot, xRot);
+				fallDistance = 0;
+			}
+			else if (isInsidePortal)
 			{
 				if (server->isNetherEnabled())
 				{

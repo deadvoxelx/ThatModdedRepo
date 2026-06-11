@@ -2480,3 +2480,7 @@
 #define IDS_ITEM_DART_SHOOTER								   2474
 #define IDS_COCKATRICE										   2475
 #define IDS_MOA												   2476
+#define IDS_ITEM_BLUEBERRY									   2477
+#define IDS_ITEM_AECHORPETAL								   2478
+#define IDS_ITEM_SWETBALL									   2479
+#define IDS_TILE_ZANITE_BLOCK								   2480

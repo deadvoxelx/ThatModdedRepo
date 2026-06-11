@@ -6,16 +6,20 @@
 #include "net.minecraft.world.level.biome.h"
 #include "QuicksoilShelfFeature.h"
 #include "AerCloudFeature.h"
+#include "BerryBushFeature.h"
+#include "HolidayTreeFeature.h"
 
 AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 {
 	ambrosiumOreFeature = new OreFeature(Tile::ambrosiumOre_Id, 0, 16, Tile::holystone_Id);
-	zaniteOreFeature = new OreFeature(Tile::zaniteOre_Id, 0, 8, Tile::holystone_Id);
-	gravititeOreFeature = new OreFeature(Tile::gravititeOre_Id, 0, 4, Tile::holystone_Id);
+	zaniteOreFeature = new OreFeature(Tile::zaniteOre_Id, 0, 9, Tile::holystone_Id);
+	gravititeOreFeature = new OreFeature(Tile::gravititeOre_Id, 0, 5, Tile::holystone_Id);
 	icestoneFeature = new OreFeature(Tile::icestone_Id, 0, 8, Tile::holystone_Id);
 	mossyHolystoneFeature = new OreFeature(Tile::holystone_Id, 1, 8, Tile::holystone_Id);
 
 	quicksoilShelfFeature = new QuicksoilShelfFeature();
+
+	holidayTreeFeature = new HolidayTreeFeature(false);
 
 	largeAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0/*AercloudTile::TYPE_DEFAULT*/, 6, 10, 2, 4, true);
 	smallAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0/*AercloudTile::TYPE_DEFAULT*/, 3, 6, 1, 2, false);
@@ -57,6 +61,14 @@ void AetherBiomeDecorator::decorate()
 		tree->place(level, random, x, level->getHeightmap(x, z), z);
 		delete tree;
 	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int y = random->nextInt(Level::genDepth);
+		int z = zo + random->nextInt(16) + 8;
+		holidayTreeFeature->place(level, random, x, y, z);
+	}
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0, "Decorate Aether flowers/grass");
@@ -78,6 +90,16 @@ void AetherBiomeDecorator::decorate()
 		MemSect(0);
 		grassFeature->place(level, random, x, y, z);
 		delete grassFeature;
+	}
+
+	for (int i = 0; i < 9; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int y = random->nextInt(Level::genDepth);
+		int z = zo + random->nextInt(16) + 8;		
+		BerryBushFeature *berryBushFeature = new BerryBushFeature();
+		berryBushFeature->place(level, random, x, y, z);
+		delete berryBushFeature;
 	}
 	PIXEndNamedEvent();
 
@@ -141,7 +163,7 @@ void AetherBiomeDecorator::decorateAetherOres()
 	level->setInstaTick(true);
 	decorateDepthSpan(20, ambrosiumOreFeature, 0, Level::genDepth);
 	decorateDepthSpan(10, zaniteOreFeature, 0, Level::genDepth / 2);
-	decorateDepthSpan(5, gravititeOreFeature, 0, Level::genDepth / 4);
+	decorateDepthSpan(7, gravititeOreFeature, 0, Level::genDepth / 4);
 	decorateDepthSpan(10, icestoneFeature, 0, Level::genDepth);
 	decorateDepthSpan(12, mossyHolystoneFeature, 0, Level::genDepth);
 	level->setInstaTick(false);

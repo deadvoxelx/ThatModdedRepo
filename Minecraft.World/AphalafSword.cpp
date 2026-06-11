@@ -31,18 +31,13 @@ float AphalafSwordItem::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, T
 		return 15;
 	}
 
-	if (tile->id == Tile::gravel_Id)
-	{
-		return 1.5f;
-	}
-
-	if (tile->id == Tile::lavaRock_Id)
+	if (tile->id == Tile::gravel_Id || tile->id == Tile::lavaRock_Id || tile->id == Tile::quicksoil_Id)
 	{
 		return 1.5f;
 	}
 
 	Material *material = tile->material;
-	if (material == Material::plant || material == Material::replaceable_plant || material == Material::coral || material == Material::leaves || material == Material::vegetable || material == Material::dirt)
+	if (material == Material::plant || material == Material::replaceable_plant || material == Material::coral || material == Material::leaves || material == Material::vegetable || material == Material::dirt || material == Material::grass)
 	{
 		return 1.5f;
 	}

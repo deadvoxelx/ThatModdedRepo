@@ -491,6 +491,9 @@ public:
 	static Item *dartGold;
 	static Item *dartPoison;
 	static Item *dartEnchanted;
+	static Item *blueBerry;
+	static Item *aechorPetal;
+	static Item *swetBall;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -756,6 +759,9 @@ public:
 	static const int dartGold_Id = 478;
 	static const int dartPoison_Id = 479;
 	static const int dartEnchanted_Id = 480;
+	static const int blueBerry_Id = 481;
+	static const int aechorPetal_Id = 482;
+	static const int swetBall_Id = 483;
 
 public:
 	const int id;

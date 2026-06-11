@@ -17,6 +17,8 @@ protected:
 
 	Feature *quicksoilShelfFeature;
 
+	Feature *holidayTreeFeature;
+
 	Feature *largeAerCloudFeature;
 	Feature *smallAerCloudFeature;
 	Feature *smallGoldAerCloudFeature;

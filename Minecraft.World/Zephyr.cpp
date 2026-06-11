@@ -160,6 +160,11 @@ void Zephyr::serverAiStep()
 			entityData->set(DATA_IS_CHARGING, current);
 		}
 	}
+
+	if (dimension == 3 && y < 10)
+	{
+		remove();
+	}
 }
 
 bool Zephyr::canReach(double xt, double yt, double zt, double dist) 
