@@ -14,7 +14,6 @@ public:
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();
     virtual bool validPortalFrame(Level* level, int x, int y, int z, int xd, int zd, bool actuallySpawn);
-    bool detectAndSpawnPortal(Level* level, int x, int y, int z, int axis, bool actuallySpawn);
     virtual bool trySpawnPortal(Level *level, int x, int y, int z, bool actuallySpawn);
     virtual void neighborChanged(Level *level, int x, int y, int z, int type);
     virtual bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
@@ -23,5 +22,5 @@ public:
     virtual void entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity);
     virtual void animateTick(Level *level, int xt, int yt, int zt, Random *random);
 	virtual int cloneTileId(Level *level, int x, int y, int z);
-	virtual bool mayPick(); // 4J Added override
+	virtual bool mayPick();
 };
