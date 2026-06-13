@@ -547,6 +547,26 @@ void Entity::baseTick()
 				moveTo(x, 192, z, yRot, xRot);
 				fallDistance = 0;
 			}
+
+			else if ((level->getTile(x, y, z) == Tile::endGateway_Id) && changingDimensionDelay <= 0)
+			{
+				if (riding == nullptr)
+				{
+					int targetDimension;
+					changingDimensionDelay = 0;
+					if (level->dimension->id == 1)
+					{
+						targetDimension = 2;
+					}
+					else
+					{
+						targetDimension = 1;
+					}
+					changeDimension(targetDimension);
+					fallDistance = 0;
+				}
+			}
+
 			else if (isInsidePortal)
 			{
 				if (server->isNetherEnabled())
