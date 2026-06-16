@@ -40,8 +40,8 @@ void Enchantment::staticCtor()
 {
 	allDamageProtection = new ProtectionEnchantment(0, FREQ_COMMON, ProtectionEnchantment::ALL);
 	fireProtection = new ProtectionEnchantment(1, FREQ_UNCOMMON, ProtectionEnchantment::FIRE);
-	fallProtection = new ProtectionEnchantment(2, FREQ_UNCOMMON, ProtectionEnchantment::FALL);
-	explosionProtection = new ProtectionEnchantment(3, FREQ_RARE, ProtectionEnchantment::EXPLOSION);
+	fallProtection = new ProtectionEnchantment(2, FREQ_COMMON, ProtectionEnchantment::FALL);
+	explosionProtection = new ProtectionEnchantment(3, FREQ_UNCOMMON, ProtectionEnchantment::EXPLOSION);
 	projectileProtection = new ProtectionEnchantment(4, FREQ_UNCOMMON, ProtectionEnchantment::PROJECTILE);
 	drownProtection = new OxygenEnchantment(5, FREQ_RARE);
 	waterWorker = new WaterWorkerEnchantment(6, FREQ_RARE);
@@ -50,10 +50,10 @@ void Enchantment::staticCtor()
 	// weapon
 	damageBonus = new DamageEnchantment(16, FREQ_COMMON, DamageEnchantment::ALL);
 	damageBonusUndead = new DamageEnchantment(17, FREQ_UNCOMMON, DamageEnchantment::UNDEAD);
-	damageBonusArthropods = new DamageEnchantment(18, FREQ_UNCOMMON, DamageEnchantment::ARTHROPODS);
+	damageBonusArthropods = new DamageEnchantment(18, FREQ_VERY_RARE, DamageEnchantment::ARTHROPODS);
 	knockback = new KnockbackEnchantment(19, FREQ_UNCOMMON);
 	fireAspect = new FireAspectEnchantment(20, FREQ_RARE);
-	lootBonus = new LootBonusEnchantment(21, FREQ_RARE, EnchantmentCategory::weapon);
+	lootBonus = new LootBonusEnchantment(21, FREQ_UNCOMMON, EnchantmentCategory::weapon);
 
 	// digger
 	diggingBonus = new DiggingEnchantment(32, FREQ_COMMON);
@@ -117,12 +117,12 @@ int Enchantment::getMaxLevel()
 
 int Enchantment::getMinCost(int level)
 {
-	return 1 + level * 10;
+	return 1 + level * 3;
 }
 
 int Enchantment::getMaxCost(int level)
 {
-	return getMinCost(level) + 5;
+	return getMinCost(level) + 2;
 }
 
 int Enchantment::getDamageProtection(int level, DamageSource *source)
