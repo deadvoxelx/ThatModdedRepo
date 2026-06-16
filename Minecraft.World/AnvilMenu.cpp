@@ -178,10 +178,10 @@ void AnvilMenu::createResult()
 							fee = 2;
 							break;
 						case Enchantment::FREQ_RARE:
-							fee = 4;
+							fee = 3;
 							break;
 						case Enchantment::FREQ_VERY_RARE:
-							fee = 8;
+							fee = 4;
 							break;
 						}
 
@@ -202,7 +202,7 @@ void AnvilMenu::createResult()
 		{
 			if (input->hasCustomHoverName())
 			{
-				namingCost = input->isDamageableItem() ? 7 : input->count * 5;
+				namingCost = input->isDamageableItem() ? 1 : input->count * 5;
 
 				price += namingCost;
 				if (DEBUG_COST)
@@ -214,7 +214,7 @@ void AnvilMenu::createResult()
 		}
 		else if (itemName.length() > 0 && !equalsIgnoreCase(itemName, input->getHoverName()) && itemName.length() > 0)
 		{
-			namingCost = input->isDamageableItem() ? 7 : input->count * 5;
+			namingCost = input->isDamageableItem() ? 1 : input->count * 5;
 
 			price += namingCost;
 			if (DEBUG_COST)
@@ -254,10 +254,10 @@ void AnvilMenu::createResult()
 				fee = 2;
 				break;
 			case Enchantment::FREQ_RARE:
-				fee = 4;
+				fee = 3;
 				break;
 			case Enchantment::FREQ_VERY_RARE:
-				fee = 8;
+				fee = 4;
 				break;
 			}
 
@@ -278,13 +278,13 @@ void AnvilMenu::createResult()
 			if (DEBUG_COST) app.DebugPrintf("No purchase, only tax; aborting");
 			result = nullptr;
 		}
-		if (namingCost == price && namingCost > 0 && cost >= 40)
+		if (namingCost == price && namingCost > 0 && cost >= 32767)
 		{
 			if (DEBUG_COST) app.DebugPrintf("Cost is too high; aborting");
 			app.DebugPrintf("Naming an item only, cost too high; giving discount to cap cost to 39 levels");
 			cost = 39;
 		}
-		if (cost >= 40 && !player->abilities.instabuild)
+		if (cost >= 32767 && !player->abilities.instabuild)
 		{
 			if (DEBUG_COST) app.DebugPrintf("Cost is too high; aborting");
 			result = nullptr;
