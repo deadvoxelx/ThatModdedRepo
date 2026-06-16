@@ -85,6 +85,11 @@ shared_ptr<ItemInstance> AphalafSwordItem::use(shared_ptr<ItemInstance> instance
 	return instance;
 }
 
+void AphalafSwordItem::releaseUsing(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player, int durationLeft)
+{
+	itemInstance->hurtAndBreak(2, player);
+}
+
 bool AphalafSwordItem::canDestroySpecial(Tile *tile)
 {
 	return tile->id == Tile::web_Id;
