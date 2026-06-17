@@ -3013,14 +3013,14 @@ void ClientConnection::handleRespawn(shared_ptr<RespawnPacket> packet)
 			param->stringId = IDS_PLAYER_LEAVE_OUTER_END;
 		}
 
-		//else if( packet->dimension == 3)
-		//{
-		//	param->stringId = IDS_PLAYER_ENTER_AETHER;
-		//}
-		//else if( oldDimension == 3)
-		//{
-		//	param->stringId = IDS_PLAYER_LEAVE_AETHER;
-		//}
+		else if( packet->dimension == 3)
+		{
+			param->stringId = IDS_PLAYER_ENTER_AETHER;
+		}
+		else if( oldDimension == 3)
+		{
+			param->stringId = IDS_PLAYER_LEAVE_AETHER;
+		}
 
 		param->showTooltips = false;
 		param->setFailTimer = false;
