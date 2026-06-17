@@ -56,3 +56,4 @@
 #include "AercloudFeature.h"
 #include "BerryBushFeature.h"
 #include "HolidayTreeFeature.h"
+#include "OuterEndPlatformFeature.h"
