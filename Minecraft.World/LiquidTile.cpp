@@ -5,6 +5,7 @@
 #include "net.minecraft.world.level.biome.h"
 #include "net.minecraft.world.h"
 #include "LiquidTile.h"
+#include "AetherPortalTile.h"
 #include "Facing.h"
 #include "SoundTypes.h"
 
@@ -359,6 +360,17 @@ double LiquidTile::getSlopeAngle(LevelSource *level, int x, int y, int z, Materi
 void LiquidTile::onPlace(Level *level, int x, int y, int z)
 {
 	updateLiquid(level, x, y, z);
+
+	if (material == Material::water)
+	{
+		if ((level->dimension->id == 0 || level->dimension->id == 3) && level->getTile(x, y - 1, z) == Tile::glowstone_Id)
+		{
+			if (Tile::aetherPortal->trySpawnPortal(level, x, y, z, true))
+			{
+				return;
+			}
+		}
+	}
 }
 
 void LiquidTile::neighborChanged(Level *level, int x, int y, int z, int type)
