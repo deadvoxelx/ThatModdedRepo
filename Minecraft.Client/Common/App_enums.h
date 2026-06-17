@@ -270,6 +270,7 @@ enum eMinecraftColour
 	eMinecraftColour_Water_ExtremeHillsEdge,
 	eMinecraftColour_Water_Jungle,
 	eMinecraftColour_Water_JungleHills,
+	eMinecraftColour_Water_End,
 
 	eMinecraftColour_Sky_Ocean,
 	eMinecraftColour_Sky_Plains,
