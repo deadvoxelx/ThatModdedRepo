@@ -84,6 +84,7 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Water_ExtremeHillsEdge",
 	L"Water_Jungle",
 	L"Water_JungleHills",
+	L"Water_End",	// Voxel
 
 	L"Sky_Ocean",
 	L"Sky_Plains",
