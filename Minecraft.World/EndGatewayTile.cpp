@@ -24,6 +24,7 @@ void EndGatewayTile::allowAnywhere(bool set)
 EndGatewayTile::EndGatewayTile(int id, Material *material) : BaseEntityTile(id, material, false)
 {
     this->setLightEmission(1.0f);
+	setTicking(true);
 }
 
 void EndGatewayTile::tick(Level *level, int x, int y, int z, Random *random)
