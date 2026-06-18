@@ -8,7 +8,8 @@ class EndGatewayTile : public BaseEntityTile
 {
 public:
     EndGatewayTile(int id, Material* material);
-
+    
+    virtual void tick(Level *level, int x, int y, int z, Random *random);
     static DWORD tlsIdx;
     static bool allowAnywhere();
     static void allowAnywhere(bool set);
