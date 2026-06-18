@@ -7,6 +7,7 @@
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.h"
+#include "../Minecraft.Client/MinecraftServer.h"
 
 DWORD EndGatewayTile::tlsIdx = TlsAlloc();
 
@@ -20,10 +21,15 @@ void EndGatewayTile::allowAnywhere(bool set)
 	TlsSetValue(tlsIdx,(LPVOID)(set?1:0));
 }
 
-EndGatewayTile::EndGatewayTile(int id, Material *material)
-    : BaseEntityTile(id, material, false)
+EndGatewayTile::EndGatewayTile(int id, Material *material) : BaseEntityTile(id, material, false)
 {
     this->setLightEmission(1.0f);
+	setTicking(true);
+}
+
+void EndGatewayTile::tick(Level *level, int x, int y, int z, Random *random)
+{
+	BaseEntityTile::tick(level, x, y, z, random);
 }
 
 shared_ptr<TileEntity> EndGatewayTile::newTileEntity(Level *level)
@@ -43,6 +49,8 @@ int EndGatewayTile::getResourceCount(Random *random)
 void EndGatewayTile::entityInside(Level* level, int x, int y, int z, shared_ptr<Entity> entity)
 {
     if (entity->GetType() == eTYPE_EXPERIENCEORB) return;
+
+	if (entity->riding == nullptr && entity->rider.lock() == nullptr) entity->handleInsideGateway();
 }
 
 void EndGatewayTile::animateTick(Level *level, int xt, int yt, int zt, Random *random)

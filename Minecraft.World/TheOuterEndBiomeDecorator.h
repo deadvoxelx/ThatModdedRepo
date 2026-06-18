@@ -1,5 +1,6 @@
 #include "BiomeDecorator.h"
 #include "EndGatewayFeature.h"
+#include "OuterEndPlatformFeature.h"
 
 class Level;
 class Random;
@@ -12,10 +13,10 @@ public:
 
 protected:
 	EndGatewayFeature *endGatewayFeature;
+	OuterEndPlatformFeature *outerEndPlatformFeature;
 	Feature *endesertBushFeature;
 	Feature *veloettShrubFeature;
 	Feature *veloettFlowerFeature;
-
 	Feature *endTowerFeature;
 
 	virtual void decorate();

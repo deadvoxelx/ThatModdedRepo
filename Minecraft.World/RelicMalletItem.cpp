@@ -75,7 +75,7 @@ float RelicMalletItem::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Ti
 bool RelicMalletItem::mineBlock(shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, shared_ptr<LivingEntity> owner)
 {
 	itemInstance->hurtAndBreak(1, owner);
-	level->explode(nullptr, x + 0.5f, y + 0.5f, z + 0.5f, 3, false, true);
+	if (!level->isClientSide) level->explode(nullptr, x + 0.5f, y + 0.5f, z + 0.5f, 3, false, true);
 	return true;
 }
 

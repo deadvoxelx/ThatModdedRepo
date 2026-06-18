@@ -6,7 +6,6 @@
 #include "net.minecraft.world.level.material.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.phys.h"
-#include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.entity.animal.h"
 #include "net.minecraft.stats.h"
 #include "Material.h"
@@ -232,14 +231,6 @@ bool BucketItem::emptyBucket(Level *level, int xt, int yt, int zt)
 			if (!level->isClientSide && nonSolid && !material->isLiquid())
 			{
 				level->destroyTile(xt, yt, zt, true);
-			}
-			// Check if water bucket is being placed inside a glowstone frame — Aether portal
-			if (content == Tile::water_Id && level->getTile(xt, yt - 1, zt) == Tile::glowstone_Id)
-			{
-				if (Tile::aetherPortal->trySpawnPortal(level, xt, yt, zt, true))
-				{
-					return true;
-				}
 			}
 			level->setTileAndData(xt, yt, zt, content, 0, Tile::UPDATE_ALL);
 		}

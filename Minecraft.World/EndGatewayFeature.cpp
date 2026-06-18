@@ -22,15 +22,11 @@ bool EndGatewayFeature::place(Level *level, Random *random, int x, int y, int z)
     }
 
     // Center column
+    placeBlock(level, x, y - 2, z, Tile::unbreakable_Id, 0);
     placeBlock(level, x, y - 1, z, Tile::unbreakable_Id, 0);
-    placeBlock(level, x, y,     z, Tile::endGateway_Id,      0); // placeholder
-    placeBlock(level, x, y + 1, z, Tile::unbreakable_Id, 0);
-
-    // Middle cross (portal layer)
-    //placeBlock(level, x + 1, y, z, Tile::unbreakable_Id, 0);
-    //placeBlock(level, x - 1, y, z, Tile::unbreakable_Id, 0);
-    //placeBlock(level, x, y, z + 1, Tile::unbreakable_Id, 0);
-    //placeBlock(level, x, y, z - 1, Tile::unbreakable_Id, 0);
+    placeBlock(level, x, y, z, Tile::endGateway_Id, 0);
+    //placeBlock(level, x, y + 1, z, Tile::unbreakable_Id, 0);
+    placeBlock(level, x, y + 2, z, Tile::unbreakable_Id, 0);
 
     // Upper cross
     placeBlock(level, x + 1, y + 1, z, Tile::unbreakable_Id, 0);
@@ -38,17 +34,11 @@ bool EndGatewayFeature::place(Level *level, Random *random, int x, int y, int z)
     placeBlock(level, x, y + 1, z + 1, Tile::unbreakable_Id, 0);
     placeBlock(level, x, y + 1, z - 1, Tile::unbreakable_Id, 0);
 
-    // Top cap
-    placeBlock(level, x, y + 2, z, Tile::unbreakable_Id, 0);
-
     // Lower cross
     placeBlock(level, x + 1, y - 1, z, Tile::unbreakable_Id, 0);
     placeBlock(level, x - 1, y - 1, z, Tile::unbreakable_Id, 0);
     placeBlock(level, x, y - 1, z + 1, Tile::unbreakable_Id, 0);
     placeBlock(level, x, y - 1, z - 1, Tile::unbreakable_Id, 0);
-
-    // Bottom cap
-    placeBlock(level, x, y - 2, z, Tile::unbreakable_Id, 0);
 
     return true;
 }

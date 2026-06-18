@@ -1,12 +1,10 @@
 #include "stdafx.h"
 #include "net.minecraft.world.entity.h"
-#include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.level.h"
-#include "net.minecraft.world.level.storage.h"
 #include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.h"
 #include "AetherPortalTile.h"
-#include "../Minecraft.Client/MinecraftServer.h"
+#include "LiquidTile.h"
 
 AetherPortalTile::AetherPortalTile(int id) : HalfTransparentTile(id, L"water", Material::portal, false)
 {
@@ -20,7 +18,7 @@ void AetherPortalTile::tick(Level *level, int x, int y, int z, Random *random)
 
 AABB *AetherPortalTile::getAABB(Level *level, int x, int y, int z)
 {
-	return NULL;
+	return nullptr;
 }
 
 void AetherPortalTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity)
@@ -29,13 +27,13 @@ void AetherPortalTile::updateShape(LevelSource *level, int x, int y, int z, int 
 	{
 		float xr = 8 / 16.0f;
 		float yr = 2 / 16.0f;
-		this->setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
+		setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
 	}
 	else
 	{
 		float xr = 2 / 16.0f;
 		float yr = 8 / 16.0f;
-		this->setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
+		setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
 	}
 }
 
@@ -49,35 +47,27 @@ bool AetherPortalTile::isCubeShaped()
 	return false;
 }
 
-bool AetherPortalTile::trySpawnPortal(Level *level, int x, int y, int z, bool actuallySpawn)
+bool AetherPortalTile::validPortalFrame(Level* level, int x, int y, int z, int xd, int zd, bool actuallySpawn)
 {
-	// The Aether portal uses a glowstone frame (like the Nether portal uses obsidian)
-	int xd = 0, zd = 0;
-	if (level->getTile(x - 1, y, z) == Tile::glowstone_Id || level->getTile(x + 1, y, z) == Tile::glowstone_Id) xd = 1;
-	if (level->getTile(x, y, z - 1) == Tile::glowstone_Id || level->getTile(x, y, z + 1) == Tile::glowstone_Id) zd = 1;
-	if (xd == zd) return false;
-
-	if (level->getTile(x - xd, y, z - zd) == 0) { x -= xd; z -= zd; }
-
 	for (int xx = -1; xx <= 2; xx++)
 	{
 		for (int yy = -1; yy <= 3; yy++)
 		{
 			bool edge = (xx == -1) || (xx == 2) || (yy == -1) || (yy == 3);
 			if ((xx == -1 || xx == 2) && (yy == -1 || yy == 3)) continue;
+
 			int t = level->getTile(x + xd * xx, y + yy, z + zd * xx);
+
 			if (edge)
 			{
 				if (t != Tile::glowstone_Id) return false;
 			}
 			else
 			{
-				// Interior must be empty or water (since water bucket activates the portal)
 				if (t != 0 && t != Tile::water_Id && t != Tile::calmWater_Id) return false;
 			}
 		}
 	}
-
 	if (!actuallySpawn) return true;
 
 	for (int xx = 0; xx < 2; xx++)
@@ -87,13 +77,55 @@ bool AetherPortalTile::trySpawnPortal(Level *level, int x, int y, int z, bool ac
 			level->setTileAndData(x + xd * xx, y + yy, z + zd * xx, Tile::aetherPortal_Id, 0, Tile::UPDATE_CLIENTS);
 		}
 	}
+	return true;
+}
 
+bool AetherPortalTile::trySpawnPortal(Level *level, int x, int y, int z, bool actuallySpawn)
+{
+	int xd = 0;
+	int zd = 0;
+	if (level->getTile(x - 1, y, z) == Tile::glowstone_Id || level->getTile(x + 1, y, z) == Tile::glowstone_Id) xd = 1;
+	if (level->getTile(x, y, z - 1) == Tile::glowstone_Id || level->getTile(x, y, z + 1) == Tile::glowstone_Id) zd = 1;
+
+	bool twoPosible = false;
+	if (xd == zd)
+	{
+		if (xd == 1) twoPosible = true;
+		else return false;
+	}
+
+	bool changedx = false;
+	if (level->getTile(x - xd, y, z) == 0)
+	{
+		changedx = true;
+		x--;
+	}
+	else if (level->getTile(x, y, z - zd) == 0 && !twoPosible)
+	{
+		z--;
+	}
+
+	if (!twoPosible)
+	{
+		if (!AetherPortalTile::validPortalFrame(level, x, y, z, xd, zd, actuallySpawn)) return false;
+	}
+	else
+	{
+		if (!AetherPortalTile::validPortalFrame(level, x, y, z, xd, 0, actuallySpawn))
+		{
+			if (changedx) x++;
+
+			if (level->getTile(x, y, z - zd) == 0) z--;
+
+			if (!AetherPortalTile::validPortalFrame(level, x, y, z, 0, zd, actuallySpawn))
+				return false;
+		}
+	}
 	return true;
 }
 
 void AetherPortalTile::neighborChanged(Level *level, int x, int y, int z, int type)
 {
-	// Determine portal orientation from adjacent portal blocks
 	int xd = 0;
 	int zd = 1;
 	if (level->getTile(x - 1, y, z) == id || level->getTile(x + 1, y, z) == id)
@@ -102,45 +134,40 @@ void AetherPortalTile::neighborChanged(Level *level, int x, int y, int z, int ty
 		zd = 0;
 	}
 
-	// Scan down to find the bottom of the portal column
 	int yBottom = y;
 	while (level->getTile(x, yBottom - 1, z) == id)
 		yBottom--;
 
-	// Bottom must be glowstone
 	if (level->getTile(x, yBottom - 1, z) != Tile::glowstone_Id)
 	{
-		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
+		level->removeTile(x, y, z);
 		return;
 	}
 
-	// Portal column must be exactly 3 tall with glowstone on top
 	int height = 1;
 	while (height < 4 && level->getTile(x, yBottom + height, z) == id)
 		height++;
 
 	if (height != 3 || level->getTile(x, yBottom + height, z) != Tile::glowstone_Id)
 	{
-		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
+		level->removeTile(x, y, z);
 		return;
 	}
 
-	// Don't allow cross-shaped portals
 	bool we = level->getTile(x - 1, y, z) == id || level->getTile(x + 1, y, z) == id;
 	bool ns = level->getTile(x, y, z - 1) == id || level->getTile(x, y, z + 1) == id;
 	if (we && ns)
 	{
-		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
+		level->removeTile(x, y, z);
 		return;
 	}
 
-	// One neighbor must be glowstone frame, the other must be portal
-	if (!(
-	(level->getTile(x + xd, y, z + zd) == Tile::glowstone_Id && level->getTile(x - xd, y, z - zd) == id) ||
-	(level->getTile(x - xd, y, z - zd) == Tile::glowstone_Id && level->getTile(x + xd, y, z + zd) == id)
-	))
+	if (!(//
+		(level->getTile(x + xd, y, z + zd) == Tile::glowstone_Id && level->getTile(x - xd, y, z - zd) == id) || //
+		(level->getTile(x - xd, y, z - zd) == Tile::glowstone_Id && level->getTile(x + xd, y, z + zd) == id)//
+		))
 	{
-		level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_CLIENTS);
+		level->removeTile(x, y, z);
 		return;
 	}
 }
@@ -196,4 +223,24 @@ int AetherPortalTile::cloneTileId(Level *level, int x, int y, int z)
 bool AetherPortalTile::mayPick()
 {
 	return false;
+}
+
+int AetherPortalTile::getColor() const
+{
+	return 0x4040ff;
+}
+
+int AetherPortalTile::getColor(int auxData)
+{
+	return 0x4040ff;
+}
+
+int AetherPortalTile::getColor(LevelSource *level, int x, int y, int z)
+{
+	return 0x4040ff;
+}
+
+int AetherPortalTile::getColor(LevelSource *level, int x, int y, int z, int data)
+{
+	return 0x4040ff;
 }

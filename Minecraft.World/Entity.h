@@ -149,6 +149,7 @@ public:
 protected:
 	bool isInsidePortal;
 	bool isInsideAetherPortal;
+	bool isInsideGateway;
 	int portalTime;
 
 public:
@@ -329,6 +330,7 @@ public:
 	virtual Vec3 *getLookAngle();
 	virtual void handleInsidePortal();
 	virtual void handleInsideAetherPortal();
+	virtual void handleInsideGateway();
 	virtual int getDimensionChangingDelay();
 	virtual void lerpMotion(double xd, double yd, double zd);
 	virtual void handleEntityEvent(byte eventId);

@@ -6,6 +6,7 @@
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "EndGatewayFeature.h"
+#include "OuterEndPlatformFeature.h"
 #include "EndactusFeature.h"
 #include "EndesertBushFeature.h"
 #include "VeloettShrubFeature.h"
@@ -19,10 +20,10 @@ const double M_PI = 3.14159265358979323846;
 TheOuterEndBiomeDecorator::TheOuterEndBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 {
 	endGatewayFeature = new EndGatewayFeature(Tile::unbreakable_Id);
+	outerEndPlatformFeature = new OuterEndPlatformFeature(Tile::obsidian_Id);
 	endesertBushFeature = new EndesertBushFeature();
 	veloettShrubFeature = new VeloettShrubFeature();
 	veloettFlowerFeature = new VeloettFlowerFeature();
-
 	endTowerFeature = new EndTowerFeature(Tile::endStone_Id);
 }
 
@@ -37,16 +38,17 @@ void TheOuterEndBiomeDecorator::decorate()
 	{
 		for (int i = 0; i < 20; i++)
 		{
-			
 			double angle = (2 * M_PI / 20) * i;
-
 			int gx = (int)(96 * cos(angle));
 			int gz = (int)(96 * sin(angle));
-
-
 			endGatewayFeature->place(level, random, gx, 75, gz);
 		}
 	}
+
+	outerEndPlatformFeature->place(level, random, 100, 72, 0);
+	outerEndPlatformFeature->place(level, random, 0, 72, 100);
+	outerEndPlatformFeature->place(level, random, -100, 72, 0);
+	outerEndPlatformFeature->place(level, random, 0, 72, -100);
 
 	PIXBeginNamedEvent(0,"End structures");
 	for (int i = 0; i < 1; i++)

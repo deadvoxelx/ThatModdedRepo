@@ -13,6 +13,7 @@ public:
 	virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>());
 	virtual bool isSolidRender(bool isServerLevel = false);
 	virtual bool isCubeShaped();
+	virtual bool validPortalFrame(Level* level, int x, int y, int z, int xd, int zd, bool actuallySpawn);
 	virtual bool trySpawnPortal(Level *level, int x, int y, int z, bool actuallySpawn);
 	virtual void neighborChanged(Level *level, int x, int y, int z, int type);
 	virtual bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
@@ -22,4 +23,9 @@ public:
 	virtual void animateTick(Level *level, int xt, int yt, int zt, Random *random);
 	virtual int cloneTileId(Level *level, int x, int y, int z);
 	virtual bool mayPick();
+
+	virtual int getColor() const;
+	virtual int getColor(int auxData);
+	virtual int getColor(LevelSource *level, int x, int y, int z);
+	virtual int getColor(LevelSource *level, int x, int y, int z, int data);
 };

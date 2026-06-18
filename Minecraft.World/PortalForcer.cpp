@@ -55,9 +55,10 @@ void PortalForcer::force(Level *level, shared_ptr<Entity> e, int lastDimension)
 
 bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
-	// Determine which portal tile to search for based on dimension
+	// Check for Aether portal, Nether portal, or to "ignore"
 	bool isAether = (level->dimension->id == 3 || lastDimension == 3);
-	int portalTileId = isAether ? Tile::aetherPortal_Id : Tile::portalTile_Id;
+	bool isNether = (level->dimension->id == -1 || lastDimension == -1);
+	int portalTileId = isAether ? Tile::aetherPortal_Id : (isNether ? Tile::portalTile_Id : 0);	// (isNether ? Tile::portalTile_Id : 0) is to avoid searching for Nether portals in the Outer End
 
 	// 4J Stu - Decrease the range at which we search for a portal in the nether given our smaller nether
 	int r = 16;//* 8;
@@ -135,13 +136,13 @@ bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimens
 	return false;
 }
 
-
 bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
-	// Determine which portal/frame tiles to use based on dimension
+	// Determine portal for Aether, Nether, or to "ignore"
 	bool isAether = (level->dimension->id == 3 || lastDimension == 3);
-	int frameTileId = isAether ? Tile::glowstone_Id : Tile::obsidian_Id;
-	int portalTileId = isAether ? Tile::aetherPortal_Id : Tile::portalTile_Id;
+	bool isNether = (level->dimension->id == -1 || lastDimension == -1);
+	int frameTileId = isAether ? Tile::glowstone_Id : (isNether ? Tile::obsidian_Id : 0);		// (isNether ? Tile::obsidian_Id : 0) is so Nether portals dont place in the Outer End
+	int portalTileId = isAether ? Tile::aetherPortal_Id : (isNether ? Tile::portalTile_Id : 0);	// (isNether ? Tile::portalTile_Id : 0) is so Nether portals dont place in the Outer End
 
 	// 4J Stu - Increase the range at which we try and create a portal to stop creating them floating in mid air over lava
 	int r = 16 * 3;
@@ -313,8 +314,6 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 		}
 	}
 
-
-
 	int dir = dirTarget;
 
 	int x = xTarget;
@@ -329,7 +328,6 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 		xa = -xa;
 		za = -za;
 	}
-
 
 	if (closest < 0)
 	{
@@ -392,6 +390,5 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 			level->setTileAndData(x + (2 + ext) * xa, y - 1, z + (2 + ext) * za, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
 		}
 	}
-
 	return true;
 }
