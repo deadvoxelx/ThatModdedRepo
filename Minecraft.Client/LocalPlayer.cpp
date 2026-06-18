@@ -164,14 +164,6 @@ bool LocalPlayer::isEffectiveAi()
 
 void LocalPlayer::aiStep()
 {
-	//if (sprintTime > 0)
-	//{
-	//	sprintTime--;
-	//	if (sprintTime == 0)
-	//	{
-	//		setSprinting(false);
-	//	}
-	//}
 	if (sprintTime > 0) sprintTime--;
 	if (sprintTriggerTime > 0) sprintTriggerTime--;
 	if (minecraft->gameMode->isCutScene())
@@ -185,7 +177,7 @@ void LocalPlayer::aiStep()
 		return;
 	}
 	oPortalTime = portalTime;
-	if (isInsidePortal || isInsideAetherPortal)
+	if (isInsidePortal || isInsideAetherPortal || isInsideGateway)
 	{
 		if (!level->isClientSide)
 		{
@@ -193,10 +185,11 @@ void LocalPlayer::aiStep()
 		}
 		if (minecraft->screen != nullptr) minecraft->setScreen(nullptr);
 
-		if (portalTime == 0 && !isInsideAetherPortal)
+		if (portalTime == 0 && !isInsideAetherPortal && !isInsideGateway)
 		{
 			minecraft->soundEngine->playUI(eSoundType_PORTAL_TRIGGER, 1, random->nextFloat() * 0.4f + 0.8f);
 		}
+
 		portalTime += 1 / 80.0f;
 		if (portalTime >= 1)
 		{
@@ -204,6 +197,7 @@ void LocalPlayer::aiStep()
 		}
 		isInsidePortal = false;
 		isInsideAetherPortal = false;
+		isInsideGateway = false;
 	}
 	else if (hasEffect(MobEffect::confusion) && getEffect(MobEffect::confusion)->getDuration() > (SharedConstants::TICKS_PER_SECOND * 3))
 	{
@@ -218,7 +212,7 @@ void LocalPlayer::aiStep()
 		if (portalTime > 0) portalTime -= 1 / 20.0f;
 		if (portalTime < 0) portalTime = 0;
 	}
-
+	
 	if (changingDimensionDelay > 0) changingDimensionDelay--;
 	bool wasJumping = input->jumping;
 	float runTreshold = 0.8f;
@@ -285,9 +279,8 @@ void LocalPlayer::aiStep()
 		setSprinting(true);
 	}
 #endif
-	// 4J-PB - try not stopping sprint on collision
-	//if (isSprinting() && (input->ya < runTreshold || horizontalCollision || !enoughFoodToSprint))
-	if (isSprinting() && (!forwardEnoughToContinueSprint || !enoughFoodToSprint || isSneaking() || isUsingItem()))
+	//Voxel - updated; the player can now run while eating like in Java
+	if (isSprinting() && (!forwardEnoughToContinueSprint || !enoughFoodToSprint || isSneaking()))
 	{
 		setSprinting(false);
 	}	
