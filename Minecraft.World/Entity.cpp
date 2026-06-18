@@ -340,6 +340,7 @@ void Entity::_init(bool useSmallId, Level *level)
 	changingDimensionDelay = 0;
 	isInsidePortal = false;
 	isInsideAetherPortal = false;
+	isInsideGateway = false;
 	portalTime = 0;
 	dimension = 0;
 	portalEntranceDir = 0;
@@ -548,25 +549,6 @@ void Entity::baseTick()
 				fallDistance = 0;
 			}
 
-			else if ((level->getTile(x, y, z) == Tile::endGateway_Id) && changingDimensionDelay <= 0)
-			{
-				if (riding == nullptr)
-				{
-					int targetDimension;
-					changingDimensionDelay = 0;
-					if (level->dimension->id == 1)
-					{
-						targetDimension = 2;
-					}
-					else
-					{
-						targetDimension = 1;
-					}
-					changeDimension(targetDimension);
-					fallDistance = 0;
-				}
-			}
-
 			else if (isInsidePortal)
 			{
 				if (server->isNetherEnabled())
@@ -595,6 +577,7 @@ void Entity::baseTick()
 					isInsidePortal = false;
 				}
 			}
+
 			else if (isInsideAetherPortal)
 			{
 				if (riding == nullptr)
@@ -619,12 +602,42 @@ void Entity::baseTick()
 				}
 				isInsideAetherPortal = false;
 			}
+
+			else if (isInsideGateway)
+			{
+				if (riding == nullptr)
+				{
+					changingDimensionDelay = 0;
+
+					int targetDimension;
+
+					if (level->dimension->id == 1)
+					{
+						targetDimension = 2;
+					}
+					else
+					{
+						targetDimension = 1;
+					}
+					changeDimension(targetDimension);
+					fallDistance = 0;
+				}
+				isInsideGateway = false;
+			}
+
 			else
 			{
 				if (portalTime > 0) portalTime -= 4;
 				if (portalTime < 0) portalTime = 0;
 			}
 			if (changingDimensionDelay > 0) changingDimensionDelay--;
+		}
+
+		if (dimension == 2 && y <= 1)
+		{
+			// because for some reason the Outer End has a floor...
+			// despite the fact it's not supposed to
+			hurt(DamageSource::outOfWorld, 4);
 		}
 	}
 
@@ -671,6 +684,14 @@ void Entity::baseTick()
 	{
 		lavaHurt();
 		fallDistance *= .5f;
+	}
+
+	if (isInWater() && level->dimension->id == -1)
+	{
+		if (!fireImmune)
+		{
+			hurt(DamageSource::onFire, 1);
+		}
 	}
 
 	if (y < -64)
@@ -1782,6 +1803,25 @@ void Entity::handleInsideAetherPortal()
 	}
 
 	isInsideAetherPortal = true;
+}
+
+void Entity::handleInsideGateway()
+{
+	if (changingDimensionDelay > 0)
+	{
+		changingDimensionDelay = 0;
+		return;
+	}
+
+	double xd = xo - x;
+	double zd = zo - z;
+
+	if (!level->isClientSide && !isInsideGateway)
+	{
+		portalEntranceDir = Direction::getDirection(xd, zd);
+	}
+
+	isInsideGateway = true;
 }
 
 int Entity::getDimensionChangingDelay()
