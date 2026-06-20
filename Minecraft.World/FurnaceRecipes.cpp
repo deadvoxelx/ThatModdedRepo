@@ -22,7 +22,6 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::diamondOre_Id, new ItemInstance(Item::diamond), 1);
 	addFurnaceRecipy(Tile::sand_Id, new ItemInstance(Tile::glass, 1, 0), .1f);
 	addFurnaceRecipy(Tile::soulsand_Id, new ItemInstance(Tile::glass, 1, 1), .1f);
-	addFurnaceRecipy(Tile::quicksoil_Id, new ItemInstance(Tile::glass, 1, 2), .1f);
 	addFurnaceRecipy(Tile::endSand_Id, new ItemInstance(Tile::glass), .1f);
 	addFurnaceRecipy(Item::porkChop_raw_Id, new ItemInstance(Item::porkChop_cooked), .35f);
 	addFurnaceRecipy(Item::beef_raw_Id, new ItemInstance(Item::beef_cooked), .35f);
@@ -47,7 +46,6 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::stoneBrick_Id, new ItemInstance(Tile::stoneBrick, 1, 2), 1);
 	addFurnaceRecipy(Tile::ambrosiumOre_Id, new ItemInstance(Item::ambrosiumShard), 1);
 	addFurnaceRecipy(Tile::zaniteOre_Id, new ItemInstance(Item::zaniteGemstone), 1);
-	addFurnaceRecipy(Tile::gravititeOre_Id, new ItemInstance(Tile::enchantedGravitite), 1);
 	
 	// special silk touch related recipes:
 	addFurnaceRecipy(Tile::coalOre_Id, new ItemInstance(Item::coal), .1f);
@@ -55,7 +53,13 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::lapisOre_Id, new ItemInstance(Item::dye_powder, 1, DyePowderItem::BLUE), .2f);
 	addFurnaceRecipy(Tile::netherQuartz_Id, new ItemInstance(Item::netherQuartz), .2f);
 
-
+	//Enchanter recipes; only work in the Enchanter
+	addFurnaceRecipy(Tile::quicksoil_Id, new ItemInstance(Tile::glass, 1, 2), .1f);
+	addFurnaceRecipy(Tile::gravititeOre_Id, new ItemInstance(Tile::enchantedGravitite), 1);
+	addFurnaceRecipy(Tile::aercloud_Id, new ItemInstance(Tile::aercloud, 1, 2), .1f);
+	addFurnaceRecipy(Tile::holystone_Id, new ItemInstance(Item::healingStone), .35f);
+	addFurnaceRecipy(Item::dartGold_Id, new ItemInstance(Item::dartEnchanted), .15f);
+	//addFurnaceRecipy(Item::dartShooterGold_Id, new ItemInstance(Item::dartShooterEnchanted), 1);
 }
 
 void FurnaceRecipes::addFurnaceRecipy(int itemId, ItemInstance *result, float value)

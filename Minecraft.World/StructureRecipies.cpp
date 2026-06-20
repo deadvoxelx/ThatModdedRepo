@@ -227,6 +227,17 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', Tile::netherRack,
 		L'S');
 
+	r->addShapedRecipy(new ItemInstance(Tile::enchanter), //
+		L"sssciczczg",
+		L"CCC", //
+		L"CZC", //
+		L"###", //
+
+		L'Z', Item::zaniteGemstone,
+		L'C', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_SKYROOT),
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_DEFAULT),
+		L'S');
+
 	r->addShapedRecipy(new ItemInstance((Tile*)Tile::chest), //
 		L"sssctg",
 		L"###", //

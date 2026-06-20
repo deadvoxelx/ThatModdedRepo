@@ -426,6 +426,7 @@ public:
 	static const int aerogel_Id = 228;
 	static const int berryBushStem_Id = 229;
 	static const int zaniteBlock_Id = 230;
+	static const int enchanter_Id = 231;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -463,7 +464,7 @@ public:
 	static PistonExtensionTile *pistonExtension;
 	static Tile *wool;
 	static PistonMovingPiece *pistonMovingPiece;
-	static Bush *flower;
+	static Tile *flower;
 	static Bush *rose;
 	static Bush *mushroom_brown;
 	static Bush *mushroom_red;
@@ -662,6 +663,7 @@ public:
 	static Tile *aerogel;
 	static Tile *berryBushStem;
 	static Tile *zaniteBlock;
+	static Tile *enchanter;
 
 	static void staticCtor();
 

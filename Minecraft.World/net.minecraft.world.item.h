@@ -91,3 +91,4 @@
 #include "AphalafSword.h"
 //#include "SlimeBallItem.h"
 #include "DartShooterGoldItem.h"
+#include "HealingStoneItem.h"

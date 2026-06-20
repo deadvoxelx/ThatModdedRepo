@@ -29,11 +29,6 @@ int GlassTile::getRenderLayer()
 	return 1;
 }
 
-bool GlassTile::shouldRenderFace(LevelSource *level, int x, int y, int z, int face)
-{
-	return HalfTransparentTile::shouldRenderFace(level, x, y, z, 1 - face);
-}
-
 bool GlassTile::isSolidRender()
 {
 	return false;

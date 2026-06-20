@@ -636,7 +636,7 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(18,		1,	L"gravitite_chestplate")
 		ADD_ICON(18,		2,	L"regenerationStone")
 		ADD_ICON(18,		3,	L"lifeShard")
-		ADD_ICON(18,		4,	L"repulsionShield")
+		ADD_ICON(18,		4,	L"healingStone")
 		ADD_ICON(18,		5,	L"pigSlayer")
 		ADD_ICON(18,		6,	L"cloudStaff")
 		ADD_ICON(18,		7,	L"natureStaff")
@@ -1176,9 +1176,9 @@ void PreStitchedTextureMap::loadUVs()
 
 	ADD_ICON(25,	0,	L"skyrootBookshelf_side");
 	ADD_ICON(25,	1,	L"incubator_top");
-	ADD_ICON(25,	2,	L"skyrootBookshelf_top");
+	ADD_ICON(25,	2,	L"enchanter_top");
 	ADD_ICON(25,	3,	L"incubator_side");
-	ADD_ICON(25,	4,	L"altar_side");
+	ADD_ICON(25,	4,	L"enchanter_side");
 	ADD_ICON(25,	5,	L"freezer_side");
 	ADD_ICON(25,	6,	L"freezer_top");
 	ADD_ICON(25,	7,	L"treasureChest_front");

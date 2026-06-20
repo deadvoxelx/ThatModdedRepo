@@ -24,6 +24,7 @@ class EmptyMapItem;
 class DartShooterGoldItem;
 //class DartShooterPoisonItem;
 //class DartShooterEnchantedItem;
+class HealingStoneItem;
 
 #define ITEM_ICON_COLUMNS 16
 
@@ -494,6 +495,7 @@ public:
 	static Item *blueBerry;
 	static Item *aechorPetal;
 	static Item *swetBall;
+	static HealingStoneItem *healingStone;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -762,6 +764,7 @@ public:
 	static const int blueBerry_Id = 481;
 	static const int aechorPetal_Id = 482;
 	static const int swetBall_Id = 483;
+	static const int healingStone_Id = 484;
 
 public:
 	const int id;

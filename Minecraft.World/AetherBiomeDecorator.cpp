@@ -26,6 +26,9 @@ AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 	smallGoldAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 2/*AercloudTile::TYPE_GOLD*/, 2, 4, 1, 2, false);
 	smallBlueAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 1/*AercloudTile::TYPE_BLUE*/, 2, 4, 1, 2, false);
 
+	whiteFlowerFeature = new FlowerFeature(Tile::flower_Id, 1);
+	purpleFlowerFeature = new FlowerFeature(Tile::flower_Id, 2);
+
 	treeCount = 2;
 	grassCount = 5;
 	flowerCount = 2;
@@ -77,7 +80,15 @@ void AetherBiomeDecorator::decorate()
 		int x = xo + random->nextInt(16) + 8;
 		int y = random->nextInt(Level::genDepth);
 		int z = zo + random->nextInt(16) + 8;
-		yellowFlowerFeature->place(level, random, x, y, z);
+		whiteFlowerFeature->place(level, random, x, y, z);
+	}
+
+	for (int i = 0; i < flowerCount; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int y = random->nextInt(Level::genDepth);
+		int z = zo + random->nextInt(16) + 8;
+		purpleFlowerFeature->place(level, random, x, y, z);
 	}
 
 	for (int i = 0; i < grassCount; i++)

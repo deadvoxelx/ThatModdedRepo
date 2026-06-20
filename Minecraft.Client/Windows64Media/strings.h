@@ -2484,3 +2484,5 @@
 #define IDS_ITEM_AECHORPETAL								   2478
 #define IDS_ITEM_SWETBALL									   2479
 #define IDS_TILE_ZANITE_BLOCK								   2480
+#define IDS_TILE_ENCHANTER									   2481
+#define IDS_ITEM_HEALINGSTONE								   2482

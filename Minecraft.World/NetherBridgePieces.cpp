@@ -137,13 +137,17 @@ NetherBridgePieces::NetherBridgePiece *NetherBridgePieces::findAndCreateBridgePi
 }
 
 WeighedTreasure *NetherBridgePieces::NetherBridgePiece::fortressTreasureItems[FORTRESS_TREASURE_ITEMS_COUNT] = {
-	new WeighedTreasure(Item::diamond_Id, 0, 1, 3, 5),
-	new WeighedTreasure(Item::ironIngot_Id, 0, 1, 5, 5),
+	new WeighedTreasure(Item::ironIngot_Id, 0, 1, 5, 7),
 	new WeighedTreasure(Item::goldIngot_Id, 0, 1, 3, 15),
+	new WeighedTreasure(Item::diamond_Id, 0, 1, 3, 5),
+	new WeighedTreasure(Item::nethanium_Id, 0, 1, 2, 2),
 	new WeighedTreasure(Item::sword_gold_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::nethaniumSword_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::chestplate_gold_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::nethaniumChestplate_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::flintAndSteel_Id, 0, 1, 1, 5),
 	new WeighedTreasure(Item::netherwart_seeds_Id, 0, 3, 7, 5),
+	new WeighedTreasure(Tile::obsidian_Id, 0, 1, 11, 6),
 	new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 10),
 	new WeighedTreasure(Item::horseArmorGold_Id, 0, 1, 1, 8),
 	new WeighedTreasure(Item::horseArmorMetal_Id, 0, 1, 1, 5),

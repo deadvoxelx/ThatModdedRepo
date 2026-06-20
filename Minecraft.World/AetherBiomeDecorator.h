@@ -24,6 +24,9 @@ protected:
 	Feature *smallGoldAerCloudFeature;
 	Feature *smallBlueAerCloudFeature;
 
+	Feature *whiteFlowerFeature;
+	Feature *purpleFlowerFeature;
+
 	virtual void decorate();
 	void decorateAetherOres();
 };

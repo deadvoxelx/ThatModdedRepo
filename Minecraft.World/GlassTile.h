@@ -24,7 +24,6 @@ public:
 	GlassTile(int id, Material *material, bool allowSame);
 	virtual int getResourceCount(Random *random);
 	virtual int getRenderLayer();
-	virtual bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
 	virtual bool isSolidRender();
 	virtual bool isCubeShaped();
 	virtual bool isSilkTouchable();

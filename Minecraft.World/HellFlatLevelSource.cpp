@@ -273,7 +273,7 @@ void HellFlatLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		int x = xo + pprandom->nextInt(16) + 8;
 		int y = pprandom->nextInt(Level::genDepth);
 		int z = zo + pprandom->nextInt(16) + 8;
-		FlowerFeature(Tile::mushroom_brown_Id).place(level, pprandom, x, y, z);
+		FlowerFeature(Tile::mushroom_brown_Id, 0).place(level, pprandom, x, y, z);
 	}
 
 	if (pprandom->nextInt(1) == 0)
@@ -281,7 +281,7 @@ void HellFlatLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		int x = xo + pprandom->nextInt(16) + 8;
 		int y = pprandom->nextInt(Level::genDepth);
 		int z = zo + pprandom->nextInt(16) + 8;
-		FlowerFeature(Tile::mushroom_red_Id).place(level, pprandom, x, y, z);
+		FlowerFeature(Tile::mushroom_red_Id, 0).place(level, pprandom, x, y, z);
 	}
 
 	PIXBeginNamedEvent(0,"Nether house");

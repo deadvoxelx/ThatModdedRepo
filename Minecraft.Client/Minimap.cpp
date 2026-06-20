@@ -53,7 +53,7 @@ void Minimap::reloadColours()
 {
 	ColourTable *colourTable = Minecraft::GetInstance()->getColourTable();
 	// 4J note that this code has been extracted pretty much as it was in Minimap::render, although with some byte order changes
-	for( int i = 0; i < (14 * 4); i++ )	// 14 material colours currently, 4 brightnesses of each
+	for( int i = 0; i < (16 * 4); i++ )	// 16 material colours currently, 4 brightnesses of each
 	{
 		if (i / 4 == 0)
 		{

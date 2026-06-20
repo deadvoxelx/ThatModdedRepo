@@ -136,6 +136,8 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Material_Water",
 	L"Material_Wood",
 	L"Material_Emerald",
+	L"Material_VeloettGrass",
+	L"Material_Netherrack",
 
 	L"Particle_Note_00",
 	L"Particle_Note_01",

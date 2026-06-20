@@ -3,7 +3,7 @@
 #include "net.minecraft.world.h"
 #include "Facing.h"
 
-VeloettGrassTile::VeloettGrassTile(int id) : Tile(id, Material::stone)
+VeloettGrassTile::VeloettGrassTile(int id) : Tile(id, Material::veloettGrass)
 {
 	iconTop = NULL;
 	iconBottom = NULL;

@@ -13,7 +13,7 @@ const unsigned int EndStoneTile::END_STONE_NAMES[END_STONE_NAMES_LENGTH] = {
 	IDS_TILE_ENDBRICKSCHISELED,
 };
 
-EndStoneTile::EndStoneTile(int id) : Tile(id, Material::stone)
+EndStoneTile::EndStoneTile(int id) : Tile(id, Material::endStone)
 {
 	icons = nullptr;
 }

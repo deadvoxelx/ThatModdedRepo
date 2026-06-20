@@ -66,7 +66,7 @@ private:
 	class NetherBridgePiece : public StructurePiece
 	{
 	protected:
-		static const int FORTRESS_TREASURE_ITEMS_COUNT = 11;
+		static const int FORTRESS_TREASURE_ITEMS_COUNT = 15;
 		static WeighedTreasure *fortressTreasureItems[FORTRESS_TREASURE_ITEMS_COUNT];
 
 	public:
