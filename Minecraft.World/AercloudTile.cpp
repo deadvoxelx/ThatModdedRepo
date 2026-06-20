@@ -37,7 +37,7 @@ void AercloudTile::fallOn(Level *level, int x, int y, int z, shared_ptr<Entity> 
 	entity->fallDistance = 0;
 	if (entity->yd < 0)
 	{
-		entity->yd *= 0.1;
+		entity->yd *= 0.05;
 	}
 }
 
@@ -45,11 +45,22 @@ void AercloudTile::entityInside(Level *level, int x, int y, int z, shared_ptr<En
 {
 	entity->xd *= 0.4;
 	entity->zd *= 0.4;
-
-	if (entity->yd < 0)
+	entity->fallDistance = 0;
+	if (level->getData(x, y, z) == 1)
 	{
-		entity->yd *= 0.5;
-		entity->fallDistance = 0;
+		entity->yd = 2.0f;
+
+		float bbWidth = entity->bbWidth;
+		for (int i = 0; i < 8; i++)
+		{
+			float xo = (level->random->nextFloat() * 2 - 1) * bbWidth;
+			float zo = (level->random->nextFloat() * 2 - 1) * bbWidth;
+			level->addParticle(eParticleType_splash, entity->x + xo, entity->y, entity->z + zo, 0, 0.25, 0);
+		}
+	}
+	else if (entity->yd < 0)
+	{
+		entity->yd *= 0.05;
 	}
 }
 
