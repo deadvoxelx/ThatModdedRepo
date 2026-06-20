@@ -14,8 +14,10 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 {
     int belowTile = level->getTile(x, y - 1, z);
     int thisTile = level->getTile(x, y, z);
-	if ((belowTile == Tile::endStone_Id || belowTile == Tile::endSand_Id || belowTile == Tile::veloettGrass_Id) && (thisTile != Tile::endStone_Id && thisTile != Tile::endSand_Id && thisTile != Tile::veloettGrass_Id && thisTile != Tile::purulLog_Id && thisTile != Tile::purulVeloett_Id))
-    {
+	if (random->nextInt(3) == 0)
+	{
+		if ((belowTile == Tile::endStone_Id || belowTile == Tile::endSand_Id || belowTile == Tile::veloettGrass_Id) && (thisTile != Tile::endStone_Id && thisTile != Tile::endSand_Id && thisTile != Tile::veloettGrass_Id && thisTile != Tile::purulLog_Id && thisTile != Tile::purulVeloett_Id))
+		{
 		//UnderLayer
 	    placeBlock(level, x, y - 1, z, Tile::endStone_Id, 0);
         placeBlock(level, x + 1, y - 1, z, Tile::endStone_Id, 0);
@@ -1094,9 +1096,9 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 1, y + 2, z - 4, Tile::endStone_Id, 5);
 	    placeBlock(level, x - 1, y + 2, z + 4, Tile::endStone_Id, 5);
 		
-		placeBlock(level, x + 4, y + 2, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x - 4, y + 2, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x, y + 2, z + 4, Tile::stained_glass_Id, 2);
+		placeBlock(level, x + 4, y + 2, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x - 4, y + 2, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x, y + 2, z + 4, Tile::stained_glass_Id, 13);
 		
 		
 		
@@ -1189,10 +1191,10 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 1, y + 6, z - 4, Tile::endStone_Id, 5);
 	    placeBlock(level, x - 1, y + 6, z + 4, Tile::endStone_Id, 5);
 		
-		placeBlock(level, x + 4, y + 6, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x - 4, y + 6, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x, y + 6, z + 4, Tile::stained_glass_Id, 2);
-		placeBlock(level, x, y + 6, z - 4, Tile::stained_glass_Id, 2);
+		placeBlock(level, x + 4, y + 6, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x - 4, y + 6, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x, y + 6, z + 4, Tile::stained_glass_Id, 13);
+		placeBlock(level, x, y + 6, z - 4, Tile::stained_glass_Id, 13);
 		
 		
 		
@@ -1285,10 +1287,10 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 1, y + 10, z - 4, Tile::endStone_Id, 5);
 	    placeBlock(level, x - 1, y + 10, z + 4, Tile::endStone_Id, 5);
 		
-		placeBlock(level, x + 4, y + 10, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x - 4, y + 10, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x, y + 10, z + 4, Tile::stained_glass_Id, 2);
-		placeBlock(level, x, y + 10, z - 4, Tile::stained_glass_Id, 2);
+		placeBlock(level, x + 4, y + 10, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x - 4, y + 10, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x, y + 10, z + 4, Tile::stained_glass_Id, 13);
+		placeBlock(level, x, y + 10, z - 4, Tile::stained_glass_Id, 13);
 		
 		
 		
@@ -1381,10 +1383,10 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 1, y + 14, z - 4, Tile::endStone_Id, 5);
 	    placeBlock(level, x - 1, y + 14, z + 4, Tile::endStone_Id, 5);
 		
-		placeBlock(level, x + 4, y + 14, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x - 4, y + 14, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x, y + 14, z + 4, Tile::stained_glass_Id, 2);
-		placeBlock(level, x, y + 14, z - 4, Tile::stained_glass_Id, 2);
+		placeBlock(level, x + 4, y + 14, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x - 4, y + 14, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x, y + 14, z + 4, Tile::stained_glass_Id, 13);
+		placeBlock(level, x, y + 14, z - 4, Tile::stained_glass_Id, 13);
 		
 		
 		
@@ -1477,10 +1479,10 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 1, y + 18, z - 4, Tile::endStone_Id, 5);
 	    placeBlock(level, x - 1, y + 18, z + 4, Tile::endStone_Id, 5);
 		
-		placeBlock(level, x + 4, y + 18, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x - 4, y + 18, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x, y + 18, z + 4, Tile::stained_glass_Id, 2);
-		placeBlock(level, x, y + 18, z - 4, Tile::stained_glass_Id, 2);
+		placeBlock(level, x + 4, y + 18, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x - 4, y + 18, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x, y + 18, z + 4, Tile::stained_glass_Id, 13);
+		placeBlock(level, x, y + 18, z - 4, Tile::stained_glass_Id, 13);
 		
 		
 		
@@ -1573,10 +1575,10 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	    placeBlock(level, x + 1, y + 22, z - 4, Tile::endStone_Id, 5);
 	    placeBlock(level, x - 1, y + 22, z + 4, Tile::endStone_Id, 5);
 		
-		placeBlock(level, x + 4, y + 22, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x - 4, y + 22, z, Tile::stained_glass_Id, 2);
-	    placeBlock(level, x, y + 22, z + 4, Tile::stained_glass_Id, 2);
-		placeBlock(level, x, y + 22, z - 4, Tile::stained_glass_Id, 2);
+		placeBlock(level, x + 4, y + 22, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x - 4, y + 22, z, Tile::stained_glass_Id, 13);
+	    placeBlock(level, x, y + 22, z + 4, Tile::stained_glass_Id, 13);
+		placeBlock(level, x, y + 22, z - 4, Tile::stained_glass_Id, 13);
 		
 		
 		
@@ -1706,7 +1708,7 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		placeBlock(level, x, y + 24, z + 1, Tile::ladder_Id, 2);
 
-		level->setTileAndData(x, y + 25, z - 2, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
+			level->setTileAndData(x, y + 25, z - 2, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
 			WeighedTreasureArray wrapperArray(endTowerTreasure, TREASURE_ITEMS_COUNT);
 			WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(wrapperArray, Item::enchantedBook->createForRandomTreasure(random));
 			shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity >( level->getTileEntity(x, y + 25, z - 2) );
@@ -1714,22 +1716,31 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				WeighedTreasure::addChestItems(random, treasure, chest, 8);
 			}
-    }
+		}
+	}
+	
     return true;
 }
 
 WeighedTreasure *EndTowerFeature::endTowerTreasure[EndTowerFeature::TREASURE_ITEMS_COUNT] = 
 {
-		new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 5),
-		new WeighedTreasure(Item::ironIngot_Id, 0, 5, 11, 6),
-		new WeighedTreasure(Item::goldIngot_Id, 0, 4, 12, 6),
-		new WeighedTreasure(Item::diamond_Id, 0, 3, 7, 5),
-		new WeighedTreasure(Tile::obsidian_Id, 0, 1, 4, 6),
-		new WeighedTreasure(Item::gunpowder_Id, 0, 5, 12, 6),
-		new WeighedTreasure(Item::string_Id, 0, 3, 12, 5),
-		new WeighedTreasure(Item::nethanium_Id, 0, 1, 5, 3),
-		new WeighedTreasure(Item::endorium_Id, 0, 1, 3, 2),
-		new WeighedTreasure(Item::apple_gold_Id, 0, 1, 3, 3),
-		new WeighedTreasure(Item::apple_gold_Id, 1, 1, 1, 1),
-		new WeighedTreasure(Tile::endoriumGrate_Id, 0, 3, 7, 5),
+	new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::ironIngot_Id, 0, 5, 11, 10),
+	new WeighedTreasure(Item::goldIngot_Id, 0, 4, 12, 10),
+	new WeighedTreasure(Item::diamond_Id, 0, 3, 7, 6),
+	new WeighedTreasure(Item::nethanium_Id, 0, 1, 5, 4),
+	new WeighedTreasure(Item::endorium_Id, 0, 1, 3, 3),
+	new WeighedTreasure(Item::zaniteGemstone_Id, 0, 3, 7, 6),
+	new WeighedTreasure(Tile::enchantedGravitite_Id, 0, 1, 5, 3),
+	new WeighedTreasure(Tile::obsidian_Id, 0, 1, 4, 10),
+	new WeighedTreasure(Item::aphalafTooth_Id, 0, 4, 7, 6),
+	new WeighedTreasure(Item::string_Id, 0, 3, 12, 5),
+	new WeighedTreasure(Item::apple_gold_Id, 0, 1, 3, 4),
+	new WeighedTreasure(Item::apple_gold_Id, 1, 1, 1, 1),
+	new WeighedTreasure(Tile::endoriumGrate_Id, 0, 3, 7, 5),
+	new WeighedTreasure(Item::endoriumSword_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::endoriumAxe_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::endoriumPickaxe_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::endoriumShovel_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::endoriumHoe_Id, 0, 1, 1, 1),
 };
