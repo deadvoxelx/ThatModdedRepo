@@ -463,7 +463,7 @@ public:
 	static PistonExtensionTile *pistonExtension;
 	static Tile *wool;
 	static PistonMovingPiece *pistonMovingPiece;
-	static Bush *flower;
+	static Tile *flower;
 	static Bush *rose;
 	static Bush *mushroom_brown;
 	static Bush *mushroom_red;
