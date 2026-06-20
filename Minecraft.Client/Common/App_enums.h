@@ -322,6 +322,8 @@ enum eMinecraftColour
 	eMinecraftColour_Material_Water,
 	eMinecraftColour_Material_Wood,
 	eMinecraftColour_Material_Emerald,
+	eMinecraftColour_Material_VeloettGrass,
+	eMinecraftColour_Material_Netherrack,
 
 	eMinecraftColour_Particle_Note_00,
 	eMinecraftColour_Particle_Note_01,
