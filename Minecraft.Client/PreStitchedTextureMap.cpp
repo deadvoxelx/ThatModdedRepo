@@ -1176,9 +1176,9 @@ void PreStitchedTextureMap::loadUVs()
 
 	ADD_ICON(25,	0,	L"skyrootBookshelf_side");
 	ADD_ICON(25,	1,	L"incubator_top");
-	ADD_ICON(25,	2,	L"skyrootBookshelf_top");
+	ADD_ICON(25,	2,	L"enchanter_top");
 	ADD_ICON(25,	3,	L"incubator_side");
-	ADD_ICON(25,	4,	L"altar_side");
+	ADD_ICON(25,	4,	L"enchanter_side");
 	ADD_ICON(25,	5,	L"freezer_side");
 	ADD_ICON(25,	6,	L"freezer_top");
 	ADD_ICON(25,	7,	L"treasureChest_front");
