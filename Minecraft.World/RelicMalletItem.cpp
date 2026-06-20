@@ -52,17 +52,23 @@ bool RelicMalletItem::canDestroySpecial(Tile *tile)
 	if (tile == Tile::goldBlock || tile == Tile::goldOre) return tier->getLevel() >= 2;
 	if (tile == Tile::ironBlock || tile == Tile::ironOre) return tier->getLevel() >= 1;
 	if (tile == Tile::lapisBlock || tile == Tile::lapisOre) return tier->getLevel() >= 1;
-	if (tile == Tile::redStoneOre || tile == Tile::redStoneOre_lit) return tier->getLevel() >= 2;
+	if (tile == Tile::redStoneOre || tile == Tile::redStoneOre_lit || tile == Tile::redstoneBlock) return tier->getLevel() >= 2;
 	if (tile == Tile::netherGold) return tier->getLevel() >= 1;
 	if (tile == Tile::netherDiamond) return tier->getLevel() >= 2;
 	if (tile == Tile::nethaniumBlock || tile == Tile::nethaniumOre) return tier->getLevel() >= 3;
+	if (tile == Tile::endoriumBlock || tile == Tile::endoriumGrate || tile == Tile::endoriumLamp || tile == Tile::endoriumOre) return tier->getLevel() >= 3;
+	if (tile == Tile::enchantedGravitite || tile == Tile::gravititeOre) return tier->getLevel() >= 2;
+	if (tile == Tile::zaniteBlock || tile == Tile::zaniteOre) return tier->getLevel() >= 1;
 	if (tile->material == Material::stone) return true;
 	if (tile->material == Material::metal) return true;
 	if (tile->material == Material::heavyMetal) return true;
+	if (tile->material == Material::endStone) return true;
+	if (tile->material == Material::veloettGrass) return true;
+	if (tile->material == Material::obsidian) return true;
+	if (tile->material == Material::netherrack) return true;
 	return false;
 }
 
-// 4J - brought forward from 1.2.3
 float RelicMalletItem::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *tile)
 {
 	if (tile != NULL && (tile->material == Material::metal || tile->material == Material::heavyMetal || tile->material == Material::stone || tile->material == Material::glass))
