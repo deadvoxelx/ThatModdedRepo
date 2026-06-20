@@ -164,3 +164,4 @@
 #include "IcestoneTile.h"
 #include "BerryStemTile.h"
 #include "FlowerTile.h"
+#include "EnchanterTile.h"
