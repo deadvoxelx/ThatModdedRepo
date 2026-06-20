@@ -92,3 +92,4 @@ public:
 	// 4J-JEV: Added for 'Renewable Energy' achievement.
 	bool wasCharcoalUsed() { return m_charcoalUsed; }
 };
+ 
