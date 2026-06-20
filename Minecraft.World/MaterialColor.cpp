@@ -17,6 +17,8 @@ MaterialColor *MaterialColor::dirt = nullptr;
 MaterialColor *MaterialColor::stone = nullptr;
 MaterialColor *MaterialColor::water = nullptr;
 MaterialColor *MaterialColor::wood = nullptr;
+MaterialColor *MaterialColor::veloettGrass = nullptr;
+MaterialColor *MaterialColor::netherrack = nullptr;
 
 void MaterialColor::staticCtor()
 {
@@ -36,6 +38,9 @@ void MaterialColor::staticCtor()
 	MaterialColor::stone = new MaterialColor(11, eMinecraftColour_Material_Stone);
 	MaterialColor::water = new MaterialColor(12, eMinecraftColour_Material_Water);
 	MaterialColor::wood = new MaterialColor(13, eMinecraftColour_Material_Wood);
+	MaterialColor::veloettGrass = new MaterialColor(14, eMinecraftColour_Material_VeloettGrass);
+	MaterialColor::netherrack = new MaterialColor(15, eMinecraftColour_Material_Netherrack);
+
 }
 
 MaterialColor::MaterialColor(int id, eMinecraftColour col)
