@@ -281,6 +281,7 @@ Tile *Tile::enchantedGravitite = NULL;
 Tile *Tile::aerogel = NULL;
 Tile *Tile::berryBushStem = NULL;
 Tile *Tile::zaniteBlock = NULL;
+Tile *Tile::enchanter = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -575,6 +576,7 @@ void Tile::staticCtor()
 	Tile::aerogel = (new AerogelTile(228))								->setDestroyTime(1.0f)->setLightBlock(3)->setExplodeable(1200)->setSoundType(Tile::SOUND_STONE)->setIconName(L"aerogel")->setDescriptionId(IDS_TILE_AEROGEL)->setUseDescriptionId(IDS_TILE_AEROGEL);
 	Tile::berryBushStem = (Bush *)(new BerryStemTile(229))				->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"berryBushStem")->setDescriptionId(IDS_TILE_BERRY_BUSH)->setUseDescriptionId(IDS_TILE_BERRY_BUSH)->disableMipmap();
 	Tile::zaniteBlock = (new MetalTile(230))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_zanite)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L"zaniteBlock")->setDescriptionId(IDS_TILE_ZANITE_BLOCK)->setUseDescriptionId(IDS_TILE_ZANITE_BLOCK);
+	Tile::enchanter = (new EnchanterTile(231))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_stone)->setDestroyTime(3.0f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"enchanter_side")->setDescriptionId(IDS_TILE_ENCHANTER)->sendTileData()->setUseDescriptionId(IDS_TILE_ENCHANTER);
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
