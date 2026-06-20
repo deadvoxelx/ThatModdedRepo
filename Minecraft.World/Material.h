@@ -40,6 +40,10 @@ public:
 	static Material *cake;
 	static Material *web;
 	static Material *piston;
+	static Material *endStone;
+	static Material *veloettGrass;
+	static Material *obsidian;
+	static Material *netherrack;
 
 	static const int PUSH_NORMAL = 0;
 	static const int PUSH_DESTROY = 1;
