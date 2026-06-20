@@ -19,6 +19,8 @@ public:
     static MaterialColor *stone;
     static MaterialColor *water;
     static MaterialColor *wood;
+    static MaterialColor *veloettGrass;
+    static MaterialColor *netherrack;
 
 	static void staticCtor();
 
