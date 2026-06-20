@@ -55,10 +55,10 @@ void BiomeDecorator::_init()
 	redStoneOreFeature = new OreFeature(Tile::redStoneOre_Id, 7);
 	diamondOreFeature = new OreFeature(Tile::diamondOre_Id, 7);
 	lapisOreFeature = new OreFeature(Tile::lapisOre_Id, 6);
-	yellowFlowerFeature = new FlowerFeature(Tile::flower_Id);
-	roseFlowerFeature = new FlowerFeature(Tile::rose_Id);
-	brownMushroomFeature = new FlowerFeature(Tile::mushroom_brown_Id);
-	redMushroomFeature = new FlowerFeature(Tile::mushroom_red_Id);
+	yellowFlowerFeature = new FlowerFeature(Tile::flower_Id, 0);
+	roseFlowerFeature = new FlowerFeature(Tile::rose_Id, 0);
+	brownMushroomFeature = new FlowerFeature(Tile::mushroom_brown_Id, 0);
+	redMushroomFeature = new FlowerFeature(Tile::mushroom_red_Id, 0);
 	hugeMushroomFeature = new HugeMushroomFeature();
 	swampMushroomHugeFeature = new SwampMushroomHugeFeature();
 	reedsFeature = new ReedsFeature();
