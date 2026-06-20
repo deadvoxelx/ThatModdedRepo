@@ -46,6 +46,10 @@ float WeaponItem::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *t
 bool WeaponItem::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<LivingEntity> mob, shared_ptr<LivingEntity> attacker) 
 {
 	itemInstance->hurtAndBreak(1, attacker);
+	if (id == Item::gravititeSword_Id)
+	{
+		mob->yd = 0.75f;
+	}
 	return true;
 }
 
