@@ -53,6 +53,7 @@ bool BucketItem::TestUse(shared_ptr<ItemInstance> itemInstance, Level *level, sh
 			if (level->getMaterial(xt, yt, zt) == Material::lava && level->getData(xt, yt, zt) == 0)
 			{
 				delete hr;
+				if (id == Item::skyrootBucket_empty_Id) return false;
 				return true;
 			}
 		}
@@ -91,7 +92,6 @@ bool BucketItem::TestUse(shared_ptr<ItemInstance> itemInstance, Level *level, sh
 		}
 	}
 	delete hr;
-
 	return false;
 }
 
@@ -141,6 +141,7 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 
 				if (--itemInstance->count <= 0)
 				{
+					if (id == Item::skyrootBucket_empty_Id) return std::make_shared<ItemInstance>(Item::skyrootBucket_water);
 					return std::make_shared<ItemInstance>(Item::bucket_water);
 				}
 				else
@@ -148,6 +149,10 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 					if (!player->inventory->add(std::make_shared<ItemInstance>(Item::bucket_water)))
 					{
 						player->drop(std::make_shared<ItemInstance>(Item::bucket_water_Id, 1, 0));
+					}
+					if (!player->inventory->add(std::make_shared<ItemInstance>(Item::skyrootBucket_water)))
+					{
+						player->drop(std::make_shared<ItemInstance>(Item::skyrootBucket_water_Id, 1, 0));
 					}
 					return itemInstance;
 				}
@@ -183,6 +188,7 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 		else if (content < 0)
 		{
 			delete hr;
+			if (id == Item::skyrootBucket_water_Id) return std::make_shared<ItemInstance>(Item::skyrootBucket_empty);
 			return std::make_shared<ItemInstance>(Item::bucket_empty);
 		}
 		else
@@ -196,12 +202,11 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 
 			if (!player->mayUseItemAt(xt, yt, zt, hr->f, itemInstance)) return itemInstance;
 
-
 			if (emptyBucket(level, xt, yt, zt) && !player->abilities.instabuild)
 			{
+				if (id == Item::skyrootBucket_water_Id) return std::make_shared<ItemInstance>(Item::skyrootBucket_empty);
 				return std::make_shared<ItemInstance>(Item::bucket_empty);
 			}
-
 		}
 	}
 	delete hr;
@@ -234,9 +239,7 @@ bool BucketItem::emptyBucket(Level *level, int xt, int yt, int zt)
 			}
 			level->setTileAndData(xt, yt, zt, content, 0, Tile::UPDATE_ALL);
 		}
-
 		return true;
 	}
-
 	return false;
 }
