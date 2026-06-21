@@ -897,6 +897,16 @@ Recipes::Recipes()
 		L'Y', Item::feather,
 		L'T');
 
+	addShapedRecipy(new ItemInstance(Item::dartPoison, 8), //
+		L"ssscicig",
+		L"XXX", //
+		L"X#X", //
+		L"XXX", //
+
+		L'X', Item::dartGold,
+		L'#', Item::skyrootBucket_poison,
+		L'T');
+
 	pWeaponRecipies->addRecipes(this);
 
 	addShapedRecipy(new ItemInstance(Item::bucket_empty, 1), //
@@ -905,6 +915,14 @@ Recipes::Recipes()
 		L" # ", //
 
 		L'#', Item::ironIngot,
+		L'T');
+
+	addShapedRecipy(new ItemInstance(Item::skyrootBucket_empty, 1), //
+		L"ssczg",
+		L"# #", //
+		L" # ", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_SKYROOT),
 		L'T');
 
 	addShapedRecipy(new ItemInstance(Item::bowl, 4), //
