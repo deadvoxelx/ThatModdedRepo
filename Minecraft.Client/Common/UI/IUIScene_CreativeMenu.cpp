@@ -435,6 +435,10 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::bucket_lava_Id)
 		ITEM(Item::bucket_water_Id)
 		ITEM(Item::bucket_milk_Id)
+		ITEM(Item::skyrootBucket_empty_Id)
+		ITEM(Item::skyrootBucket_water_Id)
+		ITEM(Item::skyrootBucket_milk_Id)
+		ITEM(Item::skyrootBucket_poison_Id)
 		ITEM(Item::cauldron_Id)
 		ITEM(Item::snowBall_Id)
 		ITEM(Item::paper_Id)
@@ -556,6 +560,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::pumpkinPie_Id)
 		ITEM(Item::veloettBerry_Id)
 		ITEM(Item::blueBerry_Id)
+		ITEM(Item::blueBerryEnchanted_Id)
+		ITEM(Item::gummySwetBlue_Id)
+		ITEM(Item::gummySwetGold_Id)
 
 	// Tools, Armour and Weapons (Complete)
 	DEF(eCreativeInventory_ToolsArmourWeapons)
@@ -636,6 +643,17 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::endoriumHoe_Id)
 		ITEM(Item::aphalafSword_Id)
 
+		ITEM(Item::horseArmorDiamond_Id)
+		ITEM(Item::horseArmorGold_Id)
+		ITEM(Item::horseArmorMetal_Id)
+		ITEM(Item::lead_Id)
+		ITEM(Item::holystoneSword_Id)
+		ITEM(Item::holystoneShovel_Id)
+		ITEM(Item::holystonePickaxe_Id)
+		ITEM(Item::holystoneAxe_Id)
+		ITEM(Item::holystoneHoe_Id)
+		ITEM(Item::healingStone_Id)
+
 		ITEM(Item::zaniteHelmet_Id)
 		ITEM(Item::zaniteChestplate_Id)
 		ITEM(Item::zaniteLeggings_Id)
@@ -645,7 +663,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::zanitePickaxe_Id)
 		ITEM(Item::zaniteAxe_Id)
 		ITEM(Item::zaniteHoe_Id)
-		ITEM(Item::bow_Id)
+		ITEM(Item::lifeShard_Id)
 
 		ITEM(Item::gravititeHelmet_Id)
 		ITEM(Item::gravititeChestplate_Id)
@@ -656,21 +674,22 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::gravititePickaxe_Id)
 		ITEM(Item::gravititeAxe_Id)
 		ITEM(Item::gravititeHoe_Id)
-		ITEM(Item::arrow_Id)
+		ITEM(Item::regenerationStone_Id)
 
-		ITEM(Item::horseArmorDiamond_Id)
-		ITEM(Item::horseArmorGold_Id)
-		ITEM(Item::horseArmorMetal_Id)
-		ITEM(Item::clock_Id)
-		ITEM(Item::compass_Id)
-		ITEM(Item::lead_Id)
-		ITEM(Item::fireball_Id)
-		ITEM(Item::hellSphere_Id)
-		ITEM(Item::dartShooterGold_Id)
-		ITEM(Item::dartGold_Id)
-		ITEM(Item::dartPoison_Id)
-		ITEM(Item::dartEnchanted_Id)
-		ITEM(Item::healingStone_Id)
+		ITEM(Item::clock_Id)			// 0
+		ITEM(Item::compass_Id)			// 1
+		ITEM(Item::fireball_Id)			// 2
+		ITEM(Item::hellSphere_Id)		// 3
+		ITEM(Item::bow_Id)				// 4
+		ITEM(Item::arrow_Id)			// 5
+		ITEM(Item::dartShooterGold_Id)	// 6
+		ITEM(Item::dartGold_Id)			// 7
+		ITEM(Item::dartPoison_Id)		// 8
+		ITEM(Item::dartEnchanted_Id)	// 9
+
+		ITEM(Item::keyBronze_Id)		// 1
+		ITEM(Item::keySilver_Id)		// 2
+		ITEM(Item::keyGold_Id)			// 3
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{
@@ -732,6 +751,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::goldenAmber_Id)
 		ITEM(Item::swetBall_Id)
 		ITEM(Item::aechorPetal_Id)
+		ITEM(Item::moaEggBlue_Id)
+		ITEM(Item::moaEggWhite_Id)
+		ITEM(Item::moaEggBlack_Id)
 		ITEM_AUX(Item::dye_powder_Id,1)		// Red
 		ITEM_AUX(Item::dye_powder_Id,14)	// Orange
 		ITEM_AUX(Item::dye_powder_Id,11)	// Yellow
