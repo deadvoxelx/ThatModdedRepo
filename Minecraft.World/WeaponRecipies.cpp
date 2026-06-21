@@ -25,6 +25,7 @@ void WeaponRecipies::_init()
 	ADD_OBJECT(map[0],Item::goldIngot);
 	ADD_OBJECT(map[0],Item::nethanium);
 	ADD_OBJECT(map[0],Item::endorium);
+	ADD_OBJECT(map[0],Tile::holystone);
 	ADD_OBJECT(map[0],Item::zaniteGemstone);
 	ADD_OBJECT(map[0],Tile::enchantedGravitite);
 
@@ -35,6 +36,7 @@ void WeaponRecipies::_init()
 	ADD_OBJECT(map[1],Item::sword_gold);
 	ADD_OBJECT(map[1],Item::nethaniumSword);
 	ADD_OBJECT(map[1],Item::endoriumSword);
+	ADD_OBJECT(map[1],Item::holystoneSword);
 	ADD_OBJECT(map[1],Item::zaniteSword);
 	ADD_OBJECT(map[1],Item::gravititeSword);
 }
