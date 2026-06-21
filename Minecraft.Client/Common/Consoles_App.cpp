@@ -4672,6 +4672,25 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_ZANITE_BLOCK, L"Zanite Block");
 		m_stringTable->registerString(IDS_TILE_ENCHANTER, L"Enchanter");
 		m_stringTable->registerString(IDS_ITEM_HEALINGSTONE, L"Healing Stone");
+		m_stringTable->registerString(IDS_ITEM_HOLYSTONE_SWORD, L"Holystone Sword");
+		m_stringTable->registerString(IDS_ITEM_HOLYSTONE_PICKAXE, L"Holystone Pickaxe");
+		m_stringTable->registerString(IDS_ITEM_HOLYSTONE_AXE, L"Holystone Axe");
+		m_stringTable->registerString(IDS_ITEM_HOLYSTONE_SHOVEL, L"Holystone Shovel");
+		m_stringTable->registerString(IDS_ITEM_HOLYSTONE_HOE, L"Holystone Hoe");
+		m_stringTable->registerString(IDS_ITEM_SWETGUMMY, L"Swet Gummy");
+		m_stringTable->registerString(IDS_ITEM_REGENSTONE, L"Regeneration Stone");
+		m_stringTable->registerString(IDS_ITEM_LIFESHARD, L"Life Shard");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_BUCKET, L"Skyroot Bucket");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_BUCKET_WATER, L"Skyroot Water Bucket");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_BUCKET_MILK, L"Skyroot Milk Bucket");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_BUCKET_POISON, L"Skyroot Poison Bucket");
+		m_stringTable->registerString(IDS_ITEM_MOAEGG_BLUE, L"Blue Moa Egg");
+		m_stringTable->registerString(IDS_ITEM_MOAEGG_WHITE, L"White Moa Egg");
+		m_stringTable->registerString(IDS_ITEM_MOAEGG_BLACK, L"Black Moa Egg");
+		m_stringTable->registerString(IDS_ITEM_KEY_BRONZE, L"Bronze Key");
+		m_stringTable->registerString(IDS_ITEM_KEY_SILVER, L"Silver Key");
+		m_stringTable->registerString(IDS_ITEM_KEY_GOLD, L"Gold Key");
+		m_stringTable->registerString(IDS_ITEM_BLUEBERRY_ENCHANTED, L"Enchanted Berry");
 
 	}
 	else
