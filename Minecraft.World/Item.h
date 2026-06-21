@@ -467,7 +467,7 @@ public:
 	static Item *goldenAmber;
 	static Item *ambrosiumShard;
 	static Item *zaniteGemstone;
-	//static Item *gravititePlate;
+	static Item *aechorPetal;
 	static Item *gravititeSword;
 	static Item *gravititePickaxe;
 	static Item *gravititeAxe;
@@ -493,9 +493,28 @@ public:
 	static Item *dartPoison;
 	static Item *dartEnchanted;
 	static Item *blueBerry;
-	static Item *aechorPetal;
+	static Item *blueBerryEnchanted;
 	static Item *swetBall;
 	static HealingStoneItem *healingStone;
+	static Item *holystoneSword;
+	static Item *holystonePickaxe;
+	static Item *holystoneAxe;
+	static Item *holystoneShovel;
+	static Item *holystoneHoe;
+	static Item *gummySwetBlue;
+	static Item *gummySwetGold;
+	static HealingStoneItem *regenerationStone;
+	static HealingStoneItem *lifeShard;
+	static Item *skyrootBucket_empty;
+	static Item *skyrootBucket_water;
+	static Item *skyrootBucket_milk;
+	static Item *skyrootBucket_poison;
+	static Item *moaEggBlue;
+	static Item *moaEggWhite;
+	static Item *moaEggBlack;
+	static Item *keyBronze;
+	static Item *keySilver;
+	static Item *keyGold;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -736,7 +755,7 @@ public:
 	static const int goldenAmber_Id = 453;
 	static const int ambrosiumShard_Id = 454;
 	static const int zaniteGemstone_Id = 455;
-	//static const int gravititePlate_Id = 456;
+	static const int aechorPetal_Id = 456;
 	static const int gravititeSword_Id = 457;
 	static const int gravititePickaxe_Id = 458;
 	static const int gravititeAxe_Id = 459;
@@ -762,9 +781,28 @@ public:
 	static const int dartPoison_Id = 479;
 	static const int dartEnchanted_Id = 480;
 	static const int blueBerry_Id = 481;
-	static const int aechorPetal_Id = 482;
+	static const int blueBerryEnchanted_Id = 482;
 	static const int swetBall_Id = 483;
 	static const int healingStone_Id = 484;
+	static const int holystoneSword_Id = 485;
+	static const int holystonePickaxe_Id = 486;
+	static const int holystoneAxe_Id = 487;
+	static const int holystoneShovel_Id = 488;
+	static const int holystoneHoe_Id = 489;
+	static const int gummySwetBlue_Id = 490;
+	static const int gummySwetGold_Id = 491;
+	static const int regenerationStone_Id = 492;
+	static const int lifeShard_Id = 493;
+	static const int skyrootBucket_empty_Id = 494;
+	static const int skyrootBucket_water_Id = 495;
+	static const int skyrootBucket_milk_Id = 496;
+	static const int skyrootBucket_poison_Id = 497;
+	static const int moaEggBlue_Id = 498;
+	static const int moaEggWhite_Id = 499;
+	static const int moaEggBlack_Id = 500;
+	static const int keyBronze_Id = 501;
+	static const int keySilver_Id = 502;
+	static const int keyGold_Id = 503;
 
 public:
 	const int id;
