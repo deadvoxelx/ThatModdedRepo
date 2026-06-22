@@ -4691,6 +4691,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_KEY_SILVER, L"Silver Key");
 		m_stringTable->registerString(IDS_ITEM_KEY_GOLD, L"Gold Key");
 		m_stringTable->registerString(IDS_ITEM_BLUEBERRY_ENCHANTED, L"Enchanted Berry");
+		m_stringTable->registerString(IDS_HEROBRINE_ARRIVED, L"He is here...");
 
 	}
 	else
