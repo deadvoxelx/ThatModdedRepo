@@ -2505,3 +2505,4 @@
 #define IDS_ITEM_KEY_SILVER									   2499
 #define IDS_ITEM_KEY_GOLD									   2500
 #define IDS_ITEM_BLUEBERRY_ENCHANTED						   2501
+#define IDS_HEROBRINE_ARRIVED								   2502
