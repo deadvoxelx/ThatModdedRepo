@@ -23,7 +23,7 @@ static bool isEnchanterInput(int id)
 		case Tile::holystone_Id:
 		case Item::blueBerry_Id:
 		case Item::dartGold_Id:
-		//case Item::dartShooterGold_Id:
+		case Item::dartShooterGold_Id:
 		return true;
 
 	default:
