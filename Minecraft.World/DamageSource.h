@@ -8,6 +8,8 @@ class Fireball;
 class Player;
 class Explosion;
 class Dart;
+//class DartPoison;
+class DartEnchanted;
 
 #include "ChatPacket.h"
 
@@ -35,6 +37,8 @@ public:
 	static DamageSource *arrow(shared_ptr<Arrow> arrow, shared_ptr<Entity> owner);
 	//
 	static DamageSource *dart(shared_ptr<Dart> dart, shared_ptr<Entity> owner);
+	//static DamageSource *dartPoison(shared_ptr<DartPoison> dartP, shared_ptr<Entity> owner);
+	static DamageSource *dartEnchanted(shared_ptr<DartEnchanted> dartE, shared_ptr<Entity> owner);
 	//
 	static DamageSource *fireball(shared_ptr<Fireball> fireball, shared_ptr<Entity> owner);
 	static DamageSource *thrown(shared_ptr<Entity> entity, shared_ptr<Entity> owner);

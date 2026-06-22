@@ -17,4 +17,4 @@ public:
 	virtual shared_ptr<ItemInstance> use(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player);
 
 	bool emptyBucket(Level *level, int xt, int yt, int zt);
-};
+}; 

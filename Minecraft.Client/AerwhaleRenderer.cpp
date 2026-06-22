@@ -5,7 +5,7 @@
 
 ResourceLocation AerwhaleRenderer::AERWHALE_LOCATION = ResourceLocation(TN_MOB_AERWHALE);
 
-AerwhaleRenderer::AerwhaleRenderer() : MobRenderer(new AerwhaleModel(), 2.5f)
+AerwhaleRenderer::AerwhaleRenderer() : MobRenderer(new AerwhaleModel(), 3.5f)
 {
 }
 
@@ -21,5 +21,5 @@ ResourceLocation *AerwhaleRenderer::getTextureLocation(shared_ptr<Entity> mob)
 
 void AerwhaleRenderer::scale(shared_ptr<LivingEntity> mob, float a)
 {
-	glScalef(5.0f, 5.0f, 5.0f);
+	glScalef(2.0f, 2.0f, 2.0f);
 }

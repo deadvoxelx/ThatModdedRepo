@@ -5,41 +5,84 @@
 
 void AerwhaleModel::_init(float g)
 {
-    body = new ModelPart(this, 20, 0);
-    body->addBox(-3.5, -3.5, -12.5, 7, 6, 10, g);
-    body->setPos(0, 20, 0);
+    texWidth = 512;
+	texHeight = 64;
 
-    body2 = new ModelPart(this, 0, 0);
-    body2->addBox(-2.5, -2.5, -2.5, 5, 5, 5, g);
-    body2->setPos(0, 20, 0);
+    head = new ModelPart(this, 408, 18);
+    head->addBox(-12, -9, -14, 24, 18, 28);
+    head->setPos(0, 0, -20);
+    setRotation(head, 0.0f, 0.0f, 0.0f);
 
-    body3 = new ModelPart(this, 0, 10);
-    body3->addBox(-1.5, -1.5, 2.5, 3, 3, 4, g);
-    body3->setPos(0, 20, 0);
+    bottomPartHead = new ModelPart(this, 116, 28);
+    bottomPartHead->addBox(-13, 4, -15, 26, 6, 30);
+    bottomPartHead->setPos(0, 0, -20);
+    setRotation(bottomPartHead, 0.0f, 0.0f, 0.0f);
 
-    fin1 = new ModelPart(this, 0, 17);
-    fin1->addBox(-7.5, -0.5, 2.5, 8, 1, 4, g);
-    fin1->setPos(0, 20, 0);
+    middleBody = new ModelPart(this, 314, 25);
+    middleBody->addBox(-11, -5, -1, 22, 14, 25);
+    middleBody->setPos(0, -1, -6);
+    setRotation(middleBody, -0.0698132f, 0.0f, 0.0f);
 
-    fin2 = new ModelPart(this, 0, 17);
-    fin2->addBox(-0.5, -0.5, 2.5, 8, 1, 4, g);
-    fin2->setPos(0, 20, 0);
+    bottomPartMiddlebody = new ModelPart(this, 16, 32);
+    bottomPartMiddlebody->addBox(-12, 5, -1, 24, 6, 26);
+    bottomPartMiddlebody->setPos(0, -1, -6);
+    setRotation(bottomPartMiddlebody, 0.0f, 0.0f, 0.0f);
 
-    fin3 = new ModelPart(this, 0, 22);
-    fin3->addBox(-7.5, 1.5, -6.5, 4, 1, 2, g);
-    fin3->setPos(0, 20, 0);
+    frontBody = new ModelPart(this, 0, 0);
+    frontBody->addBox(-11.5, -1, -0.5, 19, 5, 21, g);
+    frontBody->setPos(2, 6, 18);
+    setRotation(frontBody, -0.1047198f, 0.0f, 0.0f);
 
-    fin4 = new ModelPart(this, 0, 22);
-    fin4->addBox(3.5, 1.5, -6.5, 4, 1, 2, g);
-    fin4->setPos(0, 20, 0);
+    backBody = new ModelPart(this, 228, 32);
+    backBody->addBox(-10.5, -9, -2, 17, 10, 22);
+    backBody->setPos(2, 5, 18);
+    setRotation(backBody, -0.1047198f, 0.0f, 0.0f);
 
-	body->compile(1.0f/16.0f);
-    body2->compile(1.0f/16.0f);
-    body3->compile(1.0f/16.0f);
-    fin1->compile(1.0f/16.0f);
-    fin2->compile(1.0f/16.0f);
-    fin3->compile(1.0f/16.0f);
-    fin4->compile(1.0f/16.0f);
+    rightFin = new ModelPart(this, 446, 1);
+    rightFin->addBox(-20, -2, -6, 19, 3, 14);
+    rightFin->setPos(-10, 4, -10);
+    setRotation(rightFin, -0.148353f, 0.2094395f, 0.0f);
+
+    leftFin = new ModelPart(this, 446, 1);
+    leftFin->addBox(1, -2, -6, 19, 3, 14);
+    leftFin->setPos(10, 4, -10);
+    setRotation(leftFin, -0.148353f, -0.2094395f, 0.0f);
+
+    middleFin = new ModelPart(this, 318, 35);
+    middleFin->addBox(-1, -11, 7, 2, 7, 8);
+    middleFin->setPos(0, -1, -6);
+    setRotation(middleFin, -0.1441704f, 0.0f, 0.0f);
+
+    backfinRight = new ModelPart(this, 261, 5);
+    backfinRight->addBox(-11, 0, -6, 15, 3, 24);
+    backfinRight->setPos(-4, 5, 39);
+    setRotation(backfinRight, -0.1047198f, -0.7330383f, 0.0f);
+
+    backfinLeft = new ModelPart(this, 261, 5);
+    backfinLeft->addBox(-4, 0, -6, 13, 3, 24);
+    backfinLeft->setPos(5, 5, 39);
+    setRotation(backfinLeft, -0.1047198f, 0.7330383f, 0.0f);
+
+
+
+	head->compile(1.0f/16.0f);
+    bottomPartHead->compile(1.0f/16.0f);
+    middleBody->compile(1.0f/16.0f);
+    bottomPartMiddlebody->compile(1.0f/16.0f);
+    frontBody->compile(1.0f/16.0f);
+    backBody->compile(1.0f/16.0f);
+    rightFin->compile(1.0f/16.0f);
+    leftFin->compile(1.0f/16.0f);
+    middleFin->compile(1.0f/16.0f);
+    backfinRight->compile(1.0f/16.0f);
+    backfinLeft->compile(1.0f/16.0f);
+}
+
+void AerwhaleModel::setRotation(ModelPart *model, float x, float y, float z)
+{
+	model->xRot = x;
+	model->yRot = y;
+	model->zRot = z;
 }
 
 AerwhaleModel::AerwhaleModel() : Model()
@@ -56,13 +99,17 @@ void AerwhaleModel::render(shared_ptr<Entity> entity, float time, float r, float
 {
     setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
-    body->render(scale, usecompiled);
-    body2->render(scale, usecompiled);
-    body3->render(scale, usecompiled);
-    fin1->render(scale, usecompiled);
-    fin2->render(scale, usecompiled);
-    fin3->render(scale, usecompiled);
-    fin4->render(scale, usecompiled);
+    head->render(scale, usecompiled);
+    bottomPartHead->render(scale, usecompiled);
+    middleBody->render(scale, usecompiled);
+    bottomPartMiddlebody->render(scale, usecompiled);
+    frontBody->render(scale, usecompiled);
+    backBody->render(scale, usecompiled);
+    rightFin->render(scale, usecompiled);
+    leftFin->render(scale, usecompiled);
+    middleFin->render(scale, usecompiled);
+    backfinRight->render(scale, usecompiled);
+    backfinLeft->render(scale, usecompiled);
 }
 
 void AerwhaleModel::setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, shared_ptr<Entity> entity, unsigned int uiBitmaskOverrideAnim)
