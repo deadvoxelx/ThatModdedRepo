@@ -129,7 +129,7 @@ void EntityIO::staticCtor()
 	// DARTS
 	setId(Dart::create, eTYPE_DART, L"Dart", 201);
 	//setId(Dart::create, eTYPE_DARTPOISON, L"Dart", 202);
-	//setId(Dart::create, eTYPE_DARTENCHANTED, L"Dart", 203);
+	setId(Dart::create, eTYPE_DARTENCHANTED, L"Dart", 203);
 	 
 	 
 	setId(DragonFireball::create, eTYPE_DRAGON_FIREBALL, L"DragonFireball", 1000);
