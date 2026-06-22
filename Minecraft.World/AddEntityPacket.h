@@ -32,6 +32,8 @@ public:
 	static const int ZEPHYRBALL = 117;
 	static const int DRAGON_FIRE_BALL = 200;
 	static const int DART = 201;
+	//static const int DARTPOISON = 202;
+	static const int DARTENCHANTED = 203;
 
 	int id;
 	int x, y, z;
