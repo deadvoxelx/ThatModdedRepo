@@ -43,6 +43,16 @@ DamageSource *DamageSource::dart(shared_ptr<Dart> dart, shared_ptr<Entity> owner
 	return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathArrow, ChatPacket::e_ChatDeathArrowItem, dart, owner))->setProjectile();
 }
 
+/*DamageSource *DamageSource::dartPoison(shared_ptr<DartPoison> dartP, shared_ptr<Entity> owner)
+{
+	return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathArrow, ChatPacket::e_ChatDeathArrowItem, dart, owner))->setProjectile();
+}*/
+
+DamageSource *DamageSource::dartEnchanted(shared_ptr<DartEnchanted> dartE, shared_ptr<Entity> owner)
+{
+	return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathArrow, ChatPacket::e_ChatDeathArrowItem, dartE, owner))->setProjectile();
+}
+
 DamageSource *DamageSource::fireball(shared_ptr<Fireball> fireball, shared_ptr<Entity> owner)
 {
 	if (owner == nullptr)
