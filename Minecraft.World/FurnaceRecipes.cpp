@@ -60,7 +60,7 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::holystone_Id, new ItemInstance(Item::healingStone), .35f);
 	addFurnaceRecipy(Item::blueBerry_Id, new ItemInstance(Item::blueBerryEnchanted), .35f);
 	addFurnaceRecipy(Item::dartGold_Id, new ItemInstance(Item::dartEnchanted), .15f);
-	//addFurnaceRecipy(Item::dartShooterGold_Id, new ItemInstance(Item::dartShooterEnchanted), 1);
+	addFurnaceRecipy(Item::dartShooterGold_Id, new ItemInstance(Item::dartShooterEnchanted), 1);
 }
 
 void FurnaceRecipes::addFurnaceRecipy(int itemId, ItemInstance *result, float value)
