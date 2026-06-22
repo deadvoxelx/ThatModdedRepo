@@ -10,12 +10,17 @@ void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, doubl
 {
 	shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(_entity);
     shared_ptr<Dart> dart = dynamic_pointer_cast<Dart>(_entity);
+    shared_ptr<DartEnchanted> dartE = dynamic_pointer_cast<DartEnchanted>(_entity);
 
     if (shared_ptr<Entity>(arrow))
 	{
         bindTexture(_entity);
     }
     if (shared_ptr<Entity>(dart))
+	{
+        bindTexture(_entity);
+    }
+    if (shared_ptr<Entity>(dartE))
 	{
         bindTexture(_entity);
     }
@@ -106,6 +111,10 @@ ResourceLocation *ArrowRenderer::getTextureLocation(shared_ptr<Entity> entity)
         return &ARROW_LOCATION;
     }
     if (entity->instanceof(eTYPE_DART))
+	{
+        return &DART_LOCATION;
+    }
+    if (entity->instanceof(eTYPE_DARTENCHANTED))
 	{
         return &DART_LOCATION;
     }
