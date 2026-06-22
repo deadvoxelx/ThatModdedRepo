@@ -323,6 +323,14 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 							   {
 								   if( level->countInstanceOf(mobType, true) >= 4 ) continue;
 							   }
+							   if( mobType == eTYPE_ZEPHYR )
+							   {
+								   if( level->countInstanceOf(mobType, true) >= 6 ) continue;
+							   }
+							   if( mobType == eTYPE_AERWHALE )
+							   {
+								   if( level->countInstanceOf(mobType, true) >= 4 ) continue;
+							   }
 							   else if( mobType == eTYPE_ENDERMAN && level->dimension->id == 1 )
 							   {
 								   // Special rule for the end, as we only have Endermen (plus the dragon). Increase the spawnable counts based on level difficulty
