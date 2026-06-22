@@ -676,20 +676,21 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::gravititeHoe_Id)
 		ITEM(Item::regenerationStone_Id)
 
-		ITEM(Item::clock_Id)			// 0
-		ITEM(Item::compass_Id)			// 1
-		ITEM(Item::fireball_Id)			// 2
-		ITEM(Item::hellSphere_Id)		// 3
-		ITEM(Item::bow_Id)				// 4
-		ITEM(Item::arrow_Id)			// 5
-		ITEM(Item::dartShooterGold_Id)	// 6
-		ITEM(Item::dartGold_Id)			// 7
-		ITEM(Item::dartPoison_Id)		// 8
-		ITEM(Item::dartEnchanted_Id)	// 9
+		ITEM(Item::clock_Id)				// 0
+		ITEM(Item::fireball_Id)				// 1
+		ITEM(Item::hellSphere_Id)			// 2
+		ITEM(Item::bow_Id)					// 3
+		ITEM(Item::arrow_Id)				// 4
+		ITEM(Item::dartShooterGold_Id)		// 5
+		ITEM(Item::dartShooterEnchanted_Id)	// 6
+		ITEM(Item::dartGold_Id)				// 7
+		ITEM(Item::dartPoison_Id)			// 8
+		ITEM(Item::dartEnchanted_Id)		// 9
 
-		ITEM(Item::keyBronze_Id)		// 1
-		ITEM(Item::keySilver_Id)		// 2
-		ITEM(Item::keyGold_Id)			// 3
+		ITEM(Item::compass_Id)				// 0
+		ITEM(Item::keyBronze_Id)			// 1
+		ITEM(Item::keySilver_Id)			// 2
+		ITEM(Item::keyGold_Id)				// 3
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{
