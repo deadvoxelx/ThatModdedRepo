@@ -13,7 +13,7 @@
 
 AetherLevelSource::AetherLevelSource(Level *level, int64_t seed)
 {
-	m_XZSize = AETHER_LEVEL_MIN_WIDTH;
+	m_XZSize = level->getLevelData()->getXZSize();
 
 	this->level = level;
 
@@ -116,7 +116,6 @@ void AetherLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks, B
 		}
 	}
 	delete [] buffer.data;
-
 }
 
 void AetherLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
@@ -178,27 +177,22 @@ LevelChunk *AetherLevelSource::getChunk(int xOffs, int zOffs)
 	random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
 	BiomeArray biomes;
-	// 4J - now allocating this with a physical alloc & bypassing general memory management so that it will get cleanly freed
+
 	unsigned int blocksSize = Level::genDepth * 16 * 16;
 	byte *tileData = static_cast<byte *>(XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096, PAGE_READWRITE));
 	XMemSet128(tileData,0,blocksSize);
 	byteArray blocks = byteArray(tileData,blocksSize);
-	//    byteArray blocks = byteArray(16 * level->depth * 16);
 
-	//    LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);			// 4J moved below
 	level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16, 16, true);
 
 	prepareHeights(xOffs, zOffs, blocks, biomes);
 	buildSurfaces(xOffs, zOffs, blocks, biomes);
 
-	// 4J - this now creates compressed block data from the blocks array passed in, so moved it until after the blocks are actually finalised. We also
-	// now need to free the passed in blocks as the LevelChunk doesn't use the passed in allocation anymore.
 	LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
 	XPhysicalFree(tileData);
 
 	levelChunk->recalcHeightmap();
 
-	//delete blocks.data; // Don't delete the blocks as the array data is actually owned by the chunk now
 	delete biomes.data;
 
 	return levelChunk;
@@ -236,6 +230,7 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 	doubleArray cnr;
 	cnr = carvingNoise->getRegion(cnr, x, y, z, xSize, ySize, zSize, s / 30.0, hs / 30.0, s / 30.0);
 
+	// World bounds for edge fade (in noise column units)
 	float worldHalf = (float)m_XZSize;
 
 	int p = 0;
@@ -255,6 +250,7 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 			float islandVal = (float)inr[pp];
 			float doffs = islandVal * 100.0f - 60.0f;
 
+			// Edge fade scaled to actual world size
 			float xd = (float)(xx + x);
 			float zd = (float)(zz + z);
 			float edgeDist = sqrt(xd * xd + zd * zd);
@@ -266,11 +262,13 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 				edgeFade = 80.0f - ((edgeDist - fadeStart) / (worldHalf - fadeStart)) * 180.0f;
 			if (edgeFade < -100) edgeFade = -100;
 
+			// Islands only appear where both noise and edge conditions allow
 			if (edgeFade < doffs) doffs = edgeFade;
 
 			if (doffs < -100) doffs = -100;
 			if (doffs > 80) doffs = 80;
 
+			// Use depth noise to shift terrain center — creates shelf-like elevation steps
 			if (depth > 2) depth = 2;
 			if (depth < -2) depth = -2;
 			double depthShift = depth * 1.5;
