@@ -10,8 +10,6 @@
 #include "Windows64\KeyboardMouseInput.h"
 #endif
 
-
-
 Screen::Screen()	// 4J added
 {
 	minecraft = nullptr;
@@ -21,6 +19,18 @@ Screen::Screen()	// 4J added
 	font = nullptr;
 	particles = nullptr;
 	clickedButton = nullptr;
+}
+
+Screen::~Screen()
+{
+	delete particles;
+	particles = nullptr;
+
+	for (Button *button : buttons)
+	{
+		delete button;
+	}
+	buttons.clear();
 }
 
 void Screen::render(int xm, int ym, float a)
