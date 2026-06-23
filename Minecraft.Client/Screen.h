@@ -22,6 +22,7 @@ public:
 	GuiParticles *particles;
 
 	Screen();		// 4J added
+    virtual ~Screen();
     virtual void render(int xm, int ym, float a);
 protected:
 	virtual void keyPressed(wchar_t eventCharacter, int eventKey);
