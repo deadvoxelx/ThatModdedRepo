@@ -110,4 +110,6 @@ void MoaModel::setupAnim(float time, float r, float bob, float yRot, float xRot,
     feather1->yRot = -0.375f;
     feather2->yRot = 0.0f;
     feather3->yRot = 0.375f;
+    wing->zRot = bob;
+	wing2->zRot = -bob;
 }

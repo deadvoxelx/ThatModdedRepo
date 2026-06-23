@@ -19,6 +19,14 @@
 #include "..\Minecraft.Client\Minecraft.h"
 #include "..\Minecraft.Client\Textures.h"
 
+void Cockatrice::_init()
+{
+	flap = 0;
+	flapSpeed = 0;
+	flapping = 1;
+	oFlapSpeed = oFlap = 0.0f;
+}
+
 Cockatrice::Cockatrice(Level *level) : Monster( level )
 {
 	this->defineSynchedData();
@@ -55,15 +63,31 @@ void Cockatrice::aiStep()
 {
 	Monster::aiStep();
 
+	oFlap = flap;
+	oFlapSpeed = flapSpeed;
+
+	flapSpeed += (onGround ? -1 : 4) * 0.3f;
+	if (flapSpeed < 0) flapSpeed = 0;
+	if (flapSpeed > 0.75) flapSpeed = 0.75;
+
+	if (!onGround && flapping < 1) flapping = 1;
+	flapping *= 0.9;
+
 	if (!onGround && yd < 0) 
 	{
 		yd *= 0.6;
 	}
+
+	flap += flapping * 2;
 }
 
 void Cockatrice::newServerAiStep()
 {
 	Monster::newServerAiStep();
+}
+
+void Cockatrice::causeFallDamage(float distance) 
+{
 }
 
 void Cockatrice::performRangedAttack(shared_ptr<LivingEntity> target, float power)
@@ -74,4 +98,18 @@ void Cockatrice::performRangedAttack(shared_ptr<LivingEntity> target, float powe
 
 	playSound(eSoundType_RANDOM_BOW, 1.0f, 1 / (getRandom()->nextFloat() * 0.4f + 0.8f));
 	level->addEntity(dart);
+}
+
+int Cockatrice::getDeathLoot() 
+{
+	return Item::feather->id;
+}
+
+void Cockatrice::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
+{
+	int count = 1 + Mth::nextInt(level->random, 1, 2) + random->nextInt(1 + playerBonusLevel);
+	for (int i = 0; i < count; i++)
+	{
+		spawnAtLocation(Item::feather_Id, 1);
+	}
 }

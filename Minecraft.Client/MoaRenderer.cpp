@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MoaRenderer.h"
 #include "MoaModel.h"
+#include "..\Minecraft.World\Mth.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.monster.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.animal.h"
 
@@ -43,6 +44,16 @@ ResourceLocation *MoaRenderer::getTextureLocation(shared_ptr<Entity> entity)
 void MoaRenderer::scale(shared_ptr<LivingEntity> mob, float a)
 {
 	glScalef(2.0f, 2.0f, 2.0f);
+}
+
+float MoaRenderer::getBob(shared_ptr<LivingEntity> _mob, float a)
+{
+	shared_ptr<Cockatrice> mob = dynamic_pointer_cast<Cockatrice>(_mob);
+
+    float flap = mob->oFlap+(mob->flap-mob->oFlap)*a;
+    float flapSpeed = mob->oFlapSpeed+(mob->flapSpeed-mob->oFlapSpeed)*a;
+        
+    return (Mth::sin(flap)+1)*flapSpeed;
 }
 
 /*int EvupulRenderer::prepareArmor(shared_ptr<LivingEntity> _mob, int layer, float a)

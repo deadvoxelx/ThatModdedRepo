@@ -92,7 +92,7 @@ const int overworldSize = LEVEL_MAX_WIDTH + LevelRenderer::PLAYER_VIEW_DISTANCE 
 const int netherSize = HELL_LEVEL_MAX_WIDTH + 2; // 4J Stu - The plus 2 is really just to make our total chunk count a multiple of 8 for the flags, we will never see these in the nether
 const int endSize = END_LEVEL_MAX_WIDTH;
 const int outerEndSize = OUTER_END_LEVEL_MAX_WIDTH;
-const int aetherSize = AETHER_LEVEL_MAX_WIDTH;
+const int aetherSize = LEVEL_MAX_WIDTH + LevelRenderer::PLAYER_VIEW_DISTANCE + LevelRenderer::PLAYER_VIEW_DISTANCE;
 const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[5] = { overworldSize, netherSize, endSize, outerEndSize, aetherSize };
 const int LevelRenderer::DIMENSION_OFFSETS[5] = { 0, (overworldSize * overworldSize * CHUNK_Y_COUNT) ,  (overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ), (overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ) + ( endSize * endSize * CHUNK_Y_COUNT ), (overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ) + ( endSize * endSize * CHUNK_Y_COUNT ) + ( outerEndSize * outerEndSize * CHUNK_Y_COUNT ) };
 #else
