@@ -1281,8 +1281,8 @@ void LocalPlayer::handleMouseDown(int button, bool down)
 		int z = minecraft->hitResult->z;
 
 		// Voxel - only bottom layer is non-mineable now, top layer can be broken even in Nether
-		// Voxel - both top and bottom layers can be broken in the end and outer end
-		if( ( y == 0 ) && (level->dimension->id != 1 && level->dimension->id != 2) ) return;
+		// Voxel - both top and bottom layers can be broken in the end, outer end, and aether
+		if( ( y == 0 ) && (level->dimension->id != 1 && level->dimension->id != 2 && level->dimension->id != 3) ) return;
 
 		minecraft->gameMode->continueDestroyBlock(x, y, z, minecraft->hitResult->f);
 		
@@ -1520,7 +1520,7 @@ bool LocalPlayer::handleMouseClick(int button)
 			{
 				// If I have an empty bucket in my hand, it's going to be filled with milk, so turn off mayUse
 				shared_ptr<ItemInstance> item = inventory->getSelected();
-				if(item && (item->id==Item::bucket_empty_Id))
+				if(item && (item->id==Item::bucket_empty_Id || item->id==Item::skyrootBucket_empty_Id))
 				{
 					mayUse=false;
 				}
@@ -1541,8 +1541,8 @@ bool LocalPlayer::handleMouseClick(int button)
 		if (button == 0)
 		{
 			// Voxel - only bottom layer is non-mineable now, top layer can be broken even in Nether
-			// Voxel - both top and bottom layers can be broken in the end and outer end
-			if( !( y == 0 ) ||  level->dimension->id == 1 || level->dimension->id == 2 )
+			// Voxel - both top and bottom layers can be broken in the end, outer end, and aether
+			if( !( y == 0 ) ||  level->dimension->id == 1 || level->dimension->id == 2 || level->dimension->id == 3 )
 			{
 				minecraft->gameMode->startDestroyBlock(x, y, z, minecraft->hitResult->f);
 			}
