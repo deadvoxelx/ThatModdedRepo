@@ -13,11 +13,12 @@ public:
 	eINSTANCEOF GetType() { return eTYPE_COCKATRICE; }
 	static Entity *create(Level *level) { return new Cockatrice(level); }
 
-public:
 	Cockatrice(Level *level);
 	virtual bool useNewAi();
 	virtual void aiStep();
 	virtual void performRangedAttack(shared_ptr<LivingEntity> target, float power);
+	virtual int getDeathLoot();
+	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 
 protected:
 	virtual void registerAttributes();
