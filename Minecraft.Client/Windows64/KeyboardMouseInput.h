@@ -20,12 +20,14 @@ public:
 	static const int KEY_RIGHT = 'D';
 	static const int KEY_JUMP = VK_SPACE;
 	static const int KEY_SNEAK = VK_LSHIFT;
-	static const int KEY_SPRINT = 'Q';
+	static const int KEY_SPRINT = VK_LCONTROL;
+	static const int KEY_SPRINT_ALT = 'Q';
 	static const int KEY_INVENTORY = 'E';
 	static const int KEY_DROP = 'B';
 	static const int KEY_CRAFTING = 'C';
 	static const int KEY_CRAFTING_ALT = 'R';
 	static const int KEY_CHAT = 'T';
+	static const int KEY_CHAT_ALT = VK_OEM_2;
 	static const int KEY_ZOOM = 'V';
 	static const int KEY_CONFIRM = VK_RETURN;
 	static const int KEY_CANCEL = VK_ESCAPE;
