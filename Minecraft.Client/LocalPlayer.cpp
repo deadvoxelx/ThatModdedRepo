@@ -1691,3 +1691,4 @@ void LocalPlayer::SetPlayerAdditionalModelParts(vector<ModelPart *>pAdditionalMo
 {
 	m_pAdditionalModelParts=pAdditionalModelParts;
 }
+ 
