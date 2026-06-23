@@ -38,6 +38,14 @@ void RelicMalletItem::staticCtor()
 	diggables.data[24] = Tile::netherDiamond;
 	diggables.data[25] = Tile::nethaniumOre;
 	diggables.data[26] = Tile::nethaniumBlock;
+	diggables.data[27] = Tile::zaniteOre;
+	diggables.data[28] = Tile::zaniteBlock;
+	diggables.data[29] = Tile::gravititeOre;
+	diggables.data[30] = Tile::enchantedGravitite;
+	diggables.data[31] = Tile::ambrosiumOre;
+	diggables.data[32] = Tile::obsidian;
+	diggables.data[33] = Tile::endoriumOre;
+	diggables.data[34] = Tile::endoriumBlock;
 }
 
 RelicMalletItem::RelicMalletItem(int id, const Tier *tier) : DiggerItem(id, 8, tier, &diggables)
@@ -71,7 +79,7 @@ bool RelicMalletItem::canDestroySpecial(Tile *tile)
 
 float RelicMalletItem::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *tile)
 {
-	if (tile != NULL && (tile->material == Material::metal || tile->material == Material::heavyMetal || tile->material == Material::stone || tile->material == Material::glass))
+	if (tile != NULL && (tile->material == Material::metal || tile->material == Material::heavyMetal || tile->material == Material::stone || tile->material == Material::glass || tile->material == Material::endStone || tile->material == Material::veloettGrass || tile->material == Material::netherrack || tile->material == Material::obsidian))
 	{
 		return speed;
 	}
