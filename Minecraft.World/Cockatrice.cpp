@@ -75,3 +75,17 @@ void Cockatrice::performRangedAttack(shared_ptr<LivingEntity> target, float powe
 	playSound(eSoundType_RANDOM_BOW, 1.0f, 1 / (getRandom()->nextFloat() * 0.4f + 0.8f));
 	level->addEntity(dart);
 }
+
+int Cockatrice::getDeathLoot() 
+{
+	return Item::feather->id;
+}
+
+void Cockatrice::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
+{
+	int count = 1 + Mth::nextInt(level->random, 1, 2) + random->nextInt(1 + playerBonusLevel);
+	for (int i = 0; i < count; i++)
+	{
+		spawnAtLocation(Item::feather_Id, 1);
+	}
+}
