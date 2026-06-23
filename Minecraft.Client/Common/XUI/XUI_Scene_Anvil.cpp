@@ -23,7 +23,7 @@ HRESULT CXuiSceneAnvil::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	
 	m_cross.SetShow(FALSE);
 	m_editName.SetText(L"");
-	m_editName.SetTextLimit(30);
+	m_editName.SetTextLimit(50);	// Voxel - set anvil character limit to 50
 	m_editName.SetTitleAndText(IDS_TITLE_RENAME,IDS_TITLE_RENAME);
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
