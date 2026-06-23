@@ -16,5 +16,6 @@ public:
 
 protected:
 	virtual void scale(shared_ptr<LivingEntity> mob, float a);
+	virtual float getBob(shared_ptr<LivingEntity> _mob, float a);
 	//virtual int prepareArmor(shared_ptr<LivingEntity> _mob, int layer, float a);
 };
