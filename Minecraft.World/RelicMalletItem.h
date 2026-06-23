@@ -5,7 +5,7 @@
 class Player;
 class Level;
 
-#define PICKAXE_DIGGABLES 27
+#define PICKAXE_DIGGABLES 35
 
 class RelicMalletItem : public DiggerItem
 {
