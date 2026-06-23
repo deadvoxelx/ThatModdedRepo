@@ -104,12 +104,13 @@ void Input::tick(LocalPlayer *player)
 			}
 		}
 
-		// Ctrl + forward = sprint (hold to sprint, including while flying)
+		// Ctrl/Q + forward = sprint (hold to sprint, including while flying)
 		{
 			bool ctrlHeld = g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SPRINT);
+			bool qHeld = g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SPRINT_ALT);
 			bool movingForward = (kbYA > 0.0f);
 
-			if (ctrlHeld && movingForward)
+			if ((ctrlHeld || qHeld) && movingForward)
 			{
 				sprinting = true;
 			}
