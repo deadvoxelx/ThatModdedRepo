@@ -41,7 +41,7 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void *_initData, UILayer *parentL
 
 	if(m_repairMenu->cost > 0)
 	{
-		if(m_repairMenu->cost >= 40 && !pMinecraft->localplayers[iPad]->abilities.instabuild)
+		if(m_repairMenu->cost >= 32767 && !pMinecraft->localplayers[iPad]->abilities.instabuild)
 		{
 			m_costString = app.GetString(IDS_REPAIR_EXPENSIVE);
 			expensive = true;
@@ -374,7 +374,7 @@ void UIScene_AnvilMenu::handleEditNamePressed()
 		UIKeyboardInitData kbData;
 		kbData.title       = app.GetString(IDS_TITLE_RENAME);
 		kbData.defaultText = m_textInputAnvil.getLabel();
-		kbData.maxChars    = 30;
+		kbData.maxChars    = 50;	// Voxel - set anvil character limit to 50
 		kbData.callback    = &UIScene_AnvilMenu::KeyboardCompleteCallback;
 		kbData.lpParam     = this;
 		ui.NavigateToScene(m_iPad, eUIScene_Keyboard, &kbData, eUILayer_Fullscreen, eUIGroup_Fullscreen);
