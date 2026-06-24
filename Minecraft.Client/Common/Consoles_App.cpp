@@ -8740,6 +8740,8 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_ZEPHYR);
 	case eTYPE_COCKATRICE:
 		return app.GetString(IDS_COCKATRICE);
+	case eTYPE_SWET:
+		return app.GetString(IDS_SWET);
 	};
 
 	return L"";
