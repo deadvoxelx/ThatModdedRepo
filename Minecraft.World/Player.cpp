@@ -238,6 +238,12 @@ void Player::updateFrameTick()
 				}
 			}
 		}
+
+		if (item->id == Item::cloudParachute->id)
+		{
+			yd *= 0.8;
+			fallDistance = 0;
+		}
 	}
 
 	if (takeXpDelay > 0) takeXpDelay--;
