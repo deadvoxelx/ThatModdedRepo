@@ -93,3 +93,4 @@
 #include "DartShooterGoldItem.h"
 #include "DartShooterEnchantedItem.h"
 #include "HealingStoneItem.h"
+#include "CloudParachuteItem.h"

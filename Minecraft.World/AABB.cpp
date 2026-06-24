@@ -54,10 +54,16 @@ AABB *AABB::newPermanent(double x0, double y0, double z0, double x1, double y1, 
 
 void AABB::clearPool()
 {
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TlsGetValue(tlsIdx));
+	if (tls != nullptr)
+	{
+		tls->poolPointer = 0;
+	}
 }
 
 void AABB::resetPool()
 {
+	clearPool();
 }
 
 AABB *AABB::newTemp(double x0, double y0, double z0, double x1, double y1, double z1)

@@ -13,6 +13,7 @@ private:
 
 public:
 	GuiParticles(Minecraft *mc);
+    ~GuiParticles();
     void tick();
     void add(GuiParticle *guiParticle);
     void render(float a);

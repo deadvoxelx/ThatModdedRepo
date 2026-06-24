@@ -47,10 +47,16 @@ Vec3 *Vec3::newPermanent(double x, double y, double z)
 
 void Vec3::clearPool()
 {
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TlsGetValue(tlsIdx));
+	if (tls != nullptr)
+	{
+		tls->poolPointer = 0;
+	}
 }
 
 void Vec3::resetPool()
 {
+	clearPool();
 }
 
 Vec3 *Vec3::newTemp(double x, double y, double z)

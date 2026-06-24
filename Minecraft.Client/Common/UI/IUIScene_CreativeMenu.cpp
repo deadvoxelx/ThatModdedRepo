@@ -450,6 +450,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Tile::monsterStoneEgg_Id,StoneMonsterTile::HOST_ROCK)
 		ITEM_AUX(Tile::monsterStoneEgg_Id,StoneMonsterTile::HOST_COBBLE)
 		ITEM_AUX(Tile::monsterStoneEgg_Id,StoneMonsterTile::HOST_STONEBRICK)
+		ITEM(Tile::mobSpawner_Id);
 		ITEM_AUX(Item::spawnEgg_Id, 93); // Chicken
 		ITEM_AUX(Item::spawnEgg_Id, 90); // Pig
 		ITEM_AUX(Item::spawnEgg_Id, 91); // Sheep
@@ -480,11 +481,11 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 60); // Silverfish
 		ITEM_AUX(Item::spawnEgg_Id, 55); // Slime
 		ITEM_AUX(Item::spawnEgg_Id, 66); // Witch
+		ITEM_AUX(Item::spawnEgg_Id, 102); // Pigman
+		ITEM_AUX(Item::spawnEgg_Id, 57); // Zombie Pigman
 		ITEM_AUX(Item::spawnEgg_Id, 56); // Ghast
 		ITEM_AUX(Item::spawnEgg_Id, 61); // Blaze
 		ITEM_AUX(Item::spawnEgg_Id, 62); // Magma Cube
-		ITEM_AUX(Item::spawnEgg_Id, 102); // Pigman
-		ITEM_AUX(Item::spawnEgg_Id, 57); // Zombie Pigman
 		ITEM_AUX(Item::spawnEgg_Id, 103); // Watcher
 		ITEM_AUX(Item::spawnEgg_Id, 58); // Enderman
 		ITEM_AUX(Item::spawnEgg_Id, 106); // White Enderman
@@ -495,6 +496,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 109); // Aphalaf Boss
 		ITEM_AUX(Item::spawnEgg_Id, 118); // Aerwhale
 		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr
+		ITEM_AUX(Item::spawnEgg_Id, 122); // Swet
 		ITEM_AUX(Item::spawnEgg_Id, 119); // Cockatrice 
 		//ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon - doesnt work
 		ITEM_AUX(Item::spawnEgg_Id, 64); // Wither
@@ -688,9 +690,10 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::dartEnchanted_Id)		// 9
 
 		ITEM(Item::compass_Id)				// 0
-		ITEM(Item::keyBronze_Id)			// 1
-		ITEM(Item::keySilver_Id)			// 2
-		ITEM(Item::keyGold_Id)				// 3
+		ITEM(Item::cloudParachute_Id)		// 1
+		ITEM(Item::keyBronze_Id)			// 2
+		ITEM(Item::keySilver_Id)			// 3
+		ITEM(Item::keyGold_Id)				// 4
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{

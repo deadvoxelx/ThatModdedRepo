@@ -201,7 +201,7 @@ void IUIScene_AnvilMenu::handleTick()
 
 	if(m_repairMenu->cost > 0)
 	{
-		if(m_repairMenu->cost >= 40 && !pMinecraft->localplayers[getPad()]->abilities.instabuild)
+		if(m_repairMenu->cost >= 32767 && !pMinecraft->localplayers[getPad()]->abilities.instabuild)
 		{
 			m_costString = app.GetString(IDS_REPAIR_EXPENSIVE);
 			canAfford = false;

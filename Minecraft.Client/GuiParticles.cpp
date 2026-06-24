@@ -8,6 +8,15 @@ GuiParticles::GuiParticles(Minecraft *mc)
 	this->mc = mc;
 }
 
+GuiParticles::~GuiParticles()
+{
+	for (GuiParticle *gp : particles)
+	{
+		delete gp;
+	}
+	particles.clear();
+}
+
 void GuiParticles::tick()
 {
     for (unsigned int i = 0; i < particles.size(); i++)
@@ -19,6 +28,7 @@ void GuiParticles::tick()
 
         if (gp->removed)
 		{
+            delete gp;
             particles.erase(particles.begin()+i);
 			i--;
         }

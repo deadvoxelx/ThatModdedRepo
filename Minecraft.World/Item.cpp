@@ -337,6 +337,7 @@ Item *Item::moaEggBlack = NULL;
 Item *Item::keyBronze = NULL;
 Item *Item::keySilver = NULL;
 Item *Item::keyGold = NULL;
+CloudParachuteItem *Item::cloudParachute = NULL;
 
 void Item::staticCtor()
 {
@@ -662,9 +663,9 @@ void Item::staticCtor()
 	Item::keyBronze = (new Item(245))																->setIconName(L"keyBronze")->setDescriptionId(IDS_ITEM_KEY_BRONZE)->setUseDescriptionId(IDS_ITEM_KEY_BRONZE);
 	Item::keySilver = (new Item(246))																->setIconName(L"keySilver")->setDescriptionId(IDS_ITEM_KEY_SILVER)->setUseDescriptionId(IDS_ITEM_KEY_SILVER);
 	Item::keyGold = (new Item(247))																	->setIconName(L"keyGold")->setDescriptionId(IDS_ITEM_KEY_GOLD)->setUseDescriptionId(IDS_ITEM_KEY_GOLD);
+	Item::cloudParachute = (CloudParachuteItem *)(new CloudParachuteItem(248))						->setIconName(L"cloudParachute")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_cloud)->setDescriptionId(IDS_ITEM_CLOUD_PARACHUTE)->setUseDescriptionId(IDS_ITEM_CLOUD_PARACHUTE);
 
 }
-
 
 // 4J Stu - We need to do this after the staticCtor AND after staticCtors for other class
 // eg Recipes

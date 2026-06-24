@@ -153,4 +153,13 @@ void ToolRecipies::addRecipes(Recipes *r)
 		L'#', Item::magmaCream,
 		L'T'
 		);
+
+	r->addShapedRecipy(new ItemInstance((Item *)Item::cloudParachute),
+		L"ssctg",
+        L"##", //
+        L"##", //
+
+		L'#', Tile::aercloud,
+		L'T'
+		);
 }

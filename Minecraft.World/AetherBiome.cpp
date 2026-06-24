@@ -18,7 +18,8 @@ AetherBiome::AetherBiome(int id) : Biome(id)
 	friendlies.push_back(new MobSpawnerData(eTYPE_FLYING_COW, 10, 1, 3));
 	enemies.push_back(new MobSpawnerData(eTYPE_ZEPHYR, 5, 1, 1));
 	enemies.push_back(new MobSpawnerData(eTYPE_AERWHALE, 2, 1, 1));
-	enemies.push_back(new MobSpawnerData(eTYPE_COCKATRICE, 8, 1, 2));
+	enemies.push_back(new MobSpawnerData(eTYPE_COCKATRICE, 6, 1, 2));
+	enemies.push_back(new MobSpawnerData(eTYPE_SWET, 3, 1, 3));
 	//ambientFriendlies.push_back(new MobSpawnerData(eTYPE_COCKATRICESPAWNER, 8, 1, 2));
 
 	delete decorator;

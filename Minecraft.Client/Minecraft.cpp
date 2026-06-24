@@ -503,9 +503,10 @@ LevelStorageSource *Minecraft::getLevelSource()
 
 void Minecraft::setScreen(Screen *screen)
 {
-	if (this->screen != nullptr)
+	Screen *oldScreen = this->screen;
+	if (oldScreen != nullptr)
 	{
-		this->screen->removed();
+		oldScreen->removed();
 	}
 
 #ifdef _WINDOWS64
@@ -2563,6 +2564,10 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				case Item::goldBread_Id:
 				case Item::nethaniumBread_Id:
 				case Item::veloettBerry_Id:
+				case Item::blueBerry_Id:
+				case Item::blueBerryEnchanted_Id:
+				case Item::gummySwetBlue_Id:
+				case Item::gummySwetGold_Id:
 					// Check that we are actually hungry so will eat this item
 					{
 						FoodItem *food = static_cast<FoodItem *>(itemInstance->getItem());
@@ -2574,6 +2579,14 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 					break;
 
 				case Item::bucket_milk_Id:
+					*piUse=IDS_TOOLTIPS_DRINK;
+					break;
+
+				case Item::skyrootBucket_milk_Id:
+					*piUse=IDS_TOOLTIPS_DRINK;
+					break;
+
+				case Item::skyrootBucket_poison_Id:
 					*piUse=IDS_TOOLTIPS_DRINK;
 					break;
 
@@ -2606,16 +2619,19 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				case Item::relicMallet_Id:
 				case Item::zaniteSword_Id:
 				case Item::gravititeSword_Id:
+				case Item::holystoneSword_Id:
 					*piUse=IDS_TOOLTIPS_BLOCK;
 					break;
 
 				case Item::bucket_empty_Id:
+				case Item::skyrootBucket_empty_Id:
 				case Item::glassBottle_Id:
 					if (bUseItem) *piUse=IDS_TOOLTIPS_COLLECT;
 					break;
 
 				case Item::bucket_lava_Id:
 				case Item::bucket_water_Id:
+				case Item::skyrootBucket_water_Id:
 					*piUse=IDS_TOOLTIPS_EMPTY;
 					break;
 
@@ -2747,6 +2763,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 							case Item::endoriumHoe_Id:
 							case Item::zaniteHoe_Id:
 							case Item::gravititeHoe_Id:
+							case Item::holystoneHoe_Id:
 								*piUse=IDS_TOOLTIPS_TILL;
 								break;
 
@@ -2774,6 +2791,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 									case Tile::veloettFlower_Id:
 									case Tile::skyrootSapling_Id:
 									case Tile::goldenOakSapling_Id:
+									case Tile::berryBushStem_Id:
 										*piUse=IDS_TOOLTIPS_GROW;
 										break;
 									}
@@ -2821,6 +2839,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 						case Tile::beacon_Id:
 						case Tile::nether_furnace_Id:
 						case Tile::nether_furnace_lit_Id:
+						case Tile::enchanter_Id:
 							*piAction=IDS_TOOLTIPS_MINE;
 							*piUse=IDS_TOOLTIPS_USE;
 							break;
@@ -5047,133 +5066,6 @@ int64_t Minecraft::currentTimeMillis()
 {
 	return System::currentTimeMillis();//(Sys.getTime() * 1000) / Sys.getTimerResolution();
 }
-
-/*void Minecraft::handleMouseDown(int button, bool down)
-{
-if (gameMode->instaBuild) return;
-if (!down) missTime = 0;
-if (button == 0 && missTime > 0) return;
-
-if (down && hitResult != nullptr && hitResult->type == HitResult::TILE && button == 0)
-{
-int x = hitResult->x;
-int y = hitResult->y;
-int z = hitResult->z;
-gameMode->continueDestroyBlock(x, y, z, hitResult->f);
-particleEngine->crack(x, y, z, hitResult->f);
-}
-else
-{
-gameMode->stopDestroyBlock();
-}
-}
-
-void Minecraft::handleMouseClick(int button)
-{
-if (button == 0 && missTime > 0) return;
-if (button == 0)
-{
-app.DebugPrintf("handleMouseClick - Player %d is swinging\n",player->GetXboxPad());
-player->swing();
-}
-
-bool mayUse = true;
-
-//	* if (button == 1) { ItemInstance item =
-//	* player.inventory.getSelected(); if (item != null) { if
-//	* (gameMode.useItem(player, item)) {
-//	* gameRenderer.itemInHandRenderer.itemUsed(); return; } } }
-
-// 4J-PB - Adding a special case in here for sleeping in a bed in a multiplayer game - we need to wake up, and we don't have the inbedchatscreen with a button
-
-if(button==1 && (player->isSleeping() && level != nullptr && level->isClientSide))
-{
-shared_ptr<MultiplayerLocalPlayer> mplp = dynamic_pointer_cast<MultiplayerLocalPlayer>( player );
-
-if(mplp) mplp->StopSleeping();
-
-// 4J - TODO
-//if (minecraft.player instanceof MultiplayerLocalPlayer)
-//{
-//    ClientConnection connection = ((MultiplayerLocalPlayer) minecraft.player).connection;
-//    connection.send(new PlayerCommandPacket(minecraft.player, PlayerCommandPacket.STOP_SLEEPING));
-//}
-}
-
-if (hitResult == nullptr)
-{
-if (button == 0 && !(dynamic_cast<CreativeMode *>(gameMode) != nullptr)) missTime = 10;
-}
-else if (hitResult->type == HitResult::ENTITY)
-{
-if (button == 0)
-{
-gameMode->attack(player, hitResult->entity);
-}
-if (button == 1)
-{
-gameMode->interact(player, hitResult->entity);
-}
-}
-else if (hitResult->type == HitResult::TILE)
-{
-int x = hitResult->x;
-int y = hitResult->y;
-int z = hitResult->z;
-int face = hitResult->f;
-
-//	* if (button != 0) { if (hitResult.f == 0) y--; if (hitResult.f ==
-//	* 1) y++; if (hitResult.f == 2) z--; if (hitResult.f == 3) z++; if
-//	* (hitResult.f == 4) x--; if (hitResult.f == 5) x++; }
-
-// if (isClientSide())
-// {
-// return;
-// }
-
-if (button == 0)
-{
-gameMode->startDestroyBlock(x, y, z, hitResult->f);
-}
-else
-{
-shared_ptr<ItemInstance> item = player->inventory->getSelected();
-int oldCount = item != nullptr ? item->count : 0;
-if (gameMode->useItemOn(player, level, item, x, y, z, face))
-{
-mayUse = false;
-app.DebugPrintf("Player %d is swinging\n",player->GetXboxPad());
-player->swing();
-}
-if (item == nullptr)
-{
-return;
-}
-
-if (item->count == 0)
-{
-player->inventory->items[player->inventory->selected] = nullptr;
-}
-else if (item->count != oldCount)
-{
-gameRenderer->itemInHandRenderer->itemPlaced();
-}
-}
-}
-
-if (mayUse && button == 1)
-{
-shared_ptr<ItemInstance> item = player->inventory->getSelected();
-if (item != nullptr)
-{
-if (gameMode->useItem(player, level, item))
-{
-gameRenderer->itemInHandRenderer->itemUsed();
-}
-}
-}
-}
-*/
 
 // 4J-PB
 Screen * Minecraft::getScreen()
