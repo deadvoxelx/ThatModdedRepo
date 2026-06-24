@@ -194,6 +194,11 @@ void Swet::serverAiStep()
 			xxa = yya = 0;
 		}
 	}
+
+	if (dimension == 3 && y < 10)
+	{
+		remove();
+	}
 }
 
 void Swet::decreaseSquish()
