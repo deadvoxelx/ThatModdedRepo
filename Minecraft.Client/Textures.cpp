@@ -191,6 +191,10 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/dartPoison",
 	L"mob/dartEnchanted",
 	L"mob/cockatrice",
+	L"mob/moaBlue",
+	L"mob/moaWhite",
+	L"mob/moaBlack",
+	L"mob/moaOrange",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
