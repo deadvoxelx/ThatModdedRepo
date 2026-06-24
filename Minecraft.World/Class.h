@@ -193,6 +193,8 @@ enum eINSTANCEOF
 
 				eTYPE_SLIME					= eTYPE_MOB | eTYPE_VALID_IN_SPAWNER_FLAG | eTYPE_ENEMY | BIT_SLIME,
 					eTYPE_LAVASLIME			= eTYPE_SLIME | 0x1,
+					eTYPE_SWET				= eTYPE_SLIME | 0x2,
+
 
 				eTYPE_ENDERDRAGON	= eTYPE_MOB | 0x5,
 	
@@ -450,8 +452,8 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_ZEPHYR				)->addParent( eTYPE_FLYING_MOB )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG)->addParent(eTYPE_ENEMY ) );
 		classes->push_back( SUBCLASS(eTYPE_AERWHALE				)->addParent( eTYPE_FLYING_MOB )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG)->addParent(eTYPE_ENEMY ) );
 		classes->push_back( SUBCLASS(eTYPE_COCKATRICE			)->addParent( eTYPE_MONSTER)->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
-
 		classes->push_back( SUBCLASS(eTYPE_COCKATRICESPAWNER	)->addParent( eTYPE_AMBIENT )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
+		classes->push_back( SUBCLASS(eTYPE_SWET					)->addParent( eTYPE_MOB )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG)->addParent(eTYPE_ENEMY ) );
 
 		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
 		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
