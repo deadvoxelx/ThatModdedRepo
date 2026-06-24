@@ -25,6 +25,7 @@ class DartShooterGoldItem;
 //class DartShooterPoisonItem;
 class DartShooterEnchantedItem;
 class HealingStoneItem;
+class CloudParachuteItem;
 
 #define ITEM_ICON_COLUMNS 16
 
@@ -104,6 +105,7 @@ public:
 		eMaterial_ambrosium,
 		eMaterial_zanite,
 		eMaterial_gravitite,
+		eMaterial_cloud,
 
 	}
 	eMaterial;
@@ -515,6 +517,7 @@ public:
 	static Item *keyBronze;
 	static Item *keySilver;
 	static Item *keyGold;
+	static CloudParachuteItem *cloudParachute;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -803,6 +806,7 @@ public:
 	static const int keyBronze_Id = 501;
 	static const int keySilver_Id = 502;
 	static const int keyGold_Id = 503;
+	static const int cloudParachute_Id = 504;
 
 public:
 	const int id;
