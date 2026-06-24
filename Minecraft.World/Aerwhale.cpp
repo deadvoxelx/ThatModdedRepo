@@ -33,7 +33,7 @@ Aerwhale::Aerwhale(Level *level) : FlyingMob( level )
 
 	_init();
 
-	setSize(3, 3);
+	setSize(4, 3);
 	fireImmune = true;
 	xpReward = Enemy::XP_REWARD_MEDIUM;
 }

@@ -39,7 +39,7 @@ Cockatrice::Cockatrice(Level *level) : Monster( level )
 	goalSelector.addGoal(0, new FloatGoal(this));
 	goalSelector.addGoal(2, new RangedAttackGoal(this, this, 1.0, SharedConstants::TICKS_PER_SECOND * 2, SharedConstants::TICKS_PER_SECOND * 4, 15));
 	goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
-	goalSelector.addGoal(7, new LookAtPlayerGoal(this, typeid(Player), 32));
+	goalSelector.addGoal(7, new LookAtPlayerGoal(this, typeid(Player), 6));
 	goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 
 	targetSelector.addGoal(1, new HurtByTargetGoal(this, false));

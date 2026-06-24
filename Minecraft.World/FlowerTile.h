@@ -26,7 +26,7 @@ public:
     virtual void updateDefaultShape(); // 4J Added override
 	virtual bool canSurvive(Level *level, int x, int y, int z);
 	virtual bool mayPlace(Level *level, int x, int y, int z);
-
+	virtual int getSpawnResourcesAuxValue(int data);
 	virtual Icon* getTexture(int face, int data);
 	void registerIcons(IconRegister* iconRegister);
 };
