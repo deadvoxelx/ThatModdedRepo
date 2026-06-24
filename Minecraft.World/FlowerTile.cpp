@@ -43,6 +43,11 @@ bool FlowerTile::mayPlace(Level *level, int x, int y, int z)
 	return canSurvive(level, x, y, z);
 }
 
+int FlowerTile::getSpawnResourcesAuxValue(int data)
+{
+	return data;
+}
+
 Icon* FlowerTile::getTexture(int face, int data)
 {
 	if (data < 0 || data >= FLOWER_NAMES_LENGTH)
