@@ -542,11 +542,14 @@ void Entity::baseTick()
 
 			if (dimension == 3 && y < 8 && changingDimensionDelay <= 0)
 			{
-				changingDimensionDelay = 10;
-				yd *= 0.6;
-				changeDimension(0);
-				moveTo(x, 192, z, yRot, xRot);
-				fallDistance = 0;
+				if (!instanceof(eTYPE_SWET) && !instanceof(eTYPE_COCKATRICE) && !instanceof(eTYPE_PROJECTILE))
+				{
+					changingDimensionDelay = 10;
+					yd *= 0.6;
+					changeDimension(0);
+					moveTo(x, 192, z, yRot, xRot);
+					fallDistance = 0;
+				}
 			}
 
 			else if (isInsidePortal)
