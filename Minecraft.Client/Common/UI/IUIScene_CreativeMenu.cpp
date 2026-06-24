@@ -690,9 +690,10 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::dartEnchanted_Id)		// 9
 
 		ITEM(Item::compass_Id)				// 0
-		ITEM(Item::keyBronze_Id)			// 1
-		ITEM(Item::keySilver_Id)			// 2
-		ITEM(Item::keyGold_Id)				// 3
+		ITEM(Item::cloudParachute_Id)		// 1
+		ITEM(Item::keyBronze_Id)			// 2
+		ITEM(Item::keySilver_Id)			// 3
+		ITEM(Item::keyGold_Id)				// 4
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{
