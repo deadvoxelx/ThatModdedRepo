@@ -1083,6 +1083,14 @@ Recipes::Recipes()
 		L'~', Item::string, L'O', Item::slimeBall,
 		L'T');
 
+	addShapedRecipy(new ItemInstance(Item::lead, 2), //
+		L"ssscicig",
+		L"~~ ", //
+		L"~O ", //
+		L"  ~", //
+
+		L'~', Item::string, L'O', Item::swetBall,
+		L'T');
 
 	addShapedRecipy(new ItemInstance(Item::compass, 1), //
 		L"ssscicig",
@@ -1300,6 +1308,14 @@ Recipes::Recipes()
         L"P", //
 
         L'S', Item::slimeBall, L'P', Tile::pistonBase,
+		L'M');
+
+	addShapedRecipy(new ItemInstance(static_cast<Tile *>(Tile::pistonStickyBase), 1), //
+		L"sscictg",
+        L"S", //
+        L"P", //
+
+        L'S', Item::swetBall, L'P', Tile::pistonBase,
 		L'M');
 
 
