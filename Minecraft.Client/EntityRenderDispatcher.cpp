@@ -99,6 +99,7 @@
 #include "ZephyrRenderer.h"
 #include "AerwhaleRenderer.h"
 #include "MoaRenderer.h"
+#include "SwetRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -141,8 +142,8 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_ZEPHYR] = new ZephyrRenderer();
 	renderers[eTYPE_AERWHALE] = new AerwhaleRenderer();
 	renderers[eTYPE_COCKATRICE] = new MoaRenderer();
-
 	renderers[eTYPE_COCKATRICESPAWNER] = new WatcherRenderer();
+	renderers[eTYPE_SWET] = new SwetRenderer(new SlimeModel(16), new SlimeModel(0), 0.25f);
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
