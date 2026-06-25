@@ -9,7 +9,6 @@ GoldenOakTreeFeature::GoldenOakTreeFeature(bool doUpdate) : Feature(doUpdate)
 
 bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 {
-	// Spruce-style conical tree with golden oak logs and leaves
 	int treeHeight = random->nextInt(4) + 6;
 	int trunkHeight = 1 + random->nextInt(2);
 	int topHeight = treeHeight - trunkHeight;
@@ -18,7 +17,6 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 	bool free = true;
 	if (y < 1 || y + treeHeight + 1 > Level::maxBuildHeight) return false;
 
-	// 4J Stu Added to stop tree features generating areas previously placed by game rule generation
 	if (app.getLevelGenerationOptions() != NULL)
 	{
 		LevelGenerationOptions *levelGenOptions = app.getLevelGenerationOptions();
@@ -29,7 +27,6 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 		}
 	}
 
-	// Make sure there is enough space
 	for (int yy = y; yy <= y + 1 + treeHeight && free; yy++)
 	{
 		int r = 1;
@@ -60,13 +57,11 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 
 	if (!free) return false;
 
-	// Must stand on aether ground
 	int belowTile = level->getTile(x, y - 1, z);
 	if ((belowTile != Tile::aetherGrass_Id && belowTile != Tile::aetherDirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
 
 	placeBlock(level, x, y - 1, z, Tile::aetherDirt_Id, 1);
 
-	// Place leaf canopy (tapered cone like spruce)
 	int currentRadius = random->nextInt(2);
 	int maxRadius = 1;
 	int minRadius = 0;
@@ -101,13 +96,11 @@ bool GoldenOakTreeFeature::place(Level *level, Random *random, int x, int y, int
 		}
 	}
 
-	// Place trunk
 	int topOffset = random->nextInt(3);
 	for (int hh = 0; hh < treeHeight - topOffset; hh++)
 	{
 		int t = level->getTile(x, y + hh, z);
 		if (t == 0 || t == Tile::netherLeaves_Id) placeBlock(level, x, y + hh, z, Tile::goldenOakLog_Id, 0);
 	}
-
 	return true;
 }
