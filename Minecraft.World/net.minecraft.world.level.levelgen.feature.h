@@ -52,6 +52,7 @@
 #include "SwampMushroomHugeFeature.h"
 #include "SkyrootTreeFeature.h"
 #include "GoldenOakTreeFeature.h"
+#include "GoldenOakLargeFeature.h"
 #include "QuicksoilShelfFeature.h"
 #include "AercloudFeature.h"
 #include "BerryBushFeature.h"
