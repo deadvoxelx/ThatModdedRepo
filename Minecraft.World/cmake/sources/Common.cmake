@@ -1539,6 +1539,8 @@ set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_LEVELGEN_FEATURE
   "${CMAKE_CURRENT_SOURCE_DIR}/Feature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/FlowerFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/FlowerFeature.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/GoldenOakLargeFeature.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/GoldenOakLargeFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/GoldenOakTreeFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/GoldenOakTreeFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/GroundBushFeature.cpp"
