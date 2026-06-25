@@ -20,6 +20,7 @@ protected:
 	Feature *holidayTreeFeature;
 
 	Feature *largeAerCloudFeature;
+	Feature *largeFreeAerCloudFeature;
 	Feature *smallAerCloudFeature;
 	Feature *smallGoldAerCloudFeature;
 	Feature *smallBlueAerCloudFeature;
