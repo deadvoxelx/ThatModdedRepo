@@ -2,6 +2,7 @@
 #include "AetherSaplingTile.h"
 #include "SkyrootTreeFeature.h"
 #include "GoldenOakTreeFeature.h"
+#include "GoldenOakLargeFeature.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.h"
@@ -43,19 +44,24 @@ void AetherSaplingTile::growTree(Level *level, int x, int y, int z, Random *rand
 	}
 	else if (this->id == Tile::goldenOakSapling_Id)
 	{
-		f = new GoldenOakTreeFeature(true);
+		if (random->nextInt(3) == 0)
+		{
+			f = new GoldenOakTreeFeature(false);
+		}
+		else
+		{
+			f = new GoldenOakLargeFeature(false);
+		}
 	}
 	else
 	{
 		return;
 	}
 
-	// Remove sapling before attempting to place tree
 	level->setTileAndData(x, y, z, 0, 0, Tile::UPDATE_NONE);
 
 	if (!f->place(level, random, x, y, z))
 	{
-		// Restore sapling if tree placement failed
 		int data = level->getData(x, y, z);
 		level->setTileAndData(x, y, z, id, data, Tile::UPDATE_NONE);
 	}
