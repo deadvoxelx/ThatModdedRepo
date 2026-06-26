@@ -19,7 +19,7 @@ AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 
 	quicksoilShelfFeature = new QuicksoilShelfFeature();
 
-	holidayTreeFeature = new HolidayTreeFeature(false);
+	holidayTreeFeature = new HolidayTreeFeature(Tile::skyrootLog_Id);
 
 	largeAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0/*AercloudTile::TYPE_DEFAULT*/, 6, 10, 2, 4, true);
 	largeFreeAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0/*AercloudTile::TYPE_DEFAULT*/, 6, 10, 2, 4, false);
