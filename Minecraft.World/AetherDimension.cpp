@@ -27,10 +27,15 @@ float *AetherDimension::getSunriseColor(float td, float a)
 
 Vec3 *AetherDimension::getFogColor(float td, float a) const
 {
-	float r = 0.62f;
-	float g = 0.80f;
-	float b = 1.0f;
-	return Vec3::newTemp(r, g, b);
+	int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Aether_Fog_Colour );
+	byte redComponent = ((colour>>16)&0xFF);
+	byte greenComponent = ((colour>>8)&0xFF);
+	byte blueComponent = ((colour)&0xFF);
+
+	float rr = (float)redComponent/256;
+	float gg = (float)greenComponent/256;
+	float bb = (float)blueComponent/256;
+	return Vec3::newTemp(rr, gg, bb);
 }
 
 bool AetherDimension::hasGround()
@@ -45,7 +50,7 @@ bool AetherDimension::mayRespawn() const
 
 bool AetherDimension::isNaturalDimension()
 {
-	return false;
+	return true;
 }
 
 float AetherDimension::getCloudHeight()
