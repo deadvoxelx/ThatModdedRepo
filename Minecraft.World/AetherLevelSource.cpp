@@ -25,7 +25,9 @@ AetherLevelSource::AetherLevelSource(Level *level, int64_t seed)
 	perlinNoise1 = new PerlinNoise(random, 8);
 	scaleNoise = new PerlinNoise(random, 10);
 	depthNoise = new PerlinNoise(random, 16);
+	perlinNoise3 = new PerlinNoise(random, 4);
 
+	floatingIslandScale = new PerlinNoise(random, 10);
 	floatingIslandNoise = new PerlinNoise(random, 4);
 	carvingNoise = new PerlinNoise(random, 6);
 }
@@ -39,7 +41,9 @@ AetherLevelSource::~AetherLevelSource()
 	delete perlinNoise1;
 	delete scaleNoise;
 	delete depthNoise;
+	delete perlinNoise3;
 
+	delete floatingIslandScale;
 	delete floatingIslandNoise;
 	delete carvingNoise;
 }
@@ -122,12 +126,18 @@ void AetherLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 {
 	int waterHeight = Level::genDepth - 64;
 
+	double s = 1 / 32.0;
+
+	doubleArray depthBuffer(16*16);
+
+	depthBuffer = perlinNoise3->getRegion(depthBuffer, xOffs * 16, zOffs * 16, 0, 16, 16, 1, s * 2, s * 2, s * 2);
+
 	for (int x = 0; x < 16; x++)
 	{
 		for (int z = 0; z < 16; z++)
 		{
 			int run = -1;
-			int runDepth = 3;
+			int runDepth = (int) (depthBuffer[x + z * 16] / 3 + 3 + random->nextDouble() * 0.25);/*3*/;
 
 			byte top = (byte) Tile::aetherGrass_Id;
 			byte mid = (byte) Tile::aetherDirt_Id;
@@ -210,10 +220,10 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 		buffer = doubleArray(xSize * ySize * zSize);
 	}
 
-	double s = 1 * 684.412;
+	double s = 1 * 1368.824;
 	double hs = 1 * 684.412;
 
-	doubleArray pnr, ar, br, sr, dr;
+	doubleArray pnr, ar, br, sr, dr, fis, inr, cnr;
 
 	sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
 	dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
@@ -224,10 +234,8 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 	ar = lperlinNoise1->getRegion(ar, x, y, z, xSize, ySize, zSize, s, hs, s);
 	br = lperlinNoise2->getRegion(br, x, y, z, xSize, ySize, zSize, s, hs, s);
 
-	doubleArray inr;
+	fis = floatingIslandScale->getRegion(fis, x, y, z, xSize, 1, zSize, 1.0, 0.5, 1.0);
 	inr = floatingIslandNoise->getRegion(inr, x, z, xSize, zSize, 0.35, 0.35, 0.5);
-
-	doubleArray cnr;
 	cnr = carvingNoise->getRegion(cnr, x, y, z, xSize, ySize, zSize, s / 30.0, hs / 30.0, s / 30.0);
 
 	// World bounds for edge fade (in noise column units)
@@ -246,6 +254,9 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 			double depth = (dr[pp] / 8000.0);
 			if (depth < 0) depth = -depth * 0.3;
 			depth = depth * 3.0 - 2.0;
+			if (depth > 1) depth = 1;
+			depth = depth / 8;
+			depth = 0;
 
 			float islandVal = (float)inr[pp];
 			float doffs = islandVal * 100.0f - 60.0f;
@@ -268,7 +279,6 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 			if (doffs < -100) doffs = -100;
 			if (doffs > 80) doffs = 80;
 
-			// Use depth noise to shift terrain center — creates shelf-like elevation steps
 			if (depth > 2) depth = 2;
 			if (depth < -2) depth = -2;
 			double depthShift = depth * 1.5;
@@ -284,7 +294,6 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 			{
 				double val = 0;
 				double yOffs = (yy - yCenter) * 8 / scale;
-
 				if (yOffs < 0) yOffs *= -1;
 
 				double bb = ar[p] / 512;
@@ -306,12 +315,12 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 				int r = 2;
 				if (yy > ySize / 2 - r)
 				{
-					double slide = (yy - (ySize / 2 - r)) / (64.0f);
+					double slide = (yy - (ySize / 2 - r)) / 64.0f;
 					if (slide < 0) slide = 0;
 					if (slide > 1) slide = 1;
 					val = val * (1 - slide) + -3000 * slide;
 				}
-				r = 10;
+				r = 8;
 				if (yy < r)
 				{
 					double slide = (r - yy) / (r - 1.0f);
@@ -329,6 +338,7 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 	delete [] br.data;
 	delete [] sr.data;
 	delete [] dr.data;
+	delete [] fis.data;
 	delete [] inr.data;
 	delete [] cnr.data;
 
@@ -404,6 +414,7 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	int xo = xt * 16;
 	int zo = zt * 16;
 
+	pprandom->setSeed(level->getSeed());
 	int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
 	int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
 	pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
