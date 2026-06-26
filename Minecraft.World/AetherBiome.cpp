@@ -14,12 +14,12 @@ AetherBiome::AetherBiome(int id) : Biome(id)
 	waterFriendlies.clear();
 	ambientFriendlies.clear();
 
-	friendlies.push_back(new MobSpawnerData(eTYPE_SHEEPUFF, 10, 1, 3));
-	friendlies.push_back(new MobSpawnerData(eTYPE_FLYING_COW, 10, 1, 3));
-	enemies.push_back(new MobSpawnerData(eTYPE_ZEPHYR, 5, 1, 1));
+	friendlies.push_back(new MobSpawnerData(eTYPE_SHEEPUFF, 10, 4, 4));
+	friendlies.push_back(new MobSpawnerData(eTYPE_FLYING_COW, 8, 4, 4));
+	enemies.push_back(new MobSpawnerData(eTYPE_ZEPHYR, 5, 1, 2));
 	enemies.push_back(new MobSpawnerData(eTYPE_AERWHALE, 2, 1, 1));
-	enemies.push_back(new MobSpawnerData(eTYPE_COCKATRICE, 6, 1, 2));
-	enemies.push_back(new MobSpawnerData(eTYPE_SWET, 3, 1, 3));
+	enemies.push_back(new MobSpawnerData(eTYPE_COCKATRICE, 10, 4, 4));
+	enemies.push_back(new MobSpawnerData(eTYPE_SWET, 1, 2, 3));
 	//ambientFriendlies.push_back(new MobSpawnerData(eTYPE_COCKATRICESPAWNER, 8, 1, 2));
 
 	delete decorator;
@@ -30,7 +30,11 @@ Feature *AetherBiome::getTreeFeature(Random *random)
 {
 	if (random->nextInt(10) == 0)
 	{
-		return new GoldenOakTreeFeature(false);
+		if (random->nextInt(3) == 0)
+		{
+			return new GoldenOakTreeFeature(false);
+		}
+		return new GoldenOakLargeFeature(false);
 	}
 	return new SkyrootTreeFeature(false);
 }

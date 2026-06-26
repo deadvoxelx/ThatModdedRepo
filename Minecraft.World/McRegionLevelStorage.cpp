@@ -22,8 +22,6 @@ McRegionLevelStorage::~McRegionLevelStorage()
 
 ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 {
-    //File folder = getFolder();
-
     if (dynamic_cast<HellDimension *>(dimension) != nullptr)
 	{
 
@@ -56,10 +54,9 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::NETHER_FOLDER);
     }
-
 	if (dynamic_cast<TheEndDimension *>(dimension))
 	{
-		if(app.GetResetNether())
+		/*if(app.GetResetNether())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *endFiles = m_saveFile->getRegionFilesByDimension(2);
@@ -84,7 +81,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			}
 #endif
 			resetNetherPlayerPositions();
-		}
+		}*/
 
 		//File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
 		//dir2.mkdirs();
@@ -112,10 +109,9 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::ENDER_FOLDER);
 	}
-
 	if (dynamic_cast<TheOuterEndDimension *>(dimension))
 	{
-		if(app.GetResetNether())
+		/*if(app.GetResetNether())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *outerEndFiles = m_saveFile->getRegionFilesByDimension(3);
@@ -140,23 +136,16 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			}
 #endif
 			resetNetherPlayerPositions();
-		}
+		}*/
 
-		//File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
-		//dir2.mkdirs();
-		//return new ThreadedMcRegionChunkStorage(dir2);
-
-		// 4J-PB - save version 0 at this point means it's a create new world
 		int iSaveVersion=m_saveFile->getSaveVersion();
 
 		if((iSaveVersion!=0) && (iSaveVersion < SAVE_FILE_VERSION_NEW_END))
 		{
-			// For versions before TU9 (TU7 and 8) we generate a part of The End, but we want to scrap it if it exists so that it is replaced with the TU9+ version
 			app.DebugPrintf("Loaded save version number is: %d, required to keep The End is: %d\n",m_saveFile->getSaveVersion(), SAVE_FILE_VERSION_NEW_END);
 
 			vector<FileEntry *> *outerEndFiles = m_saveFile->getFilesWithPrefix(LevelStorage::OUTEREND_FOLDER);
 
-			// 4J-PB - There will be no End in early saves
 			if(outerEndFiles!=nullptr)
 			{
 				for(auto& outerEndFile : *outerEndFiles)
@@ -168,9 +157,35 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::OUTEREND_FOLDER);
 	}
-
 	if (dynamic_cast<AetherDimension *>(dimension))
 	{
+		if(app.GetResetNether())
+		{
+#ifdef SPLIT_SAVES
+			vector<FileEntry *> *aetherFiles = m_saveFile->getRegionFilesByDimension(4);
+			if(aetherFiles!=nullptr)
+			{
+				DWORD bytesWritten = 0;
+				for(auto& aetherFile : *aetherFiles)
+				{
+					m_saveFile->zeroFile(aetherFile, aetherFile->getFileSize(), &bytesWritten);
+				}
+				delete aetherFiles;
+			}
+#else
+			vector<FileEntry *> *aetherFiles = m_saveFile->getFilesWithPrefix(LevelStorage::AETHER_FOLDER);
+			if(aetherFiles!=nullptr)
+			{
+				for(auto& aetherFile : *aetherFiles)
+				{
+					m_saveFile->deleteFile(aetherFile);
+				}
+				delete aetherFiles;
+			}
+#endif
+			resetNetherPlayerPositions();
+		}
+
 		int iSaveVersion=m_saveFile->getSaveVersion();
 
 		if((iSaveVersion!=0) && (iSaveVersion < SAVE_FILE_VERSION_NEW_END))
@@ -190,7 +205,6 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::AETHER_FOLDER);
 	}
-
     return new McRegionChunkStorage(m_saveFile, L"");
 }
 

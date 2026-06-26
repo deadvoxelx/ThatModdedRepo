@@ -1,5 +1,6 @@
 #pragma once
 #include "BiomeDecorator.h"
+#include "HolidayTreeFeature.h"
 
 class AerCloudFeature;
 
@@ -17,9 +18,10 @@ protected:
 
 	Feature *quicksoilShelfFeature;
 
-	Feature *holidayTreeFeature;
+	HolidayTreeFeature *holidayTreeFeature;
 
 	Feature *largeAerCloudFeature;
+	Feature *largeFreeAerCloudFeature;
 	Feature *smallAerCloudFeature;
 	Feature *smallGoldAerCloudFeature;
 	Feature *smallBlueAerCloudFeature;
