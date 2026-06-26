@@ -3,105 +3,238 @@
 #include "net.minecraft.world.level.tile.h"
 #include "HolidayTreeFeature.h"
 
-HolidayTreeFeature::HolidayTreeFeature(bool doUpdate) : Feature(doUpdate)
+HolidayTreeFeature::HolidayTreeFeature(int blockId) : Feature(blockId)
 {
 }
 
 bool HolidayTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 {
-	int treeHeight = random->nextInt(4) + 6;
-	int trunkHeight = 1 + random->nextInt(2);
-	int topHeight = treeHeight - trunkHeight;
-	int leafRadius = 2 + random->nextInt(2);
-
-	bool free = true;
-	if (y < 1 || y + treeHeight + 1 > Level::maxBuildHeight) return false;
-
-	if (app.getLevelGenerationOptions() != NULL)
+    if (level->getTile(x, y - 1, z) == Tile::aetherGrass_Id)
 	{
-		LevelGenerationOptions *levelGenOptions = app.getLevelGenerationOptions();
-		bool intersects = levelGenOptions->checkIntersects(x - leafRadius, y - 1, z - leafRadius, x + leafRadius, y + treeHeight, z + leafRadius);
-		if (intersects)
-		{
-			return false;
-		}
-	}
-
-	for (int yy = y; yy <= y + 1 + treeHeight && free; yy++)
-	{
-		int r = 1;
-		if ((yy - y) < trunkHeight)
-		{
-			r = 0;
-		}
-		else
-		{
-			r = leafRadius;
-		}
-		for (int xx = x - r; xx <= x + r && free; xx++)
-		{
-			for (int zz = z - r; zz <= z + r && free; zz++)
-			{
-				if (yy >= 0 && yy < Level::maxBuildHeight)
-				{
-					int tt = level->getTile(xx, yy, zz);
-					if (tt != 0 && tt != Tile::netherLeaves_Id) free = false;
-				}
-				else
-				{
-					free = false;
-				}
-			}
-		}
-	}
-
-	if (!free) return false;
-
-	int belowTile = level->getTile(x, y - 1, z);
-	if ((belowTile != Tile::aetherGrass_Id && belowTile != Tile::aetherDirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
-
-	placeBlock(level, x, y - 1, z, Tile::aetherDirt_Id, 0);
-
-	int currentRadius = random->nextInt(2);
-	int maxRadius = 1;
-	int minRadius = 0;
-	for (int heightPos = 0; heightPos <= topHeight; heightPos++)
-	{
-		const int yy = y + treeHeight - heightPos;
-
-		for (int xx = x - currentRadius; xx <= x + currentRadius; xx++)
-		{
-			int xo = xx - (x);
-			for (int zz = z - currentRadius; zz <= z + currentRadius; zz++)
-			{
-				int zo = zz - (z);
-				if (abs(xo) == currentRadius && abs(zo) == currentRadius && currentRadius > 0) continue;
-				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::netherLeaves_Id, 4);
-			}
-		}
-
-		if (currentRadius >= maxRadius)
-		{
-			currentRadius = minRadius;
-			minRadius = 1;
-			maxRadius += 1;
-			if (maxRadius > leafRadius)
-			{
-				maxRadius = leafRadius;
-			}
-		}
-		else
-		{
-			currentRadius = currentRadius + 1;
-		}
-	}
-
-	int topOffset = random->nextInt(3);
-	for (int hh = 0; hh < treeHeight - topOffset; hh++)
-	{
-		int t = level->getTile(x, y + hh, z);
-		if (t == 0 || t == Tile::netherLeaves_Id) placeBlock(level, x, y + hh, z, Tile::skyrootLog_Id, 0);
-	}
-
-	return true;
+		int data = (random->nextInt(4) == 0) ? 5 : 4;
+		
+    	for (int y1 = 0; y1 <= 8; y1++)
+        placeBlock(level, x, y + y1, z, Tile::skyrootLog_Id, 0); 
+      	placeBlock(level, x, y + 9, z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 2, 2 + z, Tile::skyrootLog_Id, 0);
+      	placeBlock(level, x + 0, y + 2, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 2, 4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 2, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 2, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 2, -4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 2, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 2, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 4, y + 2, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 2, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 2, 0 + z, Tile::skyrootLog_Id, 0);
+      	placeBlock(level, x + -4, y + 2, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, 4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, 2 + z, Tile::skyrootLog_Id, 0);
+      	placeBlock(level, x + -1, y + 2, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, 4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, -4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, -2 + z, Tile::skyrootLog_Id, 0);
+     	placeBlock(level, x + -1, y + 2, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, -4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 4, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 4, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -4, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -4, y + 2, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 2, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 2, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 2, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 2, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 2, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 2, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 2, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 2, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 2, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 2, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, 4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 3, -4 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 4, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -4, y + 3, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 3, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 3, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 3, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 3, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 3, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 3, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 3, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 3, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 3, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 3, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 3, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 3, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 3, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 4, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 4, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 4, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 4, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 4, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 4, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 4, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 4, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 4, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 4, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 4, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 4, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 4, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 4, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 5, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 5, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 5, 3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 5, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 5, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 5, -3 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 5, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 5, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 3, y + 5, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 5, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 5, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -3, y + 5, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 5, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 5, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 5, 1 + z, Tile::skyrootLog_Id, 0);
+      	placeBlock(level, x + -1, y + 5, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 5, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 5, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 5, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 5, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 5, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 5, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 5, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 5, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 5, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 5, 1 + z, Tile::skyrootLog_Id, 0);
+      	placeBlock(level, x + -1, y + 5, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 5, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 5, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 5, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 5, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 5, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 6, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 6, 2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 6, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 6, -2 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 6, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 2, y + 6, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 6, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -2, y + 6, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 6, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 6, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 6, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 6, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 6, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 6, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 6, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 6, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 7, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 7, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 7, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 7, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 7, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 7, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 7, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 7, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 7, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 7, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 7, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 7, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 8, 1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 0, y + 8, -1 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + 1, y + 8, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x + -1, y + 8, 0 + z, Tile::netherLeaves_Id, data);
+      	placeBlock(level, x, y - 1, z, Tile::aetherDirt_Id, 0);
+		
+		return true;
+    } 
+    return false;
 }
