@@ -455,6 +455,7 @@ enum eMinecraftColour
 	eMinecraftColour_Default_Fog_Colour,
 	eMinecraftColour_Nether_Fog_Colour,
 	eMinecraftColour_End_Fog_Colour,
+	eMinecraftColour_Aether_Fog_Colour,
 
 	eMinecraftColour_Sign_Text,
 	eMinecraftColour_Map_Text,
