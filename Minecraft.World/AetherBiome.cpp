@@ -56,5 +56,5 @@ int AetherBiome::getFolageColor()
 
 int AetherBiome::getSkyColor(float temp)
 {
-	return 0x9ecbff;
+	return 0xb7b7ff;
 }
