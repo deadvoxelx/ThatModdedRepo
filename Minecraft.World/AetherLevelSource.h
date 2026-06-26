@@ -16,13 +16,13 @@ private:
 	PerlinNoise *lperlinNoise1;
 	PerlinNoise *lperlinNoise2;
 	PerlinNoise *perlinNoise1;
+	PerlinNoise *perlinNoise3;
 public:
 	PerlinNoise *scaleNoise;
 	PerlinNoise *depthNoise;
 private:
-	// Additional noise to create scattered island clusters
+	PerlinNoise *floatingIslandScale;
 	PerlinNoise *floatingIslandNoise;
-	// Carving noise for irregular island shapes
 	PerlinNoise *carvingNoise;
 
 	Level *level;
