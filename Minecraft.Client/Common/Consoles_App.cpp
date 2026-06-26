@@ -4695,6 +4695,8 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_HEROBRINE_ARRIVED, L"He is here...");
 		m_stringTable->registerString(IDS_SWET, L"Swet");
 		m_stringTable->registerString(IDS_ITEM_CLOUD_PARACHUTE, L"Cloud Parachute");
+		m_stringTable->registerString(IDS_ITEM_NETHERWARTBREAD_GOLD, L"Gold Netherwart Bread");
+		m_stringTable->registerString(IDS_ITEM_NETHERWARTBREAD_NETHANIUM, L"Nethanium Netherwart Bread");
 
 	}
 	else
