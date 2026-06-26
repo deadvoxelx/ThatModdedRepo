@@ -4,7 +4,7 @@
 class HolidayTreeFeature : public Feature
 {
 public:
-	HolidayTreeFeature(bool doUpdate);
+	HolidayTreeFeature(int blockId);
 
 	virtual bool place(Level *level, Random *random, int x, int y, int z);
 };
