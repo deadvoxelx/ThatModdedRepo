@@ -272,6 +272,7 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Default_Fog_Colour",
 	L"Nether_Fog_Colour",
 	L"End_Fog_Colour",
+	L"Aether_Fog_Colour",
 
 	L"Sign_Text",
 	L"Map_Text",
