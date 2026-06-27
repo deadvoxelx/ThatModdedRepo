@@ -338,6 +338,11 @@ Item *Item::keyBronze = NULL;
 Item *Item::keySilver = NULL;
 Item *Item::keyGold = NULL;
 CloudParachuteItem *Item::cloudParachute = NULL;
+Item *Item::skyrootSword = NULL;
+Item *Item::skyrootPickaxe = NULL;
+Item *Item::skyrootAxe = NULL;
+Item *Item::skyrootShovel = NULL;
+Item *Item::skyrootHoe = NULL;
 
 void Item::staticCtor()
 {
@@ -351,6 +356,7 @@ void Item::staticCtor()
 	Item::gravititeSword	= ( new WeaponItem(201, _Tier::GRAVITITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_gravitite)->setIconName(L"gravititeSword")->setDescriptionId(IDS_ITEM_GRAVITITE_SWORD)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SWORD);
 	Item::zaniteSword		= ( new WeaponItem(206, _Tier::ZANITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_zanite)	->setIconName(L"zaniteSword")->setDescriptionId(IDS_ITEM_ZANITE_SWORD)->setUseDescriptionId(IDS_ITEM_ZANITE_SWORD);
 	Item::holystoneSword	= ( new WeaponItem(229, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_stone)	->setIconName(L"holystoneSword")->setDescriptionId(IDS_ITEM_HOLYSTONE_SWORD)->setUseDescriptionId(IDS_ITEM_HOLYSTONE_SWORD);
+	Item::skyrootSword		= ( new WeaponItem(249, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_wood)		->setIconName(L"skyrootSword")->setDescriptionId(IDS_ITEM_SKYROOT_SWORD)->setUseDescriptionId(IDS_ITEM_SKYROOT_SWORD);
 
 	Item::shovel_wood		= ( new ShovelItem(13, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_wood)		->setIconName(L"shovelWood")->setDescriptionId(IDS_ITEM_SHOVEL_WOOD)->setUseDescriptionId(IDS_DESC_SHOVEL);
 	Item::shovel_stone		= ( new ShovelItem(17, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_stone)	->setIconName(L"shovelStone")->setDescriptionId(IDS_ITEM_SHOVEL_STONE)->setUseDescriptionId(IDS_DESC_SHOVEL);
@@ -362,6 +368,7 @@ void Item::staticCtor()
 	Item::gravititeShovel	= ( new ShovelItem(204, _Tier::GRAVITITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_gravitite)->setIconName(L"gravititeShovel")->setDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL)->setUseDescriptionId(IDS_ITEM_GRAVITITE_SHOVEL);
 	Item::zaniteShovel		= ( new ShovelItem(209, _Tier::ZANITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_zanite)	->setIconName(L"zaniteShovel")->setDescriptionId(IDS_ITEM_ZANITE_SHOVEL)->setUseDescriptionId(IDS_ITEM_ZANITE_SHOVEL);
 	Item::holystoneShovel	= ( new ShovelItem(232, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_stone)	->setIconName(L"holystoneShovel")->setDescriptionId(IDS_ITEM_HOLYSTONE_SHOVEL)->setUseDescriptionId(IDS_ITEM_HOLYSTONE_SHOVEL);
+	Item::skyrootShovel		= ( new ShovelItem(252, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_wood)		->setIconName(L"skyrootShovel")->setDescriptionId(IDS_ITEM_SKYROOT_SHOVEL)->setUseDescriptionId(IDS_ITEM_SKYROOT_SHOVEL);
 
 	Item::pickAxe_wood		= ( new PickaxeItem(14, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_wood)		->setIconName(L"pickaxeWood")->setDescriptionId(IDS_ITEM_PICKAXE_WOOD)->setUseDescriptionId(IDS_DESC_PICKAXE);
 	Item::pickAxe_stone		= ( new PickaxeItem(18, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_stone)	->setIconName(L"pickaxeStone")->setDescriptionId(IDS_ITEM_PICKAXE_STONE)->setUseDescriptionId(IDS_DESC_PICKAXE);
@@ -373,6 +380,7 @@ void Item::staticCtor()
 	Item::gravititePickaxe	= ( new PickaxeItem(202, _Tier::GRAVITITE) )->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_gravitite)->setIconName(L"gravititePickaxe")->setDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE);
 	Item::zanitePickaxe		= ( new PickaxeItem(207, _Tier::ZANITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_zanite)	->setIconName(L"zanitePickaxe")->setDescriptionId(IDS_ITEM_ZANITE_PICKAXE)->setUseDescriptionId(IDS_ITEM_ZANITE_PICKAXE);
 	Item::holystonePickaxe	= ( new PickaxeItem(230, _Tier::STONE) )	->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_stone)	->setIconName(L"holystonePickaxe")->setDescriptionId(IDS_ITEM_HOLYSTONE_PICKAXE)->setUseDescriptionId(IDS_ITEM_HOLYSTONE_PICKAXE);
+	Item::skyrootPickaxe	= ( new PickaxeItem(250, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_wood)		->setIconName(L"skyrootPickaxe")->setDescriptionId(IDS_ITEM_SKYROOT_PICKAXE)->setUseDescriptionId(IDS_ITEM_SKYROOT_PICKAXE);
 
 	Item::hatchet_wood		= ( new HatchetItem(15, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_wood)		->setIconName(L"hatchetWood")->setDescriptionId(IDS_ITEM_HATCHET_WOOD)->setUseDescriptionId(IDS_DESC_HATCHET);
 	Item::hatchet_stone		= ( new HatchetItem(19, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_stone)	->setIconName(L"hatchetStone")->setDescriptionId(IDS_ITEM_HATCHET_STONE)->setUseDescriptionId(IDS_DESC_HATCHET);
@@ -384,6 +392,7 @@ void Item::staticCtor()
 	Item::gravititeAxe		= ( new HatchetItem(203, _Tier::GRAVITITE) )->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_gravitite)->setIconName(L"gravititeAxe")->setDescriptionId(IDS_ITEM_GRAVITITE_AXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_AXE);
 	Item::zaniteAxe			= ( new HatchetItem(208, _Tier::ZANITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_zanite)	->setIconName(L"zaniteAxe")->setDescriptionId(IDS_ITEM_ZANITE_AXE)->setUseDescriptionId(IDS_ITEM_ZANITE_AXE);
 	Item::holystoneAxe		= ( new HatchetItem(231, _Tier::STONE) )	->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_stone)	->setIconName(L"holystoneAxe")->setDescriptionId(IDS_ITEM_HOLYSTONE_AXE)->setUseDescriptionId(IDS_ITEM_HOLYSTONE_AXE);
+	Item::skyrootAxe		= ( new HatchetItem(251, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_wood)		->setIconName(L"skyrootAxe")->setDescriptionId(IDS_ITEM_SKYROOT_AXE)->setUseDescriptionId(IDS_ITEM_SKYROOT_AXE);
 
 	Item::hoe_wood			= ( new HoeItem(34, _Tier::WOOD) )			->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_wood)		->setIconName(L"hoeWood")->setDescriptionId(IDS_ITEM_HOE_WOOD)->setUseDescriptionId(IDS_DESC_HOE);
 	Item::hoe_stone			= ( new HoeItem(35, _Tier::STONE) )			->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_stone)	->setIconName(L"hoeStone")->setDescriptionId(IDS_ITEM_HOE_STONE)->setUseDescriptionId(IDS_DESC_HOE);
@@ -395,6 +404,7 @@ void Item::staticCtor()
 	Item::gravititeHoe		= ( new HoeItem(205, _Tier::GRAVITITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_gravitite)->setIconName(L"gravititeHoe")->setDescriptionId(IDS_ITEM_GRAVITITE_HOE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_HOE);
 	Item::zaniteHoe			= ( new HoeItem(210, _Tier::ZANITE) )		->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_zanite)	->setIconName(L"zaniteHoe")->setDescriptionId(IDS_ITEM_ZANITE_HOE)->setUseDescriptionId(IDS_ITEM_ZANITE_HOE);
 	Item::holystoneHoe		= ( new HoeItem(233, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_stone)	->setIconName(L"holystoneHoe")->setDescriptionId(IDS_ITEM_HOLYSTONE_HOE)->setUseDescriptionId(IDS_ITEM_HOLYSTONE_HOE);
+	Item::skyrootHoe		= ( new HoeItem(253, _Tier::WOOD) )			->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_wood)		->setIconName(L"skyrootHoe")->setDescriptionId(IDS_ITEM_SKYROOT_HOE)->setUseDescriptionId(IDS_ITEM_SKYROOT_HOE);
 
 	Item::door_wood			= ( new DoorItem(68, Material::wood) )		->setBaseItemTypeAndMaterial(eBaseItemType_door,	eMaterial_wood)->setIconName(L"doorWood")->setDescriptionId(IDS_ITEM_DOOR_WOOD)->setUseDescriptionId(IDS_DESC_DOOR_WOOD);
 	Item::door_iron			= ( new DoorItem(74, Material::metal) )		->setBaseItemTypeAndMaterial(eBaseItemType_door,	eMaterial_iron)->setIconName(L"doorIron")->setDescriptionId(IDS_ITEM_DOOR_IRON)->setUseDescriptionId(IDS_DESC_DOOR_IRON);
@@ -664,7 +674,7 @@ void Item::staticCtor()
 	Item::keySilver = (new Item(246))																->setIconName(L"keySilver")->setDescriptionId(IDS_ITEM_KEY_SILVER)->setUseDescriptionId(IDS_ITEM_KEY_SILVER);
 	Item::keyGold = (new Item(247))																	->setIconName(L"keyGold")->setDescriptionId(IDS_ITEM_KEY_GOLD)->setUseDescriptionId(IDS_ITEM_KEY_GOLD);
 	Item::cloudParachute = (CloudParachuteItem *)(new CloudParachuteItem(248))						->setIconName(L"cloudParachute")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_cloud)->setDescriptionId(IDS_ITEM_CLOUD_PARACHUTE)->setUseDescriptionId(IDS_ITEM_CLOUD_PARACHUTE);
-
+	//254
 }
 
 // 4J Stu - We need to do this after the staticCtor AND after staticCtors for other class
