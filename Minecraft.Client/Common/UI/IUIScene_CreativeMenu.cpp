@@ -573,9 +573,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::leggings_leather_Id)
 		ITEM(Item::boots_leather_Id)
 		ITEM(Item::sword_wood_Id)
-		ITEM(Item::shovel_wood_Id)
-		ITEM(Item::pickAxe_wood_Id)
 		ITEM(Item::hatchet_wood_Id)
+		ITEM(Item::pickAxe_wood_Id)
+		ITEM(Item::shovel_wood_Id)
 		ITEM(Item::hoe_wood_Id)
 		ITEM(Item::emptyMap_Id)
 
@@ -584,9 +584,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::leggings_chain_Id)
 		ITEM(Item::boots_chain_Id)
 		ITEM(Item::sword_stone_Id)
-		ITEM(Item::shovel_stone_Id)
-		ITEM(Item::pickAxe_stone_Id)
 		ITEM(Item::hatchet_stone_Id)
+		ITEM(Item::pickAxe_stone_Id)
+		ITEM(Item::shovel_stone_Id)
 		ITEM(Item::hoe_stone_Id)
 		ITEM(Item::fishingRod_Id)
 
@@ -595,9 +595,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::leggings_iron_Id)
 		ITEM(Item::boots_iron_Id)
 		ITEM(Item::sword_iron_Id)
-		ITEM(Item::shovel_iron_Id)
-		ITEM(Item::pickAxe_iron_Id)
 		ITEM(Item::hatchet_iron_Id)
+		ITEM(Item::pickAxe_iron_Id)
+		ITEM(Item::shovel_iron_Id)
 		ITEM(Item::hoe_iron_Id)
 		ITEM(Item::carrotOnAStick_Id)
 
@@ -606,9 +606,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::leggings_gold_Id)
 		ITEM(Item::boots_gold_Id)
 		ITEM(Item::sword_gold_Id)
-		ITEM(Item::shovel_gold_Id)
-		ITEM(Item::pickAxe_gold_Id)
 		ITEM(Item::hatchet_gold_Id)
+		ITEM(Item::pickAxe_gold_Id)
+		ITEM(Item::shovel_gold_Id)
 		ITEM(Item::hoe_gold_Id)
 		ITEM(Item::shears_Id)
 
@@ -617,9 +617,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::leggings_diamond_Id)
 		ITEM(Item::boots_diamond_Id)
 		ITEM(Item::sword_diamond_Id)
-		ITEM(Item::shovel_diamond_Id)
-		ITEM(Item::pickAxe_diamond_Id)
 		ITEM(Item::hatchet_diamond_Id)
+		ITEM(Item::pickAxe_diamond_Id)
+		ITEM(Item::shovel_diamond_Id)
 		ITEM(Item::hoe_diamond_Id)
 		ITEM(Item::flintAndSteel_Id)
 
@@ -628,9 +628,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::nethaniumLeggings_Id)
 		ITEM(Item::nethaniumBoots_Id)
 		ITEM(Item::nethaniumSword_Id)
-		ITEM(Item::nethaniumShovel_Id)
-		ITEM(Item::nethaniumPickaxe_Id)
 		ITEM(Item::nethaniumAxe_Id)
+		ITEM(Item::nethaniumPickaxe_Id)
+		ITEM(Item::nethaniumShovel_Id)
 		ITEM(Item::nethaniumHoe_Id)
 		ITEM(Item::relicMallet_Id)
 
@@ -639,9 +639,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::endoriumLeggings_Id)
 		ITEM(Item::endoriumBoots_Id)
 		ITEM(Item::endoriumSword_Id)
-		ITEM(Item::endoriumShovel_Id)
-		ITEM(Item::endoriumPickaxe_Id)
 		ITEM(Item::endoriumAxe_Id)
+		ITEM(Item::endoriumPickaxe_Id)
+		ITEM(Item::endoriumShovel_Id)
 		ITEM(Item::endoriumHoe_Id)
 		ITEM(Item::aphalafSword_Id)
 
@@ -649,51 +649,56 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::horseArmorGold_Id)
 		ITEM(Item::horseArmorMetal_Id)
 		ITEM(Item::lead_Id)
+		ITEM(Item::skyrootSword_Id)
+		ITEM(Item::skyrootAxe_Id)
+		ITEM(Item::skyrootPickaxe_Id)
+		ITEM(Item::skyrootShovel_Id)
+		ITEM(Item::skyrootHoe_Id)
+		ITEM(Item::keyBronze_Id)
+
+		ITEM(Item::clock_Id)
+		ITEM(Item::compass_Id)
+		ITEM(Item::fireball_Id)
+		ITEM(Item::hellSphere_Id)
 		ITEM(Item::holystoneSword_Id)
-		ITEM(Item::holystoneShovel_Id)
-		ITEM(Item::holystonePickaxe_Id)
 		ITEM(Item::holystoneAxe_Id)
+		ITEM(Item::holystonePickaxe_Id)
+		ITEM(Item::holystoneShovel_Id)
 		ITEM(Item::holystoneHoe_Id)
-		ITEM(Item::healingStone_Id)
+		ITEM(Item::keySilver_Id)
 
 		ITEM(Item::zaniteHelmet_Id)
 		ITEM(Item::zaniteChestplate_Id)
 		ITEM(Item::zaniteLeggings_Id)
 		ITEM(Item::zaniteBoots_Id)
 		ITEM(Item::zaniteSword_Id)
-		ITEM(Item::zaniteShovel_Id)
-		ITEM(Item::zanitePickaxe_Id)
 		ITEM(Item::zaniteAxe_Id)
+		ITEM(Item::zanitePickaxe_Id)
+		ITEM(Item::zaniteShovel_Id)
 		ITEM(Item::zaniteHoe_Id)
-		ITEM(Item::lifeShard_Id)
+		ITEM(Item::keyGold_Id)
 
 		ITEM(Item::gravititeHelmet_Id)
 		ITEM(Item::gravititeChestplate_Id)
 		ITEM(Item::gravititeLeggings_Id)
 		ITEM(Item::gravititeBoots_Id)
 		ITEM(Item::gravititeSword_Id)
-		ITEM(Item::gravititeShovel_Id)
-		ITEM(Item::gravititePickaxe_Id)
 		ITEM(Item::gravititeAxe_Id)
+		ITEM(Item::gravititePickaxe_Id)
+		ITEM(Item::gravititeShovel_Id)
 		ITEM(Item::gravititeHoe_Id)
-		ITEM(Item::regenerationStone_Id)
+		ITEM(Item::cloudParachute_Id)
 
-		ITEM(Item::clock_Id)				// 0
-		ITEM(Item::fireball_Id)				// 1
-		ITEM(Item::hellSphere_Id)			// 2
-		ITEM(Item::bow_Id)					// 3
-		ITEM(Item::arrow_Id)				// 4
-		ITEM(Item::dartShooterGold_Id)		// 5
-		ITEM(Item::dartShooterEnchanted_Id)	// 6
-		ITEM(Item::dartGold_Id)				// 7
-		ITEM(Item::dartPoison_Id)			// 8
-		ITEM(Item::dartEnchanted_Id)		// 9
-
-		ITEM(Item::compass_Id)				// 0
-		ITEM(Item::cloudParachute_Id)		// 1
-		ITEM(Item::keyBronze_Id)			// 2
-		ITEM(Item::keySilver_Id)			// 3
-		ITEM(Item::keyGold_Id)				// 4
+		ITEM(Item::bow_Id)					// 1
+		ITEM(Item::arrow_Id)				// 2
+		ITEM(Item::dartShooterGold_Id)		// 3
+		ITEM(Item::dartShooterEnchanted_Id)	// 4
+		ITEM(Item::dartGold_Id)				// 5
+		ITEM(Item::dartPoison_Id)			// 6
+		ITEM(Item::dartEnchanted_Id)		// 7
+		ITEM(Item::healingStone_Id)			// 8
+		ITEM(Item::lifeShard_Id)			// 9
+		ITEM(Item::regenerationStone_Id)	// 0
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{
