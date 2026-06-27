@@ -161,11 +161,6 @@ void AphalafPlant::tick()
 			explode2();
 		}
 	}
-
-	if (dimension == 2 && y < 10)
-	{
-		remove();
-	}
 }
 
 void AphalafPlant::explode1()
