@@ -180,15 +180,10 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 	levelStorage->saveLevelData(levelData);
 
 	// erase old files
-	/*eraseFolders(normalBaseFolders, normalRegions->size() + netherRegions->size(), totalCount, progress);
-	if (netherFolder.exists())
+	eraseFolders(normalBaseFolders, normalRegions->size() + aetherRegions->size(), totalCount, progress);
+	if (aetherFolder.exists())
 	{
-		eraseFolders(netherBaseFolders, normalRegions->size() + netherRegions->size() + normalBaseFolders->size(), totalCount, progress);
-	}*/
-	eraseFolders(normalBaseFolders, normalRegions->size() + enderRegions->size(), totalCount, progress);
-	if (enderFolder.exists())
-	{
-		eraseFolders(enderBaseFolders, normalRegions->size() + enderRegions->size() + normalBaseFolders->size(), totalCount, progress);
+		eraseFolders(aetherBaseFolders, normalRegions->size() + aetherRegions->size() + normalBaseFolders->size(), totalCount, progress);
 	}
 #endif
 	return true;
