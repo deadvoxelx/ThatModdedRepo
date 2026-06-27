@@ -4695,8 +4695,13 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_HEROBRINE_ARRIVED, L"He is here...");
 		m_stringTable->registerString(IDS_SWET, L"Swet");
 		m_stringTable->registerString(IDS_ITEM_CLOUD_PARACHUTE, L"Cloud Parachute");
-		m_stringTable->registerString(IDS_ITEM_NETHERWARTBREAD_GOLD, L"Gold Netherwart Bread");
+		m_stringTable->registerString(IDS_ITEM_NETHERWARTBREAD_GOLD, L"Golden Netherwart Bread");
 		m_stringTable->registerString(IDS_ITEM_NETHERWARTBREAD_NETHANIUM, L"Nethanium Netherwart Bread");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_SWORD, L"Skyroot Sword");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_PICKAXE, L"Skyroot Pickaxe");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_AXE, L"Skyroot Axe");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_SHOVEL, L"Skyroot Shovel");
+		m_stringTable->registerString(IDS_ITEM_SKYROOT_HOE, L"Skyroot Hoe");
 
 	}
 	else
