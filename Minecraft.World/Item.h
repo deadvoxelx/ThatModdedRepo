@@ -518,6 +518,11 @@ public:
 	static Item *keySilver;
 	static Item *keyGold;
 	static CloudParachuteItem *cloudParachute;
+	static Item *skyrootSword;
+	static Item *skyrootPickaxe;
+	static Item *skyrootAxe;
+	static Item *skyrootShovel;
+	static Item *skyrootHoe;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -807,6 +812,11 @@ public:
 	static const int keySilver_Id = 502;
 	static const int keyGold_Id = 503;
 	static const int cloudParachute_Id = 504;
+	static const int skyrootSword_Id = 505;
+	static const int skyrootPickaxe_Id = 506;
+	static const int skyrootAxe_Id = 507;
+	static const int skyrootShovel_Id = 508;
+	static const int skyrootHoe_Id = 509;
 
 public:
 	const int id;
