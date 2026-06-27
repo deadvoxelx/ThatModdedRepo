@@ -36,6 +36,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[0],Item::goldIngot);
 	ADD_OBJECT(map[0],Item::nethanium);
 	ADD_OBJECT(map[0],Item::endorium);
+	ADD_OBJECT(map[0],Tile::netherPlanks);
 	ADD_OBJECT(map[0],Tile::holystone);
 	ADD_OBJECT(map[0],Item::zaniteGemstone);
 	ADD_OBJECT(map[0],Tile::enchantedGravitite);
@@ -47,6 +48,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[1],Item::pickAxe_gold);
 	ADD_OBJECT(map[1],Item::nethaniumPickaxe);
 	ADD_OBJECT(map[1],Item::endoriumPickaxe);
+	ADD_OBJECT(map[1],Item::skyrootPickaxe);
 	ADD_OBJECT(map[1],Item::holystonePickaxe);
 	ADD_OBJECT(map[1],Item::zanitePickaxe);
 	ADD_OBJECT(map[1],Item::gravititePickaxe);
@@ -58,6 +60,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[2],Item::shovel_gold);
 	ADD_OBJECT(map[2],Item::nethaniumShovel);
 	ADD_OBJECT(map[2],Item::endoriumShovel);
+	ADD_OBJECT(map[2],Item::skyrootShovel);
 	ADD_OBJECT(map[2],Item::holystoneShovel);
 	ADD_OBJECT(map[2],Item::zaniteShovel);
 	ADD_OBJECT(map[2],Item::gravititeShovel);
@@ -69,6 +72,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[3],Item::hatchet_gold);
 	ADD_OBJECT(map[3],Item::nethaniumAxe);
 	ADD_OBJECT(map[3],Item::endoriumAxe);
+	ADD_OBJECT(map[3],Item::skyrootAxe);
 	ADD_OBJECT(map[3],Item::holystoneAxe);
 	ADD_OBJECT(map[3],Item::zaniteAxe);
 	ADD_OBJECT(map[3],Item::gravititeAxe);
@@ -80,6 +84,7 @@ void ToolRecipies::_init()
 	ADD_OBJECT(map[4],Item::hoe_gold);
 	ADD_OBJECT(map[4],Item::nethaniumHoe);
 	ADD_OBJECT(map[4],Item::endoriumHoe);
+	ADD_OBJECT(map[4],Item::skyrootHoe);
 	ADD_OBJECT(map[4],Item::holystoneHoe);
 	ADD_OBJECT(map[4],Item::zaniteHoe);
 	ADD_OBJECT(map[4],Item::gravititeHoe);

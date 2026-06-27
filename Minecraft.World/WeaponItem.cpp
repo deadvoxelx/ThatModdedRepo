@@ -48,7 +48,7 @@ bool WeaponItem::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Liv
 	itemInstance->hurtAndBreak(1, attacker);
 	if (id == Item::gravititeSword_Id)
 	{
-		mob->yd = 0.75f;
+		mob->yd = 1.0f;
 	}
 	return true;
 }

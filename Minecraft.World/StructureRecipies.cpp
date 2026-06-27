@@ -218,6 +218,24 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_DEFAULT),
 		L'S');
 
+	r->addShapedRecipy(new ItemInstance(Tile::furnace), //
+		L"sssczg",
+		L"###", //
+		L"# #", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::holystone, 1, HolystoneTile::TYPE_DEFAULT),
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::furnace), //
+		L"sssczg",
+		L"###", //
+		L"# #", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_DEFAULT),
+		L'S');
+
 	r->addShapedRecipy(new ItemInstance(Tile::nether_furnace), //
 		L"sssctg",
 		L"###", //
