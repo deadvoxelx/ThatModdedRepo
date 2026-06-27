@@ -653,7 +653,6 @@ Level::Level(shared_ptr<LevelStorage>levelStorage, const wstring& levelName, Lev
 	_init(levelStorage, levelName, levelSettings, nullptr, true);
 }
 
-
 Level::Level(shared_ptr<LevelStorage>levelStorage, const wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource)
 	: seaLevel( constSeaLevel )
 {
@@ -685,14 +684,9 @@ void Level::_init(shared_ptr<LevelStorage>levelStorage, const wstring& levelName
 	{
 		dimension = fixedDimension;
 	}
-	// 4J Remove TU9 as getDimensions was never accurate. This path was never used anyway as we always set fixedDimension
-	//else if (levelData != nullptr && levelData->getDimension() != 0)
-	//{
-	//	dimension = Dimension::getNew(levelData->getDimension());
-	//}
 	else
 	{
-		dimension = Dimension::getNew(3);
+		dimension = Dimension::getNew(0);	// Voxel - might need to come back to this
 	}
 
 	if (levelData == nullptr)
@@ -709,16 +703,8 @@ void Level::_init(shared_ptr<LevelStorage>levelStorage, const wstring& levelName
 
 	chunkSource = doCreateChunkSource ? createChunkSource() : nullptr;	// 4J - added flag so chunk source can be called from derived class instead
 
-	// 4J Stu- Moved to derived classes
-	//if (!levelData->isInitialized())
-	//{
-	//	initializeLevel(levelSettings);
-	//	levelData->setInitialized(true);
-	//}
-
 	updateSkyBrightness();
 	prepareWeather();
-
 }
 
 Level::~Level()
@@ -1901,7 +1887,8 @@ AABBList *Level::getCubes(shared_ptr<Entity> source, AABB *box, bool noEntities/
 		}
 		// 4J - also stop player falling out of the bottom of the map if blockAtEdge is true. Again, rock is an arbitrary choice here
 		// 4J Stu - Don't stop entities falling into the void while in The End (it has no bedrock)
-		if( blockAtEdge && ( ( y0 - 1 ) < 0 ) && dimension->id != 1 )
+		// Voxel - Outer End & Aether also have no ground; added them in too
+		if( blockAtEdge && ( ( y0 - 1 ) < 0 ) && dimension->id != 1 && dimension->id != 2 && dimension->id != 3 )
 		{
 			for (int y = y0 - 1; y < 0; y++)
 			{

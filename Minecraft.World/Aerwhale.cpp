@@ -112,11 +112,6 @@ void Aerwhale::serverAiStep()
 	{
 		yBodyRot = yRot = -static_cast<float>(atan2(this->xd, this->zd)) * 180 / PI;
 	}
-
-	if (dimension == 3 && y < 10)
-	{
-		remove();
-	}
 }
 
 bool Aerwhale::canReach(double xt, double yt, double zt, double dist) 
