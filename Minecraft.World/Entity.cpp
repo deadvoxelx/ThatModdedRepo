@@ -540,9 +540,9 @@ void Entity::baseTick()
 			MinecraftServer *server = dynamic_cast<ServerLevel *>(level)->getServer();
 			int waitTime = getPortalWaitTime();
 
-			if (dimension == 3 && y < 8 && changingDimensionDelay <= 0)
+			if (dimension == 3 && y <= 0 && changingDimensionDelay <= 0)
 			{
-				if (!instanceof(eTYPE_SWET) && !instanceof(eTYPE_COCKATRICE) && !instanceof(eTYPE_PROJECTILE))
+				if (!instanceof(eTYPE_SWET) && !instanceof(eTYPE_COCKATRICE) && !instanceof(eTYPE_ZEPHYR) && !instanceof(eTYPE_AERWHALE) && !instanceof(eTYPE_PROJECTILE))
 				{
 					changingDimensionDelay = 10;
 					yd *= 0.6;
@@ -634,13 +634,6 @@ void Entity::baseTick()
 				if (portalTime < 0) portalTime = 0;
 			}
 			if (changingDimensionDelay > 0) changingDimensionDelay--;
-		}
-
-		if (dimension == 2 && y <= 1)
-		{
-			// because for some reason the Outer End has a floor...
-			// despite the fact it's not supposed to
-			hurt(DamageSource::outOfWorld, 4);
 		}
 	}
 
