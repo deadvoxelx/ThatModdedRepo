@@ -318,9 +318,7 @@ void LevelRenderer::renderStars()
 		}
 	}
 	t->end();
-
 }
-
 
 void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel *level)
 {
@@ -931,7 +929,6 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 	return count;
 
 }
-
 
 void LevelRenderer::renderSameAsLast(int layer, double alpha)
 {
@@ -2333,7 +2330,7 @@ void LevelRenderer::renderHitOutline(shared_ptr<Player> player, HitResult *h, in
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(0, 0, 0, 0.4f);
+		glColor4f(255, 255, 255, 0.4f);		// Voxel - white block outline
 		glLineWidth(2.0f);
 		glDisable(GL_TEXTURE_2D);
 		glDepthMask(false);
