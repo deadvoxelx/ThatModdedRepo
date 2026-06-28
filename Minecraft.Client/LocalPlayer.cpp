@@ -1282,7 +1282,8 @@ void LocalPlayer::handleMouseDown(int button, bool down)
 
 		// Voxel - only bottom layer is non-mineable now, top layer can be broken even in Nether
 		// Voxel - both top and bottom layers can be broken in the end, outer end, and aether
-		if( ( y == 0 ) && (level->dimension->id != 1 && level->dimension->id != 2 && level->dimension->id != 3) ) return;
+		// Voxel - Eh fuck it now you can break the ground in all of them too
+		//if( ( y == 0 ) && (level->dimension->id != 1 && level->dimension->id != 2 && level->dimension->id != 3) ) return;
 
 		minecraft->gameMode->continueDestroyBlock(x, y, z, minecraft->hitResult->f);
 		
@@ -1542,10 +1543,11 @@ bool LocalPlayer::handleMouseClick(int button)
 		{
 			// Voxel - only bottom layer is non-mineable now, top layer can be broken even in Nether
 			// Voxel - both top and bottom layers can be broken in the end, outer end, and aether
-			if( !( y == 0 ) ||  level->dimension->id == 1 || level->dimension->id == 2 || level->dimension->id == 3 )
-			{
+			// Voxel - Eh fuck it now you can break the ground in all of them too
+			//if( !( y == 0 ) ||  level->dimension->id == 1 || level->dimension->id == 2 || level->dimension->id == 3 )
+			//{
 				minecraft->gameMode->startDestroyBlock(x, y, z, minecraft->hitResult->f);
-			}
+			//}
 		}
 		else
 		{
@@ -1691,4 +1693,3 @@ void LocalPlayer::SetPlayerAdditionalModelParts(vector<ModelPart *>pAdditionalMo
 {
 	m_pAdditionalModelParts=pAdditionalModelParts;
 }
- 
