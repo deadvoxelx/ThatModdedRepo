@@ -128,11 +128,11 @@ void RemotePlayer::animateRespawn()
 
 float RemotePlayer::getHeadHeight()
 {
-    if (!isSneaking() && !isSleeping())
+    if (isSneaking())
 	{
-		return 1.82f;
+        return 1.509f;
 	}
-	return 1.509f;
+	return 1.82f;
 }
 
 Pos RemotePlayer::getCommandSenderWorldPosition()
