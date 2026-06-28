@@ -231,11 +231,11 @@ void ServerPlayer::setDefaultHeadHeight()
 
 float ServerPlayer::getHeadHeight()
 {
-	if (!isSneaking() && !isSleeping())
+	if (isSneaking())
 	{
-		return 1.62f;
+		return 1.30f;
 	}
-	return 1.30f;
+	return 1.62f;
 }
 
 void ServerPlayer::tick()
