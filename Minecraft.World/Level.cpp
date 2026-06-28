@@ -1887,8 +1887,8 @@ AABBList *Level::getCubes(shared_ptr<Entity> source, AABB *box, bool noEntities/
 		}
 		// 4J - also stop player falling out of the bottom of the map if blockAtEdge is true. Again, rock is an arbitrary choice here
 		// 4J Stu - Don't stop entities falling into the void while in The End (it has no bedrock)
-		// Voxel - Outer End & Aether also have no ground; added them in too
-		if( blockAtEdge && ( ( y0 - 1 ) < 0 ) && dimension->id != 1 && dimension->id != 2 && dimension->id != 3 )
+		// Voxel - reworking it to make it not hard-coded
+		if( blockAtEdge && ( ( y0 - 1 ) < 0 ) && dimension->hasGround() )
 		{
 			for (int y = y0 - 1; y < 0; y++)
 			{
@@ -4531,11 +4531,7 @@ bool Level::isAllEmpty()
 
 double Level::getHorizonHeight()
 {
-	if (levelData->getGenerator() == LevelType::lvl_flat)
-	{
-		return 0.0;
-	}
-	return 63.0;
+	return 0.0;
 }
 
 void Level::destroyTileProgress(int id, int x, int y, int z, int progress)
