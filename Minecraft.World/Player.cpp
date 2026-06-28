@@ -1208,14 +1208,7 @@ float Player::getHeadHeight()
 
 void Player::setDefaultHeadHeight()
 {
-	if ((isSneaking()) && (!isSleeping()))
-	{
-		heightOffset = 1.30f;
-	}
-	else if ((!isSneaking()) && (!isSleeping()))
-	{
-		heightOffset = 1.62f;
-	}
+	heightOffset = 1.62f;
 }
 
 bool Player::hurt(DamageSource *source, float dmg)
