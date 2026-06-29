@@ -121,7 +121,7 @@ ServerLevel::ServerLevel(MinecraftServer *server, shared_ptr<LevelStorage>levelS
 	chunkMap = new PlayerChunkMap(this, dimension, server->getPlayers()->getViewDistance());
 
 	mobSpawner = new MobSpawner();
-	portalForcer = new PortalForcer();
+	portalForcer = new PortalForcer(this);
 	scoreboard = new ServerScoreboard(server);
 
 	//shared_ptr<ScoreboardSaveData> scoreboardSaveData = dynamic_pointer_cast<ScoreboardSaveData>( savedDataStorage->get(typeid(ScoreboardSaveData), ScoreboardSaveData::FILE_ID) );
@@ -256,19 +256,11 @@ void ServerLevel::tick()
 
 	int64_t time = levelData->getGameTime() + 1;
 	// 4J Stu - Putting this back in, but I have reduced the number of chunks that save when not forced
-
 	{
-		int saveSlot = 0;
-		if (dimension->id == 0) saveSlot = 0;
-		else if (dimension->id == -1) saveSlot = 1;
-		else if (dimension->id == 1) saveSlot = 2;
-		else if (dimension->id == 2) saveSlot = 3;
-		else if (dimension->id == 3) saveSlot = 4;
-
 #ifdef _LARGE_WORLDS
-		if (time % 5 == saveSlot)
+	if (time % (saveInterval) == (dimension->id + 1))
 #else
-		if (time % (saveInterval) == (saveSlot * (saveInterval / 5)))
+	if (time % (saveInterval) == (dimension->id * dimension->id * (saveInterval/2)))
 #endif
 		{
 			PIXBeginNamedEvent(0,"Incremental save");
@@ -313,7 +305,7 @@ void ServerLevel::tick()
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Tick portal forcer");
-	//portalForcer->tick(getGameTime());
+	portalForcer->tick(getGameTime());
 	PIXEndNamedEvent();
 
 	// repeat after tile ticks
