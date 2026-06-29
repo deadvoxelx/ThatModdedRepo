@@ -302,7 +302,7 @@ void ServerPlayer::doTick(bool sendChunks, bool dontDelayChunks/*=false*/, bool 
 	{
 		doChunkSendingTick(dontDelayChunks);
 	}
-	doTickB(ignorePortal);
+	doTickB();
 	m_ignorePortal = false;
 }
 
@@ -492,7 +492,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks)
 	}
 }
 
-void ServerPlayer::doTickB(bool ignorePortal)
+void ServerPlayer::doTickB()
 {
 #ifndef _CONTENT_PACKAGE
 	// check if there's a debug dimension change requested
@@ -527,83 +527,6 @@ void ServerPlayer::doTickB(bool ignorePortal)
 		app.SetGameSettingsDebugMask(ProfileManager.GetPrimaryPad(),uiVal&~(1L<<eDebugSetting_GoToOverworld));
 	}
 #endif
-
-	/*if(!ignorePortal)
-	{
-		if (isInsidePortal)
-		{
-			if (server->isNetherEnabled())
-			{
-				if (containerMenu != inventoryMenu)
-				{
-					closeContainer();
-				}
-				if (riding != NULL)
-				{
-					this->ride(riding);
-				}
-				else
-				{
-
-					portalTime += 1 / 80.0f;
-					if (portalTime >= 1)
-					{
-						portalTime = 1;
-						changingDimensionDelay = 10;
-
-						int targetDimension = 0;
-						if (dimension == -1) targetDimension = 0;
-						else targetDimension = -1;
-
-						server->getPlayers()->toggleDimension( dynamic_pointer_cast<ServerPlayer>( shared_from_this() ), targetDimension );
-						lastSentExp = -1;
-						lastSentHealth = -1;
-						lastSentFood = -1;
-
-						//awardStat(Achievements::portal);
-					}
-				}
-				isInsidePortal = false;
-			}
-		}
-		else if (isInsideAetherPortal)
-		{
-			// Aether portal handling â toggles between Overworld (0) and Aether (2)
-			if (containerMenu != inventoryMenu)
-			{
-				closeContainer();
-			}
-			if (riding != NULL)
-			{
-				this->ride(riding);
-			}
-			else
-			{
-				portalTime += 1 / 80.0f;
-				if (portalTime >= 1)
-				{
-					portalTime = 1;
-					changingDimensionDelay = 10;
-
-					int targetDimension = 0;
-					if (dimension == 2) targetDimension = 0;
-					else targetDimension = 2;
-
-					server->getPlayers()->toggleDimension( dynamic_pointer_cast<ServerPlayer>( shared_from_this() ), targetDimension );
-					lastSentExp = -1;
-					lastSentHealth = -1;
-					lastSentFood = -1;
-				}
-			}
-			isInsideAetherPortal = false;
-		}
-		else
-		{
-			if (portalTime > 0) portalTime -= 1 / 20.0f;
-			if (portalTime < 0) portalTime = 0;
-		}
-		if (changingDimensionDelay > 0) changingDimensionDelay--;
-	}*/
 
 	if (getHealth() != lastSentHealth || lastSentFood != foodData.getFoodLevel() || ((foodData.getSaturationLevel() == 0) != lastFoodSaturationZero))
 	{

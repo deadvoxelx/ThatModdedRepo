@@ -202,6 +202,14 @@ Recipes::Recipes()
 		L'#', Tile::netherPlanks,
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::ironTrapdoor, 2), //
+		L"sscig",
+		L"##", //
+		L"##", //
+
+		L'#', Item::ironIngot,
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Tile::fence, 6, FenceTile::TYPE_NORMAL), //
 		L"ssczcig",
 		L"#-#", //

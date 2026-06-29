@@ -175,7 +175,7 @@ bool StoneFenceTile::connectsTo(LevelSource *level, int x, int y, int z)
 
 bool StoneFenceTile::isFence(int tile)
 {
-	return tile == Tile::fence_Id || tile == Tile::netherFence_Id;
+	return tile == Tile::netherFence_Id;
 }
 
 void StoneFenceTile::registerIcons(IconRegister *iconRegister)

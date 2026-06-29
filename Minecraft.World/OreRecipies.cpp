@@ -38,8 +38,11 @@ void OreRecipies::_init()
 	ADD_OBJECT(map[9],Tile::endoriumBlock);
 	ADD_OBJECT(map[9],new ItemInstance(Item::endorium, 9));
 
-	ADD_OBJECT(map[10],Tile::zaniteBlock);
-	ADD_OBJECT(map[10],new ItemInstance(Item::zaniteGemstone, 9));
+	ADD_OBJECT(map[10],Tile::ambrosiumBlock);
+	ADD_OBJECT(map[10],new ItemInstance(Item::ambrosiumShard, 9));
+
+	ADD_OBJECT(map[11],Tile::zaniteBlock);
+	ADD_OBJECT(map[11],new ItemInstance(Item::zaniteGemstone, 9));
 }
 void OreRecipies::addRecipes(Recipes *r) 
 {

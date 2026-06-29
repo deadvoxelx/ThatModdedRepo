@@ -20,7 +20,7 @@ private:
 
 	static std::deque<DataOutputStream *> s_chunkDataQueue;
 	static int s_runningThreadCount;
-	static C4JThread *s_saveThreads[5];
+	static C4JThread *s_saveThreads[3];
 
 public:
 	McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstring &prefix);

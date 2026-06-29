@@ -3,11 +3,26 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.dimension.h"
+#include "../Minecraft.Client/ServerLevel.h"
 #include "PortalForcer.h"
 
-PortalForcer::PortalForcer()
+PortalForcer::PortalPosition::PortalPosition(int x, int y, int z, int64_t time) : Pos(x, y, z)
 {
-	random = new Random();
+	lastUsed = time;
+}
+
+PortalForcer::PortalForcer(ServerLevel *level)
+{
+	this->level = level;
+	random = new Random(level->getSeed());
+}
+
+PortalForcer::~PortalForcer()
+{
+	for(auto& it : cachedPortals)
+	{
+		delete it.second;
+	}
 }
 
 void PortalForcer::force(Level *level, shared_ptr<Entity> e, int lastDimension)
@@ -51,7 +66,6 @@ void PortalForcer::force(Level *level, shared_ptr<Entity> e, int lastDimension)
 	createPortal(level, e, lastDimension);
 	findPortal(level, e, lastDimension);
 }
-
 
 bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimension)
 {
@@ -391,4 +405,29 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 		}
 	}
 	return true;
+}
+
+void PortalForcer::tick(int64_t time)
+{
+	if (time % (SharedConstants::TICKS_PER_SECOND * 5) == 0)
+	{
+		int64_t cutoff = time - SharedConstants::TICKS_PER_SECOND * 30;
+
+        for (auto it = cachedPortalKeys.begin(); it != cachedPortalKeys.end();)
+        {
+			int64_t key = *it;
+			PortalPosition *pos = cachedPortals[key];
+
+			if (pos == nullptr || pos->lastUsed < cutoff)
+			{
+				delete pos;
+				it = cachedPortalKeys.erase(it);
+				cachedPortals.erase(key);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
 }

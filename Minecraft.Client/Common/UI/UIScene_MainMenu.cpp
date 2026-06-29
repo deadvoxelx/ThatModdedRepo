@@ -958,7 +958,7 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void *pParam,bool bContinue,in
 #ifdef _XBOX_ONE
 				ui.ShowPlayerDisplayname(true);
 #endif
-				proceedToScene(ProfileManager.GetPrimaryPad(), eUIScene_LeaderboardsMenu);
+				//proceedToScene(ProfileManager.GetPrimaryPad(), eUIScene_LeaderboardsMenu);
 			}
 		}
 	}
@@ -1620,7 +1620,7 @@ void UIScene_MainMenu::RunLeaderboards(int iPad)
 #ifdef _XBOX_ONE
 			ui.ShowPlayerDisplayname(true);
 #endif
-			proceedToScene(iPad, eUIScene_LeaderboardsMenu);
+			//proceedToScene(iPad, eUIScene_LeaderboardsMenu);
 		}
 	}
 }
@@ -1722,7 +1722,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 #ifdef _XBOX_ONE
 						ui.ShowPlayerDisplayname(true);
 #endif
-						proceedToScene(ProfileManager.GetPrimaryPad(), eUIScene_DLCMainMenu);
+						//proceedToScene(ProfileManager.GetPrimaryPad(), eUIScene_DLCMainMenu);
 					}
 				}
 #if defined _XBOX_ONE

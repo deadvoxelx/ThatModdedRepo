@@ -4481,13 +4481,13 @@ void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, shared_pt
 		}
 		if(levels[3]!=nullptr)
 		{
-			levels[3]->savedDataStorage = nullptr; // shared with overworld
+			//levels[3]->savedDataStorage = nullptr; // shared with overworld
 			delete levels[3];
 			levels[3] = nullptr;
 		}
 		if(levels[4]!=nullptr)
 		{
-			levels[4]->savedDataStorage = nullptr; // shared with overworld
+			//levels[4]->savedDataStorage = nullptr; // shared with overworld
 			delete levels[4];
 			levels[4] = nullptr;
 		}

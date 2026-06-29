@@ -8,7 +8,7 @@ CRITICAL_SECTION		McRegionChunkStorage::cs_memory;
 
 std::deque<DataOutputStream *> McRegionChunkStorage::s_chunkDataQueue;
 int McRegionChunkStorage::s_runningThreadCount = 0;
-C4JThread *McRegionChunkStorage::s_saveThreads[5];
+C4JThread *McRegionChunkStorage::s_saveThreads[3];
 
 
 McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstring &prefix) : m_prefix( prefix )

@@ -4702,6 +4702,8 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_SKYROOT_AXE, L"Skyroot Axe");
 		m_stringTable->registerString(IDS_ITEM_SKYROOT_SHOVEL, L"Skyroot Shovel");
 		m_stringTable->registerString(IDS_ITEM_SKYROOT_HOE, L"Skyroot Hoe");
+		m_stringTable->registerString(IDS_TILE_IRON_TRAPDOOR, L"Iron Trapdoor");
+		m_stringTable->registerString(IDS_TILE_AMBROSIUM_BLOCK, L"Ambrosium Block");
 
 	}
 	else

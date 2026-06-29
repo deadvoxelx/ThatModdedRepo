@@ -329,6 +329,11 @@ int FurnaceTileEntity::getBurnDuration(shared_ptr<ItemInstance> itemInstance)
 		{
 			return BURN_INTERVAL * 8 * 10;
 		}
+
+		if (tile == Tile::ambrosiumBlock)
+		{
+			return BURN_INTERVAL * 8 * 10;
+		}
 	}
 
 	if (dynamic_cast<DiggerItem *>(item) && static_cast<DiggerItem *>(item)->getTier() == Item::Tier::WOOD)
