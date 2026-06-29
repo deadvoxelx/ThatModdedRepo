@@ -4,9 +4,6 @@
 
 class FenceTile : public Tile
 {
-private:
-	wstring texture;
-
 public:
 	static const int TYPE_NORMAL = 0;
 	static const int TYPE_SPRUCE = 1;
