@@ -1260,7 +1260,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 
 	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
 
-	if( levels[0]->isNew || levels[1]->isNew || levels[2]->isNew || levels[3]->isNew /*|| levels[4]->isNew*/)
+	if( levels[0]->isNew || levels[1]->isNew || levels[2]->isNew || levels[3]->isNew || levels[4]->isNew)
 	{
 #ifndef _WINDOWS64
 		// On Windows64 we skip the automatic initial save so that choosing
