@@ -219,11 +219,16 @@ Tile *Tile::packedIce = NULL;
 Tile *Tile::blueIce = NULL;
 Tile *Tile::packedGlass = NULL;
 Tile *Tile::endStoneButton = NULL;
-
+//Tile *Tile::slimeBlock = NULL;
+//Tile *Tile::barrier = NULL;
+Tile *Tile::ironTrapdoor = NULL;
+//Tile *Tile::prismarine = NULL;
+//Tile *Tile::seaLantern = NULL;
 Tile *Tile::hayBlock = NULL;
 Tile *Tile::woolCarpet = NULL;
 Tile *Tile::clayHardened = NULL;
 Tile *Tile::coalBlock = NULL;
+
 Tile *Tile::netherDiamond = NULL;
 Tile *Tile::netherGold = NULL;
 Tile *Tile::goldenclin = NULL;
@@ -282,6 +287,7 @@ Tile *Tile::aerogel = NULL;
 Tile *Tile::berryBushStem = NULL;
 Tile *Tile::zaniteBlock = NULL;
 Tile *Tile::enchanter = NULL;
+Tile *Tile::ambrosiumBlock = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -415,7 +421,7 @@ void Tile::staticCtor()
 	Tile::clay = (new ClayTile(82))										->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_clay)->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"clay")->setDescriptionId(IDS_TILE_CLAY)->setUseDescriptionId(IDS_DESC_CLAY_TILE);
 	Tile::reeds = (new ReedTile(83))									->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"reeds")->setDescriptionId(IDS_TILE_REEDS)->setNotCollectStatistics()->setUseDescriptionId(IDS_DESC_REEDS)->disableMipmap();
 	Tile::jukebox = (new JukeboxTile(84))								->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"jukebox")->setDescriptionId(IDS_TILE_JUKEBOX)->sendTileData()->setUseDescriptionId(IDS_DESC_JUKEBOX);
-	Tile::fence = (new FenceTile(85, Tile::wood))						->setIconName(L"fence")->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,	Item::eMaterial_wood)->setDestroyTime(2.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_WOOD)->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
+	Tile::fence = (new FenceTile(85, Tile::wood))						->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,	Item::eMaterial_wood)->setIconName(L"fence")->setDestroyTime(2.0f)->setSoundType(Tile::SOUND_WOOD)->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
 	Tile::pumpkin = (new PumpkinTile(86, false))						->setDestroyTime(1.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"pumpkin")->setDescriptionId(IDS_TILE_PUMPKIN)->sendTileData()->setUseDescriptionId(IDS_DESC_PUMPKIN);
 	Tile::netherRack = (new NetherrackTile(87))							->setDestroyTime(0.4f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"netherrack")->setDescriptionId(IDS_TILE_HELL_ROCK)->setUseDescriptionId(IDS_DESC_HELL_ROCK);
 	Tile::soulsand = (new SoulSandTile(88))								->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_SAND)->setIconName(L"soul_sand")->setDescriptionId(IDS_TILE_HELL_SAND)->setUseDescriptionId(IDS_DESC_HELL_SAND);
@@ -511,7 +517,11 @@ void Tile::staticCtor()
 	Tile::blueIce = (new BlueIceTile(162))								->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_ice)->setDestroyTime(0.9f)->setLightEmission(5 / 16.0f)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"blue_ice")->setDescriptionId(IDS_TILE_BLUE_ICE)->sendTileData()->setUseDescriptionId(IDS_TILE_BLUE_ICE);
 	Tile::packedGlass = (new PackedGlassTile(163))						->setDestroyTime(0.5f)->setExplodeable(1200)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"packed_glass")->setDescriptionId(IDS_TILE_PACKED_GLASS)->sendTileData()->setUseDescriptionId(IDS_TILE_PACKED_GLASS);
 	Tile::endStoneButton = (new EndStoneButtonTile(164))				->setBaseItemTypeAndMaterial(Item::eBaseItemType_button,	Item::eMaterial_stone)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"button")->setDescriptionId(IDS_TILE_ENDSTONE_BUTTON)->sendTileData()->setUseDescriptionId(IDS_DESC_BUTTON);
-
+	//165
+	//166
+	Tile::ironTrapdoor = (new TrapDoorTile(167, Material::metal))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_door,	Item::eMaterial_trap)->setDestroyTime(3.0f)->setSoundType(Tile::SOUND_METAL)->setIconName(L"ironTrapdoor")->setDescriptionId(IDS_TILE_IRON_TRAPDOOR)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_TRAPDOOR);
+	//168
+	//169
 	Tile::hayBlock = (new HayBlockTile(170))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_wheat)->setDestroyTime(0.5f)->setSoundType(SOUND_GRASS)->setIconName(L"hay_block")->setDescriptionId(IDS_TILE_HAY)->setUseDescriptionId(IDS_DESC_HAY);
 	Tile::woolCarpet = (new WoolCarpetTile(171))						->setBaseItemTypeAndMaterial(Item::eBaseItemType_carpet,	Item::eMaterial_cloth)->setDestroyTime(0.1f)->setSoundType(SOUND_CLOTH)->setIconName(L"woolCarpet")->setLightBlock(0)->setDescriptionId(IDS_TILE_CARPET)->setUseDescriptionId(IDS_DESC_CARPET);
 	Tile::clayHardened = (new Tile(172, Material::stone))				->setBaseItemTypeAndMaterial(Item::eBaseItemType_clay,	Item::eMaterial_clay)->setDestroyTime(1.25f)->setExplodeable(7)->setSoundType(SOUND_STONE)->setIconName(L"hardened_clay")->setDescriptionId(IDS_TILE_HARDENED_CLAY)->setUseDescriptionId(IDS_DESC_HARDENED_CLAY);
@@ -566,17 +576,18 @@ void Tile::staticCtor()
 	Tile::goldenOakSapling = (Bush *) (new AetherSaplingTile(218))		->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"goldenOakSapling")->setDescriptionId(IDS_TILE_GOLDENOAK_SAPLING)->setUseDescriptionId(IDS_TILE_GOLDENOAK_SAPLING)->disableMipmap();
 	Tile::ambrosiumOre = (new OreTile(219))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"ambrosiumOre")->setDescriptionId(IDS_TILE_AMBROSIUM_ORE)->setUseDescriptionId(IDS_TILE_AMBROSIUM_ORE);
 	Tile::zaniteOre = (new OreTile(220))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"zaniteOre")->setDescriptionId(IDS_TILE_ZANITE_ORE)->setUseDescriptionId(IDS_TILE_ZANITE_ORE);
-	Tile::gravititeOre = (new OreTile(221))								->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"gravititeOre")->setDescriptionId(IDS_TILE_GRAVITITE_ORE)->setUseDescriptionId(IDS_TILE_GRAVITITE_ORE);
+	Tile::gravititeOre = (new OreTile(221))								->setDestroyTime(1.5f)->setExplodeable(120)->setSoundType(Tile::SOUND_STONE)->setIconName(L"gravititeOre")->setDescriptionId(IDS_TILE_GRAVITITE_ORE)->setUseDescriptionId(IDS_TILE_GRAVITITE_ORE);
 	Tile::aercloud = (new AercloudTile(222, Material::cloth, false))	->setDestroyTime(0.2f)->setLightBlock(1)->setSoundType(SOUND_CLOTH)->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD)->setUseDescriptionId(IDS_TILE_AERCLOUD);
 	Tile::quicksoil = (new QuicksoilTile(223))							->setDestroyTime(0.5f)->setSoundType(SOUND_SAND)->setIconName(L"quicksoil")->setDescriptionId(IDS_TILE_QUICKSOIL)->setUseDescriptionId(IDS_TILE_QUICKSOIL);
 	Tile::aetherDirt = (new DirtTile(224))								->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L"aetherDirt")->setDescriptionId(IDS_TILE_AETHER_DIRT)->setUseDescriptionId(IDS_TILE_AETHER_DIRT);
 	Tile::holystone = (new HolystoneTile(225))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE)->setUseDescriptionId(IDS_TILE_HOLYSTONE);
 	Tile::ambrosiumTorch = (new TorchTile(226))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,	Item::eMaterial_wood)->setDestroyTime(0.0f)->setLightEmission(15 / 16.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"ambrosiumTorch")->setDescriptionId(IDS_TILE_TORCH)->setUseDescriptionId(IDS_DESC_TORCH)->disableMipmap();
-	Tile::enchantedGravitite = (new EnchantedGravititeTile(227))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_gravitite)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"iron_block")->setDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE)->setUseDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE);
+	Tile::enchantedGravitite = (new EnchantedGravititeTile(227))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_gravitite)->setDestroyTime(5.0f)->setExplodeable(120)->setSoundType(Tile::SOUND_METAL)->setIconName(L"iron_block")->setDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE)->setUseDescriptionId(IDS_TILE_ENCHANTED_GRAVITITE);
 	Tile::aerogel = (new AerogelTile(228))								->setDestroyTime(1.0f)->setLightBlock(3)->setExplodeable(1200)->setSoundType(Tile::SOUND_STONE)->setIconName(L"aerogel")->setDescriptionId(IDS_TILE_AEROGEL)->setUseDescriptionId(IDS_TILE_AEROGEL);
 	Tile::berryBushStem = (Bush *)(new BerryStemTile(229))				->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"berryBushStem")->setDescriptionId(IDS_TILE_BERRY_BUSH)->setUseDescriptionId(IDS_TILE_BERRY_BUSH)->disableMipmap();
 	Tile::zaniteBlock = (new MetalTile(230))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_zanite)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L"zaniteBlock")->setDescriptionId(IDS_TILE_ZANITE_BLOCK)->setUseDescriptionId(IDS_TILE_ZANITE_BLOCK);
 	Tile::enchanter = (new EnchanterTile(231))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_stone)->setDestroyTime(3.0f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"enchanter_side")->setDescriptionId(IDS_TILE_ENCHANTER)->sendTileData()->setUseDescriptionId(IDS_TILE_ENCHANTER);
+	Tile::ambrosiumBlock = (new MetalTile(232))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_ambrosium)->setDestroyTime(3.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L"ambrosiumBlock")->setDescriptionId(IDS_TILE_AMBROSIUM_BLOCK)->setUseDescriptionId(IDS_TILE_AMBROSIUM_BLOCK);
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
@@ -623,7 +634,7 @@ void Tile::staticCtor()
 	Item::items[cobbleWall_Id]			= ( new MultiTextureTileItem(cobbleWall_Id - 256, cobbleWall, (int *)WallTile::COBBLE_NAMES, 16) )->setDescriptionId(IDS_TILE_COBBLESTONE_WALL)->setUseDescriptionId(IDS_DESC_COBBLESTONE_WALL);
 	Item::items[anvil_Id]				= ( new AnvilTileItem(anvil) )->setDescriptionId(IDS_TILE_ANVIL)->setUseDescriptionId(IDS_DESC_ANVIL);
 
-	Item::items[fence_Id]				= ( new MultiTextureTileItem(fence_Id - 256, fence, (int *)FenceTile::FENCE_NAMES, 6) )->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
+	Item::items[fence_Id]				= ( new MultiTextureTileItem(fence_Id - 256, fence, (int *)FenceTile::FENCE_NAMES, 7) )->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
 
 	for (int i = 0; i < 256; i++)
 	{
