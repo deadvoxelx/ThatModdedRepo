@@ -2515,3 +2515,5 @@
 #define IDS_ITEM_SKYROOT_AXE								   2509
 #define IDS_ITEM_SKYROOT_SHOVEL								   2510
 #define IDS_ITEM_SKYROOT_HOE								   2511
+#define IDS_TILE_IRON_TRAPDOOR								   2512
+#define IDS_TILE_AMBROSIUM_BLOCK							   2513
