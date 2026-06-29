@@ -49,6 +49,7 @@ class Tile
 	friend class StairTile;
 	friend class ChunkRebuildData;
 	friend class WallTile;
+	friend class FenceTile;
 
 protected:
 	// 4J added so we can have separate shapes for different threads
@@ -360,10 +361,16 @@ public:
 	static const int dropper_Id = 158;
 	static const int clayHardened_colored_Id = 159;
 	static const int stained_glass_pane_Id = 160;
+
 	static const int packedIce_Id = 161;
 	static const int blueIce_Id = 162;
 	static const int packedGlass_Id = 163;
 	static const int endStoneButton_Id = 164;
+	//static const int slimeBlock_Id = 165;
+	//static const int barrier_Id = 166;
+	static const int ironTrapdoor_Id = 167;
+	//static const int prismarine_Id = 168;
+	//static const int seaLantern_Id = 169;
 
 	static const int hayBlock_Id = 170;
 	static const int woolCarpet_Id = 171;
@@ -427,6 +434,7 @@ public:
 	static const int berryBushStem_Id = 229;
 	static const int zaniteBlock_Id = 230;
 	static const int enchanter_Id = 231;
+	static const int ambrosiumBlock_Id = 232;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -601,11 +609,16 @@ public:
 	static Tile *blueIce;
 	static Tile *packedGlass;
 	static Tile *endStoneButton;
-
+	//static Tile *slimeBlock;
+	//static Tile *barrier;
+	static Tile *ironTrapdoor;
+	//static Tile *prismarine;
+	//static Tile *seaLantern;
 	static Tile *hayBlock;
 	static Tile *woolCarpet;
 	static Tile *clayHardened;
 	static Tile *coalBlock;
+
 	static Tile *netherDiamond;
 	static Tile *netherGold;
 	static Tile *goldenclin;
@@ -664,6 +677,7 @@ public:
 	static Tile *berryBushStem;
 	static Tile *zaniteBlock;
 	static Tile *enchanter;
+	static Tile *ambrosiumBlock;
 
 	static void staticCtor();
 
