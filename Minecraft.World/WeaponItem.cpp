@@ -50,6 +50,10 @@ bool WeaponItem::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Liv
 	{
 		mob->yd = 1.0f;
 	}
+	if (id == Item::vampireBlade_Id)
+	{
+		attacker->setHealth(attacker->getHealth() + 2);
+	}
 	return true;
 }
 
