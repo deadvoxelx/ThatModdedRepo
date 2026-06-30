@@ -856,7 +856,7 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS *pSettings,con
 {
 	SetGameSettings(iPad,eGameSetting_MusicVolume,DEFAULT_VOLUME_LEVEL);
 	SetGameSettings(iPad,eGameSetting_SoundFXVolume,DEFAULT_VOLUME_LEVEL);
-	SetGameSettings(iPad,eGameSetting_RenderDistance,16);
+	SetGameSettings(iPad,eGameSetting_RenderDistance,10);
 	SetGameSettings(iPad,eGameSetting_Gamma,50);
 	SetGameSettings(iPad,eGameSetting_FOV,0);
 
@@ -4704,6 +4704,9 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_SKYROOT_HOE, L"Skyroot Hoe");
 		m_stringTable->registerString(IDS_TILE_IRON_TRAPDOOR, L"Iron Trapdoor");
 		m_stringTable->registerString(IDS_TILE_AMBROSIUM_BLOCK, L"Ambrosium Block");
+		m_stringTable->registerString(IDS_TILE_DUNGEON_STONE, L"Dungeon Stone");
+		m_stringTable->registerString(IDS_TILE_ANGELIC_STONE, L"Angelic Stone");
+		m_stringTable->registerString(IDS_TILE_HELLFIRE_STONE, L"Hellfire Stone");
 
 	}
 	else
