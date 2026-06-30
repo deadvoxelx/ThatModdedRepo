@@ -4707,6 +4707,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_DUNGEON_STONE, L"Dungeon Stone");
 		m_stringTable->registerString(IDS_TILE_ANGELIC_STONE, L"Angelic Stone");
 		m_stringTable->registerString(IDS_TILE_HELLFIRE_STONE, L"Hellfire Stone");
+		m_stringTable->registerString(IDS_ITEM_VAMPIRE_BLADE, L"Vampire Blade");
 
 	}
 	else
