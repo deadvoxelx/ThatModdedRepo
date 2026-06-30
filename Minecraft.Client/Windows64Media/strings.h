@@ -2520,3 +2520,4 @@
 #define IDS_TILE_DUNGEON_STONE								   2514
 #define IDS_TILE_ANGELIC_STONE								   2515
 #define IDS_TILE_HELLFIRE_STONE								   2516
+#define IDS_ITEM_VAMPIRE_BLADE								   2517
