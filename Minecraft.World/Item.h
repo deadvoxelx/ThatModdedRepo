@@ -182,6 +182,7 @@ public:
 		static const Tier *ENDORIUM; //
 		static const Tier *ZANITE; //
 		static const Tier *GRAVITITE; //
+		static const Tier *VAMPIRE; //
 
 	private:
 		const int level;
@@ -523,6 +524,7 @@ public:
 	static Item *skyrootAxe;
 	static Item *skyrootShovel;
 	static Item *skyrootHoe;
+	static Item *vampireBlade;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -817,6 +819,7 @@ public:
 	static const int skyrootAxe_Id = 507;
 	static const int skyrootShovel_Id = 508;
 	static const int skyrootHoe_Id = 509;
+	static const int vampireBlade_Id = 510;
 
 public:
 	const int id;
