@@ -153,7 +153,7 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 				        shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity >( level->getTileEntity(x + a, y + k, z + b) );
 				        if (chest != NULL )
 				        {
-					        WeighedTreasure::addChestItems(random, treasure, chest, 6);
+					        WeighedTreasure::addChestItems(random, treasure, chest, 5 + random->nextInt(3));
 				        } 
                     }
 			        else if (m == 3 || m == -3)
@@ -180,18 +180,18 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 
 WeighedTreasure *GoldDungeon::goldDungeonTreasure[GoldDungeon::TREASURE_ITEMS_COUNT] = 
 {
-	new WeighedTreasure(Item::lifeShard_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::regenerationStone_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::gummySwetBlue_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::gummySwetGold_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::lifeShard_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::regenerationStone_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gummySwetBlue_Id, 0, 1, 3, 2),
+	new WeighedTreasure(Item::gummySwetGold_Id, 0, 1, 3, 2),
+    new WeighedTreasure(Item::vampireBlade_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::gravititeSword_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::gravititeHelmet_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::gravititeChestplate_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::gravititeLeggings_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::gravititeBoots_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::gravititeSword_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::nethaniumHelmet_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::nethaniumChestplate_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::nethaniumLeggings_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::nethaniumBoots_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::nethaniumSword_Id, 0, 1, 1, 1),
 };
