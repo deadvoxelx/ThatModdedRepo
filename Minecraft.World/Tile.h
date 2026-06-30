@@ -435,6 +435,8 @@ public:
 	static const int zaniteBlock_Id = 230;
 	static const int enchanter_Id = 231;
 	static const int ambrosiumBlock_Id = 232;
+	static const int dungeonStone_Id = 233;
+	static const int dungeonLight_Id = 234;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -678,6 +680,8 @@ public:
 	static Tile *zaniteBlock;
 	static Tile *enchanter;
 	static Tile *ambrosiumBlock;
+	static Tile *dungeonStone;
+	static Tile *dungeonLight;
 
 	static void staticCtor();
 
