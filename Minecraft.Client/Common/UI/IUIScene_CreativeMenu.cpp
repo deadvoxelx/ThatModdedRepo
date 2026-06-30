@@ -695,8 +695,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::gravititePickaxe_Id)
 		ITEM(Item::gravititeShovel_Id)
 		ITEM(Item::gravititeHoe_Id)
-		ITEM(Item::cloudParachute_Id)
+		ITEM(Item::vampireBlade_Id)
 
+		ITEM(Item::cloudParachute_Id)		// 0
 		ITEM(Item::bow_Id)					// 1
 		ITEM(Item::arrow_Id)				// 2
 		ITEM(Item::dartShooterGold_Id)		// 3
@@ -706,6 +707,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::dartEnchanted_Id)		// 7
 		ITEM(Item::healingStone_Id)			// 8
 		ITEM(Item::lifeShard_Id)			// 9
+
 		ITEM(Item::regenerationStone_Id)	// 0
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
