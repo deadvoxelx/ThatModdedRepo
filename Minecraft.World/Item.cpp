@@ -31,6 +31,7 @@ const _Tier *_Tier::NETHANIUM = new _Tier(4, 1561, 9, 4, 15); //
 const _Tier *_Tier::ENDORIUM = new _Tier(6, 2032, 12, 5, 15); //
 const _Tier *_Tier::ZANITE = new _Tier(2, 250, 6, 2, 14); //
 const _Tier *_Tier::GRAVITITE = new _Tier(4, 1561, 9, 4, 15); //
+const _Tier *_Tier::VAMPIRE = new _Tier(3, 1000, 8, 3, 10); //
 
 Random *Item::random = new Random();
 
@@ -343,6 +344,7 @@ Item *Item::skyrootPickaxe = NULL;
 Item *Item::skyrootAxe = NULL;
 Item *Item::skyrootShovel = NULL;
 Item *Item::skyrootHoe = NULL;
+Item *Item::vampireBlade = NULL;
 
 void Item::staticCtor()
 {
@@ -674,7 +676,8 @@ void Item::staticCtor()
 	Item::keySilver = (new Item(246))																->setIconName(L"keySilver")->setDescriptionId(IDS_ITEM_KEY_SILVER)->setUseDescriptionId(IDS_ITEM_KEY_SILVER);
 	Item::keyGold = (new Item(247))																	->setIconName(L"keyGold")->setDescriptionId(IDS_ITEM_KEY_GOLD)->setUseDescriptionId(IDS_ITEM_KEY_GOLD);
 	Item::cloudParachute = (CloudParachuteItem *)(new CloudParachuteItem(248))						->setIconName(L"cloudParachute")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_cloud)->setDescriptionId(IDS_ITEM_CLOUD_PARACHUTE)->setUseDescriptionId(IDS_ITEM_CLOUD_PARACHUTE);
-	//254
+	Item::vampireBlade = ( new WeaponItem(254, _Tier::VAMPIRE) )									->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_endorium)->setIconName(L"vampireSword")->setDescriptionId(IDS_ITEM_VAMPIRE_BLADE)->setUseDescriptionId(IDS_ITEM_VAMPIRE_BLADE);
+
 }
 
 // 4J Stu - We need to do this after the staticCtor AND after staticCtors for other class
