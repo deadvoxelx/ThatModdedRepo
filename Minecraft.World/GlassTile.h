@@ -21,7 +21,7 @@ private:
 public:
 	using HalfTransparentTile::isSolidRender;
 
-	GlassTile(int id, Material *material, bool allowSame);
+	GlassTile(int id, Material *material);
 	virtual int getResourceCount(Random *random);
 	virtual int getRenderLayer();
 	virtual bool isSolidRender();
