@@ -1,7 +1,6 @@
 #pragma once
 #include "BiomeDecorator.h"
 #include "HolidayTreeFeature.h"
-#include "GoldIsland.h"
 
 class AerCloudFeature;
 
@@ -29,8 +28,6 @@ protected:
 
 	Feature *whiteFlowerFeature;
 	Feature *purpleFlowerFeature;
-
-	GoldIsland *goldIsland;
 
 	virtual void decorate();
 	void decorateAetherOres();
