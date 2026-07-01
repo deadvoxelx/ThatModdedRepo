@@ -4,6 +4,7 @@
 #include "net.minecraft.world.level.tile.entity.h"
 #include "net.minecraft.world.item.h"
 #include "WeighedTreasure.h"
+#include "DungeonStoneFeature.h"
 #include "GoldDungeon.h"
 
 GoldDungeon::GoldDungeon(int blockId) : Feature(blockId)
@@ -30,15 +31,25 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 	    {
             for (int m = -a; m <= a; m++)
 		    {
+                int rnd = random->nextInt(48);
+
                 if (j == 4)
 		        {
                     placeBlock(level, x + k, y + j, z + m, Tile::dungeonStone_Id, 2);
+                    if (rnd < 8)
+				    {
+                        (new DungeonStoneFeature(Tile::dungeonLight_Id))->place(level, random, x + k, y + j, z + m);
+                    }
                 }
 		        else if (j > -4)
 		        {
                     if (k == a || -k == a || m == a || -m == a)
 			        {
                         placeBlock(level, x + k, y + j, z + m, Tile::dungeonStone_Id, 2);
+                        if (rnd < 8)
+				        {
+                            (new DungeonStoneFeature(Tile::dungeonLight_Id))->place(level, random, x + k, y + j, z + m);
+                        }
                     }
 			        else
 			        {
@@ -49,6 +60,10 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 		        else
 		        {
                     placeBlock(level, x + k, y + j, z + m, Tile::dungeonStone_Id, 2);
+                    if (rnd < 8)
+				    {
+                        (new DungeonStoneFeature(Tile::dungeonLight_Id))->place(level, random, x + k, y + j, z + m);
+                    }
                     if ((k == a - 2 || -k == a - 2) && (m == a - 2 || -m == a - 2))
 			        {
                         placeBlock(level, x + k, y + j + 1, z + m, Tile::netherRack_Id, 0);
