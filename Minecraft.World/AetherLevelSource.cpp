@@ -435,7 +435,7 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Aether Dungeons");
-	if (pprandom->nextInt(64) == 0)
+	if (pprandom->nextInt(96) == 0)
 	{
 		int x = xo + pprandom->nextInt(16) + 8;
 		int y = 48 + random->nextInt(24);
