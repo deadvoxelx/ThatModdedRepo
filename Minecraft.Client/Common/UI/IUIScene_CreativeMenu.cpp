@@ -110,6 +110,12 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Tile::holystone_Id, HolystoneTile::TYPE_DEFAULT)
 		ITEM_AUX(Tile::holystone_Id, HolystoneTile::TYPE_MOSSY)
 		ITEM_AUX(Tile::holystone_Id, HolystoneTile::TYPE_BRICK)
+		ITEM_AUX(Tile::dungeonStone_Id, DungeonStoneTile::TYPE_DEFAULT)
+		ITEM_AUX(Tile::dungeonStone_Id, DungeonStoneTile::TYPE_ANGELIC)
+		ITEM_AUX(Tile::dungeonStone_Id, DungeonStoneTile::TYPE_HELLFIRE)
+		ITEM_AUX(Tile::dungeonLight_Id, DungeonLightTile::TYPE_DEFAULT)
+		ITEM_AUX(Tile::dungeonLight_Id, DungeonLightTile::TYPE_ANGELIC)
+		ITEM_AUX(Tile::dungeonLight_Id, DungeonLightTile::TYPE_HELLFIRE)
 		ITEM(Tile::icestone_Id)
 		ITEM_AUX(Tile::quicksoil_Id, QuicksoilTile::TYPE_UNNATURAL)
 		ITEM_AUX(Tile::aercloud_Id, AercloudTile::TYPE_DEFAULT)
@@ -689,8 +695,9 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::gravititePickaxe_Id)
 		ITEM(Item::gravititeShovel_Id)
 		ITEM(Item::gravititeHoe_Id)
-		ITEM(Item::cloudParachute_Id)
+		ITEM(Item::vampireBlade_Id)
 
+		ITEM(Item::cloudParachute_Id)		// 0
 		ITEM(Item::bow_Id)					// 1
 		ITEM(Item::arrow_Id)				// 2
 		ITEM(Item::dartShooterGold_Id)		// 3
@@ -700,6 +707,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::dartEnchanted_Id)		// 7
 		ITEM(Item::healingStone_Id)			// 8
 		ITEM(Item::lifeShard_Id)			// 9
+
 		ITEM(Item::regenerationStone_Id)	// 0
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)

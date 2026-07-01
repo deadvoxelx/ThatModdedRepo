@@ -288,6 +288,8 @@ Tile *Tile::berryBushStem = NULL;
 Tile *Tile::zaniteBlock = NULL;
 Tile *Tile::enchanter = NULL;
 Tile *Tile::ambrosiumBlock = NULL;
+Tile *Tile::dungeonStone = NULL;
+Tile *Tile::dungeonLight = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -349,7 +351,7 @@ void Tile::staticCtor()
 	// 4J - for leaves, have specified that only the data bits that encode the type of leaf are important to be sent
 	Tile::leaves = (LeafTile *)(new LeafTile(18))				->setDestroyTime(0.2f)->setLightBlock(1)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"leaves")->setDescriptionId(IDS_TILE_LEAVES)->sendTileData(LeafTile::LEAF_TYPE_MASK)->setUseDescriptionId(IDS_DESC_LEAVES);
 	Tile::sponge = (new Sponge(19))								->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"sponge")->setDescriptionId(IDS_TILE_SPONGE)->setUseDescriptionId(IDS_DESC_SPONGE);
-	Tile::glass = (new GlassTile(20, Material::glass, false))	->setDestroyTime(0.3f)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS)->setUseDescriptionId(IDS_DESC_GLASS);
+	Tile::glass = (new GlassTile(20, Material::glass))			->setDestroyTime(0.3f)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS)->setUseDescriptionId(IDS_DESC_GLASS);
 
 	Tile::lapisOre = (new OreTile(21))											->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L"lapis_ore")->setDescriptionId(IDS_TILE_ORE_LAPIS)->setUseDescriptionId(IDS_DESC_ORE_LAPIS);
 	Tile::lapisBlock = (new Tile(22, Material::stone))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_lapis)->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L"lapis_block")->setDescriptionId(IDS_TILE_BLOCK_LAPIS)->setUseDescriptionId(IDS_DESC_BLOCK_LAPIS);
@@ -588,6 +590,8 @@ void Tile::staticCtor()
 	Tile::zaniteBlock = (new MetalTile(230))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_zanite)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L"zaniteBlock")->setDescriptionId(IDS_TILE_ZANITE_BLOCK)->setUseDescriptionId(IDS_TILE_ZANITE_BLOCK);
 	Tile::enchanter = (new EnchanterTile(231))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_stone)->setDestroyTime(3.0f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"enchanter_side")->setDescriptionId(IDS_TILE_ENCHANTER)->sendTileData()->setUseDescriptionId(IDS_TILE_ENCHANTER);
 	Tile::ambrosiumBlock = (new MetalTile(232))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_ambrosium)->setDestroyTime(3.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L"ambrosiumBlock")->setDescriptionId(IDS_TILE_AMBROSIUM_BLOCK)->setUseDescriptionId(IDS_TILE_AMBROSIUM_BLOCK);
+	Tile::dungeonStone = (new DungeonStoneTile(233))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
+	Tile::dungeonLight = (new DungeonLightTile(234))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setLightEmission(0.5f)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone_light")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
@@ -610,6 +614,8 @@ void Tile::staticCtor()
 	Item::items[stained_glass_Id]		= ( new MultiTextureTileItem(Tile::stained_glass_Id - 256,Tile::stained_glass,(int*)StainedGlassBlock::STAINED_GLASS_NAMES, StainedGlassBlock::STAINED_GLASS_NAMES_LENGTH))->setIconName(L"stainedGlass")->setDescriptionId(IDS_TILE_STAINED_GLASS);
 	Item::items[stained_glass_pane_Id]	= ( new MultiTextureTileItem(Tile::stained_glass_pane_Id - 256,Tile::stained_glass_pane,(int*)StainedGlassPaneBlock::STAINED_GLASS_NAMES, StainedGlassPaneBlock::STAINED_GLASS_NAMES_LENGTH))->setIconName(L"stainedGlass")->setDescriptionId(IDS_TILE_STAINED_GLASS_PANE);
 	Item::items[flower_Id]				= ( new MultiTextureTileItem(Tile::flower_Id - 256,Tile::flower,(int*)FlowerTile::FLOWER_NAMES, FlowerTile::FLOWER_NAMES_LENGTH))->setIconName(L"flower_dandelion")->setDescriptionId(IDS_TILE_FLOWER);
+	Item::items[dungeonStone_Id]		= ( new MultiTextureTileItem(Tile::dungeonStone_Id - 256,Tile::dungeonStone,(int*)DungeonStoneTile::DUNGEONSTONE_NAMES, DungeonStoneTile::DUNGEONSTONE_NAMES_LENGTH))->setIconName(L"carvedStone")->setDescriptionId(IDS_TILE_DUNGEON_STONE);
+	Item::items[dungeonLight_Id]		= ( new MultiTextureTileItem(Tile::dungeonLight_Id - 256,Tile::dungeonLight,(int*)DungeonLightTile::DUNGEONSTONE_NAMES, DungeonLightTile::DUNGEONSTONE_NAMES_LENGTH))->setIconName(L"carvedStone_light")->setDescriptionId(IDS_TILE_DUNGEON_STONE);
 
 	Item::items[sandStone_Id]			= ( new MultiTextureTileItem(sandStone_Id - 256, sandStone, SandStoneTile::SANDSTONE_NAMES, SandStoneTile::SANDSTONE_BLOCK_NAMES) )->setIconName(L"sandStone")->setDescriptionId(IDS_TILE_SANDSTONE)->setUseDescriptionId(IDS_DESC_SANDSTONE);
 	Item::items[quartzBlock_Id]			= ( new MultiTextureTileItem(quartzBlock_Id - 256, quartzBlock, QuartzBlockTile::BLOCK_NAMES, QuartzBlockTile::QUARTZ_BLOCK_NAMES) )->setIconName(L"quartzBlock")->setDescriptionId(IDS_TILE_QUARTZ_BLOCK)->setUseDescriptionId(IDS_DESC_QUARTZ_BLOCK);

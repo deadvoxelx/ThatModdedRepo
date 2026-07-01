@@ -7,14 +7,13 @@ const unsigned int GlassTile::GLASS_NAMES[GLASS_NAMES_LENGTH] = {
 	IDS_TILE_GLASS,
 	IDS_TILE_GLASS_SOUL,
 	IDS_TILE_GLASS_QUICKSOIL,
-
 };
 
 const wstring GlassTile::TEXTURE_NAMES[] = {
 	L"glass", L"glass", L"quicksoilGlass"
 };
 
-GlassTile::GlassTile(int id, Material *material, bool allowSame) : HalfTransparentTile(id, L"glass", material, allowSame)
+GlassTile::GlassTile(int id, Material *material) : HalfTransparentTile(id, L"glass", material, false)
 {
 	icons = nullptr;
 }

@@ -222,7 +222,7 @@ bool BucketItem::emptyBucket(Level *level, int xt, int yt, int zt)
 
 	if (level->isEmptyTile(xt, yt, zt) || nonSolid) 
 	{
-		if (level->dimension->ultraWarm && content == Tile::water_Id) 
+		if ((level->dimension->ultraWarm || (level->getTile(xt, yt - 1, zt) == Tile::dungeonStone_Id || level->getTile(xt, yt - 1, zt) == Tile::dungeonLight_Id)) && content == Tile::water_Id) 
 		{
 			level->playSound(xt + 0.5f, yt + 0.5f, zt + 0.5f, eSoundType_RANDOM_FIZZ, 0.5f, 2.6f + (level->random->nextFloat() - level->random->nextFloat()) * 0.8f);
 

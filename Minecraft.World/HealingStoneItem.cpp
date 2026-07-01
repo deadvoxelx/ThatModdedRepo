@@ -5,6 +5,7 @@
 #include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.effect.h"
+#include "com.mojang.nbt.h"
 #include "HealingStoneItem.h"
 
 HealingStoneItem::HealingStoneItem(int id) : Item( id )
@@ -23,7 +24,20 @@ shared_ptr<ItemInstance> HealingStoneItem::use(shared_ptr<ItemInstance> instance
 	{
 		instance->count--;
 	}
-	if (!level->isClientSide) player->addEffect(new MobEffectInstance(MobEffect::regeneration->id, 600, 0));
+	if (id == Item::healingStone_Id)
+	{
+		if (!level->isClientSide) player->addEffect(new MobEffectInstance(MobEffect::regeneration->id, 600, 0));
+	}
+	if (id == Item::lifeShard_Id)
+	{
+		if (!level->isClientSide)
+		{
+			if (player->getHealth() < 20)
+			{
+				(player->setHealth(player->getMaxHealth()));
+			}
+		}
+	}
 
 	return instance;
 }

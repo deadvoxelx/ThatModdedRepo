@@ -58,3 +58,6 @@
 #include "BerryBushFeature.h"
 #include "HolidayTreeFeature.h"
 #include "OuterEndPlatformFeature.h"
+#include "GoldDungeon.h"
+#include "GoldIsland.h"
+#include "DungeonStoneFeature.h"

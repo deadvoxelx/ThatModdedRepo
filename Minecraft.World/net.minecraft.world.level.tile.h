@@ -165,3 +165,5 @@
 #include "BerryStemTile.h"
 #include "FlowerTile.h"
 #include "EnchanterTile.h"
+#include "DungeonStoneTile.h"
+#include "DungeonLightTile.h"
