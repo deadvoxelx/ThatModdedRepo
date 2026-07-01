@@ -1485,6 +1485,8 @@ set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_LEVELGEN
   "${CMAKE_CURRENT_SOURCE_DIR}/CustomLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/DungeonFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/DungeonFeature.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/DungeonStoneFeature.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/DungeonStoneFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/FlatLevelSource.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/FlatLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/GoldDungeon.cpp"
