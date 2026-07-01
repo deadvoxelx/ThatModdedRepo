@@ -8,7 +8,6 @@
 #include "AerCloudFeature.h"
 #include "BerryBushFeature.h"
 #include "HolidayTreeFeature.h"
-#include "GoldIsland.h"
 
 AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 {
@@ -30,8 +29,6 @@ AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 
 	whiteFlowerFeature = new FlowerFeature(Tile::flower_Id, 1);
 	purpleFlowerFeature = new FlowerFeature(Tile::flower_Id, 2);
-
-	goldIsland = new GoldIsland(Tile::holystone_Id);
 
 	treeCount = 2;
 	grassCount = 5;
@@ -179,18 +176,6 @@ void AetherBiomeDecorator::decorate()
 		int z = zo + random->nextInt(16) + 8;
 		int y = minCloudY + random->nextInt(Level::genDepth - 10 - minCloudY);
 		smallBlueAerCloudFeature->place(level, random, x, y, z);
-	}
-
-	PIXEndNamedEvent();
-
-	PIXBeginNamedEvent(0, "Aether Dungeons");
-
-	if (random->nextInt(120) == 0)
-	{
-		int x = xo + random->nextInt(16);
-		int y = 48 + random->nextInt(24);
-		int z = zo + random->nextInt(16);
-		goldIsland->place(level, random, x, y, z);
 	}
 
 	PIXEndNamedEvent();
