@@ -200,7 +200,11 @@ bool ItemEntity::hurt(DamageSource *source, float damage)
 	if (getItem() != nullptr && getItem()->id == Item::netherStar_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
 	if (getItem() != nullptr && getItem()->id == Item::relicMallet_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
 	if (getItem() != nullptr && getItem()->id == Item::aphalafSword_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
+	if (getItem() != nullptr && getItem()->id == Item::aphalafShard_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
+	if (getItem() != nullptr && getItem()->id == Item::aphalafRod_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
 	if (getItem() != nullptr && getItem()->id == Tile::packedGlass_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
+	if (getItem() != nullptr && getItem()->id == Item::staffShard_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
+	if (getItem() != nullptr && getItem()->id == Item::nusaShard_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
 
 	//fire immune
 	if (getItem() != nullptr && getItem()->id == Item::nethanium_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
