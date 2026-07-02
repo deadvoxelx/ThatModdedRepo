@@ -117,6 +117,15 @@ Recipes::Recipes()
 		L'#', Tile::netherPlanks,
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Item::aphalafRod, 1), //
+		L"sscicig",
+		L"#", //
+		L"l", //
+
+		L'#', Item::aphalafShard,
+		L'l', Item::stick,
+		L'S');
+
 	pToolRecipies->addRecipes(this);
 	pFoodRecipies->addRecipes(this);
 	pStructureRecipies->addRecipes(this);
@@ -916,6 +925,16 @@ Recipes::Recipes()
 		L'T');
 
 	pWeaponRecipies->addRecipes(this);
+
+	addShapedRecipy(new ItemInstance(Item::aphalafSword, 1), //
+		L"ssscicig",
+		L"#", //
+		L"#", //
+		L"l", //
+
+		L'#', Item::aphalafShard,
+		L'l', Item::aphalafRod,
+		L'T');
 
 	addShapedRecipy(new ItemInstance(Item::bucket_empty, 1), //
 		L"sscig",
