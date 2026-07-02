@@ -4708,6 +4708,10 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_ANGELIC_STONE, L"Angelic Stone");
 		m_stringTable->registerString(IDS_TILE_HELLFIRE_STONE, L"Hellfire Stone");
 		m_stringTable->registerString(IDS_ITEM_VAMPIRE_BLADE, L"Vampire Blade");
+		m_stringTable->registerString(IDS_ITEM_STAFF_SHARD, L"Staff Shard");
+		m_stringTable->registerString(IDS_ITEM_APHALAF_SHARD, L"Aphalaf Shard");
+		m_stringTable->registerString(IDS_ITEM_APHALAF_ROD, L"Aphalaf Rod");
+		m_stringTable->registerString(IDS_ITEM_NUSA_SHARD, L"Nusa Shard");
 
 	}
 	else
