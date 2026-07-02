@@ -134,7 +134,7 @@ int AphalafBoss::getDeathLoot()
 
 void AphalafBoss::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 {
-	spawnAtLocation(Item::aphalafSword_Id, 1);
+	spawnAtLocation(Item::aphalafShard_Id, 1);
 }
 
 bool AphalafBoss::removeWhenFarAway()

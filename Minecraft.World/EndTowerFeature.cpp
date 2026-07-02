@@ -18,1024 +18,683 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	{
 		if ((belowTile == Tile::endStone_Id || belowTile == Tile::endSand_Id || belowTile == Tile::veloettGrass_Id) && (thisTile != Tile::endStone_Id && thisTile != Tile::endSand_Id && thisTile != Tile::veloettGrass_Id && thisTile != Tile::purulLog_Id && thisTile != Tile::purulVeloett_Id))
 		{
-		//UnderLayer
-	    placeBlock(level, x, y - 1, z, Tile::endStone_Id, 0);
-        placeBlock(level, x + 1, y - 1, z, Tile::endStone_Id, 0);
-        placeBlock(level, x - 1, y - 1, z, Tile::endStone_Id, 0);
-        placeBlock(level, x, y - 1, z + 1, Tile::endStone_Id, 0);
-        placeBlock(level, x, y - 1, z - 1, Tile::endStone_Id, 0);
-		
-	    placeBlock(level, x + 1, y - 1, z + 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 1, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z + 1, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 2, y - 1, z + 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 2, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z + 2, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 1, y - 1, z + 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 1, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z + 2, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 2, y - 1, z + 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 2, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z + 1, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 2, y - 1, z, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z, Tile::endStone_Id, 0);
-	    placeBlock(level, x, y - 1, z + 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x, y - 1, z - 2, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 3, y - 1, z + 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 3, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 3, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 3, y - 1, z + 2, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 2, y - 1, z + 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z - 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 2, y - 1, z - 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z + 3, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 3, y - 1, z + 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 3, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 3, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 3, y - 1, z + 1, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 1, y - 1, z + 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z - 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 1, y - 1, z - 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z + 3, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 3, y - 1, z, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 3, y - 1, z, Tile::endStone_Id, 0);
-	    placeBlock(level, x, y - 1, z - 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x, y - 1, z + 3, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 3, y - 1, z + 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 3, y - 1, z - 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 3, y - 1, z - 3, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 3, y - 1, z + 3, Tile::endStone_Id, 0);
+		//Fix for End Tower being filled with End Stone sometimes; Clear space up to roof height
+			for (int dx = -3; dx <= 3; dx++)
+			{
+				for (int dy = 0; dy <= 28; dy++)
+				{
+					for (int dz = -3; dz <= 3; dz++)
+					{
+						placeBlock(level, x + dx, y + dy, z + dz, 0, 0);
+					}
+				}
+			}
 
-		placeBlock(level, x + 4, y - 1, z + 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 4, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 4, y - 1, z - 2, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 4, y - 1, z + 2, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 4, y - 1, z + 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 4, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 4, y - 1, z - 1, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 4, y - 1, z + 1, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 2, y - 1, z + 4, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z - 4, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 2, y - 1, z - 4, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 2, y - 1, z + 4, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 1, y - 1, z + 4, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z - 4, Tile::endStone_Id, 0);
-	    placeBlock(level, x + 1, y - 1, z - 4, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 1, y - 1, z + 4, Tile::endStone_Id, 0);
-		
-		placeBlock(level, x + 4, y - 1, z, Tile::endStone_Id, 0);
-	    placeBlock(level, x - 4, y - 1, z, Tile::endStone_Id, 0);
-	    placeBlock(level, x, y - 1, z - 4, Tile::endStone_Id, 0);
-	    placeBlock(level, x, y - 1, z + 4, Tile::endStone_Id, 0);
-	
+		//UnderLayer
+			for (int fx = -4; fx <= 4; fx++)
+			{
+				for (int fz = -2; fz <= 2; fz++)
+				{
+					placeBlock(level, x + fx, y - 1, z + fz, Tile::endStone_Id, 0);
+				}
+			}
+			for (int gx = -2; gx <= 2; gx++)
+			{
+				for (int gz = -4; gz <= 4; gz++)
+				{
+					placeBlock(level, x + gx, y - 1, z + gz, Tile::endStone_Id, 0);
+				}
+			}
+
+			placeBlock(level, x + 3, y - 1, z + 3, Tile::endStone_Id, 0);
+			placeBlock(level, x - 3, y - 1, z - 3, Tile::endStone_Id, 0);
+			placeBlock(level, x + 3, y - 1, z - 3, Tile::endStone_Id, 0);
+			placeBlock(level, x - 3, y - 1, z + 3, Tile::endStone_Id, 0);
 	
 		//Floor 1
-	    placeBlock(level, x, y, z, Tile::netherPlanks_Id, 1);
-        placeBlock(level, x + 1, y, z, Tile::netherPlanks_Id, 1);
-        placeBlock(level, x - 1, y, z, Tile::netherPlanks_Id, 1);
-        placeBlock(level, x, y, z + 1, Tile::netherPlanks_Id, 1);
-        placeBlock(level, x, y, z - 1, Tile::netherPlanks_Id, 1);
+			for (int hx = -3; hx <= 3; hx++)
+			{
+				for (int hz = -2; hz <= 2; hz++)
+				{
+					placeBlock(level, x + hx, y, z + hz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int ix = -2; ix <= 2; ix++)
+			{
+				for (int iz = -3; iz <= 3; iz++)
+				{
+					placeBlock(level, x + ix, y, z + iz, Tile::netherPlanks_Id, 1);
+				}
+			}
 		
-	    placeBlock(level, x + 1, y, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y, z - 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y, z + 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x + 3, y, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y, z + 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y, z + 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 2, y, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 1, y, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y, z, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y, z, Tile::endStone_Id, 3);
+			placeBlock(level, x, y, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x, y, z + 4, Tile::endStone_Id, 3);
 		
 		//Floor 2
-		placeBlock(level, x + 2, y + 4, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 4, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 4, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 4, z + 2, Tile::netherPlanks_Id, 1);
+			for (int jx = -3; jx <= 3; jx++)
+			{
+				for (int jz = -2; jz <= 2; jz++)
+				{
+					placeBlock(level, x + jx, y + 4, z + jz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int kx = -2; kx <= 2; kx++)
+			{
+				for (int kz = -3; kz <= 3; kz++)
+				{
+					placeBlock(level, x + kx, y + 4, z + kz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int lx = -1; lx <= 1; lx++)
+			{
+				for (int lz = -1; lz <= 1; lz++)
+				{
+					placeBlock(level, x + lx, y + 4, z + lz, 0, 0);
+				}
+			}
 		
-		placeBlock(level, x + 1, y + 4, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 4, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 4, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 4, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 4, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 4, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 4, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 4, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 4, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 4, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 4, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 4, z - 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 4, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 4, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 4, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 4, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 4, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 4, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 4, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 4, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 4, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 4, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 4, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 4, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y + 4, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 4, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 4, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 4, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 4, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 4, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 4, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 4, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 4, z + 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x + 3, y + 4, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 4, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 4, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 4, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 4, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 4, z + 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 4, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 4, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 4, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 4, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 4, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 4, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 4, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 4, z + 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 4, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 4, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 4, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 4, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 4, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 4, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 4, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 4, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 4, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 2, y + 4, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 4, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 4, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 4, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 4, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 4, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 4, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 4, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 1, y + 4, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 4, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 4, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 4, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 4, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 4, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 4, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 4, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 4, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 4, z + 4, Tile::endStone_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 5, y + 4, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 4, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 4, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 4, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 4, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 4, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 4, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 4, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 4, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 4, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 4, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 4, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 4, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 4, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 4, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 4, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 4, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 4, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 4, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 4, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 4, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 4, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 4, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 4, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 4, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 4, z, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 4, z, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 4, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 4, z + 4, Tile::endStone_Id, 3);
 		
 		
+		
+			placeBlock(level, x + 5, y + 4, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 4, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 4, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 4, z + 2, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 4, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 4, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 4, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 4, z + 1, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 2, y + 4, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 4, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 4, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 4, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 1, y + 4, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 4, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 4, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 4, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 4, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 4, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 4, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 4, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 4, y + 4, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 4, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 4, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 4, z + 3, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 3, y + 4, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 4, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 4, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 4, z + 4, Tile::obsidian_Id, 0);
 		
 		//Floor 3
-		placeBlock(level, x + 2, y + 8, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 8, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 8, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 8, z + 2, Tile::netherPlanks_Id, 1);
+			for (int mx = -3; mx <= 3; mx++)
+			{
+				for (int mz = -2; mz <= 2; mz++)
+				{
+					placeBlock(level, x + mx, y + 8, z + mz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int nx = -2; nx <= 2; nx++)
+			{
+				for (int nz = -3; nz <= 3; nz++)
+				{
+					placeBlock(level, x + nx, y + 8, z + nz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int ox = -1; ox <= 1; ox++)
+			{
+				for (int oz = -1; oz <= 1; oz++)
+				{
+					placeBlock(level, x + ox, y + 8, z + oz, 0, 0);
+				}
+			}
 		
-		placeBlock(level, x + 1, y + 8, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 8, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 8, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 8, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 8, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 8, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 8, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 8, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 8, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 8, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 8, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 8, z - 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 8, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 8, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 8, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 8, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 8, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 8, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 8, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 8, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 8, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 8, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 8, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 8, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y + 8, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 8, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 8, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 8, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 8, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 8, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 8, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 8, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 8, z + 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x + 3, y + 8, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 8, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 8, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 8, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 8, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 8, z + 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 8, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 8, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 8, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 8, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 8, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 8, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 8, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 8, z + 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 8, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 8, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 8, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 8, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 8, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 8, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 8, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 8, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 8, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 2, y + 8, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 8, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 8, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 8, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 8, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 8, z + 4, Tile::endStone_Id, 3);
+			
+			placeBlock(level, x + 1, y + 8, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 8, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 8, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 8, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 8, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 8, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 1, y + 8, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 8, z + 4, Tile::endStone_Id, 3);
-		
-		placeBlock(level, x + 4, y + 8, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 8, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 8, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 8, z + 4, Tile::endStone_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 5, y + 8, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 8, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 8, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 8, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 8, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 8, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 8, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 8, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 8, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 8, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 8, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 8, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 8, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 8, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 8, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 8, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 8, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 8, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 8, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 8, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 8, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 8, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 8, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 8, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 8, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 8, z, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 8, z, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 8, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 8, z + 4, Tile::endStone_Id, 3);
 		
 		
+		
+			placeBlock(level, x + 5, y + 8, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 8, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 8, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 8, z + 2, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 8, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 8, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 8, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 8, z + 1, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 2, y + 8, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 8, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 8, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 8, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 1, y + 8, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 8, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 8, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 8, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 8, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 8, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 8, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 8, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 4, y + 8, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 8, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 8, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 8, z + 3, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 3, y + 8, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 8, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 8, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 8, z + 4, Tile::obsidian_Id, 0);
 		
 		//Floor 4
-		placeBlock(level, x + 2, y + 12, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 12, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 12, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 12, z + 2, Tile::netherPlanks_Id, 1);
+			for (int px = -3; px <= 3; px++)
+			{
+				for (int pz = -2; pz <= 2; pz++)
+				{
+					placeBlock(level, x + px, y + 12, z + pz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int qx = -2; qx <= 2; qx++)
+			{
+				for (int qz = -3; qz <= 3; qz++)
+				{
+					placeBlock(level, x + qx, y + 12, z + qz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int rx = -1; rx <= 1; rx++)
+			{
+				for (int rz = -1; rz <= 1; rz++)
+				{
+					placeBlock(level, x + rx, y + 12, z + rz, 0, 0);
+				}
+			}
 		
-		placeBlock(level, x + 1, y + 12, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 12, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 12, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 12, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 12, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 12, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 12, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 12, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 12, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 12, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 12, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 12, z - 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 12, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 12, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 12, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 12, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 12, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 12, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 12, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 12, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 12, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 12, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 12, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 12, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y + 12, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 12, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 12, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 12, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 12, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 12, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 12, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 12, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 12, z + 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x + 3, y + 12, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 12, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 12, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 12, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 12, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 12, z + 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 12, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 12, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 12, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 12, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 12, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 12, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 12, z + 2, Tile::endStone_Id, 3);
+			
+			placeBlock(level, x + 4, y + 12, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 12, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 12, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 12, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 12, z + 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 12, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 12, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 12, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 12, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 12, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 12, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 12, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 12, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 12, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 2, y + 12, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 12, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 12, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 12, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 12, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 12, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 12, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 12, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 1, y + 12, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 12, z + 4, Tile::endStone_Id, 3);
-		
-		placeBlock(level, x + 4, y + 12, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 12, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 12, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 12, z + 4, Tile::endStone_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 5, y + 12, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 12, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 12, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 12, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 12, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 12, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 12, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 12, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 12, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 12, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 12, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 12, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 12, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 12, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 12, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 12, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 12, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 12, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 12, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 12, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 12, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 12, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 12, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 12, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 12, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 12, z, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 12, z, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 12, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 12, z + 4, Tile::endStone_Id, 3);
 		
 		
+		
+			placeBlock(level, x + 5, y + 12, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 12, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 12, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 12, z + 2, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 12, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 12, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 12, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 12, z + 1, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 2, y + 12, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 12, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 12, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 12, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 1, y + 12, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 12, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 12, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 12, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 12, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 12, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 12, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 12, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 4, y + 12, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 12, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 12, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 12, z + 3, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 3, y + 12, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 12, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 12, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 12, z + 4, Tile::obsidian_Id, 0);
 		
 		//Floor 5
-		placeBlock(level, x + 2, y + 16, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 16, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 16, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 16, z + 2, Tile::netherPlanks_Id, 1);
+			for (int sx = -3; sx <= 3; sx++)
+			{
+				for (int sz = -2; sz <= 2; sz++)
+				{
+					placeBlock(level, x + sx, y + 16, z + sz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int tx = -2; tx <= 2; tx++)
+			{
+				for (int tz = -3; tz <= 3; tz++)
+				{
+					placeBlock(level, x + tx, y + 16, z + tz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int ux = -1; ux <= 1; ux++)
+			{
+				for (int uz = -1; uz <= 1; uz++)
+				{
+					placeBlock(level, x + ux, y + 16, z + uz, 0, 0);
+				}
+			}
 		
-		placeBlock(level, x + 1, y + 16, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 16, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 16, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 16, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 16, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 16, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 16, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 16, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 16, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 16, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 16, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 16, z - 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 16, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 16, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 16, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 16, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 16, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 16, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 16, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 16, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 16, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 16, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 16, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 16, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y + 16, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 16, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 16, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 16, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 16, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 16, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 16, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 16, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 16, z + 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x + 3, y + 16, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 16, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 16, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 16, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 16, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 16, z + 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 16, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 16, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 16, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 16, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 16, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 16, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 16, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 16, z + 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 16, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 16, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 16, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 16, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 16, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 16, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 16, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 16, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 16, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 2, y + 16, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 16, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 16, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 16, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 16, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 16, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 16, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 16, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 1, y + 16, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 16, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 16, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 16, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 16, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 16, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 16, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 16, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 16, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 16, z + 4, Tile::endStone_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 5, y + 16, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 16, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 16, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 16, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 16, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 16, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 16, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 16, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 16, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 16, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 16, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 16, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 16, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 16, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 16, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 16, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 16, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 16, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 16, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 16, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 16, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 16, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 16, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 16, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 16, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 16, z, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 16, z, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 16, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 16, z + 4, Tile::endStone_Id, 3);
 		
 		
+		
+			placeBlock(level, x + 5, y + 16, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 16, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 16, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 16, z + 2, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 16, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 16, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 16, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 16, z + 1, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 2, y + 16, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 16, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 16, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 16, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 1, y + 16, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 16, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 16, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 16, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 16, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 16, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 16, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 16, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 4, y + 16, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 16, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 16, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 16, z + 3, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 3, y + 16, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 16, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 16, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 16, z + 4, Tile::obsidian_Id, 0);
 		
 		//Floor 6
-		placeBlock(level, x + 2, y + 20, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 20, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 20, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 20, z + 2, Tile::netherPlanks_Id, 1);
+			for (int vx = -3; vx <= 3; vx++)
+			{
+				for (int vz = -2; vz <= 2; vz++)
+				{
+					placeBlock(level, x + vx, y + 20, z + vz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int wx = -2; wx <= 2; wx++)
+			{
+				for (int wz = -3; wz <= 3; wz++)
+				{
+					placeBlock(level, x + wx, y + 20, z + wz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int xx = -1; xx <= 1; xx++)
+			{
+				for (int xz = -1; xz <= 1; xz++)
+				{
+					placeBlock(level, x + xx, y + 20, z + xz, 0, 0);
+				}
+			}
 		
-		placeBlock(level, x + 1, y + 20, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 20, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 20, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 20, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 20, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 20, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 20, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 20, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 20, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 20, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 20, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 20, z - 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 20, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 20, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 20, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 20, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 20, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 20, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 20, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 20, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 20, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 20, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 20, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 20, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y + 20, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 20, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 20, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 20, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 20, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 20, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 20, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 20, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 20, z + 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x + 3, y + 20, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 20, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 20, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 20, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 20, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 20, z + 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 20, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 20, z - 2, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 20, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 20, z + 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 20, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 20, z - 2, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 20, z + 2, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 20, z + 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 20, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 4, y + 20, z - 1, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 20, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 20, z + 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 20, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x + 4, y + 20, z - 1, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 20, z + 1, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 2, y + 20, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 20, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 2, y + 20, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 2, y + 20, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 20, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 20, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 2, y + 20, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 2, y + 20, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 1, y + 20, z + 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 20, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x + 1, y + 20, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 1, y + 20, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 20, z + 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 20, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x + 1, y + 20, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x - 1, y + 20, z + 4, Tile::endStone_Id, 3);
 		
-		placeBlock(level, x + 4, y + 20, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x - 4, y + 20, z, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 20, z - 4, Tile::endStone_Id, 3);
-	    placeBlock(level, x, y + 20, z + 4, Tile::endStone_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 5, y + 20, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 20, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 20, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 20, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 20, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 20, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 20, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 20, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 20, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 20, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 20, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 20, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 20, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 20, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 20, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 20, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 20, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 20, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 20, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 20, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 20, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 20, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 20, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 20, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 20, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 20, z, Tile::endStone_Id, 3);
+			placeBlock(level, x - 4, y + 20, z, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 20, z - 4, Tile::endStone_Id, 3);
+			placeBlock(level, x, y + 20, z + 4, Tile::endStone_Id, 3);
 		
 		
+		
+			placeBlock(level, x + 5, y + 20, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 20, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 20, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 20, z + 2, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 20, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 20, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 20, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 20, z + 1, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 2, y + 20, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 20, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 20, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 20, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 1, y + 20, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 20, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 20, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 20, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 20, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 20, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 20, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 20, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 4, y + 20, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 20, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 20, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 20, z + 3, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 3, y + 20, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 20, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 20, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 20, z + 4, Tile::obsidian_Id, 0);
 		
 		//Floor 7
-		placeBlock(level, x + 2, y + 24, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+			for (int yx = -3; yx <= 3; yx++)
+			{
+				for (int yz = -2; yz <= 2; yz++)
+				{
+					placeBlock(level, x + yx, y + 24, z + yz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int zx = -2; zx <= 2; zx++)
+			{
+				for (int zz = -3; zz <= 3; zz++)
+				{
+					placeBlock(level, x + zx, y + 24, z + zz, Tile::netherPlanks_Id, 1);
+				}
+			}
+			for (int ax = -1; ax <= 1; ax++)
+			{
+				for (int az = -1; az <= 1; az++)
+				{
+					placeBlock(level, x + ax, y + 24, z + az, 0, 0);
+				}
+			}
 		
-		placeBlock(level, x + 1, y + 24, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 24, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 24, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 24, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 24, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 24, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 24, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 24, z + 2, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 2, y + 24, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 24, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 24, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 24, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 3, y + 24, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 24, z + 1, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 1, y + 24, z + 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 24, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 24, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 24, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 24, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 3, y + 24, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 24, z - 3, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 24, z + 3, Tile::netherPlanks_Id, 1);
-		
-		placeBlock(level, x + 3, y + 24, z + 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x + 3, y + 24, z - 3, Tile::purulLog_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 24, z + 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 24, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x + 3, y + 24, z - 3, Tile::purulLog_Id, 0);
+			placeBlock(level, x - 3, y + 24, z + 3, Tile::purulLog_Id, 0);
 
-		placeBlock(level, x + 4, y + 24, z + 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 4, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 4, y + 24, z - 2, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 4, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 4, y + 24, z + 2, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 4, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 4, y + 24, z - 2, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 4, y + 24, z + 2, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 4, y + 24, z + 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 4, y + 24, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 4, y + 24, z - 1, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 4, y + 24, z + 1, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 4, y + 24, z + 1, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 4, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 4, y + 24, z - 1, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 4, y + 24, z + 1, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 2, y + 24, z + 4, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z - 4, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 2, y + 24, z - 4, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 2, y + 24, z + 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 2, y + 24, z + 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 2, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 2, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 2, y + 24, z + 4, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 1, y + 24, z + 4, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 24, z - 4, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x + 1, y + 24, z - 4, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 1, y + 24, z + 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 1, y + 24, z + 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 1, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x + 1, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 1, y + 24, z + 4, Tile::netherPlanks_Id, 1);
 		
-		placeBlock(level, x + 4, y + 24, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x - 4, y + 24, z, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 24, z - 4, Tile::netherPlanks_Id, 1);
-	    placeBlock(level, x, y + 24, z + 4, Tile::netherPlanks_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 5, y + 24, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 24, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 24, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 24, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 24, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 24, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 24, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 24, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 24, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 24, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 24, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 24, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 24, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 24, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 24, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 24, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 24, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 24, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 24, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 24, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 24, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 24, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 24, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 24, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 24, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 24, z, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x - 4, y + 24, z, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x, y + 24, z - 4, Tile::netherPlanks_Id, 1);
+			placeBlock(level, x, y + 24, z + 4, Tile::netherPlanks_Id, 1);
 		
 		
 		
+			placeBlock(level, x + 5, y + 24, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 24, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 24, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 24, z + 2, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 24, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 24, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 24, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 24, z + 1, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 2, y + 24, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 24, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 24, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 24, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 1, y + 24, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 24, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 24, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 24, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 5, y + 24, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 24, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 24, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 24, z + 5, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 4, y + 24, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 24, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 4, y + 24, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 4, y + 24, z + 3, Tile::obsidian_Id, 0);
+		
+			placeBlock(level, x + 3, y + 24, z + 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 24, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 24, z - 4, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 24, z + 4, Tile::obsidian_Id, 0);
+
 		//Roof
-	    placeBlock(level, x, y + 28, z, Tile::obsidian_Id, 0);
-        placeBlock(level, x + 1, y + 28, z, Tile::obsidian_Id, 0);
-        placeBlock(level, x - 1, y + 28, z, Tile::obsidian_Id, 0);
-        placeBlock(level, x, y + 28, z + 1, Tile::obsidian_Id, 0);
-        placeBlock(level, x, y + 28, z - 1, Tile::obsidian_Id, 0);
+			for (int ex = -4; ex <= 4; ex++)
+			{
+				for (int ez = -4; ez <= 4; ez++)
+				{
+					placeBlock(level, x + ex, y + 28, z + ez, Tile::obsidian_Id, 0);
+				}
+			}
 		
-	    placeBlock(level, x + 1, y + 28, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 28, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 28, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 28, z - 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 28, z + 3, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 2, y + 28, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 28, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 28, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 28, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 28, z + 2, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 1, y + 28, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 28, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 28, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 28, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 28, z + 1, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 2, y + 28, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 28, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 28, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 3, y + 28, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 3, y + 28, z + 5, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 2, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z - 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 28, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 28, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 2, y + 28, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 2, y + 28, z + 5, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 3, y + 28, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z + 2, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 28, z + 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 28, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 28, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 28, z + 5, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 2, y + 28, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 5, y + 28, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 5, y + 28, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 28, z - 5, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 28, z + 5, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 3, y + 28, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 6, y + 28, z + 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 6, y + 28, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 6, y + 28, z - 1, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 6, y + 28, z + 1, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 1, y + 28, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z + 3, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 28, z + 6, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 28, z - 6, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 1, y + 28, z - 6, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 1, y + 28, z + 6, Tile::obsidian_Id, 0);
 		
-		placeBlock(level, x + 3, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 28, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 28, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z + 4, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 28, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z + 3, Tile::obsidian_Id, 0);
-
-		placeBlock(level, x + 4, y + 28, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 28, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 4, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 28, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z + 4, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 28, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z + 4, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 28, z + 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z + 4, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 4, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 4, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z - 4, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z + 4, Tile::obsidian_Id, 0);
-		
-		
-		
-		placeBlock(level, x + 5, y + 28, z + 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 28, z - 3, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 28, z + 3, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 28, z + 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 28, z - 2, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 28, z + 2, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 28, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 5, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 28, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 3, y + 28, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 3, y + 28, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 3, y + 28, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 2, y + 28, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 2, y + 28, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 2, y + 28, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 28, z + 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 28, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 5, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 5, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z - 5, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z + 5, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 6, y + 28, z + 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 6, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 6, y + 28, z - 1, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 6, y + 28, z + 1, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 1, y + 28, z + 6, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z - 6, Tile::obsidian_Id, 0);
-	    placeBlock(level, x + 1, y + 28, z - 6, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 1, y + 28, z + 6, Tile::obsidian_Id, 0);
-		
-		placeBlock(level, x + 6, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x - 6, y + 28, z, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z - 6, Tile::obsidian_Id, 0);
-	    placeBlock(level, x, y + 28, z + 6, Tile::obsidian_Id, 0);
+			placeBlock(level, x + 6, y + 28, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x - 6, y + 28, z, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 28, z - 6, Tile::obsidian_Id, 0);
+			placeBlock(level, x, y + 28, z + 6, Tile::obsidian_Id, 0);
 		
 		
 		
@@ -1632,115 +1291,54 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Ladder
-		placeBlock(level, x, y + 1, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 1, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 2, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 2, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 3, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 3, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 4, z + 1, Tile::ladder_Id, 2);
-		
-		
-		
-		placeBlock(level, x, y + 5, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 5, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 6, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 6, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 7, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 7, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 8, z + 1, Tile::ladder_Id, 2);
-		
-		
-		
-		placeBlock(level, x, y + 9, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 9, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 10, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 10, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 11, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 11, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 12, z + 1, Tile::ladder_Id, 2);
-		
-		
-		
-		placeBlock(level, x, y + 13, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 13, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 14, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 14, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 15, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 15, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 16, z + 1, Tile::ladder_Id, 2);
-		
-		
-		
-		placeBlock(level, x, y + 17, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 17, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 18, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 18, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 19, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 19, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 20, z + 1, Tile::ladder_Id, 2);
-		
-		
-		
-		placeBlock(level, x, y + 21, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 21, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 22, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 22, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 23, z + 2, Tile::purulLog_Id, 0);
-		placeBlock(level, x, y + 23, z + 1, Tile::ladder_Id, 2);
-		
-		placeBlock(level, x, y + 24, z + 1, Tile::ladder_Id, 2);
+			for (int posty = 0; posty <= 24; posty++)
+			{
+				if (level->getTile(x, y + posty, z + 2) == 0)
+				{
+					placeBlock(level, x, y + posty, z + 2, Tile::purulLog_Id, 0);
+				}
+			}
+			for (int laddery = 0; laddery <= 24; laddery++)
+			{
+				if (level->getTile(x, y + laddery, z + 1) == 0)
+				{
+					placeBlock(level, x, y + laddery, z + 1, Tile::ladder_Id, 2);
+				}
+			}
 
+		//Chest
 			level->setTileAndData(x, y + 25, z - 2, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
 			WeighedTreasureArray wrapperArray(endTowerTreasure, TREASURE_ITEMS_COUNT);
 			WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(wrapperArray, Item::enchantedBook->createForRandomTreasure(random));
-			shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity >( level->getTileEntity(x, y + 25, z - 2) );
-			if (chest != NULL )
+			shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>( level->getTileEntity(x, y + 25, z - 2) );
+			if (chest != NULL)
 			{
-				WeighedTreasure::addChestItems(random, treasure, chest, 8);
+				WeighedTreasure::addChestItems(random, treasure, chest, 6 + random->nextInt(3));
 			}
 		}
 	}
-	
     return true;
 }
 
 WeighedTreasure *EndTowerFeature::endTowerTreasure[EndTowerFeature::TREASURE_ITEMS_COUNT] = 
 {
-	new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 3),
-	new WeighedTreasure(Item::ironIngot_Id, 0, 5, 11, 10),
-	new WeighedTreasure(Item::goldIngot_Id, 0, 4, 12, 10),
+	new WeighedTreasure(Item::ironIngot_Id, 0, 5, 11, 9),
+	new WeighedTreasure(Item::goldIngot_Id, 0, 4, 12, 9),
 	new WeighedTreasure(Item::diamond_Id, 0, 3, 7, 6),
 	new WeighedTreasure(Item::nethanium_Id, 0, 1, 5, 4),
 	new WeighedTreasure(Item::endorium_Id, 0, 1, 3, 3),
-	new WeighedTreasure(Item::zaniteGemstone_Id, 0, 3, 7, 6),
-	new WeighedTreasure(Tile::enchantedGravitite_Id, 0, 1, 5, 3),
+	new WeighedTreasure(Item::zaniteGemstone_Id, 0, 3, 9, 8),
+	new WeighedTreasure(Tile::enchantedGravitite_Id, 0, 1, 5, 4),
 	new WeighedTreasure(Tile::obsidian_Id, 0, 1, 4, 10),
 	new WeighedTreasure(Item::aphalafTooth_Id, 0, 4, 7, 6),
 	new WeighedTreasure(Item::string_Id, 0, 3, 12, 5),
 	new WeighedTreasure(Item::apple_gold_Id, 0, 1, 3, 4),
 	new WeighedTreasure(Item::apple_gold_Id, 1, 1, 1, 1),
 	new WeighedTreasure(Tile::endoriumGrate_Id, 0, 3, 7, 5),
-	new WeighedTreasure(Item::endoriumSword_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::endoriumAxe_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::endoriumPickaxe_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::endoriumShovel_Id, 0, 1, 1, 1),
-	new WeighedTreasure(Item::endoriumHoe_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::endoriumSword_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumAxe_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumPickaxe_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumShovel_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumHoe_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::nusaShard_Id, 0, 1, 1, 4),
 };

@@ -2521,3 +2521,7 @@
 #define IDS_TILE_ANGELIC_STONE								   2515
 #define IDS_TILE_HELLFIRE_STONE								   2516
 #define IDS_ITEM_VAMPIRE_BLADE								   2517
+#define IDS_ITEM_STAFF_SHARD								   2518
+#define IDS_ITEM_APHALAF_SHARD								   2519
+#define IDS_ITEM_APHALAF_ROD								   2520
+#define IDS_ITEM_NUSA_SHARD									   2521

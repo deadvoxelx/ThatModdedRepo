@@ -32,6 +32,7 @@ const _Tier *_Tier::ENDORIUM = new _Tier(6, 2032, 12, 5, 15); //
 const _Tier *_Tier::ZANITE = new _Tier(2, 250, 6, 2, 14); //
 const _Tier *_Tier::GRAVITITE = new _Tier(4, 1561, 9, 4, 15); //
 const _Tier *_Tier::VAMPIRE = new _Tier(3, 1000, 8, 3, 10); //
+const _Tier *_Tier::APHALAF = new _Tier(4, 1561, 9, 4, 15); //
 
 Random *Item::random = new Random();
 
@@ -345,6 +346,10 @@ Item *Item::skyrootAxe = NULL;
 Item *Item::skyrootShovel = NULL;
 Item *Item::skyrootHoe = NULL;
 Item *Item::vampireBlade = NULL;
+Item *Item::staffShard = NULL;
+Item *Item::aphalafShard = NULL;
+Item *Item::aphalafRod = NULL;
+Item *Item::nusaShard = NULL;
 
 void Item::staticCtor()
 {
@@ -646,7 +651,7 @@ void Item::staticCtor()
 	Item::evupulWingGold = (new Item(189))															->setIconName(L"evupulWing_gold")->setDescriptionId(IDS_ITEM_EVUPUL_WING_GOLD)->setUseDescriptionId(IDS_ITEM_EVUPUL_WING_GOLD);
 	Item::isogalRib = (new Item(190))																->setIconName(L"isogalRib")->setDescriptionId(IDS_ITEM_ISOGAL_RIB)->setUseDescriptionId(IDS_ITEM_ISOGAL_RIB);
 	Item::aphalafTooth = (new Item(195))															->setIconName(L"aphalafTooth")->setDescriptionId(IDS_ITEM_APHALAF_TOOTH)->setUseDescriptionId(IDS_ITEM_APHALAF_TOOTH);
-	Item::aphalafSword	= ( new AphalafSwordItem(196, _Tier::NETHANIUM) )							->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_nethanium)->setIconName(L"aphalafSword")->setDescriptionId(IDS_ITEM_APHALAF_SWORD)->setUseDescriptionId(IDS_ITEM_APHALAF_SWORD);
+	Item::aphalafSword	= ( new AphalafSwordItem(196, _Tier::APHALAF) )								->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_nethanium)->setIconName(L"aphalafSword")->setDescriptionId(IDS_ITEM_APHALAF_SWORD)->setUseDescriptionId(IDS_ITEM_APHALAF_SWORD);
 	Item::goldenAmber = (new Item(197))																->setIconName(L"goldenAmber")->setDescriptionId(IDS_ITEM_GOLDEN_AMBER)->setUseDescriptionId(IDS_ITEM_GOLDEN_AMBER);
 	Item::ambrosiumShard = (new Item(198))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_ambrosium)->setIconName(L"ambrosiumShard")->setDescriptionId(IDS_ITEM_AMBROSIUM_SHARD)->setUseDescriptionId(IDS_ITEM_AMBROSIUM_SHARD);
 	Item::zaniteGemstone = (new Item(199))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_zanite)->setIconName(L"zaniteGemstone")->setDescriptionId(IDS_ITEM_ZANITE_GEMSTONE)->setUseDescriptionId(IDS_ITEM_ZANITE_GEMSTONE);
@@ -677,6 +682,10 @@ void Item::staticCtor()
 	Item::keyGold = (new Item(247))																	->setIconName(L"keyGold")->setDescriptionId(IDS_ITEM_KEY_GOLD)->setUseDescriptionId(IDS_ITEM_KEY_GOLD);
 	Item::cloudParachute = (CloudParachuteItem *)(new CloudParachuteItem(248))						->setIconName(L"cloudParachute")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_cloud)->setDescriptionId(IDS_ITEM_CLOUD_PARACHUTE)->setUseDescriptionId(IDS_ITEM_CLOUD_PARACHUTE);
 	Item::vampireBlade = ( new WeaponItem(254, _Tier::VAMPIRE) )									->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_endorium)->setIconName(L"vampireSword")->setDescriptionId(IDS_ITEM_VAMPIRE_BLADE)->setUseDescriptionId(IDS_ITEM_VAMPIRE_BLADE);
+	Item::staffShard = (new Item(255))																->setIconName(L"staffShard")->setDescriptionId(IDS_ITEM_STAFF_SHARD)->setUseDescriptionId(IDS_ITEM_STAFF_SHARD);
+	Item::aphalafShard = (new Item(256))															->setIconName(L"aphalafShard")->setDescriptionId(IDS_ITEM_APHALAF_SHARD)->setUseDescriptionId(IDS_ITEM_APHALAF_SHARD);
+	Item::aphalafRod = (new Item(257))																->setBaseItemTypeAndMaterial(eBaseItemType_stick,	eMaterial_stick)->setIconName(L"aphalafRod")->setDescriptionId(IDS_ITEM_APHALAF_ROD)->setUseDescriptionId(IDS_ITEM_APHALAF_ROD);
+	Item::nusaShard = (new SimpleFoiledItem(258))													->setIconName(L"nusaShard")->setDescriptionId(IDS_ITEM_NUSA_SHARD)->setUseDescriptionId(IDS_ITEM_NUSA_SHARD);
 
 }
 
@@ -744,6 +753,30 @@ int _Tier::getTierItemId() const
 	else if (this == Tier::DIAMOND)
 	{
 		return Item::diamond_Id;
+	}
+	else if (this == Tier::NETHANIUM)
+	{
+		return Item::nethanium_Id;
+	}
+	else if (this == Tier::ENDORIUM)
+	{
+		return Item::endorium_Id;
+	}
+	else if (this == Tier::ZANITE)
+	{
+		return Item::zaniteGemstone_Id;
+	}
+	else if (this == Tier::GRAVITITE)
+	{
+		return Tile::enchantedGravitite_Id;
+	}
+	else if (this == Tier::VAMPIRE)
+	{
+		return Item::ambrosiumShard_Id;
+	}
+	else if (this == Tier::APHALAF)
+	{
+		return Item::aphalafShard_Id;
 	}
 	return 0;
 }
