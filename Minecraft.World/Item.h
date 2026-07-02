@@ -183,6 +183,7 @@ public:
 		static const Tier *ZANITE; //
 		static const Tier *GRAVITITE; //
 		static const Tier *VAMPIRE; //
+		static const Tier *APHALAF; //
 
 	private:
 		const int level;
@@ -525,6 +526,10 @@ public:
 	static Item *skyrootShovel;
 	static Item *skyrootHoe;
 	static Item *vampireBlade;
+	static Item *staffShard;
+	static Item *aphalafShard;
+	static Item *aphalafRod;
+	static Item *nusaShard;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -820,6 +825,10 @@ public:
 	static const int skyrootShovel_Id = 508;
 	static const int skyrootHoe_Id = 509;
 	static const int vampireBlade_Id = 510;
+	static const int staffShard_Id = 511;
+	static const int aphalafShard_Id = 512;
+	static const int aphalafRod_Id = 513;
+	static const int nusaShard_Id = 514;
 
 public:
 	const int id;
