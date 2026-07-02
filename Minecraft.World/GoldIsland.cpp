@@ -1,6 +1,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.material.h"
 #include "net.minecraft.world.level.tile.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "net.minecraft.world.item.h"
 #include "GoldIsland.h"
@@ -14,6 +15,31 @@ GoldIsland::GoldIsland(int blockId) : Feature(blockId)
 
 bool GoldIsland::place(Level *level, Random *random, int x, int y, int z)
 {
+    int r = 16 * 3;
+
+	int xc = Mth::floor(x * 1.0);
+	int yc = Mth::floor(y * 1.0);
+	int zc = Mth::floor(z * 1.0);
+
+	int XZSIZE = level->dimension->getXZSize() * 16;
+	int XZOFFSET = (XZSIZE / 2) - 32;
+
+	if( (xc - r) < -XZOFFSET )
+	{
+		return false;
+	}
+	else if ( (xc + r) >= XZOFFSET )
+	{
+		return false;
+	}
+	if( (zc - r) < -XZOFFSET )
+	{
+		return false;
+	}
+	else if ( (zc + r) >= XZOFFSET )
+	{
+		return false;
+	}
     return generate(level, random, x, y, z, 24);
 }
   
