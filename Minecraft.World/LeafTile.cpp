@@ -46,7 +46,7 @@ int LeafTile::getColor(int data)
 	}
 	if ((data & LEAF_TYPE_MASK) == BIRCH_LEAF)
 	{
-		return FoliageColor::getBirchColor();
+		return 0xe57c1a;
 	}
 
 	return FoliageColor::getDefaultColor();
@@ -66,7 +66,7 @@ int LeafTile::getColor(LevelSource *level, int x, int y, int z, int data)
 	}
 	if ((data & LEAF_TYPE_MASK) == BIRCH_LEAF)
 	{
-		return FoliageColor::getBirchColor();
+		return 0xe57c1a;
 	}
 
 	int totalRed = 0;
