@@ -31,7 +31,6 @@ bool GoldenOakLargeFeature::branch(Level *level, Random *random, int x, int y, i
 }
 
 bool GoldenOakLargeFeature::place(Level *level, Random *random, int x, int y, int z)
-
 {
     int belowTile = level->getTile(x, y - 1, z);
 	if (belowTile != Tile::aetherGrass_Id && belowTile != Tile::aetherDirt_Id && belowTile != Tile::grass_Id && belowTile != Tile::dirt_Id) return false;
@@ -57,7 +56,7 @@ bool GoldenOakLargeFeature::place(Level *level, Random *random, int x, int y, in
 	{
 		branch(level, random, x, y + n, z, n / 4 - 1);
 		int t = level->getTile(x, y + n, z);
-		if (t == 0 || t == Tile::netherLeaves_Id) placeBlock(level, x, y + n, z, Tile::goldenOakLog_Id, 0);
+		if (t == 0 || t == Tile::netherLeaves_Id || t == Tile::tallgrass_Id) placeBlock(level, x, y + n, z, Tile::goldenOakLog_Id, 0);
 	}
     return true;
 }
