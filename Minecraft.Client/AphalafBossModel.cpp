@@ -197,5 +197,32 @@ void AphalafBossModel::setRotation(ModelPart *model, float x, float y, float z)
 
 void AphalafBossModel::setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, shared_ptr<Entity> entity, unsigned int uiBitmaskOverrideAnim)
 {
-    //head->yRot = yRot / (float) (180 / PI);
+    mouth1->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+	mouth2->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+    mouth3->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+	mouth4->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+    teeth1->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+	teeth2->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+    teeth3->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+	teeth4->xRot = -49.4 + cos(bob * .05f) * PI * .025f;
+    leaf1->xRot = 0.15 - cos(bob * .05f) * PI * .025f;
+	leaf2->xRot = 0.15 - cos(bob * .05f) * PI * .025f;
+    leaf3->xRot = 0.15 - cos(bob * .05f) * PI * .025f;
+	leaf4->xRot = 0.15 - cos(bob * .05f) * PI * .025f;
+
+    shared_ptr<AphalafBoss> ab = dynamic_pointer_cast<AphalafBoss>(entity);
+	int attackTick = ab->getAttackAnimationTick();
+	if (attackTick > 0)
+	{
+        float attack2 = Mth::sin(attackTick*PI);
+        float attack = Mth::sin((1-(1-attackTick)*(1-attackTick))*PI);
+        mouth1->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+        mouth2->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+        mouth3->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+        mouth4->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+        teeth1->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+        teeth2->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+        teeth3->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+        teeth4->xRot = -49.0 + attack2*1.2f-attack*0.4f;
+	}
 }
