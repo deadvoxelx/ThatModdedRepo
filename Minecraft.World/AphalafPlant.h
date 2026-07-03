@@ -13,7 +13,6 @@ public:
 	eINSTANCEOF GetType() { return eTYPE_APHALAF_PLANT; }
 	static Entity *create(Level *level){ return new AphalafPlant(level); }
 
-public:
 	AphalafPlant(Level *level);
 	virtual bool isPushable();
 	virtual bool useNewAi();
@@ -21,6 +20,9 @@ public:
 	virtual bool doHurtTarget(shared_ptr<Entity> target);
 	virtual void tick();
 	virtual MobGroupData *finalizeMobSpawn(MobGroupData *groupData, int extraData = 0);
+
+	virtual int getAttackAnimationTick();
+	virtual void handleEntityEvent(byte id);
 
 protected:
 	virtual void registerAttributes();
@@ -35,6 +37,8 @@ protected:
 	virtual int getDeathSound();
 
 private:
+	int attackAnimationTick;
+
 	void explode1();
 	void explode2();
 };
