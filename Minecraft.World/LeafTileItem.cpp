@@ -31,7 +31,7 @@ int LeafTileItem::getColor(shared_ptr<ItemInstance> item, int spriteLayer)
     }
     if ((data & LeafTile::BIRCH_LEAF) == LeafTile::BIRCH_LEAF)
 	{
-        return FoliageColor::getBirchColor();
+        return 0xe57c1a;
     }
     return FoliageColor::getDefaultColor();
 }

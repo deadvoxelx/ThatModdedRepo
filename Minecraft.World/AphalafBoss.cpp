@@ -28,6 +28,8 @@ AphalafBoss::AphalafBoss(Level *level) : Monster( level )
 	setHealth(getMaxHealth());
 	setSize(2.2f, 3.0f);
 
+	attackAnimationTick = 0;
+
 	xpReward = Enemy::XP_REWARD_BOSS;
 	fireImmune = true;
 
@@ -47,6 +49,20 @@ int AphalafBoss::getHurtSound()
 int AphalafBoss::getDeathSound()
 {
 	return eSoundType_MOB_APHALAF_HURT;
+}
+
+int AphalafBoss::getAttackAnimationTick()
+{
+	return attackAnimationTick;
+}
+
+void AphalafBoss::handleEntityEvent(byte id)
+{
+	if (id == EntityEvent::START_ATTACKING)
+	{
+		attackAnimationTick = 10;
+		playSound(eSoundType_MOB_APHALAF_HURT, 1, 1);
+	}
 }
 
 bool AphalafBoss::hurt(DamageSource *source, float dmg)
@@ -96,6 +112,9 @@ bool AphalafBoss::hurt(DamageSource *source, float dmg)
 
 bool AphalafBoss::doHurtTarget(shared_ptr<Entity> target)
 {
+	attackAnimationTick = 10;
+	level->broadcastEntityEvent(shared_from_this(), EntityEvent::START_ATTACKING);
+
 	if (Monster::doHurtTarget(target))
 	{
 		if ( target->instanceof(eTYPE_LIVINGENTITY) )
@@ -163,6 +182,8 @@ int AphalafBoss::decreaseAirSupply(int currentSupply)
 void AphalafBoss::tick()
 {
 	Monster::tick();
+
+	if (attackAnimationTick > 0) --attackAnimationTick;
 
 	shared_ptr<Player> range1 = level->getNearestAttackablePlayer(shared_from_this(), 12);
 	shared_ptr<Player> range2 = level->getNearestAttackablePlayer(shared_from_this(), 24);

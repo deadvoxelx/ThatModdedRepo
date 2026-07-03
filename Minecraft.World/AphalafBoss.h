@@ -22,6 +22,9 @@ public:
 	virtual bool doHurtTarget(shared_ptr<Entity> target);
 	virtual void tick();
 
+	virtual int getAttackAnimationTick();
+	virtual void handleEntityEvent(byte id);
+
 protected:
 	virtual void registerAttributes();
 	virtual void newServerAiStep();
@@ -41,6 +44,8 @@ public:
 	virtual int getDimension() { return Entity::dimension; };
 
 private:
+	int attackAnimationTick;
+
 	void explode1();
 	void explode2();
 };
