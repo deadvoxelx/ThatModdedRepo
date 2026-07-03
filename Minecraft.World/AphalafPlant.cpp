@@ -29,6 +29,8 @@ AphalafPlant::AphalafPlant(Level *level) : Monster( level )
 	setHealth(getMaxHealth());
 	setSize(1.0f, 1.0f);
 
+	attackAnimationTick = 0;
+
 	xpReward = Enemy::XP_REWARD_MEDIUM;
 
 	getNavigation()->setAvoidWater(true);
@@ -47,6 +49,20 @@ int AphalafPlant::getHurtSound()
 int AphalafPlant::getDeathSound()
 {
 	return eSoundType_MOB_APHALAF_HURT;
+}
+
+int AphalafPlant::getAttackAnimationTick()
+{
+	return attackAnimationTick;
+}
+
+void AphalafPlant::handleEntityEvent(byte id)
+{
+	if (id == EntityEvent::START_ATTACKING)
+	{
+		attackAnimationTick = 10;
+		playSound(eSoundType_MOB_APHALAF_HURT, 1, 1);
+	}
 }
 
 bool AphalafPlant::hurt(DamageSource *source, float dmg)
@@ -72,6 +88,9 @@ bool AphalafPlant::hurt(DamageSource *source, float dmg)
 
 bool AphalafPlant::doHurtTarget(shared_ptr<Entity> target)
 {
+	attackAnimationTick = 10;
+	level->broadcastEntityEvent(shared_from_this(), EntityEvent::START_ATTACKING);
+
 	if (Monster::doHurtTarget(target))
 	{
 		if ( target->instanceof(eTYPE_LIVINGENTITY) )
@@ -144,6 +163,8 @@ void AphalafPlant::tick()
 {
 	Monster::tick();
 
+	if (attackAnimationTick > 0) --attackAnimationTick;
+
 	shared_ptr<Player> range1 = level->getNearestAttackablePlayer(shared_from_this(), 8);
 	shared_ptr<Player> range2 = level->getNearestAttackablePlayer(shared_from_this(), 16);
 
@@ -194,7 +215,7 @@ MobGroupData* AphalafPlant::finalizeMobSpawn(MobGroupData* groupData, int extraD
 	groupData = Monster::finalizeMobSpawn(groupData);
 
 	//Aphalaf Boss spawns rarely throughout the Outer End
-	if (random->nextInt(15) == 0)
+	if (random->nextInt(20) == 0)
 	{
 		shared_ptr<AphalafBoss> pz = std::make_shared<AphalafBoss>(level);
 		pz->moveTo(x, y, z, yRot, xRot);
