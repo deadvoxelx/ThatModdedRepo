@@ -530,7 +530,7 @@ float LocalPlayer::getFieldOfViewModifier()
 	float targetFov = 1.0f;
 
 	// modify for movement
-	//if (abilities.flying) targetFov *= 1.1f;
+	if (abilities.flying) targetFov *= 1.1f;
 
 	//AttributeInstance *speed = getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
 	//targetFov *= (speed->getValue() / abilities.getWalkingSpeed() + 1) / 2;
