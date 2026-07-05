@@ -4,6 +4,9 @@ using namespace std;
 #include "FlyingMob.h"
 #include "Enemy.h"
 #include "SharedConstants.h"
+#include "SmoothFloat.h"
+
+class Player;
 
 class Evupul : public FlyingMob, public Enemy
 {
@@ -16,8 +19,16 @@ public:
 	static const int TYPE_DEFAULT = 0;
 	static const int TYPE_GOLD = 1;
 
+	Player *player;
+
 private:
 	static const int DATA_TYPE_ID = 14;
+
+	SmoothFloat smoothFlyX;
+	SmoothFloat smoothFlyY;
+	SmoothFloat smoothFlyZ;
+
+	void calculateFlight(float xa, float ya, float za);
 
 protected:
 	virtual void registerAttributes();
@@ -35,7 +46,7 @@ public:
 
 private:
 	Pos *targetPosition;
-	double moveTargetX, moveTargetY, moveTargetZ;
+	float flyX, flyY, flyZ;
 
 protected:
 	virtual int getDeathLoot();
@@ -47,8 +58,12 @@ protected:
 
 protected:
 	virtual bool removeWhenFarAway();
+	virtual bool hasRider();
 
 public:
 	virtual void readAdditionalSaveData(CompoundTag *tag);
 	virtual void addAdditonalSaveData(CompoundTag *entityTag);
+	virtual bool isPushable();
+	virtual double getRideHeight();
+	virtual bool mobInteract(shared_ptr<Player> player);
 };
