@@ -407,7 +407,7 @@ void ClientConnection::handleLogin(shared_ptr<LoginPacket> packet)
 
 			if(activeLevel == nullptr)
 			{
-				otherDimensionId = packet->dimension == 0 ? 1 : (packet->dimension == -1 ? 1 : -1);
+				otherDimensionId = packet->dimension == 0 ? 1 : (packet->dimension == -1 ? 1 : (packet->dimension == 1 ? 2 : (packet->dimension == 2 ? 3 : (packet->dimension == 3 ? 4 : 3))));
 				activeLevel = minecraft->getLevel(otherDimensionId);
 			}
 
