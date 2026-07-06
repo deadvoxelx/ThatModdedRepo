@@ -21,7 +21,6 @@ Icon *LeafTileItem::getIcon(int itemAuxValue)
 	return Tile::leaves->getTexture(0, itemAuxValue);	
 }
 
-
 int LeafTileItem::getColor(shared_ptr<ItemInstance> item, int spriteLayer)
 {
 	int data = item->getAuxValue();
@@ -31,8 +30,12 @@ int LeafTileItem::getColor(shared_ptr<ItemInstance> item, int spriteLayer)
     }
     if ((data & LeafTile::BIRCH_LEAF) == LeafTile::BIRCH_LEAF)
 	{
-        return 0xe57c1a;
+        return FoliageColor::getBirchColor();
     }
+	if ((data & LeafTile::PURPLE_LEAF) == LeafTile::PURPLE_LEAF)
+	{
+		return FoliageColor::getPurpleSpruceColor();
+	}
     return FoliageColor::getDefaultColor();
 }
 
