@@ -4700,7 +4700,7 @@ bool TileRenderer::tesselateWaterInWorld( Tile* tt, int x, int y, int z )
 		{
 			br = tt->getBrightness( level, x, y - 1, z );
 		}
-		t->color( c10 * br, c10 * br, c10 * br );
+		t->color( c11 * br * r, c11 * br * g, c11 * br * b );
 		renderFaceDown( tt, x, y + offs, z, getTexture( tt, 0 ) );
 		changed = true;
 	}
