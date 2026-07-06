@@ -75,7 +75,7 @@ void FoodData::tick(shared_ptr<Player> player)
 			tickTimer = 0;
 		}
 	}
-	else if (player->level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION) && foodLevel >= FoodConstants::HEAL_LEVEL && player->isHurt())
+	else if (player->level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION) && (foodLevel >= FoodConstants::HEAL_LEVEL && foodLevel != FoodConstants::MAX_FOOD) && player->isHurt())
 	{
 		tickTimer++;
 
