@@ -9,27 +9,29 @@ class LeafTile : public TransparentTile
 	friend class Tile;
 	friend class ChunkRebuildData;
 public:
-	static const wstring TEXTURES[2][4];
+	static const wstring TEXTURES[3][5];
 	static const int REQUIRED_WOOD_RANGE = 4;
 
     static const int UPDATE_LEAF_BIT = 8;
 	static const int PERSISTENT_LEAF_BIT = 4;	// player-placed
+
     static const int NORMAL_LEAF = 0;
     static const int EVERGREEN_LEAF = 1;
     static const int BIRCH_LEAF = 2;
 	static const int JUNGLE_LEAF = 3;
+	static const int PURPLE_LEAF = 4;
 
-	static const int LEAF_NAMES_LENGTH = 4;
+	static const int LEAF_NAMES_LENGTH = 5;
 
 	static const unsigned int LEAF_NAMES[LEAF_NAMES_LENGTH];
 private:
-	static const int LEAF_TYPE_MASK = 3;
+	static const int LEAF_TYPE_MASK = 4;
 
     // pppppppppp ppppppppppp pppppppppp ppppppp
     // ssssssssss sssssssssss s
 
     int fancyTextureSet;
-	Icon *icons[2][4];
+	Icon *icons[3][5];
 
 protected:
 	LeafTile(int id);
