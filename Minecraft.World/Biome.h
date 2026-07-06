@@ -12,6 +12,7 @@ class TreeFeature;
 class BasicTree;
 class BirchFeature;
 class SwampTreeFeature;
+class LavenderTreeFeature;
 class ChunkRebuildData;
 
 class Biome
@@ -49,8 +50,10 @@ public:
 
 	static Biome *outerIslands;
 	static Biome *aether;
+	static Biome *birchForest;
+	static Biome *lavenderForest;
 
-	static const int BIOME_COUNT = 25; // 4J Stu added
+	static const int BIOME_COUNT = 27; // 4J Stu added
 
 public:
 	wstring m_name;
