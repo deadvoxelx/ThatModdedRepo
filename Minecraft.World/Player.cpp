@@ -850,14 +850,20 @@ void Player::aiStep()
 {
 	if (jumpTriggerTime > 0) jumpTriggerTime--;
 
-	if (level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION)) {
+	/*if (level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION))
+	{
 		bool health_OK = getHealth() < getMaxHealth();
-		if ((tickCount % 12 == 0) && health_OK) {
+		if ((tickCount % 12 == 0) && health_OK)
+		{
 			FoodData* fd = getFoodData();
 			if ((level->difficulty == Difficulty::PEACEFUL)) {
 				heal(1);
 			}
-		};
+		}
+	}*/
+	if (level->difficulty == Difficulty::PEACEFUL && getHealth() < getMaxHealth() && level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION))
+	{
+		if (tickCount % 20 * 12 == 0) heal(1);
 	}
 	inventory->tick();
 	oBob = bob;
@@ -1980,6 +1986,10 @@ void Player::checkMovementStatistiscs(double dx, double dy, double dz)
 				causeFoodExhaustion(FoodConstants::EXHAUSTION_WALK * horizontalDistance * .01f);
 			}
 		}
+		/*else if ((horizontalDistance == 0) && ((getFoodData()->getFoodLevel() >= FoodConstants::HEAL_LEVEL) && getHealth() > 0 && getHealth() < getMaxHealth()))
+		{
+			causeFoodExhaustion(FoodConstants::EXHAUSTION_WALK / 9.0f);
+		}*/
 	}
 }
 
