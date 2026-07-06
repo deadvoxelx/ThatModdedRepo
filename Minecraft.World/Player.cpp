@@ -2678,13 +2678,21 @@ bool Player::isAllowedToUse(shared_ptr<ItemInstance> item)
 		case Item::chicken_raw_Id:
 		case Item::melon_Id:
 		case Item::rotten_flesh_Id:
-			// bow
 		case Item::bow_Id:
 		case Item::sword_diamond_Id:
 		case Item::sword_gold_Id:
 		case Item::sword_iron_Id:
 		case Item::sword_stone_Id:
 		case Item::sword_wood_Id:
+		case Item::nethaniumSword_Id:
+		case Item::endoriumSword_Id:
+		case Item::skyrootSword_Id:
+		case Item::holystoneSword_Id:
+		case Item::zaniteSword_Id:
+		case Item::gravititeSword_Id:
+		case Item::aphalafSword_Id:
+		case Item::relicMallet_Id:
+		case Item::cloudParachute_Id:
 			allowed = true;
 			break;
 		}
