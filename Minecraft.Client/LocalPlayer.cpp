@@ -274,13 +274,13 @@ void LocalPlayer::aiStep()
 	}
 	if (isSneaking()) sprintTriggerTime = 0;
 #ifdef _WINDOWS64
-	if (input->sprinting && !isSprinting() && onGround && enoughFoodToSprint && !isUsingItem() && !hasEffect(MobEffect::blindness) && !isSneaking())
+	if (input->sprinting && !isSprinting() && enoughFoodToSprint && !hasEffect(MobEffect::blindness) && !isSneaking())
 	{
 		setSprinting(true);
 	}
 #endif
-	//Voxel - updated; the player can now run while eating like in Java
-	if (isSprinting() && (!forwardEnoughToContinueSprint || !enoughFoodToSprint || isSneaking()))
+	//Voxel - updated; Blindness now stops running properly
+	if (isSprinting() && (!forwardEnoughToContinueSprint || !enoughFoodToSprint || hasEffect(MobEffect::blindness) || isSneaking()))
 	{
 		setSprinting(false);
 	}	

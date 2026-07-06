@@ -24,6 +24,8 @@ void BiomeSource::_init()
 	playerSpawnBiomes.push_back(Biome::forestHills);
 	playerSpawnBiomes.push_back(Biome::jungle);
 	playerSpawnBiomes.push_back(Biome::jungleHills);
+	playerSpawnBiomes.push_back(Biome::birchForest);
+	playerSpawnBiomes.push_back(Biome::lavenderForest);
 }
 
 void BiomeSource::_init(int64_t seed, LevelType *generator)
@@ -587,6 +589,10 @@ bool BiomeSource::getIsMatch(float *frac)
 		false,	// small extreme hills
 		true,	// jungle
 		false,	// jungle hills (combined with jungle)
+		false,	// outer islands
+		false,	// aether biome
+		true,	// birch forest
+		true,	// lavender forest
 	};
 
 

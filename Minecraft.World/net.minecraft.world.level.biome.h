@@ -35,3 +35,5 @@
 #include "TheOuterEndBiomeDecorator.h"
 #include "AetherBiome.h"
 #include "AetherBiomeDecorator.h"
+#include "BirchForestBiome.h"
+#include "LavenderForestBiome.h"

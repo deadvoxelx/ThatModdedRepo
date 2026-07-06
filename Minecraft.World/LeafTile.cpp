@@ -7,13 +7,15 @@
 #include "net.minecraft.stats.h"
 #include "net.minecraft.world.h"
 
-const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {	IDS_TILE_LEAVES_OAK,
+const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {
+	IDS_TILE_LEAVES_OAK,
 	IDS_TILE_LEAVES_SPRUCE,
 	IDS_TILE_LEAVES_BIRCH,
 	IDS_TILE_LEAVES_JUNGLE,
+	IDS_TILE_LEAVES_SPRUCE,
 };
 
-const wstring LeafTile::TEXTURES[2][4] = { {L"leaves", L"leaves_spruce", L"leaves", L"leaves_jungle"}, {L"leaves_opaque", L"leaves_spruce_opaque", L"leaves_opaque", L"leaves_jungle_opaque"},};
+const wstring LeafTile::TEXTURES[3][5] = { {L"leaves", L"leaves_spruce", L"leaves", L"leaves_jungle", L"leaves_spruce"}, {L"leaves_opaque", L"leaves_spruce_opaque", L"leaves_opaque", L"leaves_jungle_opaque", L"leaves_spruce_opaque"},};
 
 LeafTile::LeafTile(int id) : TransparentTile(id, Material::leaves, false, isSolidRender())
 {
@@ -46,7 +48,11 @@ int LeafTile::getColor(int data)
 	}
 	if ((data & LEAF_TYPE_MASK) == BIRCH_LEAF)
 	{
-		return 0xe57c1a;
+		return FoliageColor::getBirchColor();
+	}
+	if ((data & LEAF_TYPE_MASK) == PURPLE_LEAF)
+	{
+		return FoliageColor::getPurpleSpruceColor();
 	}
 
 	return FoliageColor::getDefaultColor();
@@ -66,7 +72,11 @@ int LeafTile::getColor(LevelSource *level, int x, int y, int z, int data)
 	}
 	if ((data & LEAF_TYPE_MASK) == BIRCH_LEAF)
 	{
-		return 0xe57c1a;
+		return FoliageColor::getBirchColor();
+	}
+	if ((data & LEAF_TYPE_MASK) == PURPLE_LEAF)
+	{
+		return FoliageColor::getPurpleSpruceColor();
 	}
 
 	int totalRed = 0;
@@ -312,6 +322,10 @@ Icon *LeafTile::getTexture(int face, int data)
 	if ((data & LEAF_TYPE_MASK) == BIRCH_LEAF)
 	{
 		return icons[fancyTextureSet][BIRCH_LEAF];
+	}
+	if ((data & LEAF_TYPE_MASK) == PURPLE_LEAF)
+	{
+		return icons[fancyTextureSet][EVERGREEN_LEAF];
 	}
 	return icons[fancyTextureSet][0];
 }

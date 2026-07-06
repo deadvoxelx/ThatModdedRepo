@@ -850,14 +850,20 @@ void Player::aiStep()
 {
 	if (jumpTriggerTime > 0) jumpTriggerTime--;
 
-	if (level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION)) {
+	/*if (level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION))
+	{
 		bool health_OK = getHealth() < getMaxHealth();
-		if ((tickCount % 12 == 0) && health_OK) {
+		if ((tickCount % 12 == 0) && health_OK)
+		{
 			FoodData* fd = getFoodData();
 			if ((level->difficulty == Difficulty::PEACEFUL)) {
 				heal(1);
 			}
-		};
+		}
+	}*/
+	if (level->difficulty == Difficulty::PEACEFUL && getHealth() < getMaxHealth() && level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION))
+	{
+		if (tickCount % 20 * 12 == 0) heal(1);
 	}
 	inventory->tick();
 	oBob = bob;
@@ -1980,6 +1986,10 @@ void Player::checkMovementStatistiscs(double dx, double dy, double dz)
 				causeFoodExhaustion(FoodConstants::EXHAUSTION_WALK * horizontalDistance * .01f);
 			}
 		}
+		/*else if ((horizontalDistance == 0) && ((getFoodData()->getFoodLevel() >= FoodConstants::HEAL_LEVEL) && getHealth() > 0 && getHealth() < getMaxHealth()))
+		{
+			causeFoodExhaustion(FoodConstants::EXHAUSTION_WALK / 9.0f);
+		}*/
 	}
 }
 
@@ -2678,13 +2688,21 @@ bool Player::isAllowedToUse(shared_ptr<ItemInstance> item)
 		case Item::chicken_raw_Id:
 		case Item::melon_Id:
 		case Item::rotten_flesh_Id:
-			// bow
 		case Item::bow_Id:
 		case Item::sword_diamond_Id:
 		case Item::sword_gold_Id:
 		case Item::sword_iron_Id:
 		case Item::sword_stone_Id:
 		case Item::sword_wood_Id:
+		case Item::nethaniumSword_Id:
+		case Item::endoriumSword_Id:
+		case Item::skyrootSword_Id:
+		case Item::holystoneSword_Id:
+		case Item::zaniteSword_Id:
+		case Item::gravititeSword_Id:
+		case Item::aphalafSword_Id:
+		case Item::relicMallet_Id:
+		case Item::cloudParachute_Id:
 			allowed = true;
 			break;
 		}
