@@ -13,5 +13,6 @@ class FoliageColor
 public:
 	static int getEvergreenColor();
 	static int getBirchColor();
+	static int getPurpleSpruceColor();
 	static int getDefaultColor();
 };
