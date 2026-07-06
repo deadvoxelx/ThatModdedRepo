@@ -14,7 +14,7 @@ const float FoodConstants::EXHAUSTION_DROP = 4.0f;
 const int FoodConstants::HEALTH_TICK_COUNT = 80;
 const int FoodConstants::QUICK_HEALTH_TICK_COUNT = 10;
 
-const int FoodConstants::HEAL_LEVEL = 20;
+const int FoodConstants::HEAL_LEVEL = 17;
 const int FoodConstants::STARVE_LEVEL = 0;
 
 // some saturation guidelines
