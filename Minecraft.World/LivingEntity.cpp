@@ -1011,6 +1011,7 @@ bool LivingEntity::onLadder()
 	case Tile::ladder_Id:
 	case Tile::vine_Id:
 	case Tile::netherVine_Id:
+	case Tile::veloettVine_Id:
 		return true;
 	case Tile::trapdoor_Id: // hexagonny - add climbable (opened) trapdoors
 	{
@@ -1021,6 +1022,24 @@ bool LivingEntity::onLadder()
 			case Tile::ladder_Id:
 			case Tile::vine_Id:
 			case Tile::netherVine_Id:
+			case Tile::veloettVine_Id:
+				return false; // Opened trapdoor should only be climbable when it's only at the top.
+			default:
+				return level->getTile(xt, yt - 1, zt) == Tile::ladder_Id;
+			}
+		}
+		break;
+	}
+	case Tile::ironTrapdoor_Id: // hexagonny - add climbable (opened) trapdoors
+	{
+		if ((level->getData(xt, yt, zt) & 0x4) != 0)
+		{
+			switch (level->getTile(xt, yt + 1, zt))
+			{
+			case Tile::ladder_Id:
+			case Tile::vine_Id:
+			case Tile::netherVine_Id:
+			case Tile::veloettVine_Id:
 				return false; // Opened trapdoor should only be climbable when it's only at the top.
 			default:
 				return level->getTile(xt, yt - 1, zt) == Tile::ladder_Id;
