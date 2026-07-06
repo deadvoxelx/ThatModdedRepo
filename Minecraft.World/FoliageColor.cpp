@@ -30,7 +30,11 @@ int FoliageColor::getEvergreenColor()
 int FoliageColor::getBirchColor()
 {
 	return Minecraft::GetInstance()->getColourTable()->getColor(eMinecraftColour_Foliage_Birch);
-	//return 0x80a755;
+}
+
+int FoliageColor::getPurpleSpruceColor()
+{
+	return Minecraft::GetInstance()->getColourTable()->getColor(eMinecraftColour_Foliage_PurpleSpruce);
 }
 
 int FoliageColor::getDefaultColor()
