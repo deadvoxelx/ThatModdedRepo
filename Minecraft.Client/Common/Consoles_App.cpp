@@ -4712,6 +4712,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_APHALAF_SHARD, L"Aphalaf Shard");
 		m_stringTable->registerString(IDS_ITEM_APHALAF_ROD, L"Aphalaf Rod");
 		m_stringTable->registerString(IDS_ITEM_NUSA_SHARD, L"Nusa Shard");
+		m_stringTable->registerString(IDS_TILE_LEAVES_PURPLE, L"Lavender Leaves");
 
 	}
 	else
