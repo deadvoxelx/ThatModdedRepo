@@ -18,6 +18,7 @@ protected:
 	Feature *veloettShrubFeature;
 	Feature *veloettFlowerFeature;
 	Feature *endTowerFeature;
+	Feature *endOutpostFeature;
 
 	virtual void decorate();
 
