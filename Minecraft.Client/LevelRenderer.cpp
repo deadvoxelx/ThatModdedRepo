@@ -422,7 +422,6 @@ void LevelRenderer::allChanged(int playerIndex)
 
 	Minecraft::GetInstance()->gameRenderer->DisableUpdateThread();
 
-	Tile::leaves->setFancy(mc->options->fancyGraphics);
 	lastViewDistance = mc->options->viewDistance;
 
 	int realviewDistance = UIScene_SettingsGraphicsMenu::LevelToDistance(3 - mc->options->viewDistance) + 2;
