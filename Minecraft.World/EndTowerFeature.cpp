@@ -1313,7 +1313,7 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>( level->getTileEntity(x, y + 25, z - 2) );
 			if (chest != NULL)
 			{
-				WeighedTreasure::addChestItems(random, treasure, chest, 6 + random->nextInt(3));
+				WeighedTreasure::addChestItems(random, treasure, chest, 7 + random->nextInt(3));
 			}
 		}
 	}
@@ -1322,23 +1322,20 @@ bool EndTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 
 WeighedTreasure *EndTowerFeature::endTowerTreasure[EndTowerFeature::TREASURE_ITEMS_COUNT] = 
 {
-	new WeighedTreasure(Item::ironIngot_Id, 0, 5, 11, 9),
-	new WeighedTreasure(Item::goldIngot_Id, 0, 4, 12, 9),
 	new WeighedTreasure(Item::diamond_Id, 0, 3, 7, 6),
-	new WeighedTreasure(Item::nethanium_Id, 0, 1, 5, 4),
-	new WeighedTreasure(Item::endorium_Id, 0, 1, 3, 3),
+	new WeighedTreasure(Item::nethanium_Id, 0, 1, 5, 5),
+	new WeighedTreasure(Item::endorium_Id, 0, 1, 3, 4),
 	new WeighedTreasure(Item::zaniteGemstone_Id, 0, 3, 9, 8),
-	new WeighedTreasure(Tile::enchantedGravitite_Id, 0, 1, 5, 4),
-	new WeighedTreasure(Tile::obsidian_Id, 0, 1, 4, 10),
-	new WeighedTreasure(Item::aphalafTooth_Id, 0, 4, 7, 6),
-	new WeighedTreasure(Item::string_Id, 0, 3, 12, 5),
-	new WeighedTreasure(Item::apple_gold_Id, 0, 1, 3, 4),
+	new WeighedTreasure(Tile::enchantedGravitite_Id, 0, 1, 5, 5),
 	new WeighedTreasure(Item::apple_gold_Id, 1, 1, 1, 1),
-	new WeighedTreasure(Tile::endoriumGrate_Id, 0, 3, 7, 5),
+	new WeighedTreasure(Tile::endoriumGrate_Id, 0, 3, 7, 4),
 	new WeighedTreasure(Item::endoriumSword_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::endoriumAxe_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::endoriumPickaxe_Id, 0, 1, 1, 2),
-	new WeighedTreasure(Item::endoriumShovel_Id, 0, 1, 1, 2),
-	new WeighedTreasure(Item::endoriumHoe_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititeHelmet_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititeChestplate_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititeLeggings_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititeBoots_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::nusaShard_Id, 0, 1, 1, 4),
+	new WeighedTreasure(Item::lifeShard_Id, 0, 1, 1, 3),
 };
