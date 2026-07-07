@@ -1,0 +1,17 @@
+#pragma once
+#include "Feature.h"
+#include "Material.h"
+
+class WeighedTreasure;
+
+class EndOutpostFeature : public Feature
+{
+public:
+    EndOutpostFeature(int blockId);
+
+    virtual bool place(Level *level, Random *random, int x, int y, int z);
+
+private:
+	static const int TREASURE_ITEMS_COUNT = 13;
+	static WeighedTreasure *endOutpostTreasure[TREASURE_ITEMS_COUNT];
+};
