@@ -2525,3 +2525,4 @@
 #define IDS_ITEM_APHALAF_SHARD								   2519
 #define IDS_ITEM_APHALAF_ROD								   2520
 #define IDS_ITEM_NUSA_SHARD									   2521
+#define IDS_TILE_LEAVES_PURPLE								   2522
