@@ -1541,6 +1541,8 @@ set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_LEVELGEN_FEATURE
   "${CMAKE_CURRENT_SOURCE_DIR}/EndactusFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/EndesertBushFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/EndesertBushFeature.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/EndOutpostFeature.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/EndOutpostFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/EndPodiumFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/EndPodiumFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/EndTowerFeature.cpp"
