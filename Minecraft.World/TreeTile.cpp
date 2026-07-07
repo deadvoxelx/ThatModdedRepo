@@ -46,9 +46,9 @@ void TreeTile::onRemove(Level *level, int x, int y, int z, int id, int data)
 					if (t == Tile::leaves_Id)
 					{
 						int currentData = level->getData(x + xo, y + yo, z + zo);
-						if ((currentData & LeafTile::UPDATE_LEAF_BIT) == 0)
+						//if ((currentData & LeafTile::UPDATE_LEAF_BIT) == 0)
 						{
-							level->setData(x + xo, y + yo, z + zo, currentData | LeafTile::UPDATE_LEAF_BIT, Tile::UPDATE_NONE);
+							level->setData(x + xo, y + yo, z + zo, currentData, Tile::UPDATE_NONE);
 						}
 					}
 				}
