@@ -62,3 +62,4 @@
 #include "GoldIsland.h"
 #include "DungeonStoneFeature.h"
 #include "LavenderTreeFeature.h"
+#include "EndOutpostFeature.h"
