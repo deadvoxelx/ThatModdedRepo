@@ -20,6 +20,7 @@ public:
 	static const int TYPE_DEFAULT = 0;
 	static const int TYPE_WITHER = 1;
 	static const int TYPE_STRAY = 2;
+	static const int TYPE_RAIDER = 3;
 
 private:
 	RangedAttackGoal *bowGoal;
