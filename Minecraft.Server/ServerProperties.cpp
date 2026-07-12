@@ -822,6 +822,21 @@ ServerPropertiesConfig LoadServerPropertiesConfig()
 	config.maxPlayers = ReadNormalizedIntProperty(&merged, "max-players", kDefaultMaxPlayers, 1, kMaxDedicatedPlayers, &shouldWrite);
 	config.seed = 0;
 	config.hasSeed = ReadNormalizedOptionalInt64Property(&merged, "level-seed", &config.seed, &shouldWrite);
+	config.overrideSeed = 0;
+	config.hasOverrideSeed = false;
+	{
+		auto it = merged.find("override-seed");
+		if (it != merged.end() && !TrimAscii(it->second).empty())
+		{
+			__int64 parsed = 0;
+			if (TryParseInt64(TrimAscii(it->second), &parsed))
+			{
+				config.overrideSeed = parsed;
+				config.hasOverrideSeed = true;
+			}
+		}
+	}
+
 	config.logLevel = ReadNormalizedLogLevelProperty(&merged, "log-level", eServerLogLevel_Info, &shouldWrite);
 	config.autosaveIntervalSeconds = ReadNormalizedIntProperty(&merged, "autosave-interval", kDefaultAutosaveIntervalSeconds, 5, 3600, &shouldWrite);
 
