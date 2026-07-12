@@ -25,13 +25,11 @@
 
 Skeleton::Skeleton(Level *level) : Monster( level )
 {
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that
-	// the derived version of the function is called
 	this->defineSynchedData();
 	registerAttributes();
 	setHealth(getMaxHealth());
 
-	bowGoal = new RangedAttackGoal(this, this, 1.0, SharedConstants::TICKS_PER_SECOND * 3, SharedConstants::TICKS_PER_SECOND * 5, 15);
+	bowGoal = new RangedAttackGoal(this, this, 1.0, SharedConstants::TICKS_PER_SECOND * 2, SharedConstants::TICKS_PER_SECOND * 4, 15);
 	meleeGoal = new MeleeAttackGoal(this, eTYPE_PLAYER, 1.2, false);
 
 	goalSelector.addGoal(1, new RestrictSunGoal(this));
@@ -58,6 +56,7 @@ void Skeleton::registerAttributes()
 	Monster::registerAttributes();
 
 	getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->setBaseValue(0.25f);
+	getAttribute(SharedMonsterAttributes::ATTACK_DAMAGE)->setBaseValue(3);
 }
 
 void Skeleton::defineSynchedData()
@@ -104,6 +103,10 @@ bool Skeleton::doHurtTarget(shared_ptr<Entity> target)
 		{
 			dynamic_pointer_cast<LivingEntity>(target)->addEffect(new MobEffectInstance(MobEffect::movementSlowdown->id, SharedConstants::TICKS_PER_SECOND * 10));
 		}
+		else if ( (getSkeletonType() == TYPE_RAIDER) && target->instanceof(eTYPE_LIVINGENTITY) )
+		{
+			dynamic_pointer_cast<LivingEntity>(target)->addEffect(new MobEffectInstance(MobEffect::wither->id, 200, 1));
+		}
 		return true;
 	}
 	return false;
@@ -147,7 +150,7 @@ void Skeleton::aiStep()
 	}
 	if (level->isClientSide)
 	{
-		if (getSkeletonType() == TYPE_WITHER)
+		if (getSkeletonType() == TYPE_WITHER || getSkeletonType() == TYPE_RAIDER)
 		{
 			setSize(0.6f * 1.2f, 1.8f * 1.3f);
 		}
@@ -164,7 +167,6 @@ void Skeleton::rideTick()
 	{
 		yBodyRot = dynamic_pointer_cast<PathfinderMob>(riding)->yBodyRot;
 	}
-
 }
 
 void Skeleton::die(DamageSource *source)
@@ -193,7 +195,6 @@ void Skeleton::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 {
 	if (getSkeletonType() == TYPE_WITHER)
 	{
-		// drop some arrows
 		int count = random->nextInt(3 + playerBonusLevel) - 1;
 		for (int i = 0; i < count; i++)
 		{
@@ -202,7 +203,6 @@ void Skeleton::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 	}
 	else
 	{
-		// drop some arrows
 		int count = random->nextInt(3 + playerBonusLevel);
 		for (int i = 0; i < count; i++)
 		{
@@ -210,7 +210,6 @@ void Skeleton::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 		}
 	}
 
-	// and some bones
 	int count = random->nextInt(3 + playerBonusLevel);
 	for (int i = 0; i < count; i++)
 	{
@@ -220,7 +219,7 @@ void Skeleton::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 
 void Skeleton::dropRareDeathLoot(int rareLootLevel)
 {
-	if (getSkeletonType() == TYPE_WITHER)
+	if (getSkeletonType() == TYPE_WITHER || getSkeletonType() == TYPE_RAIDER)
 	{
 		spawnAtLocation( shared_ptr<ItemInstance>( new ItemInstance(Item::skull_Id, 1, SkullTileEntity::TYPE_WITHER) ), 0);
 	}
@@ -229,9 +228,6 @@ void Skeleton::dropRareDeathLoot(int rareLootLevel)
 void Skeleton::populateDefaultEquipmentSlots()
 {
 	Monster::populateDefaultEquipmentSlots();
-
-	setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::sword_stone)));
-	getAttribute(SharedMonsterAttributes::ATTACK_DAMAGE)->setBaseValue(4);
 }
 
 MobGroupData *Skeleton::finalizeMobSpawn(MobGroupData *groupData, int extraData /*= 0*/) // 4J Added extraData param
@@ -242,14 +238,16 @@ MobGroupData *Skeleton::finalizeMobSpawn(MobGroupData *groupData, int extraData 
 	{
 		goalSelector.addGoal(4, meleeGoal, false);
 
-		setSkeletonType(TYPE_WITHER);
 		getAttribute(SharedMonsterAttributes::ATTACK_DAMAGE)->setBaseValue(4);
-		if (getRandom()->nextInt(8) > 0)
+		if (getRandom()->nextInt(7) > 0)
 		{
+			setSkeletonType(TYPE_WITHER);
 			setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::sword_stone)));
 		}
 		else
 		{
+			setSkeletonType(TYPE_RAIDER);
+			getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->setBaseValue(0.27f);
 			setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::sword_iron)));
 			setEquippedSlot(SLOT_HELM, shared_ptr<ItemInstance>( new ItemInstance(Item::helmet_iron)));
 			setEquippedSlot(SLOT_CHEST, shared_ptr<ItemInstance>( new ItemInstance(Item::chestplate_iron)));
@@ -257,28 +255,7 @@ MobGroupData *Skeleton::finalizeMobSpawn(MobGroupData *groupData, int extraData 
 			setEquippedSlot(SLOT_BOOTS, shared_ptr<ItemInstance>( new ItemInstance(Item::boots_iron)));
 		}
 	}
-	else if ( (level->getBiome(x, z) == Biome::iceFlats) && getRandom()->nextInt(5) > 0)
-	{
-		goalSelector.addGoal(4, bowGoal, false);
-
-		setSkeletonType(TYPE_STRAY);
-		setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::bow)));
-	}
-	else if ( (level->getBiome(x, z) == Biome::iceMountains) && getRandom()->nextInt(5) > 0)
-	{
-		goalSelector.addGoal(4, bowGoal, false);
-
-		setSkeletonType(TYPE_STRAY);
-		setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::bow)));
-	}
-	else if ( (level->getBiome(x, z) == Biome::taiga) && getRandom()->nextInt(5) > 0)
-	{
-		goalSelector.addGoal(4, bowGoal, false);
-
-		setSkeletonType(TYPE_STRAY);
-		setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::bow)));
-	}
-	else if ( (level->getBiome(x, z) == Biome::taigaHills) && getRandom()->nextInt(5) > 0)
+	else if ( (level->getBiome(x, z) == Biome::iceFlats || level->getBiome(x, z) == Biome::iceMountains || level->getBiome(x, z) == Biome::taiga || level->getBiome(x, z) == Biome::taigaHills) && getRandom()->nextInt(5) > 0)
 	{
 		goalSelector.addGoal(4, bowGoal, false);
 
@@ -287,9 +264,17 @@ MobGroupData *Skeleton::finalizeMobSpawn(MobGroupData *groupData, int extraData 
 	}
 	else
 	{
-		goalSelector.addGoal(4, bowGoal, false);
-
 		populateDefaultEquipmentSlots();
+		if (getRandom()->nextInt(2) > 0)
+		{
+			goalSelector.addGoal(4, bowGoal, false);
+			setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::bow)));
+		}
+		else
+		{
+			goalSelector.addGoal(4, meleeGoal, false);
+			setEquippedSlot(SLOT_WEAPON, shared_ptr<ItemInstance>( new ItemInstance(Item::sword_stone)));
+		}
 		populateDefaultEquipmentEnchantments();
 	}
 
