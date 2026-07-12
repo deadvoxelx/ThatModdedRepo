@@ -31,6 +31,11 @@ namespace ServerRuntime
 		bool hasSeed;
 		/** `level-seed` */
 		__int64 seed;
+
+		/** `override-seed` replaces the seed for biome generation on existing worlds */
+		bool hasOverrideSeed;
+		__int64 overrideSeed;
+
 		/** `log-level` */
 		EServerLogLevel logLevel;
 		/** `autosave-interval` (seconds) */
