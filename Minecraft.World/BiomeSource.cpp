@@ -413,9 +413,9 @@ void BiomeSource::update()
 
 // 4J added - find a seed for this biomesource that matches certain criteria
 #ifdef __PSVITA__
-int64_t BiomeSource::findSeed(LevelType *generator, bool* pServerRunning)	// MGH - added pRunning, so we can early out of this on Vita as it can take up to 60 secs
+int64_t BiomeSource::findSeed(LevelType *generator, bool* pServerRunning, int worldSizeChunks)	// MGH - added pRunning, so we can early out of this on Vita as it can take up to 60 secs
 #else
-int64_t BiomeSource::findSeed(LevelType *generator)
+int64_t BiomeSource::findSeed(LevelType *generator, int worldSizeChunks)
 #endif
 {
 
@@ -442,8 +442,8 @@ int64_t BiomeSource::findSeed(LevelType *generator)
 			// Raw biome data has one result per 4x4 group of tiles.
 			// Removing a border of 8 from each side since we'll be doing special things at the edge to turn our world into an island, and so don't want to count things
 			// in the edge region in case they later get removed
-			static const int biomeWidth = ( 54 * 4 ) - 16;			// Should be even so we can offset evenly
-			static const int biomeOffset = -( biomeWidth / 2 );
+			const int biomeWidth = ( worldSizeChunks * 4 ) - 16;			// Should be even so we can offset evenly
+			const int biomeOffset = -( biomeWidth / 2 );
 
 			// Storage for our biome indices
 			intArray indices = intArray( biomeWidth * biomeWidth );
