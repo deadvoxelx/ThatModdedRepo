@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <string>
 #include <functional>
+#include <windows.h>
 
 #include "..\..\Minecraft.Client\SkinBox.h"
 
@@ -11,7 +12,8 @@
 
 #define MULTITHREAD_ENABLE
 
-typedef unsigned char byte;
+// byte is already defined by rpcndr.h (via windows.h)
+// std::byte is suppressed via _HAS_STD_BYTE=0 in CMakeLists.txt
 
 const int XUSER_INDEX_ANY = 255;
 const int XUSER_INDEX_FOCUS = 254;
