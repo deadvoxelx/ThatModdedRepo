@@ -73,40 +73,7 @@ void UIScene_Intro::handleInput(int iPad, int key, bool repeat, bool pressed, bo
 		if(!m_bIgnoreNavigate)
 		{
 			m_bIgnoreNavigate = true;
-			//ui.NavigateToHomeMenu();
-#if defined(__PS3__) || defined(__ORBIS__) || defined (__PSVITA__)
-
-			// has the user seen the EULA already ? We need their options file loaded for this
-			C4JStorage::eOptionsCallback eStatus=app.GetOptionsCallbackStatus(0);
-			switch(eStatus)
-			{
-			case C4JStorage::eOptions_Callback_Read:
-			case C4JStorage::eOptions_Callback_Read_FileNotFound:
-				// we've either read it, or it wasn't found
-				#if 0
-				if(app.GetGameSettings(0,eGameSetting_PS3_EULA_Read)==0)
-				{
-					ui.NavigateToScene(0,eUIScene_EULA);
-				}
-				else
-				#endif
-				{
-					ui.NavigateToScene(0,eUIScene_SaveMessage);
-				}
-				break;
-			default:
-				#if 0
-				ui.NavigateToScene(0,eUIScene_EULA);		
-				#else
-				ui.NavigateToScene(0,eUIScene_SaveMessage);	
-				#endif
-				break;
-			}
-#elif defined _XBOX_ONE
 			ui.NavigateToScene(0,eUIScene_MainMenu);
-#else
-			ui.NavigateToScene(0,eUIScene_SaveMessage);
-#endif
 		}
 		break;
 	}
@@ -128,50 +95,7 @@ void UIScene_Intro::handleAnimationEnd()
 	if(!m_bIgnoreNavigate)
 	{
 		m_bIgnoreNavigate = true;
-		//ui.NavigateToHomeMenu();
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-		// has the user seen the EULA already ? We need their options file loaded for this
-		C4JStorage::eOptionsCallback eStatus=app.GetOptionsCallbackStatus(0);
-		switch(eStatus)
-		{
-		case C4JStorage::eOptions_Callback_Read:
-		case C4JStorage::eOptions_Callback_Read_FileNotFound:
-			// we've either read it, or it wasn't found
-			#if 0
-			if(app.GetGameSettings(0,eGameSetting_PS3_EULA_Read)==0)
-			{
-				ui.NavigateToScene(0,eUIScene_EULA);
-			}
-			else
-			#endif
-			{
-				ui.NavigateToScene(0,eUIScene_SaveMessage);
-			}
-			break;
-		default:
-			#if 0
-			ui.NavigateToScene(0,eUIScene_EULA);		
-			#else
-			ui.NavigateToScene(0,eUIScene_SaveMessage);	
-			#endif			
-		break;
-		}
-
-
-#elif defined _XBOX_ONE
-		// Don't navigate to the main menu if we don't have focus, as we could have the quadrant sign-in or a join game timer screen running, and then when Those finish they'll
-		// give the main menu focus which clears the signed in players and therefore breaks transitioning into the game
-		if( hasFocus( m_iPad ) )
-		{
-			ui.NavigateToScene(0,eUIScene_MainMenu);
-		}
-		else
-		{
-			m_bAnimationEnded = true;
-		}
-#else
 		ui.NavigateToScene(0,eUIScene_SaveMessage);
-#endif
 	}
 }
 
