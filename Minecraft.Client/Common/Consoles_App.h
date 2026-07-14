@@ -706,6 +706,8 @@ private:
 	bool			m_bGameNewWorldSizeUseMoat;
 	unsigned int	m_GameNewHellScale;
 #endif
+	int64_t			m_seedOverride;
+	bool			m_hasSeedOverride;
 	unsigned int	FromBigEndian(unsigned int uiValue);
 
 public:
@@ -723,6 +725,10 @@ public:
 	void			SetGameNewHellScale(unsigned int newScale)				{ m_GameNewHellScale = newScale; }
 	unsigned int	GetGameNewHellScale()									{ return m_GameNewHellScale; }
 #endif
+	void			SetSeedOverride(int64_t seed)	{ m_seedOverride = seed; m_hasSeedOverride = true; }
+	bool			HasSeedOverride()				{ return m_hasSeedOverride; }
+	int64_t			GetSeedOverride()				{ return m_seedOverride; }
+
 	void			SetResetNether(bool bResetNether) {m_bResetNether=bResetNether;}
 	bool			GetResetNether() {return m_bResetNether;}
 	bool			CanRecordStatsAndAchievements();

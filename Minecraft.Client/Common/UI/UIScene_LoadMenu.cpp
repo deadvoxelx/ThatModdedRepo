@@ -110,6 +110,8 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 	m_bThumbnailGetFailed = false;
 	m_seed = 0;
 	m_bIsCorrupt = false;
+	m_pbThumbnailData = nullptr;
+	m_uiThumbnailSize = 0;
 
 	m_bMultiplayerAllowed = ProfileManager.IsSignedInLive( m_iPad ) && ProfileManager.AllowedToPlayMultiplayer(m_iPad);
 	// 4J-PB - read the settings for the online flag. We'll only save this setting if the user changed it.
@@ -249,17 +251,35 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 #endif
 #endif
 #ifdef _WINDOWS64
-		if (params->saveDetails != nullptr && params->saveDetails->UTF8SaveName[0] != '\0')
+		if (params->saveDetails != nullptr)
 		{
-			wchar_t wSaveName[128];
-			ZeroMemory(wSaveName, sizeof(wSaveName));
-			mbstowcs(wSaveName, params->saveDetails->UTF8SaveName, 127);
-			m_levelName = wstring(wSaveName);
-			m_labelGameName.init(m_levelName);
+			if (params->saveDetails->UTF8SaveName[0] != '\0')
+			{
+				wchar_t wSaveName[128];
+				ZeroMemory(wSaveName, sizeof(wSaveName));
+				mbstowcs(wSaveName, params->saveDetails->UTF8SaveName, 127);
+				m_levelName = wstring(wSaveName);
+				m_labelGameName.init(m_levelName);
+			}
+
+			wchar_t wFilename[MAX_SAVEFILENAME_LENGTH];
+			ZeroMemory(wFilename, sizeof(wFilename));
+			mbstowcs(wFilename, params->saveDetails->UTF8SaveFilename, MAX_SAVEFILENAME_LENGTH - 1);
+			m_thumbnailName = wFilename;
+
+			if (params->saveDetails->pbThumbnailData && params->saveDetails->dwThumbnailSize > 0)
+			{
+				// save list already loaded this, register and display it
+				registerSubstitutionTexture(wFilename, params->saveDetails->pbThumbnailData, params->saveDetails->dwThumbnailSize);
+				m_bitmapIcon.setTextureName(wFilename);
+				m_pbThumbnailData = params->saveDetails->pbThumbnailData;
+				m_uiThumbnailSize = params->saveDetails->dwThumbnailSize;
+			}
+			m_bRetrievingSaveThumbnail = false;
 		}
 #endif
 	}
-
+	
 	TelemetryManager->RecordMenuShown(m_iPad, eUIScene_LoadMenu, 0);
 	m_iTexturePacksNotInstalled=0;
 

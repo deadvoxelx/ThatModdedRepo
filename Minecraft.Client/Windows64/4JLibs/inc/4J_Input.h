@@ -56,8 +56,8 @@ enum EKeyboardResult
 typedef struct _STRING_VERIFY_RESPONSE
 {
 	WORD wNumStrings;
-	HRESULT *pStringResult;
-} 
+	HRESULT* pStringResult;
+}
 STRING_VERIFY_RESPONSE;
 
 class C_4JInput
@@ -77,40 +77,40 @@ public:
 		EKeyboardMode_Phone
 	};
 
-	void				Initialise( int iInputStateC, unsigned char ucMapC,unsigned char ucActionC, unsigned char ucMenuActionC );
+	void				Initialise(int iInputStateC, unsigned char ucMapC, unsigned char ucActionC, unsigned char ucMenuActionC);
 	void				Tick(void);
-	void				SetDeadzoneAndMovementRange(unsigned int uiDeadzone, unsigned int uiMovementRangeMax );
-	void				SetGameJoypadMaps(unsigned char ucMap,unsigned char ucAction,unsigned int uiActionVal);
-	unsigned int		GetGameJoypadMaps(unsigned char ucMap,unsigned char ucAction);
-	void				SetJoypadMapVal(int iPad,unsigned char ucMap);
+	void				SetDeadzoneAndMovementRange(unsigned int uiDeadzone, unsigned int uiMovementRangeMax);
+	void				SetGameJoypadMaps(unsigned char ucMap, unsigned char ucAction, unsigned int uiActionVal);
+	unsigned int		GetGameJoypadMaps(unsigned char ucMap, unsigned char ucAction);
+	void				SetJoypadMapVal(int iPad, unsigned char ucMap);
 	unsigned char		GetJoypadMapVal(int iPad);
 	void				SetJoypadSensitivity(int iPad, float fSensitivity);
-	unsigned int		GetValue(int iPad,unsigned char ucAction, bool bRepeat=false);
-	bool				ButtonPressed(int iPad,unsigned char ucAction=255); // toggled
-	bool				ButtonReleased(int iPad,unsigned char ucAction); //toggled
-	bool				ButtonDown(int iPad,unsigned char ucAction=255); // button held down
+	unsigned int		GetValue(int iPad, unsigned char ucAction, bool bRepeat = false);
+	bool				ButtonPressed(int iPad, unsigned char ucAction = 255); // toggled
+	bool				ButtonReleased(int iPad, unsigned char ucAction); //toggled
+	bool				ButtonDown(int iPad, unsigned char ucAction = 255); // button held down
 	// Functions to remap the axis and triggers for in-game (not menus) - SouthPaw, etc
-	void				SetJoypadStickAxisMap(int iPad,unsigned int uiFrom, unsigned int uiTo);
-	void				SetJoypadStickTriggerMap(int iPad,unsigned int uiFrom, unsigned int uiTo);
-	void				SetKeyRepeatRate(float fRepeatDelaySecs,float fRepeatRateSecs); 
-	void				SetDebugSequence( const char *chSequenceA,int( *Func)(LPVOID),LPVOID lpParam );
+	void				SetJoypadStickAxisMap(int iPad, unsigned int uiFrom, unsigned int uiTo);
+	void				SetJoypadStickTriggerMap(int iPad, unsigned int uiFrom, unsigned int uiTo);
+	void				SetKeyRepeatRate(float fRepeatDelaySecs, float fRepeatRateSecs);
+	void				SetDebugSequence(const char* chSequenceA, int(*Func)(LPVOID), LPVOID lpParam);
 	FLOAT				GetIdleSeconds(int iPad);
 	bool				IsPadConnected(int iPad);
 
 	// In-Game values which may have been remapped due to Southpaw, swap triggers, etc
-	float				GetJoypadStick_LX(int iPad, bool bCheckMenuDisplay=true);
-	float				GetJoypadStick_LY(int iPad, bool bCheckMenuDisplay=true);
-	float				GetJoypadStick_RX(int iPad, bool bCheckMenuDisplay=true);
-	float				GetJoypadStick_RY(int iPad, bool bCheckMenuDisplay=true);
-	unsigned char		GetJoypadLTrigger(int iPad, bool bCheckMenuDisplay=true);
-	unsigned char		GetJoypadRTrigger(int iPad, bool bCheckMenuDisplay=true);
+	float				GetJoypadStick_LX(int iPad, bool bCheckMenuDisplay = true);
+	float				GetJoypadStick_LY(int iPad, bool bCheckMenuDisplay = true);
+	float				GetJoypadStick_RX(int iPad, bool bCheckMenuDisplay = true);
+	float				GetJoypadStick_RY(int iPad, bool bCheckMenuDisplay = true);
+	unsigned char		GetJoypadLTrigger(int iPad, bool bCheckMenuDisplay = true);
+	unsigned char		GetJoypadRTrigger(int iPad, bool bCheckMenuDisplay = true);
 
 	void				SetMenuDisplayed(int iPad, bool bVal);
 
-// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, UINT uiText, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(LPVOID,const bool),LPVOID lpParam,EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
-// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, LPCWSTR pwchDefault, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(LPVOID,const bool),LPVOID lpParam, EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
-	EKeyboardResult		RequestKeyboard(LPCWSTR Title, LPCWSTR Text, DWORD dwPad, UINT uiMaxChars, int( *Func)(LPVOID,const bool),LPVOID lpParam,C_4JInput::EKeyboardMode eMode);
-	void GetText(uint16_t *UTF16String);
+	// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, UINT uiText, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(LPVOID,const bool),LPVOID lpParam,EKeyboardMode eMode,C4JStringTable *pStringTable=NULL);
+	// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, LPCWSTR pwchDefault, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(LPVOID,const bool),LPVOID lpParam, EKeyboardMode eMode,C4JStringTable *pStringTable=NULL);
+	EKeyboardResult		RequestKeyboard(LPCWSTR Title, LPCWSTR Text, DWORD dwPad, UINT uiMaxChars, int(*Func)(LPVOID, const bool), LPVOID lpParam, C_4JInput::EKeyboardMode eMode);
+	void GetText(uint16_t* UTF16String);
 
 	// Online check strings against offensive list - TCR 92
 	// 	TCR # 092  CMTV Player Text String Verification 
@@ -126,8 +126,8 @@ public:
 	// 		Exemption It is not required to use the Xbox LIVE service to verify real-time text communication. An example of real-time text communication is in-game text chat.
 	// 
 	// 		Intent Protect players from inappropriate language.
-	bool VerifyStrings(WCHAR **pwStringA,int iStringC,int( *Func)(LPVOID,STRING_VERIFY_RESPONSE *),LPVOID lpParam);
-	void CancelQueuedVerifyStrings(int( *Func)(LPVOID,STRING_VERIFY_RESPONSE *),LPVOID lpParam);
+	bool VerifyStrings(WCHAR** pwStringA, int iStringC, int(*Func)(LPVOID, STRING_VERIFY_RESPONSE*), LPVOID lpParam);
+	void CancelQueuedVerifyStrings(int(*Func)(LPVOID, STRING_VERIFY_RESPONSE*), LPVOID lpParam);
 	void CancelAllVerifyInProgress(void);
 
 	//bool InputDetected(DWORD dwUserIndex,WCHAR *pwchInput);

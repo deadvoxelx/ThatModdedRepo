@@ -16,33 +16,6 @@ UIScene_EULA::UIScene_EULA(int iPad, void *initData, UILayer *parentLayer) : UIS
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
 	wstring EULA = app.GetString(IDS_EULA);
 	EULA.append(L"\r\n");
-
-#if defined(__PS3__)
-	if(app.IsEuropeanSKU())
-	{
-		EULA.append(app.GetString(IDS_EULA_SCEE));
-		// if it's the BD build
-		if(StorageManager.GetBootTypeDisc())
-		{
-			EULA.append(app.GetString(IDS_EULA_SCEE_BD));
-		}
-	}
-	else if(app.IsAmericanSKU())
-	{
-		EULA.append(app.GetString(IDS_EULA_SCEA));
-	}
-#elif defined __ORBIS__
-	if(app.IsEuropeanSKU())
-	{
-		EULA.append(app.GetString(IDS_EULA_SCEE));
-		// 4J-PB - we can't tell if it's a disc or digital version, so let's show this anyway
-		EULA.append(app.GetString(IDS_EULA_SCEE_BD));		
-	}
-	else if(app.IsAmericanSKU())
-	{
-		EULA.append(app.GetString(IDS_EULA_SCEA));
-	}
-#endif
 #else
 	wstring EULA = L"";
 #endif
@@ -78,8 +51,6 @@ UIScene_EULA::UIScene_EULA(int iPad, void *initData, UILayer *parentLayer) : UIS
 	}
 
 	m_bIgnoreInput=false;
-
-	//ui.setFontCachingCalculationBuffer(20000);
 
 #ifdef __PSVITA__
 	ui.TouchBoxRebuild(this);
@@ -138,7 +109,7 @@ void UIScene_EULA::handlePress(F64 controlId, F64 childId)
 		//CD - Added for audio
 		ui.PlayUISFX(eSFX_Press);
 		app.SetGameSettings(0,eGameSetting_PS3_EULA_Read,1);
-		ui.NavigateToScene(0,eUIScene_SaveMessage);
+		ui.NavigateToScene(0,eUIScene_MainMenu);
 		ui.setFontCachingCalculationBuffer(-1);
 		break;
 	};

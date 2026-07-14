@@ -28,6 +28,8 @@
 #include "../../Minecraft.World/TilePos.h"
 #include "../../Minecraft.World/compression.h"
 #include "../../Minecraft.World/OldChunkStorage.h"
+#include "../../Minecraft.World/BiomeSource.h"
+#include "../../Minecraft.World/LevelType.h"
 #include "../../Minecraft.World/ConsoleSaveFileOriginal.h"
 #include "../../Minecraft.World/net.minecraft.world.level.tile.h"
 #include "../../Minecraft.World/Random.h"
@@ -539,6 +541,12 @@ int main(int argc, char **argv)
 	app.SetGameNewHellScale(serverProperties.worldHellScale);
 #endif
 
+	if (serverProperties.hasOverrideSeed)
+	{
+		LogInfof("startup", "Seed override active: %lld", serverProperties.overrideSeed);
+		app.SetSeedOverride(serverProperties.overrideSeed);
+	}
+
 	StorageManager.SetSaveDisabled(serverProperties.disableSaving);
 	// Read world name and fixed save-id from server.properties
 	// Delegate load-vs-create decision to WorldManager
@@ -578,9 +586,17 @@ int main(int argc, char **argv)
 	{
 		param->seed = config.seed;
 	}
+	else if (worldBootstrap.saveData == nullptr)
+	{
+		// Only run seed validation when creating a brand-new world.
+		// Existing worlds already have their seed in level.dat.
+		LogInfof("startup", "Finding seed with biome diversity for %d-chunk world...", config.worldSizeChunks);
+		param->seed = BiomeSource::findSeed(LevelType::lvl_normal, config.worldSizeChunks);
+		LogInfof("startup", "Selected seed: %lld", param->seed);
+	}
 	else
 	{
-		param->seed = (new Random())->nextLong();
+		param->seed = (new Random())->nextLong(); // placeholder; level.dat seed takes priority
 	}
 #ifdef _LARGE_WORLDS
 	param->xzSize = (unsigned int)config.worldSizeChunks;

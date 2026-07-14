@@ -13,7 +13,7 @@ SkeletonRenderer::SkeletonRenderer() : HumanoidMobRenderer(new SkeletonModel(), 
 
 void SkeletonRenderer::scale(shared_ptr<LivingEntity> mob, float a)
 {
-    if (dynamic_pointer_cast<Skeleton>(mob)->getSkeletonType() == Skeleton::TYPE_WITHER)
+    if (dynamic_pointer_cast<Skeleton>(mob)->getSkeletonType() == Skeleton::TYPE_WITHER || dynamic_pointer_cast<Skeleton>(mob)->getSkeletonType() == Skeleton::TYPE_RAIDER)
 	{
         glScalef(1.2f, 1.2f, 1.2f);
     }
@@ -28,7 +28,7 @@ ResourceLocation *SkeletonRenderer::getTextureLocation(shared_ptr<Entity> entity
 {
 	shared_ptr<Skeleton> skeleton = dynamic_pointer_cast<Skeleton>(entity);
 
-    if (skeleton->getSkeletonType() == Skeleton::TYPE_WITHER)
+    if (skeleton->getSkeletonType() == Skeleton::TYPE_WITHER || skeleton->getSkeletonType() == Skeleton::TYPE_RAIDER)
 	{
         return &WITHER_SKELETON_LOCATION;
     }

@@ -728,16 +728,17 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData *initData, DW
 	{
 		pLevelType = LevelType::lvl_normal;
 	}
-
+	
 	ProgressRenderer *mcprogress = Minecraft::GetInstance()->progressRenderer;
 	mcprogress->progressStart(IDS_PROGRESS_INITIALISING_SERVER);
 
 	if( findSeed )
 	{
+		int worldSizeChunks = (initData && initData->xzSize > 0) ? (int)initData->xzSize : 54;
 #ifdef __PSVITA__
-		seed = BiomeSource::findSeed(pLevelType, &running);
+		seed = BiomeSource::findSeed(pLevelType, &running, worldSizeChunks);
 #else
-		seed = BiomeSource::findSeed(pLevelType);
+		seed = BiomeSource::findSeed(pLevelType, worldSizeChunks);
 #endif
 	}
 

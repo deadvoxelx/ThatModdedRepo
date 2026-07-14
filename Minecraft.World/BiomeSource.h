@@ -36,9 +36,9 @@ private:
 	static void getFracs(intArray indices, float *fracs);	// 4J added
 public:
 #ifdef __PSVITA__
-	static int64_t findSeed(LevelType *generator, bool* pServerRunning);	// MGH - added pRunning, so we can early out of this on Vita as it can take up to 60 secs							// 4J added
+	static int64_t findSeed(LevelType *generator, bool* pServerRunning, int worldSizeChunks = 54);	// MGH - added pRunning, so we can early out of this on Vita as it can take up to 60 secs							// 4J added
 #else
-	static int64_t findSeed(LevelType *generator);	// 4J added
+	static int64_t findSeed(LevelType *generator, int worldSizeChunks = 54);
 #endif
 	~BiomeSource();
 

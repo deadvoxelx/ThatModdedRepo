@@ -207,6 +207,9 @@ CMinecraftApp::CMinecraftApp()
 
 	m_bResetNether=false;
 
+	m_seedOverride = 0;
+	m_hasSeedOverride = false;
+
 #ifdef _XBOX
 	//	m_bTransferSavesToXboxOne=false;
 	//	m_uiTransferSlotC=5;
@@ -4551,10 +4554,10 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_EVUPUL, L"Evupul");
 		m_stringTable->registerString(IDS_EVUPULDARK, L"Dark Evupul");
 		m_stringTable->registerString(IDS_EVUPULGOLD, L"Golden Evupul");
-		m_stringTable->registerString(IDS_RESET_END, L"Reset Outer End");
-		m_stringTable->registerString(IDS_DONT_RESET_END, /*L"Don't Reset Aether"*/L"Don't Reset Outer End");
+		m_stringTable->registerString(IDS_RESET_END, L"Reset Aether");
+		m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset Aether");
 		//m_stringTable->registerString(IDS_RESET_END_INFO, L"DO NOT USE THIS SETTING IF YOU ARE CURRENTLY IN THE END OR OUTER END DIMENSIONS!!");
-		m_stringTable->registerString(IDS_RESET_END_INFO, L"This will erase anything you may or may not have done in the Outer End. Are you sure?");
+		m_stringTable->registerString(IDS_RESET_END_INFO, L"This will erase anything you may or may not have done in the Aether. Are you sure?");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING, L"Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING_GOLD, L"Golden Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_ISOGAL_RIB, L"Isogal Rib");
