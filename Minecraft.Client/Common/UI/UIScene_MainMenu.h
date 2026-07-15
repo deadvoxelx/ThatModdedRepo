@@ -20,26 +20,17 @@ private:
 		eControl_Count,
 	};
 
-// #ifdef __ORBIS__
-// 	enum EPatchCheck
-// 	{
-// 		ePatchCheck_Idle,
-// 		ePatchCheck_Init,
-// 		ePatchCheck_Running,
-// 	};
-// #endif
-
 	UIControl_Button m_buttons[eControl_Count];
 	UIControl m_controlTimer;
 	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
 		UI_MAP_ELEMENT( m_buttons[(int)eControl_PlayGame], "Button1")
 		UI_MAP_ELEMENT( m_buttons[(int)eControl_HelpAndOptions], "Button2")
+		UI_MAP_ELEMENT( m_buttons[(int)eControl_Leaderboards], "Button3")
 #ifndef _DURANGO
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_Exit], "Button3")
+		UI_MAP_ELEMENT( m_buttons[(int)eControl_Exit], "Button4")
 #else
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_XboxHelp], "Button3")
+		UI_MAP_ELEMENT( m_buttons[(int)eControl_XboxHelp], "Button4")
 #endif
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_Leaderboards], "Button4")
 		UI_MAP_ELEMENT( m_buttons[(int)eControl_Achievements], "Button5")
 		UI_MAP_ELEMENT( m_buttons[(int)eControl_UnlockOrDLC], "Button6")
 		UI_MAP_ELEMENT( m_controlTimer, "Timer")
