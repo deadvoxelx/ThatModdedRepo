@@ -2526,3 +2526,5 @@
 #define IDS_ITEM_APHALAF_ROD								   2520
 #define IDS_ITEM_NUSA_SHARD									   2521
 #define IDS_TILE_LEAVES_PURPLE								   2522
+#define IDS_UPDATE_LOG										   2523
+#define IDS_SENSITIVITY										   2524
