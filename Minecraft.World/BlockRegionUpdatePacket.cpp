@@ -10,7 +10,6 @@
 #include "DataLayer.h"
 #include "Dimension.h"
 
-
 #define BLOCK_REGION_UPDATE_FULLCHUNK 0x01
 #define BLOCK_REGION_UPDATE_ZEROHEIGHT 0x02	// added so we can still send a byte for ys, which really needs the range 0-256
 
@@ -42,7 +41,7 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs, in
 	this->ys = ys;
 	this->zs = zs;
 	bIsFullChunk = false;
-	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : ( (level->dimension->id == -1) ? 1 : ( (level->dimension->id == 1) ? 2 : 3/*( (level->dimension->id == 2) ? 3 : 4 )*/ ) ) );
+	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : ( (level->dimension->id == -1) ? 1 : ( (level->dimension->id == 1) ? 2 : ( (level->dimension->id == 2) ? 3 : 4 ) ) ) );
 
 	// 4J - if we are compressing a full chunk, re-order the blocks so that they compress better
 	// TODO - we should be using compressed data directly here rather than decompressing first and then recompressing...
@@ -102,8 +101,8 @@ void BlockRegionUpdatePacket::read(DataInputStream *dis) //throws IOException
 		ys = 0;
 
 	size = dis->readInt();
-	levelIdx = ( size >> 30 ) & 3;
-	size &= 0x3fffffff;
+	levelIdx = ( size >> 28 ) & 7;
+	 size &= 0x0fffffff;
 
 	const int MAX_COMPRESSED_CHUNK_SIZE = 5 * 1024 * 1024;
     if (size < 0 || size > MAX_COMPRESSED_CHUNK_SIZE)
@@ -167,7 +166,7 @@ void BlockRegionUpdatePacket::write(DataOutputStream *dos) // throws IOException
 	dos->write(zs - 1);
 
 	int sizeAndLevel = size;
-	sizeAndLevel |= ( levelIdx << 30 );
+	sizeAndLevel |= ( levelIdx << 28 );
 	dos->writeInt(sizeAndLevel);
 	dos->write(buffer, 0, size);
 }
@@ -181,4 +180,3 @@ int BlockRegionUpdatePacket::getEstimatedSize()
 {
 	return 17 + size;
 }
-
