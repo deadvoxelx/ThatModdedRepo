@@ -7,8 +7,6 @@
 #include "ChunkTilesUpdatePacket.h"
 #include "Dimension.h"
 
-
-
 ChunkTilesUpdatePacket::~ChunkTilesUpdatePacket() 
 {
 	delete [] blocks.data;
@@ -45,7 +43,7 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positi
 		blocks[i] = static_cast<byte>(levelChunk->getTile(x, y, z));
 		data[i] = static_cast<byte>(levelChunk->getData(x, y, z));
 	}
-	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : ( (level->dimension->id == -1) ? 1 : ( (level->dimension->id == 1) ? 2 : 3/*( (level->dimension->id == 2) ? 3 : 4 )*/ ) ) );
+	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : ( (level->dimension->id == -1) ? 1 : ( (level->dimension->id == 1) ? 2 : ( (level->dimension->id == 2) ? 3 : 4 ) ) ) );
 }
 
 void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException 
@@ -65,7 +63,7 @@ void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException
 
 	int countAndFlags = dis->readByte();
 	bool dataAllZero = (( countAndFlags & 0x80 ) == 0x80 );
-	levelIdx = ( countAndFlags >> 5 ) & 3;
+	levelIdx = dis->readByte();
 	count = countAndFlags & 0x1f;
 
 	positions = shortArray(count);
@@ -113,8 +111,8 @@ void ChunkTilesUpdatePacket::write(DataOutputStream *dos) //throws IOException
 	}
 	int countAndFlags = count;
 	if( dataAllZero ) countAndFlags |= 0x80;
-	countAndFlags |= ( levelIdx << 5 );
 	dos->write(countAndFlags);
+	dos->write(levelIdx);
 	int lastBlockType = -1;
 	// Each block is represented by 15 bits of position, a flag to say whether the current block type is to change, and a possible data value.
 	// A large % of these packets set the same block type to a several positions, so no point resending the block type when not necessary.
