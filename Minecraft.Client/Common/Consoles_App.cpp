@@ -4716,8 +4716,9 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_APHALAF_ROD, L"Aphalaf Rod");
 		m_stringTable->registerString(IDS_ITEM_NUSA_SHARD, L"Nusa Shard");
 		m_stringTable->registerString(IDS_TILE_LEAVES_PURPLE, L"Lavender Leaves");
-		m_stringTable->registerString(IDS_UPDATE_LOG, L"Tile updates now work in the Aether. \r\n The Aether should no longer crash on some worlds. \r\n Many UI changes.");
+		m_stringTable->registerString(IDS_UPDATE_LOG, L"Will use this later maybe");
 		m_stringTable->registerString(IDS_SENSITIVITY, L"Sensitivity");
+		m_stringTable->registerString(IDS_TILE_NUSA_PORTAL, L"Nusa Portal");
 
 	}
 	else
