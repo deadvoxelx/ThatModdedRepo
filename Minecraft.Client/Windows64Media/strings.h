@@ -2528,3 +2528,4 @@
 #define IDS_TILE_LEAVES_PURPLE								   2522
 #define IDS_UPDATE_LOG										   2523
 #define IDS_SENSITIVITY										   2524
+#define IDS_TILE_NUSA_PORTAL								   2525
