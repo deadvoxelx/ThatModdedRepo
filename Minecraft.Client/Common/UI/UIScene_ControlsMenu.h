@@ -120,6 +120,7 @@ public:
 	virtual EUIScene getSceneType() { return eUIScene_ControlsMenu;}
 	
 	virtual void updateTooltips();
+	virtual void updateComponents();
 	virtual void tick();
 
 protected:
