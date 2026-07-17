@@ -590,7 +590,8 @@ void UIScene_LoadOrJoinMenu::Initialise()
 void UIScene_LoadOrJoinMenu::updateComponents()
 {
     m_parentLayer->showComponent(m_iPad,eUIComponent_Panorama,true);
-    m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,true);
+    m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
+    m_parentLayer->showComponent(m_iPad,eUIComponent_MenuBackground,true);
 }
 
 void UIScene_LoadOrJoinMenu::handleDestroy()
@@ -1232,7 +1233,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
 			else if(DoesMashUpWorldHaveFocus() && (m_iSaveListIndex != JOIN_LOAD_CREATE_BUTTON_INDEX))
 			{
 				LevelGenerationOptions *levelGen = m_generators.at(m_iSaveListIndex - 1);
-				if(!levelGen->isTutorial() && levelGen->requiresTexturePack())
+				if(levelGen->isFromDLC() && levelGen->requiresTexturePack())    // Voxel - prevent right-clicking the tutorial world option
 				{
 					m_bIgnoreInput = true;
 					app.HideMashupPackWorld(m_iPad, levelGen->getRequiredTexturePackId());
@@ -1355,7 +1356,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
 			{
 				LevelGenerationOptions *levelGen = m_generators.at(m_iSaveListIndex - 1);
 
-				if(!levelGen->isTutorial())
+				if(levelGen->isFromDLC())   // Voxel - prevent right-clicking the tutorial world option
 				{
 					if(levelGen->requiresTexturePack())
 					{
@@ -1929,7 +1930,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
-    completionData->bShowLogo=TRUE;
+    completionData->bShowLogo=FALSE;
     completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
     completionData->iPad = DEFAULT_XUI_MENU_USER;
     loadingParams->completionData = completionData;
@@ -2326,7 +2327,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromDisk(File *saveFile, ESavePlatform save
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
-    completionData->bShowLogo=TRUE;
+    completionData->bShowLogo=FALSE;
     completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
     completionData->iPad = DEFAULT_XUI_MENU_USER;
     loadingParams->completionData = completionData;
