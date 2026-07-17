@@ -415,15 +415,7 @@ void UIScene_LoadMenu::updateTooltips()
 void UIScene_LoadMenu::updateComponents()
 {
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Panorama,true);
-
-	if(RenderManager.IsWidescreen())
-	{
-		m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,true);
-	}
-	else
-	{
-		m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
-	}
+	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
 }
 
 wstring UIScene_LoadMenu::getMoviePath()
@@ -1671,7 +1663,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 
 	UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
 	completionData->bShowBackground=TRUE;
-	completionData->bShowLogo=TRUE;
+	completionData->bShowLogo=FALSE;
 	completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
 	completionData->iPad = DEFAULT_XUI_MENU_USER;
 	loadingParams->completionData = completionData;
@@ -1844,35 +1836,4 @@ int UIScene_LoadMenu::MustSignInReturnedPSN(void *pParam,int iPad,C4JStorage::EM
 
     return 0;
 }
-
-// int UIScene_LoadMenu::PSPlusReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
-// {
-// 	int32_t iResult;
-// 	UIScene_LoadMenu *pClass = (UIScene_LoadMenu *)pParam;
-// 
-// 	// continue offline, or upsell PS Plus?
-// 	if(result==C4JStorage::EMessage_ResultDecline) 
-// 	{
-// 		// upsell psplus
-// 		iResult=sceNpCommerceDialogInitialize();
-// 
-// 		SceNpCommerceDialogParam param;
-// 		sceNpCommerceDialogParamInitialize(&param);
-// 		param.mode=SCE_NP_COMMERCE_DIALOG_MODE_PLUS;
-// 		param.features = SCE_NP_PLUS_FEATURE_REALTIME_MULTIPLAY; 
-// 		param.userId = ProfileManager.getUserID(pClass->m_iPad);
-// 
-// 
-// 		iResult=sceNpCommerceDialogOpen(&param);
-// 	}
-// 	else if(result==C4JStorage::EMessage_ResultAccept) 
-// 	{
-// 		// continue offline
-// 		pClass->m_MoreOptionsParams.bOnlineGame=false;
-// 		pClass->LoadDataComplete(pClass);
-// 	}
-// 
-// 	pClass->m_bIgnoreInput=false;
-// 	return 0;
-// }
 #endif
