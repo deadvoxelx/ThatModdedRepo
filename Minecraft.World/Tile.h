@@ -40,6 +40,7 @@ class HalfSlabTile;
 class Icon;
 class IconRegister;
 class AetherPortalTile;
+class NusaPortalTile;
 
 class ChunkRebuildData;
 
@@ -438,6 +439,8 @@ public:
 	static const int dungeonStone_Id = 233;
 	static const int dungeonLight_Id = 234;
 
+	static const int nusaPortal_Id = 254;
+
 	static Tile *stone;
 	static GrassTile *grass;
 	static Tile *dirt;
@@ -682,6 +685,8 @@ public:
 	static Tile *ambrosiumBlock;
 	static Tile *dungeonStone;
 	static Tile *dungeonLight;
+
+	static NusaPortalTile *nusaPortal;
 
 	static void staticCtor();
 

@@ -51,7 +51,7 @@ void UIScene_SettingsAudioMenu::updateComponents()
 	if(bNotInGame)
 	{
 		m_parentLayer->showComponent(m_iPad,eUIComponent_Panorama,true);
-		m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,true);
+		m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
 	}
 	else
 	{

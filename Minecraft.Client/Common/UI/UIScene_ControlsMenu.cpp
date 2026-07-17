@@ -138,6 +138,11 @@ void UIScene_ControlsMenu::updateTooltips()
 	ui.SetTooltips( m_iPad, IDS_TOOLTIPS_SELECT,IDS_TOOLTIPS_BACK);
 }
 
+void UIScene_ControlsMenu::updateComponents()
+{
+	m_parentLayer->removeComponent(eUIComponent_Logo);
+}
+
 void UIScene_ControlsMenu::tick()
 {
 	if(m_bLayoutChanged) PositionAllText(m_iPad);

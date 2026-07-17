@@ -2,6 +2,8 @@
 
 #include "UIScene.h"
 
+// Voxel - this ui scene is basically dead; may repurpose it later
+
 #define BUTTON_ALL_OPTIONS				0
 #define BUTTON_ALL_AUDIO				1
 #define BUTTON_ALL_CONTROL				2
@@ -33,11 +35,9 @@ public:
 	virtual void handleReload();
 
 protected:
-	// TODO: This should be pure virtual in this class
 	virtual wstring getMoviePath();
 
 public:
-	// INPUT
 	virtual void handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled);
 
 protected:

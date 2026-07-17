@@ -21,14 +21,12 @@ BiomeDecorator::BiomeDecorator(Biome *biome)
 
 void BiomeDecorator::decorate(Level *level, Random *random, int xo, int zo)
 {
-	if (this->level != NULL)
-	{
-		app.DebugPrintf("BiomeDecorator::decorate - Already decorating!!\n");
-#ifndef _CONTENT_PACKAGE
-		__debugbreak();
-		//throw new RuntimeException("Already decorating!!");
-#endif
-	}
+	// Phyx: lazy chunk gen can run decorate inside decorate so dont null the state just save it and put it back -thumbs up-
+	Level  *plevel  = this->level;
+	Random *prandom = this->random;
+	int pxo = this->xo;
+	int pzo = this->zo;
+
 	this->level = level;
 	this->random = random;
 	this->xo = xo;
@@ -36,11 +34,11 @@ void BiomeDecorator::decorate(Level *level, Random *random, int xo, int zo)
 
 	decorate();
 
-	this->level = NULL;
-	this->random = NULL;
+	this->level = plevel;
+	this->random = prandom;
+	this->xo = pxo;
+	this->zo = pzo;
 }
-
-
 
 void BiomeDecorator::_init()
 {

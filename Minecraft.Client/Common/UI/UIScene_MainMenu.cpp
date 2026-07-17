@@ -145,6 +145,7 @@ void UIScene_MainMenu::updateComponents()
 {
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Panorama,true);
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,true);
+	m_parentLayer->removeComponent(eUIComponent_MenuBackground);
 }
 
 void UIScene_MainMenu::handleGainFocus(bool navBack)

@@ -291,6 +291,8 @@ Tile *Tile::ambrosiumBlock = NULL;
 Tile *Tile::dungeonStone = NULL;
 Tile *Tile::dungeonLight = NULL;
 
+NusaPortalTile *Tile::nusaPortal = NULL;
+
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
 Tile::ThreadStorage::ThreadStorage()
@@ -592,6 +594,8 @@ void Tile::staticCtor()
 	Tile::ambrosiumBlock = (new MetalTile(232))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_ambrosium)->setDestroyTime(3.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L"ambrosiumBlock")->setDescriptionId(IDS_TILE_AMBROSIUM_BLOCK)->setUseDescriptionId(IDS_TILE_AMBROSIUM_BLOCK);
 	Tile::dungeonStone = (new DungeonStoneTile(233))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
 	Tile::dungeonLight = (new DungeonLightTile(234))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setLightEmission(0.5f)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone_light")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
+
+	Tile::nusaPortal = (NusaPortalTile *)(new NusaPortalTile(254, Material::portal))->setIconName(L"nusa_portal")->setDescriptionId(IDS_TILE_NUSA_PORTAL)->setUseDescriptionId(IDS_TILE_NUSA_PORTAL);
 
 	// Special cases for certain items since they can have different icons
 	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);

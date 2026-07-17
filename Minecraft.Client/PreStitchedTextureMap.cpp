@@ -1216,5 +1216,6 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(25,	1,	L"nethaniumFurnce_side");
 	ADD_ICON(25,	2,	L"nethaniumFurnce_front");
 	ADD_ICON(25,	3,	L"nethaniumFurnce_front_lit");
+	ADD_ICON(25,	4,	L"nusa_portal");
 	}
 }

@@ -54,7 +54,7 @@ void AetherGrassTile::tick(Level *level, int x, int y, int z, Random *random)
 				int above = level->getTile(xt, yt + 1, zt);
 				if (level->getTile(xt, yt, zt) == Tile::aetherDirt_Id && level->getRawBrightness(xt, yt + 1, zt) >= MIN_BRIGHTNESS && Tile::lightBlock[above] <= 2)
 				{
-					level->setTileAndData(x, y, z, Tile::aetherGrass_Id, 0, Tile::UPDATE_CLIENTS);
+					level->setTileAndData(xt, yt, zt, Tile::aetherGrass_Id, 0, Tile::UPDATE_CLIENTS);
 				}
 			}
 		}
