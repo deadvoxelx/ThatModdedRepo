@@ -4719,6 +4719,20 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_UPDATE_LOG, L"Will use this later maybe");
 		m_stringTable->registerString(IDS_SENSITIVITY, L"Sensitivity");
 		m_stringTable->registerString(IDS_TILE_NUSA_PORTAL, L"Nusa Portal");
+		m_stringTable->registerString(IDS_PLAYER_ENTER_NUREALM, L"Entering The Nurealm");
+		m_stringTable->registerString(IDS_PLAYER_LEAVE_NUREALM, L"Leaving The Nurealm");
+		m_stringTable->registerString(IDS_TILE_NUSTONE, L"Nustone");
+		m_stringTable->registerString(IDS_TILE_NUGRASS, L"Nugrass");
+		m_stringTable->registerString(IDS_TILE_NUBRICKS, L"Nustone Bricks");
+		m_stringTable->registerString(IDS_TILE_NUSAVINE, L"Nusa Vine");
+		m_stringTable->registerString(IDS_TILE_NUSASHRUB, L"Nusa Shrub");
+		m_stringTable->registerString(IDS_TILE_NUSA_CORE, L"Nusa Core");
+		m_stringTable->registerString(IDS_TILE_NUSA_CUBE, L"Nusa Cube");
+		m_stringTable->registerString(IDS_TILE_NUSA_LOG, L"Nusa Log");
+		m_stringTable->registerString(IDS_TILE_NUSA_BLOCK, L"Nusa Block");
+		m_stringTable->registerString(IDS_TILE_NUSA_PLANKS, L"Nusa Planks");
+		m_stringTable->registerString(IDS_TILE_NUSA_SLAB, L"Nusa Slab");
+		m_stringTable->registerString(IDS_TILE_NUSA_FENCE, L"Nusa Fence");
 
 	}
 	else
