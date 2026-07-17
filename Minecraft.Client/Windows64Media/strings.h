@@ -2529,3 +2529,17 @@
 #define IDS_UPDATE_LOG										   2523
 #define IDS_SENSITIVITY										   2524
 #define IDS_TILE_NUSA_PORTAL								   2525
+#define IDS_PLAYER_ENTER_NUREALM							   2526
+#define IDS_PLAYER_LEAVE_NUREALM							   2527
+#define IDS_TILE_NUSTONE									   2528
+#define IDS_TILE_NUGRASS									   2529
+#define IDS_TILE_NUBRICKS									   2530
+#define IDS_TILE_NUSAVINE									   2531
+#define IDS_TILE_NUSASHRUB									   2532
+#define IDS_TILE_NUSA_CORE									   2533
+#define IDS_TILE_NUSA_CUBE									   2534
+#define IDS_TILE_NUSA_LOG									   2535
+#define IDS_TILE_NUSA_BLOCK									   2536
+#define IDS_TILE_NUSA_PLANKS								   2537
+#define IDS_TILE_NUSA_SLAB									   2538
+#define IDS_TILE_NUSA_FENCE									   2539
