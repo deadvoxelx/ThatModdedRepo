@@ -1099,6 +1099,9 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			case 3:
                 dimension = L"minecraft:the_aether";
                 break;
+			case 4:
+                dimension = L"minecraft:nurealm";
+                break;
             }
             lines.push_back(dimension);
 
