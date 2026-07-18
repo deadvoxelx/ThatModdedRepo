@@ -16,3 +16,4 @@
 
 #include "TheOuterEndLevelRandomLevelSource.h"
 #include "AetherLevelSource.h"
+#include "NurealmLevelSource.h"
