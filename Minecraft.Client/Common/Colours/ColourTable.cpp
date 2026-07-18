@@ -35,7 +35,8 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Foliage_ExtremeHillsEdge",
 	L"Foliage_Jungle",
 	L"Foliage_JungleHills",
-	L"Foliage_PurpleSpruce",
+	L"Foliage_PurpleSpruce",	// Voxel
+	L"Foliage_Nulands",			// Voxel
 	
 	L"Grass_Common",
 	L"Grass_Ocean",
@@ -61,6 +62,7 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Grass_ExtremeHillsEdge",
 	L"Grass_Jungle",
 	L"Grass_JungleHills",
+	L"Grass_Nulands",		// Voxel
 
 	L"Water_Ocean",
 	L"Water_Plains",
@@ -85,7 +87,8 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Water_ExtremeHillsEdge",
 	L"Water_Jungle",
 	L"Water_JungleHills",
-	L"Water_End",	// Voxel
+	L"Water_End",		// Voxel
+	L"Water_Nulands",	// Voxel
 
 	L"Sky_Ocean",
 	L"Sky_Plains",
@@ -110,6 +113,7 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Sky_ExtremeHillsEdge",
 	L"Sky_Jungle",
 	L"Sky_JungleHills",
+	L"Sky_Nulands",		// Voxel
 
 	L"Tile_RedstoneDust",
 	L"Tile_RedstoneDustUnlit",
@@ -273,7 +277,8 @@ const wchar_t *ColourTable::ColourTableElements[eMinecraftColour_COUNT] =
 	L"Default_Fog_Colour",
 	L"Nether_Fog_Colour",
 	L"End_Fog_Colour",
-	L"Aether_Fog_Colour",
+	L"Aether_Fog_Colour",		// Voxel
+	L"Nurealm_Fog_Colour",		// Voxel
 
 	L"Sign_Text",
 	L"Map_Text",
