@@ -439,6 +439,14 @@ public:
 	static const int dungeonStone_Id = 233;
 	static const int dungeonLight_Id = 234;
 
+	static const int nustone_Id = 246;
+	static const int nugrass_Id = 247;
+	static const int glowingNustone_Id = 248;
+	static const int nusaLog_Id = 249;
+	static const int nusaShrub_Id = 250;
+	static const int nusaVine_Id = 251;
+	//static const int nusaCube_Id = 252;
+	//static const int nusaCore_Id = 253;
 	static const int nusaPortal_Id = 254;
 
 	static Tile *stone;
@@ -686,6 +694,14 @@ public:
 	static Tile *dungeonStone;
 	static Tile *dungeonLight;
 
+	static Tile *nustone;
+	static Tile *nugrass;
+	static Tile *glowingNustone;
+	static Tile *nusaLog;
+	static Tile *nusaShrub;
+	static Tile *nusaVine;
+	//static Tile *nusaCube;
+	//static Tile *nusaCore;
 	static NusaPortalTile *nusaPortal;
 
 	static void staticCtor();
