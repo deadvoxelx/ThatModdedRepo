@@ -45,6 +45,7 @@ Biome *Biome::outerIslands = nullptr;
 Biome *Biome::aether = nullptr;
 Biome *Biome::birchForest = nullptr;
 Biome *Biome::lavenderForest = nullptr;
+Biome *Biome::nulands = nullptr;
 
 
 void Biome::staticCtor()
@@ -80,10 +81,12 @@ void Biome::staticCtor()
 	Biome::jungle = (new JungleBiome(21))->setColor(0x537b09)->setName(L"Jungle")->setLeafColor(0x537b09)->setTemperatureAndDownfall(1.2f, 0.9f)->setDepthAndScale(0.1f, 1.5f)->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Jungle, eMinecraftColour_Foliage_Jungle, eMinecraftColour_Water_Jungle,eMinecraftColour_Sky_Jungle);
 	Biome::jungleHills = (new JungleBiome(22))->setColor(0x2c4205)->setName(L"JungleHills")->setLeafColor(0x537b09)->setTemperatureAndDownfall(1.2f, 0.9f)->setDepthAndScale(0.1f, 2)->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_JungleHills, eMinecraftColour_Foliage_JungleHills, eMinecraftColour_Water_JungleHills,eMinecraftColour_Sky_JungleHills);
 
+	// Voxel
 	Biome::outerIslands = (new TheOuterEndBiome(23))->setColor(0x8080ff)->setName(L"OuterIslands")->setNoRain()->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Sky, eMinecraftColour_Foliage_Sky, eMinecraftColour_Water_End, eMinecraftColour_Sky_Sky);
 	Biome::aether = (new AetherBiome(24))->setColor(0x7ec8e3)->setName(L"Aether")->setNoRain()->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Sky, eMinecraftColour_Foliage_Sky, eMinecraftColour_Water_Sky, eMinecraftColour_Sky_Sky);
 	Biome::birchForest = (new BirchForestBiome(25))->setColor(0xe57c1a)->setName(L"BirchForest")->setTemperatureAndDownfall(0.4f, 0.35f)->setDepthAndScale(0.1f, 1.0f)->setLeafFoliageWaterSkyColor(eMinecraftColour_Foliage_Birch, eMinecraftColour_Foliage_Birch, eMinecraftColour_Water_Forest,eMinecraftColour_Sky_Forest);
 	Biome::lavenderForest = (new LavenderBiome(26))->setColor(0xa878be)->setName(L"LavenderForest")->setTemperatureAndDownfall(0.2f, 0.42f)->setDepthAndScale(0.1f, 1.5f)->setLeafFoliageWaterSkyColor(eMinecraftColour_Foliage_PurpleSpruce, eMinecraftColour_Foliage_PurpleSpruce, eMinecraftColour_Water_Forest,eMinecraftColour_Sky_Forest);
+	Biome::nulands = (new NurealmBiome(27))->setColor(0x8080ff)->setName(L"Nulands")->setNoRain()->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Nulands, eMinecraftColour_Foliage_Nulands, eMinecraftColour_Water_Nulands, eMinecraftColour_Sky_Nulands);
 
 }
 
