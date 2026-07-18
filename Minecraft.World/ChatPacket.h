@@ -81,6 +81,9 @@ public:
 		e_ChatPlayerEnterAether,
 		e_ChatPlayerLeaveAether,
 
+		e_ChatPlayerEnterNurealm,
+		e_ChatPlayerLeaveNurealm,
+
 		e_ChatPlayerMaxPigsSheepCows, // tell the players they can't use the spawn egg
 		e_ChatPlayerMaxChickens, // tell the players they can't use the spawn egg
 		e_ChatPlayerMaxSquid, // tell the players they can't use the spawn egg
