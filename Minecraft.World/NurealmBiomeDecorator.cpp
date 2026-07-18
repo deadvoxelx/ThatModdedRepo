@@ -7,6 +7,7 @@
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "EndTowerFeature.h"
 #include "NusaVineFeature.h"
+#include "NusaTreeFeature.h"
 
 const double M_PI = 3.14159265358979323846;
 
@@ -41,6 +42,14 @@ void NurealmBiomeDecorator::decorate()
 		int y = 32 + random->nextInt(64);
 		int z = zo + random->nextInt(16) + 8;
 		GlowingNustoneFeature().place(level, random, x, y, z);
+	}
+
+	for (int i = 0; i < 128; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int y = random->nextInt(Level::genDepth);
+		int z = zo + random->nextInt(16) + 8;
+		NusaTreeFeature(false).place(level, random, x, y, z);
 	}
 
 	for (int i = 0; i < 32; i++)
