@@ -25,6 +25,8 @@ private:
 	PerlinNoise *perlinNoise1;
 	PerlinNoise *perlinNoise2;
 	PerlinNoise *perlinNoise3;
+
+	PerlinNoise *carvingNoise;
 public:
 	PerlinNoise *scaleNoise;
 	PerlinNoise *depthNoise;
