@@ -291,6 +291,14 @@ Tile *Tile::ambrosiumBlock = NULL;
 Tile *Tile::dungeonStone = NULL;
 Tile *Tile::dungeonLight = NULL;
 
+Tile *Tile::nustone = NULL;
+Tile *Tile::nugrass = NULL;
+Tile *Tile::glowingNustone = NULL;
+Tile *Tile::nusaLog = NULL;
+Tile *Tile::nusaShrub = NULL;
+Tile *Tile::nusaVine = NULL;
+//Tile *Tile::nusaCube = NULL;
+//Tile *Tile::nusaCore = NULL;
 NusaPortalTile *Tile::nusaPortal = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
@@ -595,6 +603,13 @@ void Tile::staticCtor()
 	Tile::dungeonStone = (new DungeonStoneTile(233))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
 	Tile::dungeonLight = (new DungeonLightTile(234))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setLightEmission(0.5f)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone_light")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
 
+	Tile::nustone = (new Tile(246, Material::stone))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_endStone)->setDestroyTime(3.0f)->setExplodeable(20)->setSoundType(SOUND_STONE)->setIconName(L"nustone")->setDescriptionId(IDS_TILE_NUSTONE)->setUseDescriptionId(IDS_TILE_NUSTONE);
+	Tile::nugrass = (new VeloettGrassTile(247))							->setDestroyTime(3.0f)->setExplodeable(20)->setSoundType(SOUND_STONE)->setIconName(L"nugrass")->setDescriptionId(IDS_TILE_NUGRASS)->setUseDescriptionId(IDS_TILE_NUGRASS);
+	Tile::glowingNustone = (new Tile(248, Material::stone))				->setLightEmission(1.0f)->setDestroyTime(2.5f)->setExplodeable(15)->setSoundType(SOUND_GLASS)->setIconName(L"glowingNustone")->setDescriptionId(IDS_TILE_NUSTONE)->setUseDescriptionId(IDS_TILE_NUSTONE);
+	Tile::nusaLog = (new NetherWoodTile(249))							->setDestroyTime(3.0f)->setSoundType(SOUND_WOOD)->setIconName(L"nusaLog")->setDescriptionId(IDS_TILE_NUSA_LOG)->setUseDescriptionId(IDS_TILE_NUSA_LOG);
+	Tile::nusaShrub = (VeloettShrubTile *)(new VeloettShrubTile(250))	->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"nusaShrub")->setDescriptionId(IDS_TILE_NUSASHRUB)->setUseDescriptionId(IDS_TILE_NUSASHRUB)->disableMipmap();
+	Tile::nusaVine = (VeloettVineTile *)(new VeloettVineTile(251))		->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"nusaVine")->setDescriptionId(IDS_TILE_NUSAVINE)->setUseDescriptionId(IDS_TILE_NUSAVINE)->disableMipmap();
+
 	Tile::nusaPortal = (NusaPortalTile *)(new NusaPortalTile(254, Material::portal))->setIconName(L"nusa_portal")->setDescriptionId(IDS_TILE_NUSA_PORTAL)->setUseDescriptionId(IDS_TILE_NUSA_PORTAL);
 
 	// Special cases for certain items since they can have different icons
@@ -609,7 +624,7 @@ void Tile::staticCtor()
 	Item::items[stone_Id]				= ( new MultiTextureTileItem(Tile::stone_Id - 256,Tile::stone,(int*)StoneTile::STONE_NAMES, StoneTile::STONE_NAMES_LENGTH))->setIconName(L"stone")->setDescriptionId(IDS_TILE_STONE);
 	Item::items[endStone_Id]			= ( new MultiTextureTileItem(Tile::endStone_Id - 256, endStone,(int *)EndStoneTile::END_STONE_NAMES, 6))->setIconName(L"end_stone")->setDescriptionId(IDS_TILE_WHITESTONE);
 	Item::items[goldenclin_Id]			= ( new MultiTextureTileItem(Tile::goldenclin_Id - 256, goldenclin,(int *)GoldenclinTile::GOLDENCLIN_NAMES, 6))->setIconName(L"goldenclin")->setDescriptionId(IDS_TILE_GOLDENCLIN);
-	Item::items[netherPlanks_Id]		= ( new MultiTextureTileItem(Tile::netherPlanks_Id - 256, netherPlanks,(int *)NetherPlanksTile::NETHER_PLANK_NAMES, 3))->setIconName(L"planks_nether")->setDescriptionId(IDS_TILE_NETHER_PLANKS);
+	Item::items[netherPlanks_Id]		= ( new MultiTextureTileItem(Tile::netherPlanks_Id - 256, netherPlanks,(int *)NetherPlanksTile::NETHER_PLANK_NAMES, 4))->setIconName(L"planks_nether")->setDescriptionId(IDS_TILE_NETHER_PLANKS);
 	Item::items[aercloud_Id]			= ( new MultiTextureTileItem(Tile::aercloud_Id - 256,Tile::aercloud,(int*)AercloudTile::CLOUD_NAMES, AercloudTile::CLOUD_NAMES_LENGTH))->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD);
 	Item::items[glass_Id]				= ( new MultiTextureTileItem(Tile::glass_Id - 256,Tile::glass,(int*)GlassTile::GLASS_NAMES, GlassTile::GLASS_NAMES_LENGTH))->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS);
 	Item::items[netherLeaves_Id]		= ( new MultiTextureTileItem(Tile::netherLeaves_Id - 256,Tile::netherLeaves,(int*)NetherLeavesTile::NETHER_LEAVES_NAMES, NetherLeavesTile::NETHER_LEAVES_NAMES_LENGTH))->setIconName(L"nether_leaves")->setDescriptionId(IDS_TILE_NETHERLEAVES);
