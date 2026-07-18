@@ -44,26 +44,27 @@ WeighedTreasureArray ServerLevel::RANDOM_BONUS_ITEMS;
 
 C4JThread* ServerLevel::m_updateThread = nullptr;
 C4JThread::EventArray* ServerLevel::m_updateTrigger;
-CRITICAL_SECTION ServerLevel::m_updateCS[5];
+CRITICAL_SECTION ServerLevel::m_updateCS[6];
 
-Level *ServerLevel::m_level[5];
-int	   ServerLevel::m_updateChunkX[5][LEVEL_CHUNKS_TO_UPDATE_MAX];
-int	   ServerLevel::m_updateChunkZ[5][LEVEL_CHUNKS_TO_UPDATE_MAX];
-int	   ServerLevel::m_updateChunkCount[5];
-int	   ServerLevel::m_updateTileX[5][MAX_UPDATES];
-int	   ServerLevel::m_updateTileY[5][MAX_UPDATES];
-int	   ServerLevel::m_updateTileZ[5][MAX_UPDATES];
-int	   ServerLevel::m_updateTileCount[5];
-int	   ServerLevel::m_randValue[5];
+Level *ServerLevel::m_level[6];
+int	   ServerLevel::m_updateChunkX[6][LEVEL_CHUNKS_TO_UPDATE_MAX];
+int	   ServerLevel::m_updateChunkZ[6][LEVEL_CHUNKS_TO_UPDATE_MAX];
+int	   ServerLevel::m_updateChunkCount[6];
+int	   ServerLevel::m_updateTileX[6][MAX_UPDATES];
+int	   ServerLevel::m_updateTileY[6][MAX_UPDATES];
+int	   ServerLevel::m_updateTileZ[6][MAX_UPDATES];
+int	   ServerLevel::m_updateTileCount[6];
+int	   ServerLevel::m_randValue[6];
 
 void ServerLevel::staticCtor()
 {
-	m_updateTrigger  = new C4JThread::EventArray(5);
+	m_updateTrigger  = new C4JThread::EventArray(6);
 	InitializeCriticalSection(&m_updateCS[0]);
 	InitializeCriticalSection(&m_updateCS[1]);
 	InitializeCriticalSection(&m_updateCS[2]);
 	InitializeCriticalSection(&m_updateCS[3]);
 	InitializeCriticalSection(&m_updateCS[4]);
+	InitializeCriticalSection(&m_updateCS[5]);
 
 	m_updateThread = new C4JThread(runUpdate, nullptr, "Tile update");
 	m_updateThread->SetProcessor(CPU_CORE_TILE_UPDATE);
@@ -194,6 +195,8 @@ ServerLevel::~ServerLevel()
 	LeaveCriticalSection(&m_updateCS[3]);
 	EnterCriticalSection(&m_updateCS[4]);
 	LeaveCriticalSection(&m_updateCS[4]);
+	EnterCriticalSection(&m_updateCS[5]);
+	LeaveCriticalSection(&m_updateCS[5]);
 	m_updateTrigger->ClearAll();
 }
 
@@ -431,6 +434,10 @@ void ServerLevel::tickTiles()
 	{
 		iLev = 4;
 	}
+	else if( dimension->id == 4 )
+	{
+		iLev = 5;
+	}
 	chunksToPoll.clear();
 
 	unsigned int tickCount = 0;
@@ -514,6 +521,17 @@ void ServerLevel::tickTiles()
 			{
 				addGlobalEntity(std::make_shared<LightningBolt>(this, x, y, z));
 			}
+		}
+
+		if (random->nextInt(20000) == 0 && dimension->id == 4)
+		{
+			randValue = randValue * 3 + addend;
+			int val = (randValue >> 2);
+			int x = xo + (val & 15);
+			int z = zo + ((val >> 8) & 15);
+			int y = getTopSolidBlock(x, z);
+
+			addGlobalEntity(std::make_shared<LightningBolt>(this, x, y, z));
 		}
 
 		// 4J - changes here brought forrward from 1.2.3
@@ -1554,7 +1572,7 @@ int ServerLevel::runUpdate(void* lpParam)
 		// 4J Stu - Grass and Lava ticks currently take up the majority of all tile updates, so I am limiting them
 		int grassTicks = 0;
 		int lavaTicks = 0;
-		for( unsigned int iLev = 0; iLev < 5; ++iLev )
+		for( unsigned int iLev = 0; iLev < 6; ++iLev )
 		{
 			EnterCriticalSection(&m_updateCS[iLev]);
 			for( int i = 0; i < m_updateChunkCount[iLev]; i++ )
