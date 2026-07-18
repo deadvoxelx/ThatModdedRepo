@@ -126,6 +126,22 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', new ItemInstance(Tile::endStone, 1, EndStoneTile::TYPE_MOSSY),
 		L'S');
 
+	r->addShapedRecipy(new ItemInstance(Tile::nustone, 4, NustoneTile::TYPE_BRICK), //
+		L"ssczg",
+		L"##", //
+		L"##", //
+
+		L'#', new ItemInstance(Tile::nustone, 1, NustoneTile::TYPE_DEFAULT),
+		L'S');
+
+	r->addShapedRecipy(new ItemInstance(Tile::nustone, 2, NustoneTile::TYPE_DARK), //
+		L"ssczg",
+		L"##", //
+		L"##", //
+
+		L'#', new ItemInstance(Tile::netherLeaves, 1, NetherLeavesTile::TYPE_NUSA),
+		L'S');
+
 	r->addShapedRecipy(new ItemInstance(Tile::holystone, 4, HolystoneTile::TYPE_BRICK), //
 		L"ssczg",
 		L"##", //
