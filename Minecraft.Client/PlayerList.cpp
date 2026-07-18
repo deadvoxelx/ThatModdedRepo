@@ -840,6 +840,11 @@ shared_ptr<ServerPlayer> PlayerList::respawn(shared_ptr<ServerPlayer> serverPlay
 		player->displayClientMessage(IDS_PLAYER_LEAVE_AETHER);
 	}
 
+	if( oldDimension == 4 && player->dimension != 4 )
+	{
+		player->displayClientMessage(IDS_PLAYER_LEAVE_NUREALM);
+	}
+
 	return player;
 
 }
@@ -924,6 +929,15 @@ void PlayerList::toggleDimension(shared_ptr<ServerPlayer> player, int targetDime
 	else if( player->dimension == 3 )
 	{
 		player->displayClientMessage(IDS_PLAYER_LEAVE_AETHER);
+	}
+
+	else if(player->dimension != 4 && targetDimension == 4)
+	{
+		player->displayClientMessage(IDS_PLAYER_ENTER_NUREALM);
+	}
+	else if( player->dimension == 4 )
+	{
+		player->displayClientMessage(IDS_PLAYER_LEAVE_NUREALM);
 	}
 
 	player->dimension = targetDimension;
@@ -1031,6 +1045,16 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 			oldLevel->tick(entity, false);
 		}
 	}
+	else if (entity->dimension == 4)
+	{
+		xt == scale;
+		zt == scale;
+		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
+		if (entity->isAlive())
+		{
+			oldLevel->tick(entity, false);
+		}
+	}
 	//
 	else
 	{
@@ -1073,7 +1097,7 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		newLevel->tick(entity, false);
 		newLevel->cache->autoCreate = true;
-		if (lastDimension != 1 && lastDimension != 2)
+		if (lastDimension != 1 && lastDimension != 2 && lastDimension != 4)
 		{
 			newLevel->getPortalForcer()->force(newLevel, entity, lastDimension);
 		}
@@ -1176,7 +1200,7 @@ void PlayerList::tick()
 	LeaveCriticalSection(&m_kickPlayersCS);
 
 	// Check our receiving players, and if they are dead see if we can replace them
-	for(unsigned int dim = 0; dim < 5; ++dim)
+	for(unsigned int dim = 0; dim < 6; ++dim)
 	{
 		for(unsigned int i = 0; i < receiveAllPlayers[dim].size(); ++i)
 		{
@@ -1518,7 +1542,7 @@ void PlayerList::sendLevelInfo(shared_ptr<ServerPlayer> player, ServerLevel *lev
 	}
 
 	// send the stronghold position if there is one
-	if( ( (level->dimension->id==0) && (level->dimension->id!=2) ) && level->getLevelData()->getHasStronghold() )
+	if( (level->dimension->id==0) && level->getLevelData()->getHasStronghold() )
 	{
 		player->connection->send(std::make_shared<XZPacket>(XZPacket::STRONGHOLD, level->getLevelData()->getXStronghold(), level->getLevelData()->getZStronghold()));
 	}
@@ -1597,6 +1621,7 @@ shared_ptr<ServerPlayer> PlayerList::findAlivePlayerOnSystem(shared_ptr<ServerPl
 	else if( dimIndex == 1) dimIndex = 2;
 	else if( dimIndex == 2) dimIndex = 3;
 	else if( dimIndex == 3) dimIndex = 4;
+	else if( dimIndex == 4) dimIndex = 5;
 
 	INetworkPlayer *thisPlayer = player->connection->getNetworkPlayer();
 	if( thisPlayer )
@@ -1628,6 +1653,7 @@ void PlayerList::removePlayerFromReceiving(shared_ptr<ServerPlayer> player, bool
 	else if( dimIndex == 1) dimIndex = 2;
 	else if( dimIndex == 2) dimIndex = 3;
 	else if( dimIndex == 3) dimIndex = 4;
+	else if( dimIndex == 4) dimIndex = 5;
 
 #ifndef _CONTENT_PACKAGE
 	app.DebugPrintf("Requesting remove player %ls as primary in dimension %d\n", player->name.c_str(), dimIndex);
@@ -1683,6 +1709,7 @@ void PlayerList::removePlayerFromReceiving(shared_ptr<ServerPlayer> player, bool
 				else if( newPlayer->dimension == 1) newPlayerDim = 2;
 				else if( newPlayer->dimension == 2) newPlayerDim = 3;
 				else if( newPlayer->dimension == 3) newPlayerDim = 4;
+				else if( newPlayer->dimension == 4) newPlayerDim = 5;
 				bool foundPrimary = false;
 				for(auto& primaryPlayer : receiveAllPlayers[newPlayerDim])
 				{
@@ -1712,6 +1739,7 @@ void PlayerList::addPlayerToReceiving(shared_ptr<ServerPlayer> player)
 	else if( player->dimension == 1) playerDim = 2;
 	else if( player->dimension == 2) playerDim = 3;
 	else if( player->dimension == 3) playerDim = 4;
+	else if( player->dimension == 4) playerDim = 5;
 
 #ifndef _CONTENT_PACKAGE
 	app.DebugPrintf("Requesting add player %ls as primary in dimension %d\n", player->name.c_str(), playerDim);
@@ -1757,6 +1785,7 @@ bool PlayerList::canReceiveAllPackets(shared_ptr<ServerPlayer> player)
 	else if( player->dimension == 1) playerDim = 2;
 	else if( player->dimension == 2) playerDim = 3;
 	else if( player->dimension == 3) playerDim = 4;
+	else if( player->dimension == 4) playerDim = 5;
 	for(const auto& newPlayer : receiveAllPlayers[playerDim])
 	{
 		if(newPlayer == player)
