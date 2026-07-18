@@ -168,3 +168,4 @@
 #include "DungeonStoneTile.h"
 #include "DungeonLightTile.h"
 #include "NusaPortalTile.h"
+#include "NustoneTile.h"
