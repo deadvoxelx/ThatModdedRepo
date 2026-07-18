@@ -4733,6 +4733,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_NUSA_PLANKS, L"Nusa Planks");
 		m_stringTable->registerString(IDS_TILE_NUSA_SLAB, L"Nusa Slab");
 		m_stringTable->registerString(IDS_TILE_NUSA_FENCE, L"Nusa Fence");
+		m_stringTable->registerString(IDS_TILE_DARK_NUSTONE, L"Dark Nustone");
 
 	}
 	else
