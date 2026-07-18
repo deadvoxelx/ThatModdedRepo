@@ -11,10 +11,21 @@ NusaTreeFeature::NusaTreeFeature(bool doUpdate) : Feature(doUpdate)
 bool NusaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 {
 	int belowTile = level->getTile(x, y - 1, z);
-    int thisTile = level->getTile(x, y, z);
 	int trunkHeight = 6 + random->nextInt(7);
 
-	if ((belowTile == Tile::nugrass_Id || belowTile == Tile::nustone_Id) && (thisTile == 0 || thisTile == Tile::nusaShrub_Id || thisTile == Tile::netherLeaves_Id))
+	for (int ix = -3; ix <= 3; ix++)
+	{
+		for (int iy = 0; iy <= trunkHeight + 1; iy++)
+		{
+			for (int iz = -3; iz <= 3; iz++)
+			{
+				int thisTile = level->getTile(x + ix, y + iy, z + iz);
+				if (thisTile != 0 && thisTile != Tile::nusaShrub_Id && thisTile != Tile::netherLeaves_Id) return false;
+			}
+		}
+	}
+
+	if (belowTile == Tile::nugrass_Id || belowTile == Tile::nustone_Id)
 	{
 		placeBlock(level, x, y - 1, z, Tile::nustone_Id, 0);
 			
@@ -35,7 +46,7 @@ bool NusaTreeFeature::foliage(Level* level, Random* random, int x, int y, int z)
 		{
 			for (int leavesz = -2; leavesz <= 2; leavesz++)
 			{
-				if (random->nextInt(3) == 0) placeBlock(level, x + leavesx, y + leavesy, z + leavesz, Tile::netherLeaves_Id, 6);
+				if (random->nextInt(7) == 0) placeBlock(level, x + leavesx, y + leavesy, z + leavesz, Tile::netherLeaves_Id, 6);
 			}
 		}
 	}
@@ -44,8 +55,8 @@ bool NusaTreeFeature::foliage(Level* level, Random* random, int x, int y, int z)
 	{
 		for (int leavesy = 0; leavesy <= 3; leavesy++)
 		{
-			if (random->nextInt(3) == 0) placeBlock(level, x + leavesx, y + leavesy - 4, z + 3, Tile::netherLeaves_Id, 6);
-			if (random->nextInt(3) == 0) placeBlock(level, x + leavesx, y + leavesy - 4, z - 3, Tile::netherLeaves_Id, 6);
+			if (random->nextInt(7) == 0) placeBlock(level, x + leavesx, y + leavesy - 4, z + 3, Tile::netherLeaves_Id, 6);
+			if (random->nextInt(7) == 0) placeBlock(level, x + leavesx, y + leavesy - 4, z - 3, Tile::netherLeaves_Id, 6);
 		}
 	}
 	
@@ -53,8 +64,8 @@ bool NusaTreeFeature::foliage(Level* level, Random* random, int x, int y, int z)
 	{
 		for (int leavesy = 0; leavesy <= 3; leavesy++)
 		{
-			if (random->nextInt(3) == 0) placeBlock(level, x + 3, y + leavesy - 4, z + leavesz, Tile::netherLeaves_Id, 6);
-			if (random->nextInt(3) == 0) placeBlock(level, x - 3, y + leavesy - 4, z + leavesz, Tile::netherLeaves_Id, 6);
+			if (random->nextInt(7) == 0) placeBlock(level, x + 3, y + leavesy - 4, z + leavesz, Tile::netherLeaves_Id, 6);
+			if (random->nextInt(7) == 0) placeBlock(level, x - 3, y + leavesy - 4, z + leavesz, Tile::netherLeaves_Id, 6);
 		}
 	}
 	return true;
