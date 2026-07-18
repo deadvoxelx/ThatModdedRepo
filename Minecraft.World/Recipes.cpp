@@ -101,6 +101,13 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::skyrootLog, 1, 0),
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::netherPlanks, 4, NetherPlanksTile::TYPE_NUSA), //
+		L"sczg",
+		L"#", //
+
+		L'#', new ItemInstance(Tile::nusaLog, 1, 0),
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Item::stick, 4), //
 		L"ssctg",
 		L"#", //
