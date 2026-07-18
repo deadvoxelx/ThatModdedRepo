@@ -2543,3 +2543,4 @@
 #define IDS_TILE_NUSA_PLANKS								   2537
 #define IDS_TILE_NUSA_SLAB									   2538
 #define IDS_TILE_NUSA_FENCE									   2539
+#define IDS_TILE_DARK_NUSTONE								   2540
