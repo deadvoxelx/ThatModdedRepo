@@ -6,3 +6,4 @@
 #include "TheEndDimension.h"
 #include "TheOuterEndDimension.h"
 #include "AetherDimension.h"
+#include "NurealmDimension.h"
