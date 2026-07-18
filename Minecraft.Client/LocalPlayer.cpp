@@ -177,7 +177,7 @@ void LocalPlayer::aiStep()
 		return;
 	}
 	oPortalTime = portalTime;
-	if (isInsidePortal || isInsideAetherPortal || isInsideGateway)
+	if (isInsidePortal || isInsideAetherPortal || isInsideGateway || isInsideNusaPortal)
 	{
 		if (!level->isClientSide)
 		{
@@ -185,7 +185,7 @@ void LocalPlayer::aiStep()
 		}
 		if (minecraft->screen != nullptr) minecraft->setScreen(nullptr);
 
-		if (portalTime == 0 && !isInsideAetherPortal && !isInsideGateway)
+		if (portalTime == 0 && !isInsideAetherPortal && !isInsideGateway && !isInsideNusaPortal)
 		{
 			minecraft->soundEngine->playUI(eSoundType_PORTAL_TRIGGER, 1, random->nextFloat() * 0.4f + 0.8f);
 		}
@@ -198,6 +198,7 @@ void LocalPlayer::aiStep()
 		isInsidePortal = false;
 		isInsideAetherPortal = false;
 		isInsideGateway = false;
+		isInsideNusaPortal = false;
 	}
 	else if (hasEffect(MobEffect::confusion) && getEffect(MobEffect::confusion)->getDuration() > (SharedConstants::TICKS_PER_SECOND * 3))
 	{
