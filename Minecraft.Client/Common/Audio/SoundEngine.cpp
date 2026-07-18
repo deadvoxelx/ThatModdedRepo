@@ -141,6 +141,9 @@ const char *SoundEngine::m_szStreamFileA[eStream_Max]=
 	// The End
 	"the_end_dragon_alive",
 	"the_end_end",
+
+	// Nurealm
+	"nurealm",
 	
 	// CDs
 	"11",
@@ -191,7 +194,7 @@ void SoundEngine::init(Options* pOptions)
     return;
 }
 
-void SoundEngine::SetStreamingSounds(int iOverworldMin, int iOverWorldMax, int iNetherMin, int iNetherMax, int iEndMin, int iEndMax, int iCD1)
+void SoundEngine::SetStreamingSounds(int iOverworldMin, int iOverWorldMax, int iNetherMin, int iNetherMax, int iEndMin, int iEndMax, int iNurealmMin, int iNurealmMax, int iCD1)
 {
 	m_iStream_Overworld_Min=iOverworldMin;
 	m_iStream_Overworld_Max=iOverWorldMax;
@@ -199,6 +202,8 @@ void SoundEngine::SetStreamingSounds(int iOverworldMin, int iOverWorldMax, int i
 	m_iStream_Nether_Max=iNetherMax;
 	m_iStream_End_Min=iEndMin;
 	m_iStream_End_Max=iEndMax;
+	m_iStream_Nurealm_Min=iNurealmMin;
+	m_iStream_Nurealm_Max=iNurealmMax;
 	m_iStream_CD_1=iCD1;
 
 	// array to monitor recently played tracks
@@ -411,6 +416,8 @@ SoundEngine::SoundEngine()
 		eStream_Nether4,
 		eStream_end_dragon,
 		eStream_end_end,
+		eStream_nurealm,
+		eStream_nurealm,
 		eStream_CD_1
 	);
 
@@ -828,6 +835,9 @@ int SoundEngine::getMusicID(int iDomain)
 		case LevelData::DIMENSION_OUTER_END:
 			return m_iStream_End_Min;
 
+		case LevelData::DIMENSION_NUREALM:
+			return m_iStream_Nurealm_Min;
+
 		case LevelData::DIMENSION_NETHER:
 			return GetRandomishTrack(m_iStream_Nether_Min,m_iStream_Nether_Max);
 			//return m_iStream_Nether_Min + random->nextInt(m_iStream_Nether_Max-m_iStream_Nether_Min);
@@ -846,6 +856,9 @@ int SoundEngine::getMusicID(int iDomain)
 
 		case LevelData::DIMENSION_OUTER_END:
 			return GetRandomishTrack(m_iStream_End_Min,m_iStream_End_Max);
+
+		case LevelData::DIMENSION_NUREALM:
+			return GetRandomishTrack(m_iStream_Nurealm_Min,m_iStream_Nurealm_Max);
 
 		case LevelData::DIMENSION_NETHER:
 			//return m_iStream_Nether_Min + random->nextInt(m_iStream_Nether_Max-m_iStream_Nether_Min);
@@ -1309,6 +1322,7 @@ void SoundEngine::playMusicUpdate()
 				bool playerInEnd = false;
 				bool playerInNether=false;
 				bool playerInOuterEnd = false;
+				bool playerInNurealm = false;
 				Minecraft *pMinecraft = Minecraft::GetInstance();
 				for(unsigned int i = 0; i < MAX_LOCAL_PLAYERS; ++i)
 				{
@@ -1326,6 +1340,10 @@ void SoundEngine::playMusicUpdate()
 						{
 							playerInOuterEnd=true;
 						}
+						else if(pMinecraft->localplayers[i]->dimension==LevelData::DIMENSION_NUREALM)
+						{
+							playerInNurealm=true;
+						}
 					}
 				}
 
@@ -1338,6 +1356,7 @@ void SoundEngine::playMusicUpdate()
 					SetIsPlayingEndMusic(true);
 					SetIsPlayingNetherMusic(false);
 					SetIsPlayingOuterEndMusic(false);
+					SetIsPlayingNurealmMusic(false);
 				}
 				else if(!playerInEnd && GetIsPlayingEndMusic())
 				{
@@ -1349,6 +1368,7 @@ void SoundEngine::playMusicUpdate()
 						SetIsPlayingEndMusic(false);
 						SetIsPlayingNetherMusic(true);
 						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingNurealmMusic(false);
 					}
 
 					else if(playerInOuterEnd)
@@ -1359,6 +1379,18 @@ void SoundEngine::playMusicUpdate()
 						SetIsPlayingOuterEndMusic(true);
 						SetIsPlayingEndMusic(false);
 						SetIsPlayingNetherMusic(false);					
+						SetIsPlayingNurealmMusic(false);					
+					}
+
+					else if(playerInNurealm)
+					{
+						m_StreamState=eMusicStreamState_Stop;
+
+						m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+						SetIsPlayingNurealmMusic(true);	
+						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingEndMusic(false);
+						SetIsPlayingNetherMusic(false);
 					}
 
 					else
@@ -1369,6 +1401,7 @@ void SoundEngine::playMusicUpdate()
 						SetIsPlayingEndMusic(false);
 						SetIsPlayingNetherMusic(false);
 						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingNurealmMusic(false);
 					}
 				}
 
@@ -1380,7 +1413,8 @@ void SoundEngine::playMusicUpdate()
 					m_musicID = getMusicID(LevelData::DIMENSION_OUTER_END);
 					SetIsPlayingOuterEndMusic(true);
 					SetIsPlayingEndMusic(false);
-					SetIsPlayingNetherMusic(false);					
+					SetIsPlayingNetherMusic(false);
+					SetIsPlayingNurealmMusic(false);
 				}
 				else if(!playerInOuterEnd && GetIsPlayingOuterEndMusic())
 				{
@@ -1391,7 +1425,8 @@ void SoundEngine::playMusicUpdate()
 						m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
 						SetIsPlayingOuterEndMusic(false);
 						SetIsPlayingEndMusic(false);
-						SetIsPlayingNetherMusic(true);					
+						SetIsPlayingNetherMusic(true);
+						SetIsPlayingNurealmMusic(false);
 					}
 
 					else if(playerInEnd)
@@ -1401,7 +1436,19 @@ void SoundEngine::playMusicUpdate()
 						m_musicID = getMusicID(LevelData::DIMENSION_END);
 						SetIsPlayingOuterEndMusic(false);
 						SetIsPlayingEndMusic(true);
-						SetIsPlayingNetherMusic(false);					
+						SetIsPlayingNetherMusic(false);
+						SetIsPlayingNurealmMusic(false);
+					}
+
+					else if(playerInNurealm)
+					{
+						m_StreamState=eMusicStreamState_Stop;
+
+						m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+						SetIsPlayingNurealmMusic(true);
+						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingEndMusic(false);
+						SetIsPlayingNetherMusic(false);
 					}
 
 					else
@@ -1411,7 +1458,66 @@ void SoundEngine::playMusicUpdate()
 						m_musicID = getMusicID(LevelData::DIMENSION_OVERWORLD);
 						SetIsPlayingOuterEndMusic(false);
 						SetIsPlayingEndMusic(false);
-						SetIsPlayingNetherMusic(false);					
+						SetIsPlayingNetherMusic(false);
+						SetIsPlayingNurealmMusic(false);
+					}
+				}
+
+				else if(playerInNurealm && !GetIsPlayingNurealmMusic())
+				{
+					m_StreamState=eMusicStreamState_Stop;
+
+					// Set the outer end track
+					m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+					SetIsPlayingNurealmMusic(true);
+					SetIsPlayingOuterEndMusic(false);
+					SetIsPlayingEndMusic(false);
+					SetIsPlayingNetherMusic(false);
+				}
+				else if(!playerInNurealm && GetIsPlayingNurealmMusic())
+				{
+					if(playerInNether)
+					{
+						m_StreamState=eMusicStreamState_Stop;
+
+						m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
+						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingEndMusic(false);
+						SetIsPlayingNetherMusic(true);
+						SetIsPlayingNurealmMusic(false);
+					}
+
+					else if(playerInEnd)
+					{
+						m_StreamState=eMusicStreamState_Stop;
+
+						m_musicID = getMusicID(LevelData::DIMENSION_END);
+						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingEndMusic(true);
+						SetIsPlayingNetherMusic(false);
+						SetIsPlayingNurealmMusic(false);
+					}
+
+					else if(playerInOuterEnd)
+					{
+						m_StreamState=eMusicStreamState_Stop;
+
+						m_musicID = getMusicID(LevelData::DIMENSION_OUTER_END);
+						SetIsPlayingOuterEndMusic(true);
+						SetIsPlayingEndMusic(false);
+						SetIsPlayingNetherMusic(false);
+						SetIsPlayingNurealmMusic(true);
+					}
+
+					else
+					{
+						m_StreamState=eMusicStreamState_Stop;
+
+						m_musicID = getMusicID(LevelData::DIMENSION_OVERWORLD);
+						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingEndMusic(false);
+						SetIsPlayingNetherMusic(false);
+						SetIsPlayingNurealmMusic(false);
 					}
 				}
 
@@ -1423,6 +1529,7 @@ void SoundEngine::playMusicUpdate()
 					SetIsPlayingNetherMusic(true);
 					SetIsPlayingEndMusic(false);
 					SetIsPlayingOuterEndMusic(false);
+					SetIsPlayingNurealmMusic(false);
 				}
 				else if(!playerInNether && GetIsPlayingNetherMusic())
 				{
@@ -1434,6 +1541,7 @@ void SoundEngine::playMusicUpdate()
 						SetIsPlayingNetherMusic(false);
 						SetIsPlayingEndMusic(true);
 						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingNurealmMusic(false);
 					}
 
 					else if(playerInOuterEnd)
@@ -1443,7 +1551,19 @@ void SoundEngine::playMusicUpdate()
 						m_musicID = getMusicID(LevelData::DIMENSION_OUTER_END);
 						SetIsPlayingOuterEndMusic(true);
 						SetIsPlayingEndMusic(false);
-						SetIsPlayingNetherMusic(false);					
+						SetIsPlayingNetherMusic(false);
+						SetIsPlayingNurealmMusic(false);
+					}
+
+					else if(playerInNurealm)
+					{
+						m_StreamState=eMusicStreamState_Stop;
+
+						m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+						SetIsPlayingNurealmMusic(true);
+						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingEndMusic(false);
+						SetIsPlayingNetherMusic(false);
 					}
 
 					else
@@ -1454,6 +1574,7 @@ void SoundEngine::playMusicUpdate()
 						SetIsPlayingNetherMusic(false);
 						SetIsPlayingEndMusic(false);
 						SetIsPlayingOuterEndMusic(false);
+						SetIsPlayingNurealmMusic(false);
 					}
 				}
 
