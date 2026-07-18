@@ -11,6 +11,7 @@ public:
 
 protected:
 	Feature *endTowerFeature;
+	Feature *nusaShrubFeature;
 
 	virtual void decorate();
 
