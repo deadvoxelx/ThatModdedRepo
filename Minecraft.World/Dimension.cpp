@@ -3,7 +3,7 @@
 #include "net.minecraft.world.level.levelgen.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.storage.h"
-#include "dimension.h"
+#include "Dimension.h"
 #include "BiomeSource.h"
 #include "FixedBiomeSource.h"
 #include "OldChunkStorage.h"
@@ -12,6 +12,7 @@
 #include "TheEndDimension.h"
 #include "TheOuterEndDimension.h"
 #include "AetherDimension.h"
+#include "NurealmDimension.h"
 #include "net.minecraft.world.level.tile.h"
 #include "..\Minecraft.Client\Minecraft.h"
 #include "..\Minecraft.Client\Common\Colours\ColourTable.h"
@@ -195,6 +196,7 @@ Dimension *Dimension::getNew(int id)
 	if (id == 1) return new TheEndDimension();
 	if (id == 2) return new TheOuterEndDimension();
 	if (id == 3) return new AetherDimension();
+	if (id == 4) return new NurealmDimension();
 
 	return nullptr;
 }
