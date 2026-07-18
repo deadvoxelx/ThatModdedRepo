@@ -473,8 +473,8 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 					DLCAudioFile *dlcFile = static_cast<DLCAudioFile *>(pack->getFile(DLCManager::e_DLCType_Audio, 0));
 					texturePack->setHasAudio(true);
 					// init the streaming sound ids for this texture pack
-					int iOverworldStart, iNetherStart, iEndStart;
-					int iOverworldC, iNetherC, iEndC;
+					int iOverworldStart, iNetherStart, iEndStart, iNurealmStart;
+					int iOverworldC, iNetherC, iEndC, iNurealmC;
 
 					iOverworldStart=0;
 					iOverworldC=dlcFile->GetCountofType(DLCAudioFile::e_AudioType_Overworld);
@@ -482,9 +482,11 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 					iNetherC=dlcFile->GetCountofType(DLCAudioFile::e_AudioType_Nether);
 					iEndStart=iOverworldC+iNetherC;
 					iEndC=dlcFile->GetCountofType(DLCAudioFile::e_AudioType_End);
+					iNurealmStart=iOverworldC+iNetherC+iEndC;
+					iNurealmC=dlcFile->GetCountofType(DLCAudioFile::e_AudioType_End);
 
 					Minecraft::GetInstance()->soundEngine->SetStreamingSounds(iOverworldStart,iOverworldStart+iOverworldC-1,
-						iNetherStart,iNetherStart+iNetherC-1,iEndStart,iEndStart+iEndC-1,iEndStart+iEndC); // push the CD start to after
+						iNetherStart,iNetherStart+iNetherC-1,iEndStart,iEndStart+iEndC-1,iEndStart+iEndC, iNurealmStart,iNurealmStart+iNurealmC-1); // push the CD start to after
 				}
 #endif
 }
