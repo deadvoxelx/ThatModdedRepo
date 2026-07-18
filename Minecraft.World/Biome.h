@@ -52,8 +52,9 @@ public:
 	static Biome *aether;
 	static Biome *birchForest;
 	static Biome *lavenderForest;
+	static Biome *nulands;
 
-	static const int BIOME_COUNT = 27; // 4J Stu added
+	static const int BIOME_COUNT = 28; // 4J Stu added
 
 public:
 	wstring m_name;
