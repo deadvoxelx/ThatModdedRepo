@@ -63,3 +63,6 @@
 #include "DungeonStoneFeature.h"
 #include "LavenderTreeFeature.h"
 #include "EndOutpostFeature.h"
+#include "NusaVineFeature.h"
+#include "GlowingNustoneFeature.h"
+#include "NusaTreeFeature.h"
