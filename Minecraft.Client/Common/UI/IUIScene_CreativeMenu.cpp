@@ -30,7 +30,7 @@ void IUIScene_CreativeMenu::staticCtor()
 
 	// Building Blocks
 	DEF(eCreativeInventory_BuildingBlocks)
-		ITEM(Tile::nusaPortal_Id)
+		//ITEM(Tile::nusaPortal_Id)		// Voxel - here for test purposes
 		ITEM(Tile::grass_Id)
 		ITEM(Tile::mycel_Id)
 		ITEM(Tile::dirt_Id)
@@ -106,8 +106,10 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Tile::endStone_Id, EndStoneTile::TYPE_CHISELED)
 		ITEM_AUX(Tile::endStone_Id, EndStoneTile::TYPE_MOSSY_BRICK)
 
-		ITEM(Tile::nustone_Id)
 		ITEM(Tile::nugrass_Id)
+		ITEM_AUX(Tile::nustone_Id, NustoneTile::TYPE_DEFAULT)
+		ITEM_AUX(Tile::nustone_Id, NustoneTile::TYPE_BRICK)
+		ITEM_AUX(Tile::nustone_Id, NustoneTile::TYPE_DARK)
 		ITEM(Tile::glowingNustone_Id)
 
 		ITEM(Tile::aetherGrass_Id)
