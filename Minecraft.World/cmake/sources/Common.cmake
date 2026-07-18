@@ -1601,6 +1601,8 @@ set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_LEVELGEN_FEATURE
   "${CMAKE_CURRENT_SOURCE_DIR}/NetherSoilFireFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/NetherTreeFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/NetherTreeFeature.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/NusaShrubFeature.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/NusaShrubFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/NusaTreeFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/NusaTreeFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/NusaVineFeature.cpp"
