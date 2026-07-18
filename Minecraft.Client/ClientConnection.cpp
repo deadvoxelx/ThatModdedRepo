@@ -407,7 +407,7 @@ void ClientConnection::handleLogin(shared_ptr<LoginPacket> packet)
 
 			if(activeLevel == nullptr)
 			{
-				otherDimensionId = packet->dimension == 0 ? 1 : (packet->dimension == -1 ? 1 : (packet->dimension == 1 ? 2 : (packet->dimension == 2 ? 3 : (packet->dimension == 3 ? 4 : 3))));
+				otherDimensionId = packet->dimension == 0 ? 1 : (packet->dimension == -1 ? 1 : (packet->dimension == 1 ? 2 : (packet->dimension == 2 ? 3 : (packet->dimension == 3 ? 4 : (packet->dimension == 4 ? 5 : 4)))));
 				activeLevel = minecraft->getLevel(otherDimensionId);
 			}
 
@@ -1938,6 +1938,17 @@ void ClientConnection::handleChat(shared_ptr<ChatPacket> packet)
 		message.replace(iPos,2,playerDisplayName);
 		break;
 
+	case ChatPacket::e_ChatPlayerEnterNurealm:
+		message=app.GetString(IDS_PLAYER_ENTER_NUREALM);
+		iPos=message.find(L"%s");
+		message.replace(iPos,2,playerDisplayName);
+		break;
+	case ChatPacket::e_ChatPlayerLeaveNurealm:
+		message=app.GetString(IDS_PLAYER_LEAVE_NUREALM);
+		iPos=message.find(L"%s");
+		message.replace(iPos,2,playerDisplayName);
+		break;
+
 	case ChatPacket::e_ChatPlayerMaxEnemies:
 		message=app.GetString(IDS_MAX_ENEMIES_SPAWNED);
 		break;
@@ -3078,6 +3089,15 @@ void ClientConnection::handleRespawn(shared_ptr<RespawnPacket> packet)
 		else if( oldDimension == 3)
 		{
 			param->stringId = IDS_PLAYER_LEAVE_AETHER;
+		}
+
+		else if( packet->dimension == 4)
+		{
+			param->stringId = IDS_PLAYER_ENTER_NUREALM;
+		}
+		else if( oldDimension == 4)
+		{
+			param->stringId = IDS_PLAYER_LEAVE_NUREALM;
 		}
 
 		param->showTooltips = false;
