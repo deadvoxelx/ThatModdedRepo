@@ -25,6 +25,8 @@ NurealmLevelSource::NurealmLevelSource(Level *level, int64_t seed)
 	perlinNoise2 = new PerlinNoise(random, 4);
 	perlinNoise3 = new PerlinNoise(random, 4);
 
+	carvingNoise = new PerlinNoise(random, 6);
+
 	scaleNoise = new PerlinNoise(random, 10);
 	depthNoise = new PerlinNoise(random, 16);
 }
@@ -38,6 +40,8 @@ NurealmLevelSource::~NurealmLevelSource()
 	delete perlinNoise1;
 	delete perlinNoise2;
 	delete perlinNoise3;
+
+	delete carvingNoise;
 
 	delete scaleNoise;
 	delete depthNoise;
@@ -238,7 +242,7 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 	double s = 1 * 684.412;
 	double hs = 1 * 684.412;
 
-	doubleArray pnr, ar, br, sr, dr, fi, fis;	// 4J - used to be declared with class level scope but moved here for thread safety
+	doubleArray pnr, ar, br, sr, dr, fi, fis, cnr;	// 4J - used to be declared with class level scope but moved here for thread safety
 
 	sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
 	dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
@@ -248,6 +252,8 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 	pnr = perlinNoise1->getRegion(pnr, x, y, z, xSize, ySize, zSize, s / 80.0, hs / 160.0, s / 80.0);
 	ar = lperlinNoise1->getRegion(ar, x, y, z, xSize, ySize, zSize, s, hs, s);
 	br = lperlinNoise2->getRegion(br, x, y, z, xSize, ySize, zSize, s, hs, s);
+
+	cnr = carvingNoise->getRegion(cnr, x, y, z, xSize, ySize, zSize, s / 30.0, hs / 30.0, s / 30.0);
 
 	int p = 0;
 	int pp = 0;
@@ -289,6 +295,12 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 				else val = bb + (cc - bb) * v;
 				val -= 8;
 				val -= yOffs * 0.05;
+
+				double carve = cnr[p] / 384.0;
+				if (val > 0 && carve < -6.0)
+				{
+					val += (carve + 6.0) * 2.0;
+				}
 
 				// keep top/bottom fadeout from The End generator so islands stay floating
 				int r = 2;
