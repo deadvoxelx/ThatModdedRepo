@@ -222,6 +222,7 @@ enum eMinecraftColour
 	eMinecraftColour_Foliage_Jungle,
 	eMinecraftColour_Foliage_JungleHills,
 	eMinecraftColour_Foliage_PurpleSpruce,
+	eMinecraftColour_Foliage_Nulands,
 	
 	eMinecraftColour_Grass_Common,
 	eMinecraftColour_Grass_Ocean,
@@ -247,6 +248,7 @@ enum eMinecraftColour
 	eMinecraftColour_Grass_ExtremeHillsEdge,
 	eMinecraftColour_Grass_Jungle,
 	eMinecraftColour_Grass_JungleHills,
+	eMinecraftColour_Grass_Nulands,
 
 	eMinecraftColour_Water_Ocean,
 	eMinecraftColour_Water_Plains,
@@ -272,6 +274,7 @@ enum eMinecraftColour
 	eMinecraftColour_Water_Jungle,
 	eMinecraftColour_Water_JungleHills,
 	eMinecraftColour_Water_End,
+	eMinecraftColour_Water_Nulands,
 
 	eMinecraftColour_Sky_Ocean,
 	eMinecraftColour_Sky_Plains,
@@ -296,6 +299,7 @@ enum eMinecraftColour
 	eMinecraftColour_Sky_ExtremeHillsEdge,
 	eMinecraftColour_Sky_Jungle,
 	eMinecraftColour_Sky_JungleHills,
+	eMinecraftColour_Sky_Nulands,
 
 	eMinecraftColour_Tile_RedstoneDust,
 	eMinecraftColour_Tile_RedstoneDustUnlit,
@@ -457,6 +461,7 @@ enum eMinecraftColour
 	eMinecraftColour_Nether_Fog_Colour,
 	eMinecraftColour_End_Fog_Colour,
 	eMinecraftColour_Aether_Fog_Colour,
+	eMinecraftColour_Nurealm_Fog_Colour,
 
 	eMinecraftColour_Sign_Text,
 	eMinecraftColour_Map_Text,
