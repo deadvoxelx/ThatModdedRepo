@@ -23,7 +23,7 @@ bool NusaTempleFeature::place(Level *level, Random *random, int x, int y, int z)
 				{
 					for (int dy = 0; dy <= 9; dy++)
 					{
-						for (int dz = -3; dz <= 3; dz++)
+						for (int dz = -6; dz <= 6; dz++)
 						{
 							placeBlock(level, x + dx, y + dy, z + dz, 0, 0);
 						}
