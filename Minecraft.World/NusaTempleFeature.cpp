@@ -114,7 +114,7 @@ bool NusaTempleFeature::place(Level *level, Random *random, int x, int y, int z)
 				}
 				
 				placeBlock(level, x, y + 4, z, Tile::nustone_Id, 1);
-				placeBlock(level, x, y + 4, z, Tile::nusaCore_Id, 0);
+				placeBlock(level, x, y + 5, z, Tile::nusaCore_Id, 0);
 
 				for (int pillary = 0; pillary <= 5; pillary++)
 				{
@@ -199,7 +199,8 @@ bool NusaTempleFeature::place(Level *level, Random *random, int x, int y, int z)
 				placeBlock(level, x - 2, y, z + 6, Tile::obsidian_Id, 0);
 				placeBlock(level, x - 2, y, z - 6, Tile::obsidian_Id, 0);
 			}
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
