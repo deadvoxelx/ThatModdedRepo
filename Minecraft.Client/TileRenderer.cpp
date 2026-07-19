@@ -436,6 +436,9 @@ bool TileRenderer::tesselateInWorld( Tile* tt, int x, int y, int z, int forceDat
 	case Tile::SHAPE_HOPPER:
 		retVal = tesselateHopperInWorld(tt, x, y, z);
 		break;
+	case Tile::SHAPE_CUBE:
+		retVal = tesselateCubeInWorld(tt, x, y, z);
+		break;
 	};
 
 
@@ -6515,6 +6518,19 @@ bool TileRenderer::tesselateWallInWorld(WallTile *tt, int x, int y, int z)
 	return true;
 }
 
+bool TileRenderer::tesselateCubeInWorld(Tile* tt, int x, int y, int z)
+{
+	const float cubeStart = 4.0f / 16.0f;
+	const float cubeFinish = 12.0f / 16.0f;
+	const float cubeYStart = 0.0f / 16.0f;
+	const float cubeYFinish = 8.0f / 16.0f;
+	//setFixedTexture(getTexture(Tile::nusaCube));
+	setShape(cubeStart, cubeYStart, cubeStart, cubeFinish, cubeYFinish, cubeFinish);
+	bool result = tesselateBlockInWorld(tt, x, y, z);
+	//clearFixedTexture();
+	return result;
+}
+
 bool TileRenderer::tesselateEggInWorld(EggTile *tt, int x, int y, int z)
 {
 	bool changed = false;
@@ -8516,6 +8532,35 @@ void TileRenderer::renderTile( Tile* tile, int data, float brightness, float fAl
 		glTranslatef(0.5f, 0.5f, 0.5f);
 	}
 
+	else if (shape == Tile::SHAPE_CUBE)
+	{
+		tile->updateDefaultShape();
+		glTranslatef(-0.5f, -0.5f, -0.5f);
+		//bool hadFixedTexture = hasFixedTexture();
+		//Icon *savedFixedTexture = fixedTexture;
+		//setFixedTexture(getTexture(Tile::nusaCube));
+		setShape(4.0f / 16.0f, 0.0f / 16.0f, 4.0f / 16.0f, 12.0f / 16.0f, 8.0f / 16.0f, 12.0f / 16.0f);
+		t->begin();
+		t->normal(0.0f, -1.0f, 0.0f);
+		renderFaceDown(tile, 0, 0, 0, getTexture(tile, 0, data));
+		t->normal(0.0f, 1.0f, 0.0f);
+		renderFaceUp(tile, 0, 0, 0, getTexture(tile, 1, data));
+		t->normal(0.0f, 0.0f, -1.0f);
+		renderNorth(tile, 0, 0, 0, getTexture(tile, 2, data));
+		t->normal(0.0f, 0.0f, 1.0f);
+		renderSouth(tile, 0, 0, 0, getTexture(tile, 3, data));
+		t->normal(-1.0f, 0.0f, 0.0f);
+		renderWest(tile, 0, 0, 0, getTexture(tile, 4, data));
+		t->normal(1.0f, 0.0f, 0.0f);
+		renderEast(tile, 0, 0, 0, getTexture(tile, 5, data));
+		t->end();
+		//if (hadFixedTexture)
+		//	setFixedTexture(savedFixedTexture);
+		//else
+		//	clearFixedTexture();
+		glColor4f(brightness, brightness, brightness, fAlpha);
+	}
+
 	t->setMipmapEnable( true );	// 4J added
 }
 
@@ -8535,6 +8580,7 @@ bool TileRenderer::canRender( int renderShape )
 	if ( renderShape == Tile::SHAPE_WALL) return true;
 	if ( renderShape == Tile::SHAPE_BEACON) return true;
 	if ( renderShape == Tile::SHAPE_ANVIL) return true;
+	if ( renderShape == Tile::SHAPE_CUBE) return true;
 	return false;
 }
 
