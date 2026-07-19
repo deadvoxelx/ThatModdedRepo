@@ -1234,5 +1234,7 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(26,	2,	L"nusaCore_top");
 	ADD_ICON(26,	3,	L"nusaShrub");
 	ADD_ICON(26,	4,	L"nusaVine");
+	ADD_ICON(26,	5,	L"nusaCube_side");
+	ADD_ICON(26,	6,	L"nusaCube_top");
 	}
 }
