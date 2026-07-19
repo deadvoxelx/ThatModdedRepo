@@ -43,7 +43,12 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positi
 		blocks[i] = static_cast<byte>(levelChunk->getTile(x, y, z));
 		data[i] = static_cast<byte>(levelChunk->getData(x, y, z));
 	}
-	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : ( (level->dimension->id == -1) ? 1 : ( (level->dimension->id == 1) ? 2 : ( (level->dimension->id == 2) ? 3 : 4 ) ) ) );
+	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : 
+		( (level->dimension->id == -1) ? 1 : 
+		( (level->dimension->id == 1) ? 2 : 
+		( (level->dimension->id == 2) ? 3 : 
+		(level->dimension->id == 3) ? 4 : 
+		5 ) ) ) );
 }
 
 void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException 
