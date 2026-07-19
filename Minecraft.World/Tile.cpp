@@ -610,7 +610,7 @@ void Tile::staticCtor()
 	Tile::nusaShrub = (VeloettShrubTile *)(new VeloettShrubTile(250))	->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"nusaShrub")->setDescriptionId(IDS_TILE_NUSASHRUB)->setUseDescriptionId(IDS_TILE_NUSASHRUB)->disableMipmap();
 	Tile::nusaVine = (VeloettVineTile *)(new VeloettVineTile(251))		->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"nusaVine")->setDescriptionId(IDS_TILE_NUSAVINE)->setUseDescriptionId(IDS_TILE_NUSAVINE)->disableMipmap();
 	Tile::nusaCube = (new NusaCubeTile(252, Material::metal))			->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_endStone)->setLightEmission(1.0f)->setDestroyTime(0.5f)->setExplodeable(15)->setSoundType(SOUND_METAL)->setIconName(L"nusaCube")->setDescriptionId(IDS_TILE_NUSA_CUBE)->setUseDescriptionId(IDS_TILE_NUSA_CUBE)->disableMipmap();
-	Tile::nusaCore = (new NusaCoreTile(253, Material::metal))			->setDestroyTime(-1)->setSoundType(SOUND_METAL)->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE)->setUseDescriptionId(IDS_TILE_NUSA_CORE);
+	Tile::nusaCore = (new NusaCoreTile(253, Material::metal))			->setDestroyTime(-1)->setExplodeable(6000000)->setSoundType(SOUND_METAL)->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE)->setUseDescriptionId(IDS_TILE_NUSA_CORE);
 	Tile::nusaPortal = (NusaPortalTile *)(new NusaPortalTile(254, Material::portal))->setIconName(L"nusa_portal")->setDescriptionId(IDS_TILE_NUSA_PORTAL)->setUseDescriptionId(IDS_TILE_NUSA_PORTAL);
 
 	// Special cases for certain items since they can have different icons
