@@ -2546,3 +2546,4 @@
 #define IDS_TILE_DARK_NUSTONE								   2540
 #define IDS_CANNOT_BE_DONE									   2541
 #define IDS_TILE_ENDOTHANIUM								   2542
+#define IDS_ITEM_ENDOTHANIUM								   2543
