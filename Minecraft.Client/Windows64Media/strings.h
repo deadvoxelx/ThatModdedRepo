@@ -2544,3 +2544,5 @@
 #define IDS_TILE_NUSA_SLAB									   2538
 #define IDS_TILE_NUSA_FENCE									   2539
 #define IDS_TILE_DARK_NUSTONE								   2540
+#define IDS_CANNOT_BE_DONE									   2541
+#define IDS_TILE_ENDOTHANIUM								   2542
