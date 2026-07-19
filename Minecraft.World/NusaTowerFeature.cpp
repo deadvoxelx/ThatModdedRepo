@@ -55,14 +55,14 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				for (int hz = -2; hz <= 2; hz++)
 				{
-					placeBlock(level, x + hx, y, z + hz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + hx, y, z + hz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int ix = -2; ix <= 2; ix++)
 			{
 				for (int iz = -3; iz <= 3; iz++)
 				{
-					placeBlock(level, x + ix, y, z + iz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + ix, y, z + iz, Tile::netherPlanks_Id, 3);
 				}
 			}
 		
@@ -101,14 +101,14 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				for (int jz = -2; jz <= 2; jz++)
 				{
-					placeBlock(level, x + jx, y + 4, z + jz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + jx, y + 4, z + jz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int kx = -2; kx <= 2; kx++)
 			{
 				for (int kz = -3; kz <= 3; kz++)
 				{
-					placeBlock(level, x + kx, y + 4, z + kz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + kx, y + 4, z + kz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int lx = -1; lx <= 1; lx++)
@@ -191,14 +191,14 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				for (int mz = -2; mz <= 2; mz++)
 				{
-					placeBlock(level, x + mx, y + 8, z + mz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + mx, y + 8, z + mz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int nx = -2; nx <= 2; nx++)
 			{
 				for (int nz = -3; nz <= 3; nz++)
 				{
-					placeBlock(level, x + nx, y + 8, z + nz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + nx, y + 8, z + nz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int ox = -1; ox <= 1; ox++)
@@ -281,14 +281,14 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				for (int pz = -2; pz <= 2; pz++)
 				{
-					placeBlock(level, x + px, y + 12, z + pz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + px, y + 12, z + pz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int qx = -2; qx <= 2; qx++)
 			{
 				for (int qz = -3; qz <= 3; qz++)
 				{
-					placeBlock(level, x + qx, y + 12, z + qz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + qx, y + 12, z + qz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int rx = -1; rx <= 1; rx++)
@@ -371,14 +371,14 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				for (int sz = -2; sz <= 2; sz++)
 				{
-					placeBlock(level, x + sx, y + 16, z + sz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + sx, y + 16, z + sz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int tx = -2; tx <= 2; tx++)
 			{
 				for (int tz = -3; tz <= 3; tz++)
 				{
-					placeBlock(level, x + tx, y + 16, z + tz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + tx, y + 16, z + tz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int ux = -1; ux <= 1; ux++)
@@ -461,14 +461,14 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				for (int vz = -2; vz <= 2; vz++)
 				{
-					placeBlock(level, x + vx, y + 20, z + vz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + vx, y + 20, z + vz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int wx = -2; wx <= 2; wx++)
 			{
 				for (int wz = -3; wz <= 3; wz++)
 				{
-					placeBlock(level, x + wx, y + 20, z + wz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + wx, y + 20, z + wz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int xx = -1; xx <= 1; xx++)
@@ -551,14 +551,14 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				for (int yz = -2; yz <= 2; yz++)
 				{
-					placeBlock(level, x + yx, y + 24, z + yz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + yx, y + 24, z + yz, Tile::netherPlanks_Id, 3);
 				}
 			}
 			for (int zx = -2; zx <= 2; zx++)
 			{
 				for (int zz = -3; zz <= 3; zz++)
 				{
-					placeBlock(level, x + zx, y + 24, z + zz, Tile::netherPlanks_Id, 6);
+					placeBlock(level, x + zx, y + 24, z + zz, Tile::netherPlanks_Id, 3);
 				}
 			}
 		
@@ -567,30 +567,30 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x + 3, y + 24, z - 3, Tile::nusaLog_Id, 0);
 			placeBlock(level, x - 3, y + 24, z + 3, Tile::nusaLog_Id, 0);
 
-			placeBlock(level, x + 4, y + 24, z + 2, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 4, y + 24, z - 2, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x + 4, y + 24, z - 2, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 4, y + 24, z + 2, Tile::netherPlanks_Id, 6);
+			placeBlock(level, x + 4, y + 24, z + 2, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 4, y + 24, z - 2, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x + 4, y + 24, z - 2, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 4, y + 24, z + 2, Tile::netherPlanks_Id, 3);
 		
-			placeBlock(level, x + 4, y + 24, z + 1, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 4, y + 24, z - 1, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x + 4, y + 24, z - 1, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 4, y + 24, z + 1, Tile::netherPlanks_Id, 6);
+			placeBlock(level, x + 4, y + 24, z + 1, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 4, y + 24, z - 1, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x + 4, y + 24, z - 1, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 4, y + 24, z + 1, Tile::netherPlanks_Id, 3);
 		
-			placeBlock(level, x + 2, y + 24, z + 4, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 2, y + 24, z - 4, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x + 2, y + 24, z - 4, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 2, y + 24, z + 4, Tile::netherPlanks_Id, 6);
+			placeBlock(level, x + 2, y + 24, z + 4, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 2, y + 24, z - 4, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x + 2, y + 24, z - 4, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 2, y + 24, z + 4, Tile::netherPlanks_Id, 3);
 		
-			placeBlock(level, x + 1, y + 24, z + 4, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 1, y + 24, z - 4, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x + 1, y + 24, z - 4, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 1, y + 24, z + 4, Tile::netherPlanks_Id, 6);
+			placeBlock(level, x + 1, y + 24, z + 4, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 1, y + 24, z - 4, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x + 1, y + 24, z - 4, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 1, y + 24, z + 4, Tile::netherPlanks_Id, 3);
 		
-			placeBlock(level, x + 4, y + 24, z, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x - 4, y + 24, z, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x, y + 24, z - 4, Tile::netherPlanks_Id, 6);
-			placeBlock(level, x, y + 24, z + 4, Tile::netherPlanks_Id, 6);
+			placeBlock(level, x + 4, y + 24, z, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x - 4, y + 24, z, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x, y + 24, z - 4, Tile::netherPlanks_Id, 3);
+			placeBlock(level, x, y + 24, z + 4, Tile::netherPlanks_Id, 3);
 		
 		
 		
