@@ -15,6 +15,7 @@
 #include "VeloettVineFeature.h"
 #include "EndTowerFeature.h"
 #include "EndOutpostFeature.h"
+#include "NusaTempleFeature.h"
 
 const double M_PI = 3.14159265358979323846;
 
@@ -27,6 +28,7 @@ TheOuterEndBiomeDecorator::TheOuterEndBiomeDecorator(Biome *biome) : BiomeDecora
 	veloettFlowerFeature = new VeloettFlowerFeature();
 	endTowerFeature = new EndTowerFeature(Tile::endStone_Id);
 	endOutpostFeature = new EndOutpostFeature(Tile::endStone_Id);
+	nusaTempleFeature = new EndOutpostFeature(Tile::endStone_Id);
 }
 
 void TheOuterEndBiomeDecorator::decorate()
@@ -53,6 +55,14 @@ void TheOuterEndBiomeDecorator::decorate()
 	outerEndPlatformFeature->place(level, random, 0, 72, -100);
 
 	PIXBeginNamedEvent(0,"End structures");
+	for (int i = 0; i < 1; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int y = random->nextInt(Level::genDepth);
+		int z = zo + random->nextInt(16) + 8;
+		nusaTempleFeature->place(level, random, x, y, z);
+	}
+
 	for (int i = 0; i < 1; i++)
 	{
 		int x = xo + random->nextInt(16) + 8;
