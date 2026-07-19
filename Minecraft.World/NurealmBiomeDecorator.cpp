@@ -5,7 +5,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
-#include "EndTowerFeature.h"
+#include "NusaTowerFeature.h"
 #include "NusaVineFeature.h"
 #include "NusaTreeFeature.h"
 
@@ -13,7 +13,7 @@ const double M_PI = 3.14159265358979323846;
 
 NurealmBiomeDecorator::NurealmBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 {
-	endTowerFeature = new EndTowerFeature(Tile::endStone_Id);
+	nusaTowerFeature = new NusaTowerFeature(Tile::nustone_Id);
 	nusaShrubFeature = new NusaShrubFeature();
 	grassCount = 3;
 }
@@ -31,7 +31,7 @@ void NurealmBiomeDecorator::decorate()
 		int x = xo + random->nextInt(16) + 8;
 		int y = random->nextInt(Level::genDepth);
 		int z = zo + random->nextInt(16) + 8;
-		endTowerFeature->place(level, random, x, y, z);
+		nusaTowerFeature->place(level, random, x, y, z);
 	}
 	PIXEndNamedEvent();
 
