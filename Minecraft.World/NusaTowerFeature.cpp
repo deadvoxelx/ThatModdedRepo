@@ -14,7 +14,6 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 {
     int belowTile = level->getTile(x, y - 1, z);
     int thisTile = level->getTile(x, y, z);
-	if (random->nextInt(2) == 0)
 	{
 		if ((belowTile == Tile::nustone_Id || belowTile == Tile::nugrass_Id) && (thisTile != Tile::nustone_Id && thisTile != Tile::nugrass_Id && thisTile != Tile::nusaLog_Id && thisTile != Tile::netherLeaves_Id))
 		{
@@ -1297,7 +1296,7 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			}
 
 		//Chest/Core
-			if (random->nextInt(1) == 0)
+			if (random->nextInt(2) == 0)
 			{
 				level->setTileAndData(x, y + 25, z, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
 				WeighedTreasureArray wrapperArray(nusaTowerTreasure, TREASURE_ITEMS_COUNT);
@@ -1310,7 +1309,8 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			}
 			else
 			{
-				level->setTileAndData(x, y + 25, z, Tile::nusaCore_Id, 0, Tile::UPDATE_CLIENTS);
+				placeBlock(level, x, y + 25, z, Tile::nustone_Id, 1);
+				placeBlock(level, x, y + 26, z, Tile::nusaCore_Id, 0);
 			}
 		}
 	}
