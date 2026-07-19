@@ -1316,6 +1316,14 @@ Recipes::Recipes()
 		L'#', Item::goldIngot,
 		L'D');
 
+	addShapedRecipy(new ItemInstance(Item::endothaniumIngot), //
+		L"scicig",
+		L"#X", //
+
+		L'#', Item::endorium,
+		L'X', Item::nethanium,
+		L'D');
+
 	// 4J-PB - moving into decorations to make the structures list smaller
 	addShapedRecipy(new ItemInstance(Item::sign, 3), //
 		L"sssctcig",
