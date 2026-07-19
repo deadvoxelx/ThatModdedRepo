@@ -10,7 +10,7 @@ public:
 	NurealmBiomeDecorator(Biome *biome);
 
 protected:
-	Feature *endTowerFeature;
+	Feature *nusaTowerFeature;
 	Feature *nusaShrubFeature;
 
 	virtual void decorate();
