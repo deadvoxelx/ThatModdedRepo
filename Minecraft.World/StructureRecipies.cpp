@@ -306,6 +306,14 @@ void StructureRecipies::addRecipes(Recipes *r)
 		L'#', Tile::obsidian, L'E', Item::eyeOfEnder,
 		L'S');
 
+	r->addShapedRecipy(new ItemInstance(Tile::nusaCube), //
+		L"sscig",
+		L"##", //
+		L"##", //
+
+		L'#', Item::nusaShard,
+		L'S');
+
 	r->addShapedRecipy(new ItemInstance(Tile::thinGlass, 16), //
 		L"ssctg",
 		L"###", //
