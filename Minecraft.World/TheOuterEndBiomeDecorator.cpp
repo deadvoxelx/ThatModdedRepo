@@ -28,7 +28,7 @@ TheOuterEndBiomeDecorator::TheOuterEndBiomeDecorator(Biome *biome) : BiomeDecora
 	veloettFlowerFeature = new VeloettFlowerFeature();
 	endTowerFeature = new EndTowerFeature(Tile::endStone_Id);
 	endOutpostFeature = new EndOutpostFeature(Tile::endStone_Id);
-	nusaTempleFeature = new EndOutpostFeature(Tile::endStone_Id);
+	nusaTempleFeature = new NusaTempleFeature(Tile::endStone_Id);
 }
 
 void TheOuterEndBiomeDecorator::decorate()
