@@ -52,6 +52,7 @@ void NusaCoreTile::tick(Level *level, int x, int y, int z, Random *random)
 		setTicking(false);
 		level->setData(x, y, z, NusaCoreTile::TYPE_DEFAULT, Tile::UPDATE_CLIENTS);
 	}
+	level->addToTickNextTick(x, y, z, id, getTickDelay(level));
 }
 
 int NusaCoreTile::getTickDelay(Level *level)
