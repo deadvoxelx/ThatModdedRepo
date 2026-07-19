@@ -67,3 +67,5 @@
 #include "GlowingNustoneFeature.h"
 #include "NusaTreeFeature.h"
 #include "NusaShrubFeature.h"
+#include "NusaTowerFeature.h"
+#include "NusaTempleFeature.h"
