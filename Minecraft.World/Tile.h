@@ -51,6 +51,7 @@ class Tile
 	friend class ChunkRebuildData;
 	friend class WallTile;
 	friend class FenceTile;
+	friend class NusaCubeTile;
 
 protected:
 	// 4J added so we can have separate shapes for different threads
@@ -173,8 +174,9 @@ public:
 	static const int SHAPE_HOPPER = 38;
 	static const int SHAPE_QUARTZ = 39;
 	static const int SHAPE_THIN_PANE = 40;
+	static const int SHAPE_CUBE = 41;
 
-	static const int SHAPE_COUNT = 41;
+	static const int SHAPE_COUNT = 42;
 
 	static  Tile **tiles;
 
@@ -396,7 +398,7 @@ public:
 	//static const int endBricks_Id = 190;
 	//static const int endBricksChiseled_Id = 191;
 	//static const int endStoneSmooth_Id = 192;
-	//static const int endStoneMossy_Id = 193;
+	static const int endothaniumBlock_Id = 193;
 	static const int aetherGrass_Id = 194;
 	static const int veloettGrass_Id = 195;
 	static const int endSand_Id = 196;
@@ -445,8 +447,8 @@ public:
 	static const int nusaLog_Id = 249;
 	static const int nusaShrub_Id = 250;
 	static const int nusaVine_Id = 251;
-	//static const int nusaCube_Id = 252;
-	//static const int nusaCore_Id = 253;
+	static const int nusaCube_Id = 252;
+	static const int nusaCore_Id = 253;
 	static const int nusaPortal_Id = 254;
 
 	static Tile *stone;
@@ -651,7 +653,7 @@ public:
 	//static Tile *endBricks;
 	//static Tile *endBricksChiseled;
 	//static Tile *endStoneSmooth;
-	//static Tile *endStoneMossy;
+	static Tile *endothaniumBlock;
 	static Tile *aetherGrass;
 	static Tile *veloettGrass;
 	static Tile *endSand;
@@ -700,8 +702,8 @@ public:
 	static Tile *nusaLog;
 	static Tile *nusaShrub;
 	static Tile *nusaVine;
-	//static Tile *nusaCube;
-	//static Tile *nusaCore;
+	static Tile *nusaCube;
+	static Tile *nusaCore;
 	static NusaPortalTile *nusaPortal;
 
 	static void staticCtor();
