@@ -2547,3 +2547,6 @@
 #define IDS_CANNOT_BE_DONE									   2541
 #define IDS_TILE_ENDOTHANIUM								   2542
 #define IDS_ITEM_ENDOTHANIUM								   2543
+#define IDS_NUSKULL											   2544
+#define IDS_NUCLEAR_NUSKULL									   2545
+#define IDS_NUSA_DEMON										   2546
