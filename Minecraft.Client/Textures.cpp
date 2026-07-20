@@ -197,6 +197,12 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/moaOrange",
 	L"mob/swetBlue",
 	L"mob/swetGold",
+	L"mob/nuskullLegacy",
+	L"mob/nuskullLegacyOverlay",
+	L"mob/nuskull2Legacy",
+	L"mob/nuskull2LegacyOverlay",
+	L"mob/nuclearNuskullLegacy",
+	L"mob/nuclearNuskullLegacyOverlay",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
