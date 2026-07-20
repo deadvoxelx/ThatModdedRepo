@@ -4738,6 +4738,9 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_CANNOT_BE_DONE, L"It Cannot Be Done...");
 		m_stringTable->registerString(IDS_TILE_ENDOTHANIUM, L"Endothanium Block");
 		m_stringTable->registerString(IDS_ITEM_ENDOTHANIUM, L"Endothanium Ingot");
+		m_stringTable->registerString(IDS_NUSKULL, L"Nuskull");
+		m_stringTable->registerString(IDS_NUCLEAR_NUSKULL, L"Nuclear Nuskull");
+		m_stringTable->registerString(IDS_NUSA_DEMON, L"Nusa Demon");
 
 	}
 	else
@@ -8787,6 +8790,10 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_COCKATRICE);
 	case eTYPE_SWET:
 		return app.GetString(IDS_SWET);
+	case eTYPE_NUSKULL:
+		return app.GetString(IDS_NUSKULL);
+	case eTYPE_NUCLEAR_NUSKULL:
+		return app.GetString(IDS_NUCLEAR_NUSKULL);
 	};
 
 	return L"";
