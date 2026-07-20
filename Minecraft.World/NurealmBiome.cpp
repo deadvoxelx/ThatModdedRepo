@@ -14,8 +14,8 @@ NurealmBiome::NurealmBiome(int id) : Biome(id)
 	waterFriendlies.clear();
 	ambientFriendlies.clear();
 
-	//enemies.push_back(new MobSpawnerData(eTYPE_NUSKULL, 10, 1, 3));
-	//enemies.push_back(new MobSpawnerData(eTYPE_NUCLEAR_NUSKULL, 1, 1, 2));
+	enemies.push_back(new MobSpawnerData(eTYPE_NUSKULL, 25, 1, 3));
+	enemies.push_back(new MobSpawnerData(eTYPE_NUCLEAR_NUSKULL, 2, 1, 2));
 	//enemies.push_back(new MobSpawnerData(eTYPE_NUSA_DEMON, 4, 1, 1));
 
 	decorator = new NurealmBiomeDecorator(this);
@@ -23,5 +23,5 @@ NurealmBiome::NurealmBiome(int id) : Biome(id)
 
 Feature *NurealmBiome::getGrassFeature(Random *random)
 {
-	return new TallGrassFeature(Tile::nusaShrub_Id, 1);
+	return new TallGrassFeature(Tile::nusaShrub_Id, 0);
 }
