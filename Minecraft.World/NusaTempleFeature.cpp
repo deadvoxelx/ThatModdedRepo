@@ -2,6 +2,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.material.h"
+#include "net.minecraft.world.level.dimension.h"
 
 NusaTempleFeature::NusaTempleFeature(int blockId) : Feature(blockId)
 {
@@ -11,7 +12,33 @@ bool NusaTempleFeature::place(Level *level, Random *random, int x, int y, int z)
 {
   while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) y--;
 
-  if (random->nextInt(18) == 0)
+  int r = 16 * 3;
+
+  int xc = Mth::floor(x * 1.0);
+  int yc = Mth::floor(y * 1.0);
+  int zc = Mth::floor(z * 1.0);
+
+  int XZSIZE = level->dimension->getXZSize() * 16;
+  int XZOFFSET = (XZSIZE / 2) - 32;
+
+  if( (xc - r) < -XZOFFSET )
+  {
+	return false;
+  }
+  else if ( (xc + r) >= XZOFFSET )
+  {
+	return false;
+  }
+  if( (zc - r) < -XZOFFSET )
+  {
+	return false;
+  }
+  else if ( (zc + r) >= XZOFFSET )
+  {
+	return false;
+  }
+
+  if (random->nextInt(42) == 0)
   {
     for (int groundx = -6; groundx <= 6; groundx++)
 	{
@@ -205,7 +232,7 @@ bool NusaTempleFeature::place(Level *level, Random *random, int x, int y, int z)
 					placeBlock(level, x - 2, y, z + 6, Tile::obsidian_Id, 0);
 					placeBlock(level, x - 2, y, z - 6, Tile::obsidian_Id, 0);
 				}
-			return true;
+				return true;
 			}
 		}
 	}
