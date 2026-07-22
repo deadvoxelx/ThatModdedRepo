@@ -530,6 +530,7 @@ public:
 	static Item *aphalafShard;
 	static Item *aphalafRod;
 	static Item *nusaShard;
+	static Item *endothaniumIngot;
 
 
 	static const int shovel_iron_Id			= 256;
@@ -829,6 +830,7 @@ public:
 	static const int aphalafShard_Id = 512;
 	static const int aphalafRod_Id = 513;
 	static const int nusaShard_Id = 514;
+	static const int endothaniumIngot_Id = 515;
 
 public:
 	const int id;

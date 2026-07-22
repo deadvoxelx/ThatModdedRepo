@@ -10,6 +10,10 @@
 #include <error_dialog.h>
 #endif
 
+// Voxel - for opening links; works on Windows, not sure abt other platforms though
+#include <windows.h>
+#include <shellapi.h>
+
 Random *UIScene_MainMenu::random = new Random();
 
 EUIScene UIScene_MainMenu::eNavigateWhenReady = static_cast<EUIScene>(-1);
@@ -22,7 +26,6 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void *initData, UILayer *parentLaye
 	m_bErrorDialogRunning=false;
 #endif
 
-
 	// Setup all the Iggy references we need for this scene
 	initialiseMovie();
 
@@ -32,48 +35,12 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void *initData, UILayer *parentLaye
 	m_eAction=eAction_None;
 	m_bIgnorePress=false;
 
-
 	m_buttons[static_cast<int>(eControl_PlayGame)].init(IDS_PLAY_GAME,eControl_PlayGame);
-
-#ifdef _XBOX_ONE
-	if(!ProfileManager.IsFullVersion()) m_buttons[(int)eControl_PlayGame].setLabel(IDS_PLAY_TRIAL_GAME);
-	app.SetReachedMainMenu();
-#endif
-	
-	m_buttons[static_cast<int>(eControl_Leaderboards)].init(IDS_CHANGE_SKIN,eControl_Leaderboards);
-	m_buttons[static_cast<int>(eControl_Achievements)].init( (UIString)IDS_ACHIEVEMENTS,eControl_Achievements);
 	m_buttons[static_cast<int>(eControl_HelpAndOptions)].init(IDS_HELP_AND_OPTIONS,eControl_HelpAndOptions);
-	if(ProfileManager.IsFullVersion())
-	{
-		m_bTrialVersion=false;
-		m_buttons[static_cast<int>(eControl_UnlockOrDLC)].init(IDS_DOWNLOADABLECONTENT,eControl_UnlockOrDLC);
-	}
-	else
-	{
-		m_bTrialVersion=true;
-		m_buttons[static_cast<int>(eControl_UnlockOrDLC)].init(IDS_UNLOCK_FULL_GAME,eControl_UnlockOrDLC);
-	}
-
-#ifndef _DURANGO
+	m_buttons[static_cast<int>(eControl_ChangeSkin)].init(IDS_CHANGE_SKIN,eControl_ChangeSkin);
+	m_buttons[static_cast<int>(eControl_UnlockOrDLC /*workshop*/)].init(IDS_WORKSHOP,eControl_UnlockOrDLC);
 	m_buttons[static_cast<int>(eControl_Exit)].init(app.GetString(IDS_EXIT_GAME),eControl_Exit);
-#else
-	m_buttons[(int)eControl_XboxHelp].init(IDS_XBOX_HELP_APP, eControl_XboxHelp);
-#endif
-
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-	// Not allowed to exit from a PS3 game from the game - have to use the PS button
-	removeControl( &m_buttons[(int)eControl_Exit], false );
-	// We don't have a way to display trophies/achievements, so remove the button
-	removeControl( &m_buttons[(int)eControl_Achievements], false );
-	m_bLaunchFullVersionPurchase=false;
-#endif
-#ifdef _DURANGO
-	// Allowed to not have achievements in the menu
-	removeControl( &m_buttons[(int)eControl_Achievements], false );
-	// Not allowed to exit from a Xbox One game from the game - have to use the Home button
-	//removeControl( &m_buttons[(int)eControl_Exit], false );
-	m_bWaitingForDLCInfo=false;
-#endif
+	m_buttons[static_cast<int>(eControl_Achievements)].init( (UIString)IDS_ACHIEVEMENTS,eControl_Achievements);
 
 	doHorizontalResizeCheck();
 
@@ -183,7 +150,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack)
 	if(navBack && ProfileManager.IsFullVersion())
 	{
 		// Replace the Unlock Full Game with Downloadable Content
-		m_buttons[static_cast<int>(eControl_UnlockOrDLC)].setLabel(IDS_DOWNLOADABLECONTENT);
+		m_buttons[static_cast<int>(eControl_UnlockOrDLC)].setLabel(IDS_WORKSHOP);
 	}
 
 #if TO_BE_IMPLEMENTED
@@ -329,13 +296,13 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId)
 		signInReturnedFunc = &UIScene_MainMenu::CreateLoad_SignInReturned;
 #endif		
 		break;
-	case eControl_Leaderboards:
+	case eControl_ChangeSkin:
 		//CD - Added for audio
 		ui.PlayUISFX(eSFX_Press);
 #ifdef __ORBIS__
 		ProfileManager.RefreshChatAndContentRestrictions(RefreshChatAndContentRestrictionsReturned_Leaderboards, this);
 #else
-		m_eAction=eAction_RunLeaderboards;
+		m_eAction=eAction_RunChangeSkin;
 		signInReturnedFunc = &UIScene_MainMenu::Leaderboards_SignInReturned;
 #endif
 		break;
@@ -429,8 +396,8 @@ void UIScene_MainMenu::RunAction(int iPad)
 	case eAction_RunGame:
 		RunPlayGame(iPad);
 		break;
-	case eAction_RunLeaderboards:
-		RunLeaderboards(iPad);
+	case eAction_RunChangeSkin:
+		RunChangeSkin(iPad);
 		break;
 	case eAction_RunAchievements:
 		RunAchievements(iPad);
@@ -523,7 +490,7 @@ int UIScene_MainMenu::MustSignInReturned(void *pParam, int iPad, C4JStorage::EMe
 		{
 		case eAction_RunGame:			ProfileManager.RequestSignInUI(false,  true, false, false, true, &UIScene_MainMenu::CreateLoad_SignInReturned,		pClass,	iPad );	break;
 		case eAction_RunHelpAndOptions:	ProfileManager.RequestSignInUI(false, false,  true, false, true, &UIScene_MainMenu::HelpAndOptions_SignInReturned,	pClass,	iPad );	break;										 	   
-		case eAction_RunLeaderboards:	ProfileManager.RequestSignInUI(false, false,  true, false, true, &UIScene_MainMenu::Leaderboards_SignInReturned,	pClass,	iPad );	break;										 	   
+		case eAction_RunChangeSkin:		ProfileManager.RequestSignInUI(false, false,  true, false, true, &UIScene_MainMenu::Leaderboards_SignInReturned,	pClass,	iPad );	break;										 	   
 		case eAction_RunAchievements:	ProfileManager.RequestSignInUI(false, false,  true, false, true, &UIScene_MainMenu::Achievements_SignInReturned,	pClass,	iPad );	break;										 	   
 		case eAction_RunUnlockOrDLC:	ProfileManager.RequestSignInUI(false, false,  true, false, true, &UIScene_MainMenu::UnlockFullGame_SignInReturned,	pClass,	iPad );	break;										  
 #ifdef _DURANGO						 					  
@@ -1528,7 +1495,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad)
 	}
 }
 
-void UIScene_MainMenu::RunLeaderboards(int iPad)
+void UIScene_MainMenu::RunChangeSkin(int iPad)
 {
 	UINT uiIDA[1];
 	uiIDA[0]=IDS_OK;
@@ -1541,229 +1508,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 	UINT uiIDA[1];
 	uiIDA[0]=IDS_OK;
 
-	// Check if this means downloadable content
-	if(ProfileManager.IsFullVersion())
-	{
-#ifdef __ORBIS__
-		// 4J-PB - Check if there is a patch for the game
-		m_errorCode = ProfileManager.getNPAvailability(ProfileManager.GetPrimaryPad());
-
-		bool bPatchAvailable;
-		switch(m_errorCode)
-		{
-		case SCE_NP_ERROR_LATEST_PATCH_PKG_EXIST:
-		case SCE_NP_ERROR_LATEST_PATCH_PKG_DOWNLOADED:
-			bPatchAvailable=true;
-			break;
-		default:
-			bPatchAvailable=false;
-			break;
-		}
-
-		if(bPatchAvailable)
-		{
-			m_bIgnorePress=false;
-
-			int32_t ret=sceErrorDialogInitialize();
-			m_bErrorDialogRunning=true;
-			if (  ret==SCE_OK ) 
-			{
-				SceErrorDialogParam param;
-				sceErrorDialogParamInitialize( &param );
-				// 4J-PB - We want to display the option to get the patch now
-				param.errorCode = SCE_NP_ERROR_LATEST_PATCH_PKG_DOWNLOADED;//pClass->m_errorCode;
-				ret = sceUserServiceGetInitialUser( &param.userId );
-				if ( ret == SCE_OK ) 
-				{
-					ret=sceErrorDialogOpen( &param );
-				}
-			}
-
-// 			UINT uiIDA[1];
-// 			uiIDA[0]=IDS_OK;
-// 			ui.RequestMessageBox(IDS_PATCH_AVAILABLE_TITLE, IDS_PATCH_AVAILABLE_TEXT, uiIDA, 1, XUSER_INDEX_ANY,nullptr,this);
-			return;
-		}
-
-		// Check if PSN is unavailable because of age restriction
-		if (m_errorCode == SCE_NP_ERROR_AGE_RESTRICTION)
-		{
-			m_bIgnorePress=false;
-			UINT uiIDA[1];
-			uiIDA[0] = IDS_OK;
-			ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(), nullptr, this);
-
-			return;
-		}
-#endif
-		// downloadable content
-		if(ProfileManager.IsSignedInLive(iPad))
-		{
-			if(ProfileManager.IsGuest(iPad))
-			{
-				m_bIgnorePress=false;
-				ui.RequestErrorMessage(IDS_PRO_GUESTPROFILE_TITLE, IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
-			}
-			else
-			{
-
-				// If the player was signed in before selecting play, we'll not have read the profile yet, so query the sign-in status to get this to happen
-				ProfileManager.QuerySigninStatus();
-
-#if defined _XBOX_ONE
-				if(app.GetTMSDLCInfoRead())
-#endif
-				{
-					bool bContentRestricted=false;
-#if defined(__PS3__) || defined(__PSVITA__)
-					ProfileManager.GetChatAndContentRestrictions(iPad,true,nullptr,&bContentRestricted,nullptr);
-#endif
-					if(bContentRestricted)
-					{
-						m_bIgnorePress=false;
-#if !(defined(_XBOX) || defined(_WINDOWS64) || defined(_XBOX_ONE)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
-						// you can't see the store
-						UINT uiIDA[1];
-						uiIDA[0]=IDS_CONFIRM_OK;
-						ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),nullptr,this);
-#endif
-					}
-					else
-					{
-						ProfileManager.SetLockedProfile(iPad);
-#ifdef _XBOX_ONE
-						ui.ShowPlayerDisplayname(true);
-#endif
-						//proceedToScene(ProfileManager.GetPrimaryPad(), eUIScene_DLCMainMenu);
-					}
-				}
-#if defined _XBOX_ONE
-				else
-				{
-					// Changing to async TMS calls
-					app.SetTMSAction(iPad,eTMSAction_TMSPP_RetrieveFiles_DLCMain);
-
-					// block all input
-					m_bIgnorePress=true;
-					// We want to hide everything in this scene and display a timer until we get a completion for the TMS files
-// 					for(int i=0;i<BUTTONS_MAX;i++)
-// 					{
-// 						m_Buttons[i].SetShow(FALSE);
-// 					}
-
-					updateTooltips();
-
-					m_controlTimer.setVisible( true );
-					m_bWaitingForDLCInfo=true;
-				}
-#endif
-
-				// read the DLC info from TMS
-				/*app.ReadDLCFileFromTMS(iPad);*/
-
-				// We want to navigate to the DLC scene, but block input until we get the DLC file in from TMS
-				// Don't navigate - we might have an uplink disconnect
-				//app.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_DLCMainMenu);
-
-			}
-		}
-		else
-		{
-#if defined(__PS3__) || defined(__PSVITA__)
-			m_eAction=eAction_RunUnlockOrDLCPSN;
-			// get them to sign in to online
-			UINT uiIDA[1];
-			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
-			//uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
-			ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),&UIScene_MainMenu::MustSignInReturnedPSN,this);
-#elif defined __ORBIS__
-			m_eAction=eAction_RunUnlockOrDLCPSN;
-			// Determine why they're not "signed in live"
-			if (ProfileManager.isSignedInPSN(iPad))
-			{
-				m_bIgnorePress=false;
-				// Signed in to PSN but not connected (no internet access)
-				assert(!ProfileManager.isConnectedToPSN(iPad));
-
-				UINT uiIDA[1];
-				uiIDA[0] = IDS_OK;
-				ui.RequestErrorMessage( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad);
-			}
-			else
-			{		
-				// Not signed in to PSN
-				UINT uiIDA[1];
-				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-				ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::MustSignInReturnedPSN, this);
-				return;
-			}
-#else
-			UINT uiIDA[1];
-			uiIDA[0]=IDS_OK;
-			ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
-#endif
-		}
-	}
-	else
-	{
-		// guests can't buy the game
-		if(ProfileManager.IsGuest(iPad))
-		{
-			m_bIgnorePress=false;
-			ui.RequestErrorMessage(IDS_UNLOCK_TITLE, IDS_UNLOCK_GUEST_TEXT, uiIDA, 1,iPad);
-		}
-		else if(!ProfileManager.IsSignedInLive(iPad))
-		{
-#if defined(__PS3__) || defined(__PSVITA__)
-			m_eAction=eAction_RunUnlockOrDLCPSN;
-			// get them to sign in to online
-			UINT uiIDA[1];
-			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-			ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),&UIScene_MainMenu::MustSignInReturnedPSN,this);
-#elif defined __ORBIS__
-			m_eAction=eAction_RunUnlockOrDLCPSN;
-			// Determine why they're not "signed in live"
-			if (ProfileManager.isSignedInPSN(iPad))
-			{
-				m_bIgnorePress=false;
-				// Signed in to PSN but not connected (no internet access)
-				assert(!ProfileManager.isConnectedToPSN(iPad));
-
-				UINT uiIDA[1];
-				uiIDA[0] = IDS_OK;
-				ui.RequestErrorMessage( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad);
-			}
-			else
-			{		
-				// Not signed in to PSN
-				UINT uiIDA[1];
-				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-				ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::MustSignInReturnedPSN, this);
-				return;
-			}
-#else
-			UINT uiIDA[1];
-			uiIDA[0]=IDS_OK;
-			ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
-#endif
-
-		}
-		else
-		{
-			// If the player was signed in before selecting play, we'll not have read the profile yet, so query the sign-in status to get this to happen
-			ProfileManager.QuerySigninStatus();
-
-			// check that the commerce is in the right state to be able to display the full version purchase - if the user is fast with the trial version, it can still be retrieving the product list
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-			m_bIgnorePress=true;
-			m_bLaunchFullVersionPurchase=true;
-
-#else
-			TelemetryManager->RecordUpsellPresented(iPad, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID);
-			ProfileManager.DisplayFullVersionPurchase(false,iPad,eSen_UpsellID_Full_Version_Of_Game);
-#endif
-		}
-	}
+	ShellExecute(0, 0, "https://lce-hub.github.io/piston/", 0, 0 , SW_SHOW );
 }
 
 void UIScene_MainMenu::tick()
@@ -1858,7 +1603,7 @@ void UIScene_MainMenu::tick()
 		if(ProfileManager.IsFullVersion())
 		{
 			m_bTrialVersion=false;
-			m_buttons[(int)eControl_UnlockOrDLC].init(app.GetString(IDS_DOWNLOADABLECONTENT),eControl_UnlockOrDLC);
+			m_buttons[(int)eControl_UnlockOrDLC].init(app.GetString(IDS_WORKSHOP),eControl_UnlockOrDLC);
 		}
 	}
 #endif
@@ -2041,9 +1786,9 @@ void UIScene_MainMenu::LoadTrial(void)
 
 void UIScene_MainMenu::handleUnlockFullVersion()
 {
-	m_buttons[static_cast<int>(eControl_UnlockOrDLC)].setLabel(IDS_DOWNLOADABLECONTENT,true);
+	app.DebugPrintf("Voxel - opening workshop\n");
+	m_buttons[static_cast<int>(eControl_UnlockOrDLC)].setLabel(IDS_WORKSHOP,true);
 }
-
 
 #ifdef __PSVITA__
 int UIScene_MainMenu::SelectNetworkModeReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)

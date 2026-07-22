@@ -12,6 +12,7 @@ using namespace std;
 #define MAP_END_DEFAULT_INDEX 65533
 #define MAP_OUTEREND_DEFAULT_INDEX 65532
 #define MAP_AETHER_DEFAULT_INDEX 65531
+#define MAP_NUREALM_DEFAULT_INDEX 65530
 #else
 #define MAXIMUM_MAP_SAVE_DATA 256
 
@@ -22,6 +23,7 @@ using namespace std;
 #define MAP_END_DEFAULT_INDEX 253
 #define MAP_OUTEREND_DEFAULT_INDEX 252
 #define MAP_AETHER_DEFAULT_INDEX 251
+#define MAP_NUREALM_DEFAULT_INDEX 250
 #endif
 
 // The save file version in which we added the End dimension map mappings

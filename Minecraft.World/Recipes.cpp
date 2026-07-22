@@ -101,6 +101,13 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::skyrootLog, 1, 0),
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::netherPlanks, 4, NetherPlanksTile::TYPE_NUSA), //
+		L"sczg",
+		L"#", //
+
+		L'#', new ItemInstance(Tile::nusaLog, 1, 0),
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Item::stick, 4), //
 		L"ssctg",
 		L"#", //
@@ -1307,6 +1314,14 @@ Recipes::Recipes()
 		L"scig",
 		L"#", //
 		L'#', Item::goldIngot,
+		L'D');
+
+	addShapedRecipy(new ItemInstance(Item::endothaniumIngot), //
+		L"scicig",
+		L"#X", //
+
+		L'#', Item::endorium,
+		L'X', Item::nethanium,
 		L'D');
 
 	// 4J-PB - moving into decorations to make the structures list smaller

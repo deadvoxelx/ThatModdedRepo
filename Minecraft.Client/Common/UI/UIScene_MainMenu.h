@@ -8,7 +8,7 @@ private:
 	enum EControls
 	{
 		eControl_PlayGame,
-		eControl_Leaderboards,
+		eControl_ChangeSkin,
 		eControl_Achievements,
 		eControl_HelpAndOptions,
 		eControl_UnlockOrDLC,
@@ -25,14 +25,12 @@ private:
 	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
 		UI_MAP_ELEMENT( m_buttons[(int)eControl_PlayGame], "Button1")
 		UI_MAP_ELEMENT( m_buttons[(int)eControl_HelpAndOptions], "Button2")
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_Leaderboards], "Button3")
-#ifndef _DURANGO
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_Exit], "Button4")
-#else
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_XboxHelp], "Button4")
-#endif
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_Achievements], "Button5")
-		UI_MAP_ELEMENT( m_buttons[(int)eControl_UnlockOrDLC], "Button6")
+		UI_MAP_ELEMENT( m_buttons[(int)eControl_ChangeSkin], "Button3")
+		UI_MAP_ELEMENT( m_buttons[(int)eControl_UnlockOrDLC], "Button4")
+		UI_MAP_ELEMENT( m_buttons[(int)eControl_Exit], "Button5")
+		// Voxel - hidden
+		UI_MAP_ELEMENT( m_buttons[(int)eControl_Achievements], "Button6")
+		//
 		UI_MAP_ELEMENT( m_controlTimer, "Timer")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 	
@@ -67,7 +65,7 @@ private:
 	{
 		eAction_None=0,
 		eAction_RunGame,
-		eAction_RunLeaderboards,
+		eAction_RunChangeSkin,
 		eAction_RunAchievements,
 		eAction_RunHelpAndOptions,
 		eAction_RunUnlockOrDLC,
@@ -129,7 +127,7 @@ protected:
 
 private:
 	void RunPlayGame(int iPad);
-	void RunLeaderboards(int iPad);
+	void RunChangeSkin(int iPad);
 	void RunUnlockOrDLC(int iPad);
 	void RunAchievements(int iPad);
 	void RunHelpAndOptions(int iPad);

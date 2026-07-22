@@ -25,5 +25,5 @@ bool VeloettVineTile::mayPlace(Level *level, int x, int y, int z)
 bool VeloettVineTile::canSurvive(Level *level, int x, int y, int z)
 {
 	int below = level->getTile(x, y - 1, z);
-	return below == Tile::veloettVine_Id || below == Tile::veloettGrass_Id;
+	return below == Tile::veloettVine_Id || below == Tile::veloettGrass_Id || below == Tile::nusaVine_Id || below == Tile::nugrass_Id;
 }

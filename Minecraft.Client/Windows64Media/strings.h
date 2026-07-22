@@ -2543,3 +2543,11 @@
 #define IDS_TILE_NUSA_PLANKS								   2537
 #define IDS_TILE_NUSA_SLAB									   2538
 #define IDS_TILE_NUSA_FENCE									   2539
+#define IDS_TILE_DARK_NUSTONE								   2540
+#define IDS_CANNOT_BE_DONE									   2541
+#define IDS_TILE_ENDOTHANIUM								   2542
+#define IDS_ITEM_ENDOTHANIUM								   2543
+#define IDS_NUSKULL											   2544
+#define IDS_NUCLEAR_NUSKULL									   2545
+#define IDS_NUSA_DEMON										   2546
+#define IDS_WORKSHOP										   2547

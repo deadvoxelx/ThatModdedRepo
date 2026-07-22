@@ -22,7 +22,6 @@
 #include "CreativeMode.h"
 #include "DemoLevel.h"
 #include "MultiPlayerLevel.h"
-#include "MultiPlayerLocalPlayer.h"
 #include "DemoUser.h"
 #include "GuiParticles.h"
 #include "Screen.h"
@@ -133,7 +132,7 @@ Minecraft::Minecraft(Component *mouseComponent, Canvas *parent, MinecraftApplet 
 	timer = new Timer(SharedConstants::TICKS_PER_SECOND);
 	oldLevel = nullptr; //4J Stu added
 	level = nullptr;
-	levels = MultiPlayerLevelArray(5); // 4J Added (overworld, nether, end, outer end, aether)
+	levels = MultiPlayerLevelArray(6); // 4J Added (overworld, nether, end, outer end, aether, nurealm)
 	levelRenderer = nullptr;
 	player = nullptr;
 	cameraTargetPlayer = nullptr;
@@ -4461,6 +4460,7 @@ MultiPlayerLevel *Minecraft::getLevel(int dimension)
 	else if(dimension == 1) return levels[2];
 	else if(dimension == 2) return levels[3];
 	else if(dimension == 3) return levels[4];
+	else if(dimension == 4) return levels[5];
 	else return levels[0];
 }
 
@@ -4484,6 +4484,7 @@ void Minecraft::forceaddLevel(MultiPlayerLevel *level)
 	else if(dimId == 1) levels[2] = level;
 	else if(dimId == 2) levels[3] = level;
 	else if(dimId == 3) levels[4] = level;
+	else if(dimId == 4) levels[5] = level;
 	else levels[0] = level;
 }
 
@@ -4570,6 +4571,11 @@ void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, shared_pt
 			delete levels[4];
 			levels[4] = nullptr;
 		}
+		if(levels[5]!=nullptr)
+		{
+			delete levels[5];
+			levels[5] = nullptr;
+		}
 
 		// Delete all the player objects
 		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
@@ -4613,6 +4619,7 @@ void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, shared_pt
 		else if(dimId == 1) levels[2] = level;
 		else if(dimId == 2) levels[3] = level;
 		else if(dimId == 3) levels[4] = level;
+		else if(dimId == 4) levels[5] = level;
 		else levels[0] = level;
 
 		// If no player has been set, then this is the first level to be set this game, so set up

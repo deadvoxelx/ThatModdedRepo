@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "NusaPortalTile.h"
+#include "net.minecraft.world.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.storage.h"
 #include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.h"
 #include "../Minecraft.Client/MinecraftServer.h"
 
 NusaPortalTile::NusaPortalTile(int id, Material *material) : Tile(id, material)
@@ -34,7 +34,7 @@ void NusaPortalTile::entityInside(Level* level, int x, int y, int z, shared_ptr<
 {
     if (entity->GetType() == eTYPE_EXPERIENCEORB) return;
 
-	if (entity->riding == nullptr && entity->rider.lock() == nullptr) entity->handleInsideGateway();
+	if (entity->riding == nullptr && entity->rider.lock() == nullptr) entity->handleInsideNusaPortal();
 }
 
 void NusaPortalTile::animateTick(Level *level, int xt, int yt, int zt, Random *random)

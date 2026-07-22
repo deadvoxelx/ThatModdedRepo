@@ -37,3 +37,5 @@
 #include "AetherBiomeDecorator.h"
 #include "BirchForestBiome.h"
 #include "LavenderForestBiome.h"
+#include "NurealmBiome.h"
+#include "NurealmBiomeDecorator.h"

@@ -25,6 +25,7 @@ class FlowerPotTile;
 class WallTile;
 class BeaconTile;
 class HopperTile;
+class NusaCubeTile;
 class Icon;
 class Minecraft;
 
@@ -194,6 +195,7 @@ public:
 	bool tesselateCactusInWorld( Tile* tt, int x, int y, int z, float r, float g, float b );
 	bool tesselateFenceInWorld( FenceTile* tt, int x, int y, int z );
 	bool tesselateWallInWorld(WallTile *tt, int x, int y, int z);
+	bool tesselateCubeInWorld(Tile* tt, int x, int y, int z);
 	bool tesselateEggInWorld(EggTile *tt, int x, int y, int z);
 	bool tesselateFenceGateInWorld(FenceGateTile *tt, int x, int y, int z);
 	bool tesselateHopperInWorld(Tile *tt, int x, int y, int z);

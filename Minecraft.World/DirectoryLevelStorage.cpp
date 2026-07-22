@@ -25,7 +25,7 @@ _MapDataMappings::_MapDataMappings()
 int _MapDataMappings::getDimension(int id)
 {
 	const int offset = (2*(id%4));
-	const int val = (dimensions[id>>4] & (5 << offset))>>offset;
+	const int val = (dimensions[id>>5] & (6 << offset))>>offset;
 
 	int returnVal=0;
 
@@ -46,6 +46,9 @@ int _MapDataMappings::getDimension(int id)
 	case 4:
 		returnVal = 3; // Aether
 		break;
+	case 5:
+		returnVal = 4; // Nurealm
+		break;
 	default:
 #ifndef _CONTENT_PACKAGE
 		printf("Read invalid dimension from MapDataMapping\n");
@@ -63,23 +66,26 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension)
 	const int offset = (2*(id%4));
 
 	// Reset it first
-	dimensions[id>>4] &= ~( 4 << offset );
+	dimensions[id>>5] &= ~( 5 << offset );
 	switch(dimension)
 	{
 	case 0: // Overworld
 		//dimensions[id>>2] &= ~( 2 << offset );
 		break;
 	case -1: // Nether
-		dimensions[id>>4] |= ( 1 << offset );
+		dimensions[id>>5] |= ( 1 << offset );
 		break;
 	case 1: // End
-		dimensions[id>>4] |= ( 2 << offset );
+		dimensions[id>>5] |= ( 2 << offset );
 		break;
 	case 2: // Outer End
-		dimensions[id>>4] |= ( 3 << offset );
+		dimensions[id>>5] |= ( 3 << offset );
 		break;
 	case 3: // Aether
-		dimensions[id>>4] |= ( 4 << offset );
+		dimensions[id>>5] |= ( 4 << offset );
+		break;
+	case 4: // Nurealm
+		dimensions[id>>5] |= ( 5 << offset );
 		break;
 	default:
 #ifndef _CONTENT_PACKAGE
@@ -101,7 +107,7 @@ _MapDataMappings_old::_MapDataMappings_old()
 
 int _MapDataMappings_old::getDimension(int id)
 {
-	return dimensions[id>>5] & (128 >> (id%8) ) ? -1 : 0;
+	return dimensions[id>>6] & (128 >> (id%8) ) ? -1 : 0;
 }
 
 void _MapDataMappings_old::setMapping(int id, PlayerUID xuid, int dimension)
@@ -109,11 +115,11 @@ void _MapDataMappings_old::setMapping(int id, PlayerUID xuid, int dimension)
 	xuids[id] = xuid;
 	if( dimension == 0 )
 	{
-		dimensions[id>>5] &= ~( 128 >> (id%8) );
+		dimensions[id>>6] &= ~( 128 >> (id%8) );
 	}
 	else
 	{
-		dimensions[id>>5] |= ( 128 >> (id%8) );
+		dimensions[id>>6] |= ( 128 >> (id%8) );
 	}
 }
 
@@ -249,6 +255,11 @@ ChunkStorage *DirectoryLevelStorage::createChunkStorage(Dimension *dimension)
 	if (dynamic_cast<AetherDimension *>(dimension) != nullptr)
 	{
 		const File dir2 = File(dir, LevelStorage::AETHER_FOLDER);
+		return new OldChunkStorage(dir2, true);
+	}
+	if (dynamic_cast<NurealmDimension *>(dimension) != nullptr)
+	{
+		const File dir2 = File(dir, LevelStorage::NUREALM_FOLDER);
 		return new OldChunkStorage(dir2, true);
 	}
 
@@ -599,10 +610,10 @@ void DirectoryLevelStorage::resetNetherPlayerPositions()
 				{
 					// If the player is in the nether, set their y position above the top of the nether
 					// This will force the player to be spawned in a valid position in the overworld when they are loaded
-					if(tag->contains(L"Dimension") && tag->getInt(L"Dimension") == LevelData::DIMENSION_AETHER && tag->contains(L"Pos"))
+					if(tag->contains(L"Dimension") && tag->getInt(L"Dimension") == LevelData::DIMENSION_OUTER_END && tag->contains(L"Pos"))
 					{
 						ListTag<DoubleTag> *pos = (ListTag<DoubleTag> *) tag->getList(L"Pos");
-						pos->get(4)->data = DBL_MAX;
+						pos->get(3)->data = DBL_MAX;
 
 						ConsoleSaveFileOutputStream fos = ConsoleSaveFileOutputStream( m_saveFile, realFile );
 						NbtIo::writeCompressed(tag, &fos);

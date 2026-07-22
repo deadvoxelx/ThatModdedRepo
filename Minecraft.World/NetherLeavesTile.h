@@ -11,8 +11,9 @@ public:
 	static const int TYPE_BERRY = 3;
 	static const int TYPE_HOLIDAY = 4;
 	static const int TYPE_HOLIDAY_FANCY = 5;
+	static const int TYPE_NUSA = 6;
 
-	static const int NETHER_LEAVES_NAMES_LENGTH = 6;
+	static const int NETHER_LEAVES_NAMES_LENGTH = 7;
 
 	static const unsigned int NETHER_LEAVES_NAMES[NETHER_LEAVES_NAMES_LENGTH];
 	static const wstring TEXTURE_NAMES[];

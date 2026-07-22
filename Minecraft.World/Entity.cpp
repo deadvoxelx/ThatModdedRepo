@@ -341,6 +341,7 @@ void Entity::_init(bool useSmallId, Level *level)
 	isInsidePortal = false;
 	isInsideAetherPortal = false;
 	isInsideGateway = false;
+	isInsideNusaPortal = false;
 	portalTime = 0;
 	dimension = 0;
 	portalEntranceDir = 0;
@@ -626,6 +627,44 @@ void Entity::baseTick()
 					fallDistance = 0;
 				}
 				isInsideGateway = false;
+			}
+
+			else if (isInsideNusaPortal)
+			{
+				if (riding == nullptr)
+				{
+					changingDimensionDelay = 0;
+
+					int targetDimension;
+
+					if (level->dimension->id == 2)
+					{
+						targetDimension = 4;
+					}
+					else if (level->dimension->id == 4)
+					{
+						targetDimension = 2;
+					}
+					else
+					{
+						targetDimension = dimension;
+					}
+					changeDimension(targetDimension);
+					for (int groundx = -2; groundx <= 2; groundx++)
+					{
+						for (int groundz = -2; groundz <= 2; groundz++)
+						{
+							for (int groundy = 0; groundy <= 2; groundy++)
+							{
+								if (targetDimension == 4) level->setTileAndData(x + groundx, y - 1, z + groundz, Tile::obsidian_Id, 0, Tile::UPDATE_CLIENTS);
+								if (targetDimension == 4) level->setTileAndData(x + groundx, y + groundy, z + groundz, 0, 0, Tile::UPDATE_CLIENTS);
+								if (targetDimension == 4) level->setTileAndData(x + 2, y, z, Tile::nusaPortal_Id, 0, Tile::UPDATE_CLIENTS);
+							}
+						}
+					}
+					fallDistance = 0;
+				}
+				isInsideNusaPortal = false;
 			}
 
 			else
@@ -1818,6 +1857,25 @@ void Entity::handleInsideGateway()
 	}
 
 	isInsideGateway = true;
+}
+
+void Entity::handleInsideNusaPortal()
+{
+	if (changingDimensionDelay > 0)
+	{
+		changingDimensionDelay = 0;
+		return;
+	}
+
+	double xd = xo - x;
+	double zd = zo - z;
+
+	if (!level->isClientSide && !isInsideNusaPortal)
+	{
+		portalEntranceDir = Direction::getDirection(xd, zd);
+	}
+
+	isInsideNusaPortal = true;
 }
 
 int Entity::getDimensionChangingDelay()

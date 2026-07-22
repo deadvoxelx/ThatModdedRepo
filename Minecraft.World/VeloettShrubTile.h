@@ -8,10 +8,11 @@ class VeloettShrubTile : public Bush
 	friend class Tile;
 protected:
 	VeloettShrubTile(int id);
-    virtual bool mayPlaceOn(int tile);
 	virtual shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
 public:
-    virtual void updateDefaultShape(); // 4J Added override
+	virtual bool mayPlace(Level *level, int x, int y, int z);
+	virtual bool canSurvive(Level *level, int x, int y, int z);
+    virtual void updateDefaultShape();
     virtual int getResource(int data, Random *random, int playerBonusLevel);
 	virtual int getResourceCount(Random *random);
 	virtual int getResourceCountForLootBonus(int bonusLevel, Random *random);

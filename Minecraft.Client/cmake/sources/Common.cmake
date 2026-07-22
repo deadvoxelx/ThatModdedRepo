@@ -880,6 +880,8 @@ set(_MINECRAFT_CLIENT_COMMON_NET_MINECRAFT_CLIENT_RENDERER_ENTITY
   "${CMAKE_CURRENT_SOURCE_DIR}/MoobloomRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/MushroomCowRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/MushroomCowRenderer.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/NuskullRenderer.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/NuskullRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/OcelotRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/OcelotRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/PaintingRenderer.cpp"

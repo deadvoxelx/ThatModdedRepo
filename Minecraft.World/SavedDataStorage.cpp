@@ -200,6 +200,8 @@ int SavedDataStorage::getAuxValueForMap(PlayerUID xuid, int dimension, int centr
 			return MAP_OUTEREND_DEFAULT_INDEX;
 		case 3:
 			return MAP_AETHER_DEFAULT_INDEX;
+		case 4:
+			return MAP_NUREALM_DEFAULT_INDEX;
 		case 0:
 		default:
 			return MAP_OVERWORLD_DEFAULT_INDEX;

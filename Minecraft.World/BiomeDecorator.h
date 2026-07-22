@@ -17,6 +17,7 @@ class BiomeDecorator
 	friend class JungleBiome;
 	friend class BirchForestBiome;
 	friend class LavenderBiome;
+	friend class NurealmBiome;
 
 protected:
 	Level *level;

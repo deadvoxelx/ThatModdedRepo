@@ -350,6 +350,7 @@ Item *Item::staffShard = NULL;
 Item *Item::aphalafShard = NULL;
 Item *Item::aphalafRod = NULL;
 Item *Item::nusaShard = NULL;
+Item *Item::endothaniumIngot = NULL;
 
 void Item::staticCtor()
 {
@@ -686,6 +687,7 @@ void Item::staticCtor()
 	Item::aphalafShard = (new Item(256))															->setIconName(L"aphalafShard")->setDescriptionId(IDS_ITEM_APHALAF_SHARD)->setUseDescriptionId(IDS_ITEM_APHALAF_SHARD);
 	Item::aphalafRod = (new Item(257))																->setBaseItemTypeAndMaterial(eBaseItemType_stick,	eMaterial_stick)->setIconName(L"aphalafRod")->setDescriptionId(IDS_ITEM_APHALAF_ROD)->setUseDescriptionId(IDS_ITEM_APHALAF_ROD);
 	Item::nusaShard = (new SimpleFoiledItem(258))													->setIconName(L"nusaShard")->setDescriptionId(IDS_ITEM_NUSA_SHARD)->setUseDescriptionId(IDS_ITEM_NUSA_SHARD);
+	Item::endothaniumIngot = (new Item(259))														->setIconName(L"endothanium")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDOTHANIUM)->setUseDescriptionId(IDS_ITEM_ENDOTHANIUM);
 
 }
 

@@ -593,6 +593,7 @@ bool BiomeSource::getIsMatch(float *frac)
 		false,	// aether biome
 		true,	// birch forest
 		true,	// lavender forest
+		false,	// nulands
 	};
 
 

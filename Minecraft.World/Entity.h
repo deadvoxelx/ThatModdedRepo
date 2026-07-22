@@ -150,6 +150,7 @@ protected:
 	bool isInsidePortal;
 	bool isInsideAetherPortal;
 	bool isInsideGateway;
+	bool isInsideNusaPortal;
 	int portalTime;
 
 public:
@@ -331,6 +332,7 @@ public:
 	virtual void handleInsidePortal();
 	virtual void handleInsideAetherPortal();
 	virtual void handleInsideGateway();
+	virtual void handleInsideNusaPortal();
 	virtual int getDimensionChangingDelay();
 	virtual void lerpMotion(double xd, double yd, double zd);
 	virtual void handleEntityEvent(byte eventId);

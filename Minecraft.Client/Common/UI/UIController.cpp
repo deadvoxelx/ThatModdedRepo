@@ -2067,17 +2067,10 @@ void UIController::NavigateToHomeMenu()
 		pMinecraft->soundEngine->SetStreamingSounds(eStream_Overworld_Calm1,eStream_Overworld_piano3,
 			eStream_Nether1,eStream_Nether4,
 			eStream_end_dragon,eStream_end_end,
+			eStream_nurealm, eStream_nurealm,
 			eStream_CD_1);
 		pMinecraft->soundEngine->playStreaming(L"", 0, 0, 0, 1, 1);
 
-		// 		if(pDLCTexPack->m_pStreamedWaveBank!=nullptr)
-		// 		{
-		// 			pDLCTexPack->m_pStreamedWaveBank->Destroy();
-		// 		}
-		// 		if(pDLCTexPack->m_pSoundBank!=nullptr)
-		// 		{
-		// 			pDLCTexPack->m_pSoundBank->Destroy();
-		// 		}
 #ifdef _XBOX_ONE
 		DWORD result = StorageManager.UnmountInstalledDLC(L"TPACK");
 #else

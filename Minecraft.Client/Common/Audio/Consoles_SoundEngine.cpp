@@ -30,6 +30,10 @@ bool ConsoleSoundEngine::GetIsPlayingOuterEndMusic()
 { 
 	return m_bIsPlayingOuterEndMusic;
 }
+bool ConsoleSoundEngine::GetIsPlayingNurealmMusic()						
+{ 
+	return m_bIsPlayingNurealmMusic;
+}
 void ConsoleSoundEngine::SetIsPlayingEndMusic(bool bVal)			
 {
 	m_bIsPlayingEndMusic=bVal;
@@ -41,6 +45,10 @@ void ConsoleSoundEngine::SetIsPlayingNetherMusic(bool bVal)
 void ConsoleSoundEngine::SetIsPlayingOuterEndMusic(bool bVal)			
 {
 	m_bIsPlayingOuterEndMusic=bVal;
+}
+void ConsoleSoundEngine::SetIsPlayingNurealmMusic(bool bVal)			
+{
+	m_bIsPlayingNurealmMusic=bVal;
 }
 
 void ConsoleSoundEngine::tick()

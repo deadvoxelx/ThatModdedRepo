@@ -3781,6 +3781,7 @@ void CMinecraftApp::HandleXuiActions(void)
 						pMinecraft->soundEngine->SetStreamingSounds(eStream_Overworld_Calm1,eStream_Overworld_piano3,
 							eStream_Nether1,eStream_Nether4,
 							eStream_end_dragon,eStream_end_end,
+							eStream_nurealm, eStream_nurealm,
 							eStream_CD_1);
 #endif
 						pMinecraft->soundEngine->playStreaming(L"", 0, 0, 0, 1, 1);
@@ -4554,10 +4555,12 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_EVUPUL, L"Evupul");
 		m_stringTable->registerString(IDS_EVUPULDARK, L"Dark Evupul");
 		m_stringTable->registerString(IDS_EVUPULGOLD, L"Golden Evupul");
-		m_stringTable->registerString(IDS_RESET_END, L"Reset Aether");
-		m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset Aether");
+		m_stringTable->registerString(IDS_RESET_END, L"Reset Outer End");
+		m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset Outer End");
+		//m_stringTable->registerString(IDS_RESET_END, L"Reset Aether");
+		//m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset Aether");
 		//m_stringTable->registerString(IDS_RESET_END_INFO, L"DO NOT USE THIS SETTING IF YOU ARE CURRENTLY IN THE END OR OUTER END DIMENSIONS!!");
-		m_stringTable->registerString(IDS_RESET_END_INFO, L"This will erase anything you may or may not have done in the Aether. Are you sure?");
+		m_stringTable->registerString(IDS_RESET_END_INFO, L"This will erase anything you may or may not have done in the Outer End. Are you sure?");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING, L"Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING_GOLD, L"Golden Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_ISOGAL_RIB, L"Isogal Rib");
@@ -4733,6 +4736,14 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_NUSA_PLANKS, L"Nusa Planks");
 		m_stringTable->registerString(IDS_TILE_NUSA_SLAB, L"Nusa Slab");
 		m_stringTable->registerString(IDS_TILE_NUSA_FENCE, L"Nusa Fence");
+		m_stringTable->registerString(IDS_TILE_DARK_NUSTONE, L"Dark Nustone");
+		m_stringTable->registerString(IDS_CANNOT_BE_DONE, L"It Cannot Be Done...");
+		m_stringTable->registerString(IDS_TILE_ENDOTHANIUM, L"Endothanium Block");
+		m_stringTable->registerString(IDS_ITEM_ENDOTHANIUM, L"Endothanium Ingot");
+		m_stringTable->registerString(IDS_NUSKULL, L"Nuskull");
+		m_stringTable->registerString(IDS_NUCLEAR_NUSKULL, L"Nuclear Nuskull");
+		m_stringTable->registerString(IDS_NUSA_DEMON, L"Nusa Demon");
+		m_stringTable->registerString(IDS_WORKSHOP, L"Emerald Workshop");
 
 	}
 	else
@@ -8782,6 +8793,10 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_COCKATRICE);
 	case eTYPE_SWET:
 		return app.GetString(IDS_SWET);
+	case eTYPE_NUSKULL:
+		return app.GetString(IDS_NUSKULL);
+	case eTYPE_NUCLEAR_NUSKULL:
+		return app.GetString(IDS_NUCLEAR_NUSKULL);
 	};
 
 	return L"";

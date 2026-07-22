@@ -3,6 +3,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.biome.h"
+#include "net.minecraft.world.level.dimension.h"
 
 LakeFeature::LakeFeature(int tile)
 {
@@ -149,7 +150,8 @@ bool LakeFeature::place(Level *level, Random *random, int x, int y, int z)
 					{
 						if ((yy<4 || random->nextInt(2)!=0) && level->getMaterial(x + xx, y + yy, z + zz)->isSolid())
 						{
-							level->setTileAndData(x + xx, y + yy, z + zz, Tile::stone_Id, 0, Tile::UPDATE_CLIENTS);
+							if (level->dimension->id == 4) level->setTileAndData(x + xx, y + yy, z + zz, Tile::nustone_Id, 0, Tile::UPDATE_CLIENTS);
+							else level->setTileAndData(x + xx, y + yy, z + zz, Tile::stone_Id, 0, Tile::UPDATE_CLIENTS);
 						}
 					}
 				}

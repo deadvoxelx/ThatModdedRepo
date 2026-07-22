@@ -37,3 +37,6 @@
 #include "Aerwhale.h"
 #include "Cockatrice.h"
 #include "Swet.h"
+#include "Nuskull.h"
+#include "NuclearNuskull.h"
+//#include "NusaDemon.h"

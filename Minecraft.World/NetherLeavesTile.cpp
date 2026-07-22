@@ -13,10 +13,11 @@ const unsigned int NetherLeavesTile::NETHER_LEAVES_NAMES[NETHER_LEAVES_NAMES_LEN
 	IDS_TILE_BERRY_BUSH,
 	IDS_TILE_HOLIDAY_LEAVES,
 	IDS_TILE_HOLIDAY_LEAVES_FANCY,
+	IDS_TILE_NUSA_BLOCK,
 };
 
 const wstring NetherLeavesTile::TEXTURE_NAMES[] = {
-	L"nether_leaves", L"skyrootLeaves", L"goldenOakLeaves", L"berryBush", L"holidayLeaves", L"holidayLeavesDecorated"
+	L"nether_leaves", L"skyrootLeaves", L"goldenOakLeaves", L"berryBush", L"holidayLeaves", L"holidayLeavesDecorated", L"nusaBlock"
 };
 
 NetherLeavesTile::NetherLeavesTile(int id) : TransparentTile(id, Material::leaves, true)
@@ -163,6 +164,13 @@ void NetherLeavesTile::spawnResources(Level *level, int x, int y, int z, int dat
 			{
 				popResource(level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Item::blueBerry_Id, 1, 0)));
 			}
+		}
+	}
+	else if (d == TYPE_NUSA)
+	{
+		if (!level->isClientSide)
+		{
+			popResource(level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Tile::netherLeaves_Id, 1, 6)));
 		}
 	}
 }

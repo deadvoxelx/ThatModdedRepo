@@ -1217,5 +1217,24 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(25,	2,	L"nethaniumFurnce_front");
 	ADD_ICON(25,	3,	L"nethaniumFurnce_front_lit");
 	ADD_ICON(25,	4,	L"nusa_portal");
+	ADD_ICON(25,	5,	L"endothaniumBlock");
+	ADD_ICON(25,	6,	L"nustone");
+	ADD_ICON(25,	7,	L"nugrass_side");
+	ADD_ICON(25,	8,	L"nugrass_top");
+	ADD_ICON(25,	9,	L"nubricks");
+	ADD_ICON(25,	10,	L"glowingNustone");
+	ADD_ICON(25,	11,	L"darkNustone");
+	ADD_ICON(25,	12,	L"nusaBlock");
+	ADD_ICON(25,	13,	L"nusaLog_side");
+	ADD_ICON(25,	14,	L"nusaLog_top");
+	ADD_ICON(25,	15,	L"planks_nether_nusa");
+
+	ADD_ICON(26,	0,	L"nusaCore_side");
+	ADD_ICON(26,	1,	L"nusaCoreActive_side");
+	ADD_ICON(26,	2,	L"nusaCore_top");
+	ADD_ICON(26,	3,	L"nusaShrub");
+	ADD_ICON(26,	4,	L"nusaVine");
+	ADD_ICON(26,	5,	L"nusaCube_side");
+	ADD_ICON(26,	6,	L"nusaCube_top");
 	}
 }

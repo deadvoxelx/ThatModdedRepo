@@ -2,12 +2,13 @@
 #include "NetherPlanks.h"
 #include "net.minecraft.world.h"
 
-const wstring NetherPlanksTile::TEXTURE_NAMES[] = {L"", L"purul", L"skyroot"};
+const wstring NetherPlanksTile::TEXTURE_NAMES[] = {L"", L"purul", L"skyroot", L"nusa"};
 
 const unsigned int NetherPlanksTile::NETHER_PLANK_NAMES[NETHER_PLANK_NAMES_LENGTH] = {
 	IDS_TILE_NETHER_PLANKS,
 	IDS_TILE_PURULPLANKS,
 	IDS_TILE_SKYROOT_PLANKS,
+	IDS_TILE_NUSA_PLANKS,
 };
 
 NetherPlanksTile::NetherPlanksTile(int id) : Tile(id, Material::wood)

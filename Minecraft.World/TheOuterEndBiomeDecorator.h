@@ -19,6 +19,7 @@ protected:
 	Feature *veloettFlowerFeature;
 	Feature *endTowerFeature;
 	Feature *endOutpostFeature;
+	Feature *nusaTempleFeature;
 
 	virtual void decorate();
 

@@ -124,6 +124,8 @@ void EntityIO::staticCtor()
 	setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120, eMinecraftColour_Mob_Villager_Colour1, eMinecraftColour_Mob_Villager_Colour2, IDS_VILLAGER);
 	setId(CockatriceSpawner::create, eTYPE_COCKATRICESPAWNER, L"CockatriceSpawner", 121);
 	setId(Swet::create, eTYPE_SWET, L"Swet", 122, eMinecraftColour_Mob_Zombie_Colour1, eMinecraftColour_Mob_Zombie_Colour1, IDS_SWET);
+	setId(Nuskull::create, eTYPE_NUSKULL, L"Nuskull", 123, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Squid_Colour1, IDS_NUSKULL);
+	setId(NuclearNuskull::create, eTYPE_NUCLEAR_NUSKULL, L"NuclearNuskull", 124, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Slime_Colour1, IDS_NUCLEAR_NUSKULL);
 
 	setId(EnderCrystal::create, eTYPE_ENDER_CRYSTAL, L"EnderCrystal", 200);
 

@@ -47,6 +47,8 @@ enum eMUSICFILES
 	// The End
 	eStream_end_dragon,
 	eStream_end_end,
+	// Nurealm
+	eStream_nurealm,
 	eStream_CD_1,
 	eStream_CD_2,
 	eStream_CD_3,
@@ -134,7 +136,7 @@ public:
 	bool isStreamingWavebankReady();		// 4J Added
 	int getMusicID(int iDomain);
 	int getMusicID(const wstring& name);
-	void SetStreamingSounds(int iOverworldMin, int iOverWorldMax, int iNetherMin, int iNetherMax, int iEndMin, int iEndMax, int iCD1);
+	void SetStreamingSounds(int iOverworldMin, int iOverWorldMax, int iNetherMin, int iNetherMax, int iEndMin, int iEndMax, int iNurealmMin, int iNurealmMax, int iCD1);
 	void updateMiniAudio();
 	void playMusicUpdate();
 
@@ -184,6 +186,7 @@ private:
 	int m_iStream_Overworld_Min,m_iStream_Overworld_Max;
 	int m_iStream_Nether_Min,m_iStream_Nether_Max;
 	int m_iStream_End_Min,m_iStream_End_Max;
+	int m_iStream_Nurealm_Min,m_iStream_Nurealm_Max;
 	int m_iStream_CD_1;
 	bool *m_bHeardTrackA;
 

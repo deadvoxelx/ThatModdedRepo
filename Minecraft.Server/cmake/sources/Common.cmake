@@ -376,6 +376,7 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/NameEntryScreen.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/NetherPortalParticle.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/NoteParticle.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/NuskullRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/OcelotModel.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/OcelotRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/OffsettedRenderList.cpp"

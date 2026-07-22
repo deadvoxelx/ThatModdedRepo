@@ -16,19 +16,29 @@ void VeloettShrubTile::updateDefaultShape()
     this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, 0.8f, 0.5f + ss);
 }
 
-bool VeloettShrubTile::mayPlaceOn(int tile)
+bool VeloettShrubTile::mayPlace(Level *level, int x, int y, int z)
 {
-	return tile == Tile::veloettGrass_Id;
+	if (!Tile::mayPlace(level, x, y, z)) return false;
+
+	return canSurvive(level, x, y, z);
+}
+
+bool VeloettShrubTile::canSurvive(Level *level, int x, int y, int z)
+{
+	int below = level->getTile(x, y - 1, z);
+	return below == Tile::veloettGrass_Id || below == Tile::endStone_Id || below == Tile::nugrass_Id || below == Tile::nustone_Id;
 }
 
 int VeloettShrubTile::getResource(int data, Random *random, int playerBonusLevel)
 {
-	return Item::veloettBerry->id;
+	if (id == Tile::veloettShrub_Id) return Item::veloettBerry->id;
+	return 0;
 }
 
 int VeloettShrubTile::getResourceCount(Random *random)
 {
-	return 1 + random->nextInt(2);
+	if (id == Tile::veloettShrub_Id) return 1 + random->nextInt(2);
+	return 0;
 }
 
 int VeloettShrubTile::getResourceCountForLootBonus(int bonusLevel, Random *random)
@@ -43,22 +53,25 @@ shared_ptr<ItemInstance> VeloettShrubTile::getSilkTouchItemInstance(int data)
 
 void VeloettShrubTile::spawnResources(Level *level, int x, int y, int z, int data, float odds,  int playerBonusLevel)
 {
-	if (!level->isClientSide)
+	if (id == Tile::veloettShrub_Id)
 	{
-		int chance = 2;
+		if (!level->isClientSide)
+		{
+			int chance = 2;
 
-		chance = 2;
-		if (playerBonusLevel > 0)
-		{
-			chance -= 1 << playerBonusLevel;
-			if (chance < 2)
+			chance = 2;
+			if (playerBonusLevel > 0)
 			{
-				chance = 2;
+				chance -= 1 << playerBonusLevel;
+				if (chance < 2)
+				{
+					chance = 2;
+				}
 			}
-		}
-		if (level->random->nextInt(chance) == 0)
-		{
-			popResource(level, x, y, z, std::make_shared<ItemInstance>(Item::veloettBerry_Id, 1, 0));
+			if (level->random->nextInt(chance) == 0)
+			{
+				popResource(level, x, y, z, std::make_shared<ItemInstance>(Item::veloettBerry_Id, 1, 0));
+			}
 		}
 	}
 }
