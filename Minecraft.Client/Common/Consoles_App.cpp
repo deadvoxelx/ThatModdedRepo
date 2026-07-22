@@ -4741,6 +4741,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_NUSKULL, L"Nuskull");
 		m_stringTable->registerString(IDS_NUCLEAR_NUSKULL, L"Nuclear Nuskull");
 		m_stringTable->registerString(IDS_NUSA_DEMON, L"Nusa Demon");
+		m_stringTable->registerString(IDS_WORKSHOP, L"Emerald Workshop");
 
 	}
 	else
