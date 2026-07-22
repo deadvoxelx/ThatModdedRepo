@@ -188,12 +188,33 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 	LevelStorage *levelStorage = selectLevel(levelId, false);
 	levelStorage->saveLevelData(levelData);
 
-	// erase old files
-	eraseFolders(normalBaseFolders, normalRegions->size() + aetherRegions->size(), totalCount, progress);
+	// reset end
+	//eraseFolders(normalBaseFolders, normalRegions->size() + enderRegions->size(), totalCount, progress);
+	//if (enderFolder.exists())
+	//{
+	//	eraseFolders(enderBaseFolders, normalRegions->size() + enderRegions->size() + normalBaseFolders->size(), totalCount, progress);
+	//}
+
+	// reset outer end
+	eraseFolders(normalBaseFolders, normalRegions->size() + outerEndRegions->size(), totalCount, progress);
 	if (outerEndFolder.exists())
 	{
-		eraseFolders(aetherBaseFolders, normalRegions->size() + aetherRegions->size() + normalBaseFolders->size(), totalCount, progress);
+		eraseFolders(outerEndBaseFolders, normalRegions->size() + outerEndRegions->size() + normalBaseFolders->size(), totalCount, progress);
 	}
+
+	// reset aether
+	//eraseFolders(normalBaseFolders, normalRegions->size() + aetherRegions->size(), totalCount, progress);
+	//if (aetherFolder.exists())
+	//{
+	//	eraseFolders(aetherBaseFolders, normalRegions->size() + aetherRegions->size() + normalBaseFolders->size(), totalCount, progress);
+	//}
+	
+	// reset nurealm
+	//eraseFolders(normalBaseFolders, normalRegions->size() + nurealmRegions->size(), totalCount, progress);
+	//if (nurealmFolder.exists())
+	//{
+	//	eraseFolders(nurealmBaseFolders, normalRegions->size() + nurealmRegions->size() + normalBaseFolders->size(), totalCount, progress);
+	//}
 #endif
 	return true;
 }
