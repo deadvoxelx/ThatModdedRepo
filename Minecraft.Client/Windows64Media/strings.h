@@ -2550,3 +2550,4 @@
 #define IDS_NUSKULL											   2544
 #define IDS_NUCLEAR_NUSKULL									   2545
 #define IDS_NUSA_DEMON										   2546
+#define IDS_WORKSHOP										   2547
