@@ -650,6 +650,18 @@ void Entity::baseTick()
 						targetDimension = dimension;
 					}
 					changeDimension(targetDimension);
+					for (int groundx = -2; groundx <= 2; groundx++)
+					{
+						for (int groundz = -2; groundz <= 2; groundz++)
+						{
+							for (int groundy = 0; groundy <= 2; groundy++)
+							{
+								if (targetDimension == 4) level->setTileAndData(x + groundx, y - 1, z + groundz, Tile::obsidian_Id, 0, Tile::UPDATE_CLIENTS);
+								if (targetDimension == 4) level->setTileAndData(x + groundx, y + groundy, z + groundz, 0, 0, Tile::UPDATE_CLIENTS);
+								if (targetDimension == 4) level->setTileAndData(x + 2, y, z, Tile::nusaPortal_Id, 0, Tile::UPDATE_CLIENTS);
+							}
+						}
+					}
 					fallDistance = 0;
 				}
 				isInsideNusaPortal = false;
