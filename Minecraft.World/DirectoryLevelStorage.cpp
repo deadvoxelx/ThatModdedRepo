@@ -610,10 +610,10 @@ void DirectoryLevelStorage::resetNetherPlayerPositions()
 				{
 					// If the player is in the nether, set their y position above the top of the nether
 					// This will force the player to be spawned in a valid position in the overworld when they are loaded
-					if(tag->contains(L"Dimension") && tag->getInt(L"Dimension") == LevelData::DIMENSION_AETHER && tag->contains(L"Pos"))
+					if(tag->contains(L"Dimension") && tag->getInt(L"Dimension") == LevelData::DIMENSION_OUTER_END && tag->contains(L"Pos"))
 					{
 						ListTag<DoubleTag> *pos = (ListTag<DoubleTag> *) tag->getList(L"Pos");
-						pos->get(4)->data = DBL_MAX;
+						pos->get(3)->data = DBL_MAX;
 
 						ConsoleSaveFileOutputStream fos = ConsoleSaveFileOutputStream( m_saveFile, realFile );
 						NbtIo::writeCompressed(tag, &fos);
