@@ -2,6 +2,7 @@
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.material.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.tile.entity.h"
 #include "net.minecraft.world.item.h"
@@ -13,14 +14,44 @@ EndOutpostFeature::EndOutpostFeature(int blockId) : Feature(blockId)
 
 bool EndOutpostFeature::place(Level *level, Random *random, int x, int y, int z)
 {
+  while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) y--;
+
+  int r = 16 * 3;
+
+  int xc = Mth::floor(x * 1.0);
+  int yc = Mth::floor(y * 1.0);
+  int zc = Mth::floor(z * 1.0);
+
+  int XZSIZE = level->dimension->getXZSize() * 16;
+  int XZOFFSET = (XZSIZE / 2) - 16;
+
+  if( (xc - r) < -XZOFFSET )
+  {
+	return false;
+  }
+  else if ( (xc + r) >= XZOFFSET )
+  {
+	return false;
+  }
+  if( (zc - r) < -XZOFFSET )
+  {
+	return false;
+  }
+  else if ( (zc + r) >= XZOFFSET )
+  {
+	return false;
+  }
+
+  if (random->nextInt(20) == 0)
+  {
 	for (int groundx = -3; groundx <= 3; groundx++)
 	{
 		for (int groundz = -3; groundz <= 3; groundz++)
 		{
-			int belowTile = level->getTile(x + groundx, y - 1, z + groundz);
-    		int thisTile = level->getTile(x + groundx, y, z + groundz);
+			Material *belowTile = level->getMaterial(x + groundx, y - 1, z + groundz);
+    		Material *thisTile = level->getMaterial(x + groundx, y, z + groundz);
 
-			if ((belowTile == Tile::endStone_Id || belowTile == Tile::endSand_Id || belowTile == Tile::veloettGrass_Id) && (thisTile != Tile::endStone_Id && thisTile != Tile::endSand_Id && thisTile != Tile::veloettGrass_Id && thisTile != Tile::purulLog_Id && thisTile != Tile::purulVeloett_Id))
+			if (belowTile->blocksMotion() && !thisTile->blocksMotion())
 			{
 				//Clear space up to roof height
 				for (int dx = -3; dx <= 3; dx++)
@@ -226,9 +257,11 @@ bool EndOutpostFeature::place(Level *level, Random *random, int x, int y, int z)
 					WeighedTreasure::addChestItems(random, treasure, chest, 6 + random->nextInt(3));
 				}
 			}
+			return true;
 		}
 	}
-    return true;
+  }
+  return false;
 }
 
 WeighedTreasure *EndOutpostFeature::endOutpostTreasure[EndOutpostFeature::TREASURE_ITEMS_COUNT] = 
