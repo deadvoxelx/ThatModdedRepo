@@ -1085,7 +1085,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	for (int i = 0; i < levels.length ; i++)
 	{
 		//        logger.info("Preparing start region for level " + i);
-		if (i == 0 || (i == 1 && GetDedicatedServerBool(settings, L"allow-nether", true)))
+		if (i == 0 || GetDedicatedServerBool(settings, L"allow-nether", true))
 		{
 			ServerLevel *level = levels[i];
 			if(levelChunksNeedConverted)
