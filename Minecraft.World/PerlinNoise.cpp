@@ -73,7 +73,6 @@ doubleArray PerlinNoise::getRegion(doubleArray buffer, int x, int y, int z, int 
 
     for (int i = 0; i < levels; i++)
 	{
-        //            value += noiseLevels[i].getValue(x * pow, y * pow, z * pow) / pow;
         double xx = x * pow * xScale;
         double yy = y * pow * yScale;
         double zz = z * pow * zScale;
@@ -81,8 +80,8 @@ doubleArray PerlinNoise::getRegion(doubleArray buffer, int x, int y, int z, int 
         int64_t zb = Mth::lfloor(zz);
         xx -= xb;
         zz -= zb;
-        xb %= 16777216;
-        zb %= 16777216;
+        //xb %= 16777216;
+        //zb %= 16777216;
         xx += xb;
         zz += zb;
         noiseLevels[i]->add(buffer, xx, yy, zz, xSize, ySize, zSize, xScale * pow, yScale * pow, zScale * pow, pow);
