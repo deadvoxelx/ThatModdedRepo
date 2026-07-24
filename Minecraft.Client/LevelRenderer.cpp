@@ -1929,15 +1929,15 @@ bool LevelRenderer::updateDirtyChunks()
 		else if( index > 1 )
 		{
 			int i2 = index - 2;
-			if( i2 >= DIMENSION_OFFSETS[2] )
+			if( i2 >= DIMENSION_OFFSETS[5] )
 			{
-				i2 -= DIMENSION_OFFSETS[2];
+				i2 -= DIMENSION_OFFSETS[5];
 				int y2 = i2 & (CHUNK_Y_COUNT-1);
 				i2 /= CHUNK_Y_COUNT;
-				int z2 = i2 / MAX_LEVEL_RENDER_SIZE[2];
-				int x2 = i2 - z2 * MAX_LEVEL_RENDER_SIZE[2];
-				x2 -= MAX_LEVEL_RENDER_SIZE[2] / 2;
-				z2 -= MAX_LEVEL_RENDER_SIZE[2] / 2;
+				int z2 = i2 / MAX_LEVEL_RENDER_SIZE[5];
+				int x2 = i2 - z2 * MAX_LEVEL_RENDER_SIZE[5];
+				x2 -= MAX_LEVEL_RENDER_SIZE[5] / 2;
+				z2 -= MAX_LEVEL_RENDER_SIZE[5] / 2;
 			}
 			setGlobalChunkFlag(index - 2, CHUNK_FLAG_DIRTY);
 
