@@ -101,6 +101,7 @@
 #include "MoaRenderer.h"
 #include "SwetRenderer.h"
 #include "NuskullRenderer.h"
+#include "NusaDemonRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -147,6 +148,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_SWET] = new SwetRenderer(new SlimeModel(16), new SlimeModel(0), 0.25f);
 	renderers[eTYPE_NUSKULL] = new NuskullRenderer();
 	renderers[eTYPE_NUCLEAR_NUSKULL] = new NuskullRenderer();
+	renderers[eTYPE_NUSA_DEMON] = new NusaDemonRenderer();
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);

@@ -335,6 +335,14 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 							   {
 								   if( level->countInstanceOf(mobType, true) >= 12 ) continue;
 							   }
+							   if( mobType == eTYPE_NUCLEAR_NUSKULL )
+							   {
+								   if( level->countInstanceOf(mobType, true) >= 12 ) continue;
+							   }
+							   if( mobType == eTYPE_NUSA_DEMON )
+							   {
+								   if( level->countInstanceOf(mobType, true) >= 9 ) continue;
+							   }
 							   if( mobType == eTYPE_APHALAF_BOSS )
 							   {
 								   if( level->countInstanceOf(mobType, true) >= 1 ) continue;

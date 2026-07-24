@@ -518,7 +518,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 109); // Aphalaf Boss
 		ITEM_AUX(Item::spawnEgg_Id, 123); // Nuskull
 		ITEM_AUX(Item::spawnEgg_Id, 124); // Nuclear Nuskull
-		//ITEM_AUX(Item::spawnEgg_Id, 125); // Nusa Demon
+		ITEM_AUX(Item::spawnEgg_Id, 125); // Nusa Demon
 		ITEM_AUX(Item::spawnEgg_Id, 118); // Aerwhale
 		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr
 		ITEM_AUX(Item::spawnEgg_Id, 122); // Swet

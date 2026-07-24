@@ -360,7 +360,7 @@ void Tile::staticCtor()
 	Tile::treeTrunk = (new TreeTile(17))->setDestroyTime(2.0f)	->setSoundType(Tile::SOUND_WOOD)->setIconName(L"log")->setDescriptionId(IDS_TILE_LOG)->sendTileData()->setUseDescriptionId(IDS_DESC_LOG);
 	// 4J - for leaves, have specified that only the data bits that encode the type of leaf are important to be sent
 	Tile::leaves = (LeafTile *)(new LeafTile(18))				->setDestroyTime(0.2f)->setLightBlock(1)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"leaves")->setDescriptionId(IDS_TILE_LEAVES)->setUseDescriptionId(IDS_DESC_LEAVES);
-	Tile::sponge = (new Sponge(19))								->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"sponge")->setDescriptionId(IDS_TILE_SPONGE)->setUseDescriptionId(IDS_DESC_SPONGE);
+	Tile::sponge = (new Sponge(19))								->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_clay)->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"sponge")->setDescriptionId(IDS_TILE_SPONGE)->setUseDescriptionId(IDS_DESC_SPONGE);
 	Tile::glass = (new GlassTile(20, Material::glass))			->setDestroyTime(0.3f)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS)->setUseDescriptionId(IDS_DESC_GLASS);
 
 	Tile::lapisOre = (new OreTile(21))											->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L"lapis_ore")->setDescriptionId(IDS_TILE_ORE_LAPIS)->setUseDescriptionId(IDS_DESC_ORE_LAPIS);

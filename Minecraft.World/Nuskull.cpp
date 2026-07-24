@@ -131,9 +131,9 @@ void Nuskull::newServerAiStep()
 		double dy = (targetPosition->y + .1) - y;
 		double dz = (targetPosition->z + .3) - z;
 
-		xd = xd + (signum(dx) * .32f - xd) * .1f;
+		xd = xd + (signum(dx) * .3f - xd) * .1f;
 		yd = yd + (signum(dy) * .32f - yd) * .1f;
-		zd = zd + (signum(dz) * .32f - zd) * .1f;
+		zd = zd + (signum(dz) * .3f - zd) * .1f;
 
 		float yRotD = static_cast<float>(atan2(zd, xd) * 180 / PI) - 90;
 		float rotDiff = Mth::wrapDegrees(yRotD - yRot);

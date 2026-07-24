@@ -15,8 +15,8 @@ NurealmBiome::NurealmBiome(int id) : Biome(id)
 	ambientFriendlies.clear();
 
 	enemies.push_back(new MobSpawnerData(eTYPE_NUSKULL, 25, 1, 3));
-	enemies.push_back(new MobSpawnerData(eTYPE_NUCLEAR_NUSKULL, 2, 1, 2));
-	//enemies.push_back(new MobSpawnerData(eTYPE_NUSA_DEMON, 4, 1, 1));
+	enemies.push_back(new MobSpawnerData(eTYPE_NUCLEAR_NUSKULL, 1, 1, 2));
+	enemies.push_back(new MobSpawnerData(eTYPE_NUSA_DEMON, 6, 1, 1));
 
 	decorator = new NurealmBiomeDecorator(this);
 }
