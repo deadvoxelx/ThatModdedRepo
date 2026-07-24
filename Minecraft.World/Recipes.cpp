@@ -1225,6 +1225,22 @@ Recipes::Recipes()
 		L'#', Tile::cobblestone, L'B', Item::blazeRod,
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Item::brewingStand, 1), //
+		L"ssctcig",
+		L" B ", //
+		L"###", //
+
+		L'#', Tile::endStone, L'B', Item::blazeRod,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::sponge, 4), //
+		L"sssctctg",
+		L"WCW", //
+		L"CWC", //
+		L"WCW", //
+
+		L'#', Tile::wool, L'C', Tile::clay,
+		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::litPumpkin, 1), //
 		L"ssctctg",
