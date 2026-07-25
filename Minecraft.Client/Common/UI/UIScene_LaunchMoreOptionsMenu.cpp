@@ -92,6 +92,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(int iPad, void *ini
 	m_checkboxes[eLaunchCheckbox_ResetNether].init(app.GetString(IDS_RESET_END),eLaunchCheckbox_ResetNether,m_params->bResetNether);
 	m_checkboxes[eLaunchCheckbox_Structures].init(app.GetString(IDS_GENERATE_STRUCTURES),eLaunchCheckbox_Structures,m_params->bStructures);
 	m_checkboxes[eLaunchCheckbox_FlatWorld].init(app.GetString(IDS_SUPERFLAT_WORLD),eLaunchCheckbox_FlatWorld,m_params->bFlatWorld);
+	m_checkboxes[eLaunchCheckbox_Farlands].init(app.GetString(IDS_FARLANDS),eLaunchCheckbox_Farlands,m_params->bFarlands);
 	m_checkboxes[eLaunchCheckbox_BonusChest].init(app.GetString(IDS_BONUS_CHEST),eLaunchCheckbox_BonusChest,m_params->bBonusChest);
 
 	m_checkboxes[eLaunchCheckbox_KeepInventory].init(app.GetString(IDS_KEEP_INVENTORY), eLaunchCheckbox_KeepInventory, m_params->bKeepInventory);
@@ -226,6 +227,25 @@ void UIScene_LaunchMoreOptionsMenu::tick()
 		}
 
 		m_bMultiplayerAllowed = bMultiplayerAllowed;
+	}
+
+	if (m_checkboxes[eLaunchCheckbox_FlatWorld].IsEnabled())
+	{
+		app.SetGameHostOption(eGameHostOption_LevelType, 1);
+	}
+	else if (m_checkboxes[eLaunchCheckbox_Farlands].IsEnabled())
+	{
+		app.SetGameHostOption(eGameHostOption_LevelTypeFarlands, 1);
+	}
+	else if (m_checkboxes[eLaunchCheckbox_FlatWorld].IsEnabled() && m_checkboxes[eLaunchCheckbox_Farlands].IsEnabled())
+	{
+		app.SetGameHostOption(eGameHostOption_LevelType, 1);
+		app.SetGameHostOption(eGameHostOption_LevelTypeFarlands, 0);
+	}
+	else
+	{
+		app.SetGameHostOption(eGameHostOption_LevelType, 0);
+		app.SetGameHostOption(eGameHostOption_LevelTypeFarlands, 0);
 	}
 
 	// Check cheats
@@ -425,6 +445,9 @@ void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId, bool se
 	case eLaunchCheckbox_FlatWorld:
 		m_params->bFlatWorld = selected;
 		break;
+	case eLaunchCheckbox_Farlands:
+		m_params->bFarlands = selected;
+		break;
 	case eLaunchCheckbox_BonusChest:
 		m_params->bBonusChest = selected;
 		break;
@@ -496,6 +519,9 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId, F64 childId
 		break;
 	case eLaunchCheckbox_FlatWorld:
 		stringId = IDS_GAMEOPTION_SUPERFLAT;
+		break;
+	case eLaunchCheckbox_Farlands:
+		stringId = IDS_FARLANDS;
 		break;
 	case eLaunchCheckbox_BonusChest:
 		stringId = IDS_GAMEOPTION_BONUS_CHEST;
