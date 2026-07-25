@@ -225,6 +225,7 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart()
 
 	app.SetGameHostOption(eGameHostOption_GameType,GameType::CREATIVE->getId() ); // LevelSettings::GAMETYPE_SURVIVAL
 	app.SetGameHostOption(eGameHostOption_LevelType, 0 );
+	app.SetGameHostOption(eGameHostOption_LevelTypeFarlands, 0 );
 	app.SetGameHostOption(eGameHostOption_Structures, 1 );
 	app.SetGameHostOption(eGameHostOption_BonusChest, 0 );
 
