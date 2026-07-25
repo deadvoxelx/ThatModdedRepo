@@ -710,17 +710,27 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData *initData, DW
 		wstring levelTypeString;
 
 	bool gameRuleUseFlatWorld = false;
-	if(app.getLevelGenerationOptions() != nullptr)
+	bool gameRuleUseFarlands = false;
+	if (app.getLevelGenerationOptions() != nullptr)
 	{
 		gameRuleUseFlatWorld = app.getLevelGenerationOptions()->getuseFlatWorld();
 	}
-	if(gameRuleUseFlatWorld || app.GetGameHostOption(eGameHostOption_LevelType)>0)
-	{
-		levelTypeString = GetDedicatedServerString(settings, L"level-type",  L"flat");
+
+	if (app.GetGameHostOption(eGameHostOption_LevelType) > 0 && app.GetGameHostOption(eGameHostOption_LevelTypeFarlands) == 0)
+	{	// Flat
+		levelTypeString = GetDedicatedServerString(settings, L"level-type", L"flat");
+	}
+	else if (app.GetGameHostOption(eGameHostOption_LevelTypeFarlands) > 0 && app.GetGameHostOption(eGameHostOption_LevelType) == 0)
+	{	// Farlands
+		levelTypeString = GetDedicatedServerString(settings, L"level-type", L"farlands");
+	}
+	else if (app.GetGameHostOption(eGameHostOption_LevelType) > 0 && app.GetGameHostOption(eGameHostOption_LevelTypeFarlands) > 0)
+	{	// Voxel - if both Flat and Farlands are enabled, default to Flat to avoid a potential crash
+		levelTypeString = GetDedicatedServerString(settings, L"level-type", L"flat");
 	}
 	else
-	{
-		levelTypeString = GetDedicatedServerString(settings, L"level-type",L"default");
+	{	// Default
+		levelTypeString = GetDedicatedServerString(settings, L"level-type", L"default");
 	}
 
 	LevelType *pLevelType = LevelType::getLevelType(levelTypeString);
@@ -1085,7 +1095,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	for (int i = 0; i < levels.length ; i++)
 	{
 		//        logger.info("Preparing start region for level " + i);
-		if (i == 0 || GetDedicatedServerBool(settings, L"allow-nether", true))
+		if (i == 0 || (i == 1 && GetDedicatedServerBool(settings, L"allow-nether", true)))
 		{
 			ServerLevel *level = levels[i];
 			if(levelChunksNeedConverted)
