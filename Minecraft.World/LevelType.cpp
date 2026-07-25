@@ -16,6 +16,7 @@
 LevelType *LevelType::levelTypes[16];// = new LevelType[16];
 LevelType *LevelType::lvl_normal=nullptr;// = new LevelType(0, "default", 1).setHasReplacement();
 LevelType *LevelType::lvl_flat=nullptr;// = new LevelType(1, "flat");
+LevelType *LevelType::lvl_farlands=nullptr;
 LevelType *LevelType::lvl_largeBiomes = nullptr;// = new LevelType(2, "largeBiomes");
 LevelType *LevelType::lvl_normal_1_1=nullptr;// = new LevelType(8, "default_1_1", 0).setSelectableByUser(false);
 
@@ -25,7 +26,8 @@ void LevelType::staticCtor()
 	lvl_normal = new LevelType(0, L"default", 1);
 	lvl_normal->setHasReplacement();
 	lvl_flat = new LevelType(1, L"flat");
-	lvl_largeBiomes = new LevelType(2, L"largeBiomes");
+	lvl_farlands = new LevelType(2, L"farlands");
+	lvl_largeBiomes = new LevelType(3, L"largeBiomes");
 	lvl_normal_1_1 = new LevelType(8, L"default_1_1", 0);
 	lvl_normal_1_1->setSelectableByUser(false);	
 }
