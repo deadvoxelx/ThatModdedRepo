@@ -79,7 +79,14 @@ ChunkSource *AetherDimension::createRandomLevelSource() const
         return nullptr; // prevents crashes if init order is wrong
     }
 
-    return new AetherLevelSource(level, level->getSeed());
+	if (levelType == LevelType::lvl_farlands) 
+	{
+		return new AetherFarlandsLevelSource(level, level->getSeed());
+	}
+	else
+	{
+		return new AetherLevelSource(level, level->getSeed());
+	}
 }
 
 bool AetherDimension::isFoggyAt(int x, int z)
