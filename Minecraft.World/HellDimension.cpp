@@ -52,6 +52,10 @@ ChunkSource *HellDimension::createRandomLevelSource() const
 	{
 		return new HellFlatLevelSource(level, level->getSeed());
 	}
+	if (levelType == LevelType::lvl_farlands) 
+	{
+		return new HellFarlandsLevelSource(level, level->getSeed());
+	}
 	else
 	{
 		return new HellRandomLevelSource(level, level->getSeed());
