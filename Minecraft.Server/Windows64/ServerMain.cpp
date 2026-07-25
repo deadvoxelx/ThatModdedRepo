@@ -513,6 +513,9 @@ int main(int argc, char **argv)
 	app.SetGameHostOption(eGameHostOption_BedrockFog, serverProperties.bedrockFog ? 1 : 0);
 	app.SetGameHostOption(eGameHostOption_GameType, serverProperties.gameMode);
 	app.SetGameHostOption(eGameHostOption_LevelType, serverProperties.levelTypeFlat ? 1 : 0);
+	app.SetGameHostOption(eGameHostOption_LevelTypeFarlands, serverProperties.levelTypeFarlands ? 1 : 0);
+	//app.SetGameHostOption(eGameHostOption_LevelType, serverProperties.levelTypeFarlands ? 2 : (serverProperties.levelTypeFlat ? 1 : 0));
+	//app.SetGameHostOption(eGameHostOption_LevelType, (serverProperties.levelTypeFarlands || serverProperties.levelTypeFlat));
 	app.SetGameHostOption(eGameHostOption_Structures, serverProperties.generateStructures ? 1 : 0);
 	app.SetGameHostOption(eGameHostOption_BonusChest, serverProperties.bonusChest ? 1 : 0);
 	app.SetGameHostOption(eGameHostOption_PvP, serverProperties.pvp ? 1 : 0);
