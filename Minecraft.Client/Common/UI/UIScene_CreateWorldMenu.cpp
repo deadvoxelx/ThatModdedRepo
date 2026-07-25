@@ -64,6 +64,7 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 	m_MoreOptionsParams.bGenerateOptions=TRUE;
 	m_MoreOptionsParams.bStructures=TRUE;
 	m_MoreOptionsParams.bFlatWorld=FALSE;
+	m_MoreOptionsParams.bFarlands=FALSE;
 	m_MoreOptionsParams.bBonusChest=FALSE;
 	m_MoreOptionsParams.bPVP = TRUE;
 	m_MoreOptionsParams.bTrust = TRUE;
@@ -1129,6 +1130,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 
 	// start the game
 	bool isFlat = (pClass->m_MoreOptionsParams.bFlatWorld==TRUE);
+	bool isFarlands = (pClass->m_MoreOptionsParams.bFarlands==TRUE);
 	int64_t seedValue = 0;
 
 	NetworkGameInitData *param = new NetworkGameInitData();
@@ -1189,6 +1191,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 
 	app.SetGameHostOption(eGameHostOption_GameType,pClass->m_iGameModeId );
 	app.SetGameHostOption(eGameHostOption_LevelType,pClass->m_MoreOptionsParams.bFlatWorld );
+	app.SetGameHostOption(eGameHostOption_LevelTypeFarlands,pClass->m_MoreOptionsParams.bFarlands );
 	app.SetGameHostOption(eGameHostOption_Structures,pClass->m_MoreOptionsParams.bStructures );
 	app.SetGameHostOption(eGameHostOption_BonusChest,pClass->m_MoreOptionsParams.bBonusChest );
 

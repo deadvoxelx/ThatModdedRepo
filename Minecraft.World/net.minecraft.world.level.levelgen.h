@@ -17,3 +17,6 @@
 #include "TheOuterEndLevelRandomLevelSource.h"
 #include "AetherLevelSource.h"
 #include "NurealmLevelSource.h"
+#include "FarlandsLevelSource.h"
+#include "HellFarlandsLevelSource.h"
+#include "AetherFarlandsLevelSource.h"

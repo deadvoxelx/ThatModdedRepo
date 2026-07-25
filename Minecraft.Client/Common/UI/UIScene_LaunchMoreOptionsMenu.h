@@ -22,6 +22,7 @@ private:
 		eLaunchCheckbox_ResetNether,
 		eLaunchCheckbox_Structures,
 		eLaunchCheckbox_FlatWorld,
+		eLaunchCheckbox_Farlands,
 		eLaunchCheckbox_BonusChest,
 		eLaunchCheckbox_DisableSaving,
 		eLaunchCheckbox_WorldResizeType,
@@ -103,6 +104,7 @@ private:
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_Structures], "CheckboxStructures")
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_BonusChest], "CheckboxBonusChest")
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_FlatWorld], "CheckboxFlatWorld")
+			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_Farlands], "CheckboxFarlands")
 
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_ResetNether], "CheckboxResetNether")
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_DisableSaving], "CheckboxDisableSaving")

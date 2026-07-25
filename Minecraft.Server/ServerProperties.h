@@ -51,6 +51,7 @@ namespace ServerRuntime
 		/** Nether scale derived from `world-size` */
 		int worldHellScale;
 		bool levelTypeFlat;
+		bool levelTypeFarlands;
 		/** `spawn-protection` radius in blocks (0 disables protection) */
 		int spawnProtectionRadius;
 		bool generateStructures;

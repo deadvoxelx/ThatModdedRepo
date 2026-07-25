@@ -333,6 +333,7 @@ typedef struct _LaunchMoreOptionsMenuInitData
 	bool bGenerateOptions;
 	bool bStructures;
 	bool bFlatWorld;
+	bool bFarlands;
 	bool bBonusChest;
 
 	bool bPVP;
@@ -342,7 +343,6 @@ typedef struct _LaunchMoreOptionsMenuInitData
 
 	bool bHostPrivileges;
 	bool bResetNether;
-
 	bool bMobGriefing;
 	bool bKeepInventory;
 	bool bDoMobSpawning;

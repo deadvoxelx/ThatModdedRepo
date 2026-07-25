@@ -34,6 +34,7 @@ public:
 	~Dimension();
 	virtual ChunkSource *createRandomLevelSource() const;
 	virtual ChunkSource *createFlatLevelSource() const;
+	virtual ChunkSource *createFarlandsLevelSource() const;
 	virtual ChunkStorage *createStorage(File dir);
 
 	virtual bool isValidSpawn(int x, int z) const;

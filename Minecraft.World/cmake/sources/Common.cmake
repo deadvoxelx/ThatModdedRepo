@@ -1493,6 +1493,8 @@ set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_DIMENSION
 source_group("net/minecraft/world/level/dimension" FILES ${_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_DIMENSION})
 
 set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_LEVELGEN
+  "${CMAKE_CURRENT_SOURCE_DIR}/AetherFarlandsLevelSource.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/AetherFarlandsLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/AetherLevelSource.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/AetherLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/CanyonFeature.cpp"
@@ -1503,12 +1505,16 @@ set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_LEVELGEN
   "${CMAKE_CURRENT_SOURCE_DIR}/DungeonFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/DungeonStoneFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/DungeonStoneFeature.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/FarlandsLevelSource.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/FarlandsLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/FlatLevelSource.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/FlatLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/GoldDungeon.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/GoldDungeon.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/GoldIsland.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/GoldIsland.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/HellFarlandsLevelSource.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/HellFarlandsLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/HellFlatLevelSource.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/HellFlatLevelSource.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/HellRandomLevelSource.cpp"

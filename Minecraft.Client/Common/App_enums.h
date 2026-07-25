@@ -632,6 +632,7 @@ enum eGameHostOption
 	eGameHostOption_Tutorial, // special case
 	eGameHostOption_GameType,
 	eGameHostOption_LevelType, // flat or default
+	eGameHostOption_LevelTypeFarlands, // farlands or default
 	eGameHostOption_Structures, 
 	eGameHostOption_BonusChest, 
 	eGameHostOption_HasBeenInCreative,
