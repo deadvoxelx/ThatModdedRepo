@@ -4744,6 +4744,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_NUCLEAR_NUSKULL, L"Nuclear Nuskull");
 		m_stringTable->registerString(IDS_NUSA_DEMON, L"Nusa Demon");
 		m_stringTable->registerString(IDS_WORKSHOP, L"Emerald Workshop");
+		m_stringTable->registerString(IDS_FARLANDS, L"Farlands (Expect Lower Framerates)");
 
 	}
 	else
@@ -8089,6 +8090,18 @@ void CMinecraftApp::SetGameHostOption(unsigned int &uiHostSettings, eGameHostOpt
 		}
 
 		break;
+	case eGameHostOption_LevelTypeFarlands:
+		if(uiVal!=0)
+		{
+			uiHostSettings|=GAME_HOST_OPTION_BITMASK_LEVELTYPEFARLANDS;
+		}
+		else
+		{
+			// off
+			uiHostSettings&=~GAME_HOST_OPTION_BITMASK_LEVELTYPEFARLANDS;
+		}
+
+		break;
 	case eGameHostOption_Structures:
 		if(uiVal!=0)
 		{
@@ -8378,6 +8391,9 @@ unsigned int CMinecraftApp::GetGameHostOption(unsigned int uiHostSettings, eGame
 		break;
 	case eGameHostOption_LevelType:
 		return (uiHostSettings&GAME_HOST_OPTION_BITMASK_LEVELTYPE);
+		break;
+	case eGameHostOption_LevelTypeFarlands:
+		return (uiHostSettings&GAME_HOST_OPTION_BITMASK_LEVELTYPEFARLANDS);
 		break;
 	case eGameHostOption_Structures:
 		return (uiHostSettings&GAME_HOST_OPTION_BITMASK_STRUCTURES);
