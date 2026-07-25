@@ -91,6 +91,10 @@ ChunkSource *Dimension::createRandomLevelSource() const
 		{
 			return new FlatLevelSource(level, level->getSeed(), level->getLevelData()->isGenerateMapFeatures());
 		}
+		else if (levelType == LevelType::lvl_farlands)
+		{
+			return new FarlandsLevelSource(level, level->getSeed(), level->getLevelData()->isGenerateMapFeatures());
+		}
 		else
 		{
 			return new RandomLevelSource(level, level->getSeed(), level->getLevelData()->isGenerateMapFeatures());
@@ -100,6 +104,11 @@ ChunkSource *Dimension::createRandomLevelSource() const
 ChunkSource *Dimension::createFlatLevelSource() const
 {
 	return new FlatLevelSource(level, level->getSeed(), level->getLevelData()->isGenerateMapFeatures());
+}
+
+ChunkSource *Dimension::createFarlandsLevelSource() const
+{
+	return new FarlandsLevelSource(level, level->getSeed(), level->getLevelData()->isGenerateMapFeatures());
 }
 
 ChunkStorage *Dimension::createStorage(File dir)
