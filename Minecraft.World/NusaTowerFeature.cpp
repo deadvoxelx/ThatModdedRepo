@@ -1283,16 +1283,16 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Ladder
-			for (int posty = 0; posty <= 24; posty++)
+			for (int posty = 0; posty <= 23; posty++)
 			{
 				if (level->getTile(x, y + posty, z + 2) == 0)
 				{
-					placeBlock(level, x, y + posty, z + 2, Tile::nusaLog_Id, 0);
+					placeBlock(level, x, y + 1 + posty, z + 2, Tile::nusaLog_Id, 0);
 				}
 			}
-			for (int laddery = 0; laddery <= 24; laddery++)
+			for (int laddery = 0; laddery <= 23; laddery++)
 			{
-				placeBlock(level, x, y + laddery, z + 1, Tile::ladder_Id, 2);
+				placeBlock(level, x, y + 1 + laddery, z + 1, Tile::ladder_Id, 2);
 			}
 
 		//Chest/Core
@@ -1320,11 +1320,13 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 WeighedTreasure *NusaTowerFeature::nusaTowerTreasure[NusaTowerFeature::TREASURE_ITEMS_COUNT] = 
 {
 	new WeighedTreasure(Item::coal_Id, 0, 3, 7, 6),
+	new WeighedTreasure(Item::ironIngot_Id, 0, 3, 7, 6),
 	new WeighedTreasure(Item::nethanium_Id, 0, 3, 7, 6),
 	new WeighedTreasure(Tile::enchantedGravitite_Id, 0, 3, 7, 6),
 	new WeighedTreasure(Item::endorium_Id, 0, 3, 7, 6),
 	new WeighedTreasure(Item::endothaniumIngot_Id, 0, 1, 4, 3),
 	new WeighedTreasure(Item::nethaniumBread_Id, 0, 3, 7, 5),
+	new WeighedTreasure(Item::goldBread_Id, 0, 4, 9, 6),
 	new WeighedTreasure(Item::apple_gold_Id, 1, 1, 1, 2),
 	new WeighedTreasure(Item::endoriumHelmet_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::endoriumChestplate_Id, 0, 1, 1, 2),
