@@ -710,7 +710,30 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 				glPushMatrix();
 				glTranslatef(static_cast<float>(xo), static_cast<float>(yo), 50);
 				float ss = 12;
-				glScalef(-ss, ss, ss);
+				float aspectScaleX = 1.0f;
+				float aspectScaleY = 1.0f;
+
+				extern int g_rScreenWidth;
+				extern int g_rScreenHeight;
+				float screenAspect = (float)g_rScreenWidth / (float)g_rScreenHeight;
+				float targetAspect = 16.0f / 9.0f;
+				
+				// apply correction if window is not already at a 16:9 aspect ratio
+				float correction = 1.0f;
+
+				if (fabs(screenAspect - targetAspect) > 0.01f) {
+					if (g_rScreenHeight > 0) {
+						correction = 1080.0f / (float)g_rScreenHeight;
+						correction = std::clamp(correction, 0.5f, 2.0f);
+
+						if (screenAspect > targetAspect)
+							aspectScaleX = targetAspect / screenAspect;
+						else
+							aspectScaleY = screenAspect / targetAspect;
+					}
+				}
+
+				glScalef(-ss * aspectScaleX, ss * aspectScaleY, ss);
 				glRotatef(180, 0, 0, 1);
 
 				float oyr = minecraft->player->yRot;
@@ -1073,6 +1096,8 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
         if (minecraft->options->renderDebug && minecraft->player != nullptr && minecraft->level != nullptr)
         {
+			glTranslatef((float)0, (float)0, 50.0f);
+
             lines.push_back(minecraft->fpsString);
             lines.push_back(L"E: " + std::to_wstring(minecraft->level->getAllEntities().size()));
             int renderDistance = app.GetGameSettings(iPad, eGameSetting_RenderDistance);
@@ -1123,10 +1148,10 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
             int zChunkOffset = zBlockPos & 15;
 
             // Format the position like java with limited decumal places
-            WCHAR posString[44]; // Allows upto 7 digit positions (+-9_999_999)
-            swprintf(posString, 44, L"%.3f / %.5f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
+            //WCHAR posString[44]; // Allows upto 7 digit positions (+-9_999_999)
+            //swprintf(posString, 44, L"%.3f / %.5f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
 
-            lines.push_back(L"XYZ: " + std::wstring(posString));
+            //lines.push_back(L"XYZ: " + std::wstring(posString));
             lines.push_back(L"Block: " + std::to_wstring(xBlockPos) + L" " + std::to_wstring(yBlockPos) + L" " + std::to_wstring(zBlockPos));
             lines.push_back(L"Chunk: " + std::to_wstring(xChunkOffset) + L" " + std::to_wstring(yChunkOffset) + L" " + std::to_wstring(zChunkOffset) + L" in " + std::to_wstring(xChunkPos) + L" " + std::to_wstring(yChunkPos) + L" " + std::to_wstring(zChunkPos));
 
@@ -1238,6 +1263,15 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
             drawString(font, line, debugLeft, yPos, 0xffffff);
             yPos += 10;
         }
+
+		const int primaryPad = ProfileManager.GetPrimaryPad();
+		if (app.GetGameSettings(primaryPad, eGameSetting_DisplayHUD) == 1)
+		{
+			WCHAR posString[44]; // Allows upto 7 digit positions (+-9_999_999)
+			swprintf(posString, 44, L"%.3f / %.3f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
+			lines.push_back(L"XYZ: " + std::wstring(posString));
+			drawString(font, posString, 296, 220, 0x44ff00);
+		}
 
 #ifdef _WINDOWS64
 		glScalef(1, 1, 1);
