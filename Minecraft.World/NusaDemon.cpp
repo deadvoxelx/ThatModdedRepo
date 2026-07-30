@@ -17,7 +17,7 @@ NusaDemon::NusaDemon(Level *level) : Monster( level )
 	this->defineSynchedData();
 	registerAttributes();
 	setHealth(getMaxHealth());
-	setSize(2.7f, 6.0f);
+	setSize(2.2f, 6.0f);
 
 	xpReward = Enemy::XP_REWARD_LARGE;
 

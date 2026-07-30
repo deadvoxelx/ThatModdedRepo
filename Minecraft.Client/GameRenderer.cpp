@@ -913,7 +913,7 @@ void GameRenderer::updateLightTexture(float a)
                 _b = (0.25f + bb * 0.75f);
             }
 
-            if (player->hasEffect(MobEffect::nightVision))
+            if (player->hasEffect(MobEffect::nightVision))	//
             {
                 const float scale = getNightVisionScale(player, a);
                 float dist = 1.0f / _r;
@@ -925,6 +925,19 @@ void GameRenderer::updateLightTexture(float a)
                 _g = _g * (1.0f - scale) + (_g * dist) * scale;
                 _b = _b * (1.0f - scale) + (_b * dist) * scale;
             }
+
+			if (g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_FULLBRIGHT)) //
+			{
+				const float scale = 1.0f;
+                float dist = 1.0f / _r;
+                if (dist > (1.0f / _g))
+                    dist = (1.0f / _g);
+                if (dist > (1.0f / _b))
+                    dist = (1.0f / _b);
+                _r = _r * (1.0f - scale) + (_r * dist) * scale;
+                _g = _g * (1.0f - scale) + (_g * dist) * scale;
+                _b = _b * (1.0f - scale) + (_b * dist) * scale;
+			}
 
             if (_r > 1.0f)
                 _r = 1.0f;
