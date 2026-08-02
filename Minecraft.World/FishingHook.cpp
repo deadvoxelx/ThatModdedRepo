@@ -390,7 +390,7 @@ void FishingHook::readAdditionalSaveData(CompoundTag *tag)
 	xTile = tag->getShort(L"xTile");
 	yTile = tag->getShort(L"yTile");
 	zTile = tag->getShort(L"zTile");
-	lastTile = tag->getByte(L"inTile") & 0xff;
+	lastTile = tag->getByte(L"inTile") & 0x1ff;
 	shakeTime = tag->getByte(L"shake") & 0xff;
 	inGround = tag->getByte(L"inGround") == 1;
 }
