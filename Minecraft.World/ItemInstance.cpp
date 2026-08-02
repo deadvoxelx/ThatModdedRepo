@@ -105,6 +105,7 @@ shared_ptr<ItemInstance> ItemInstance::remove(int count)
 
 Item *ItemInstance::getItem() const
 {
+	if (id < 0 || id >= Item::ITEM_NUM_COUNT) return nullptr;
 	return Item::items[id];
 }
 
@@ -181,7 +182,8 @@ bool ItemInstance::isStackable()
 
 bool ItemInstance::isDamageableItem()
 {
-	return Item::items[id]->getMaxDamage() > 0;
+	Item *item = getItem();
+	return item != nullptr && item->getMaxDamage() > 0;
 }
 
 /**
@@ -193,7 +195,8 @@ bool ItemInstance::isDamageableItem()
 
 bool ItemInstance::isStackedByData()
 {
-	return Item::items[id]->isStackedByData();
+	Item *item = getItem();
+	return item != nullptr && item->isStackedByData();
 }
 
 bool ItemInstance::isDamaged()
@@ -222,7 +225,8 @@ void ItemInstance::setAuxValue(int value)
 
 int ItemInstance::getMaxDamage()
 {
-	return Item::items[id]->getMaxDamage();
+	Item *item = getItem();
+	return item == nullptr ? 0 : item->getMaxDamage();
 }
 
 bool ItemInstance::hurt(int dmg, Random *random)
@@ -504,7 +508,13 @@ void ItemInstance::setTag(CompoundTag *tag)
 
 wstring ItemInstance::getHoverName()
 {
-	wstring title = getItem()->getHoverName(shared_from_this());
+	Item *item = getItem();
+	if (item == nullptr)
+	{
+		return wstring();
+	}
+
+	wstring title = item->getHoverName(shared_from_this());
 
 	if (tag != nullptr && tag->contains(L"display"))
 	{
@@ -553,8 +563,13 @@ bool ItemInstance::hasCustomHoverName()
 
 vector<HtmlString> *ItemInstance::getHoverText(shared_ptr<Player> player, bool advanced)
 {
+	Item *item = getItem();
+	if (item == nullptr)
+	{
+		return new vector<HtmlString>();
+	}
+
 	vector<HtmlString> *lines = new vector<HtmlString>();
-	Item *item = Item::items[id];
 	HtmlString title = HtmlString(getHoverName());
 
 	if (hasCustomHoverName())
@@ -677,8 +692,13 @@ vector<HtmlString> *ItemInstance::getHoverText(shared_ptr<Player> player, bool a
 // 4J Added
 vector<HtmlString> *ItemInstance::getHoverTextOnly(shared_ptr<Player> player, bool advanced)
 {
+	Item *item = getItem();
+	if (item == nullptr)
+	{
+		return new vector<HtmlString>();
+	}
+
 	vector<HtmlString> *lines = new vector<HtmlString>();
-	Item *item = Item::items[id];
 
 	item->appendHoverText(shared_from_this(), player, lines, advanced);
 
@@ -705,7 +725,8 @@ vector<HtmlString> *ItemInstance::getHoverTextOnly(shared_ptr<Player> player, bo
 
 bool ItemInstance::isFoil()
 {
-	return getItem()->isFoil(shared_from_this());
+	Item *item = getItem();
+	return item != nullptr && item->isFoil(shared_from_this());
 }
 
 const Rarity *ItemInstance::getRarity()
