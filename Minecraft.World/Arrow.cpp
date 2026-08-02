@@ -193,7 +193,7 @@ void Arrow::tick()
 
 	{
 		int t = level->getTile(xTile, yTile, zTile);
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			Tile::tiles[t]->updateShape(level, xTile, yTile, zTile);
 			AABB *aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
@@ -397,7 +397,7 @@ void Arrow::tick()
 			shakeTime = 7;
 			setCritArrow(false);
 
-			if (lastTile != 0)
+			if (lastTile != 0 && Tile::tiles[lastTile] != nullptr)
 			{
 				Tile::tiles[lastTile]->entityInside(level, xTile, yTile, zTile, shared_from_this() );
 			}
@@ -477,7 +477,7 @@ void Arrow::readAdditionalSaveData(CompoundTag *tag)
 	yTile = tag->getShort(L"yTile");
 	zTile = tag->getShort(L"zTile");
 	lastTile = tag->getByte(L"inTile") & 0xff;
-	lastData = tag->getByte(L"inData") & 0xff;
+	lastData = tag->getByte(L"inData") & 0x1ff;
 	shakeTime = tag->getByte(L"shake") & 0xff;
 	inGround = tag->getByte(L"inGround") == 1;
 	if (tag->contains(L"damage"))
