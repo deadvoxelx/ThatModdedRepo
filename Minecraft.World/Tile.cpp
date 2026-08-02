@@ -301,6 +301,8 @@ Tile *Tile::nusaCube = NULL;
 Tile *Tile::nusaCore = NULL;
 NusaPortalTile *Tile::nusaPortal = NULL;
 
+Tile *Tile::newTile = NULL;
+
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
 Tile::ThreadStorage::ThreadStorage()
@@ -613,64 +615,67 @@ void Tile::staticCtor()
 	Tile::nusaCore = (new NusaCoreTile(253, Material::metal))			->setDestroyTime(-1)->setExplodeable(6000000)->setSoundType(SOUND_METAL)->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE)->setUseDescriptionId(IDS_TILE_NUSA_CORE);
 	Tile::nusaPortal = (NusaPortalTile *)(new NusaPortalTile(254, Material::portal))->setIconName(L"nusa_portal")->setDescriptionId(IDS_TILE_NUSA_PORTAL)->setUseDescriptionId(IDS_TILE_NUSA_PORTAL);
 
+	Tile::newTile = (new Tile(267, Material::stone))					->setLightEmission(1.0f)->setDestroyTime(2.5f)->setExplodeable(15)->setSoundType(SOUND_GLASS)->setIconName(L"glowingNustone")->setDescriptionId(IDS_TILE_NUSTONE)->setUseDescriptionId(IDS_TILE_NUSTONE);
+
+
 	// Special cases for certain items since they can have different icons
-	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 256) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
-	Item::items[clayHardened_colored_Id]= ( new WoolTileItem(Tile::clayHardened_colored_Id - 256))->setIconName(L"clayHardenedStained")->setDescriptionId(IDS_TILE_STAINED_CLAY)->setUseDescriptionId(IDS_DESC_STAINED_CLAY);
-	Item::items[woolCarpet_Id]			= ( new WoolTileItem(Tile::woolCarpet_Id - 256))->setIconName(L"woolCarpet")->setDescriptionId(IDS_TILE_CARPET)->setUseDescriptionId(IDS_DESC_CARPET);
-	Item::items[treeTrunk_Id]			= ( new MultiTextureTileItem(Tile::treeTrunk_Id - 256, treeTrunk, (int *)TreeTile::TREE_NAMES, 4) )->setIconName(L"log")->setDescriptionId(IDS_TILE_LOG)->setUseDescriptionId(IDS_DESC_LOG);
-	Item::items[wood_Id]				= ( new MultiTextureTileItem(Tile::wood_Id - 256, Tile::wood, (int *)WoodTile::WOOD_NAMES, 4, IDS_TILE_PLANKS))->setIconName(L"wood")->setDescriptionId(IDS_TILE_OAKWOOD_PLANKS)->setUseDescriptionId(IDS_DESC_LOG); //  <- TODO
-	Item::items[monsterStoneEgg_Id]		= ( new MultiTextureTileItem(Tile::monsterStoneEgg_Id - 256, monsterStoneEgg, (int *)StoneMonsterTile::STONE_MONSTER_NAMES, 3))->setIconName(L"monsterStoneEgg")->setDescriptionId(IDS_TILE_STONE_SILVERFISH)->setUseDescriptionId(IDS_DESC_STONE_SILVERFISH); // 4J - Brought forward from post-1.2 to fix stacking problem
-	Item::items[stoneBrick_Id]			= ( new MultiTextureTileItem(Tile::stoneBrick_Id - 256, stoneBrick,(int *)SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES, 4))->setIconName(L"stonebricksmooth")->setDescriptionId(IDS_TILE_STONE_BRICK_SMOOTH);
+	Item::items[wool_Id]				= ( new WoolTileItem(Tile::wool_Id- 512) )->setIconName(L"cloth")->setDescriptionId(IDS_TILE_CLOTH)->setUseDescriptionId(IDS_DESC_WOOL);
+	Item::items[clayHardened_colored_Id]= ( new WoolTileItem(Tile::clayHardened_colored_Id - 512))->setIconName(L"clayHardenedStained")->setDescriptionId(IDS_TILE_STAINED_CLAY)->setUseDescriptionId(IDS_DESC_STAINED_CLAY);
+	Item::items[woolCarpet_Id]			= ( new WoolTileItem(Tile::woolCarpet_Id - 512))->setIconName(L"woolCarpet")->setDescriptionId(IDS_TILE_CARPET)->setUseDescriptionId(IDS_DESC_CARPET);
+	Item::items[treeTrunk_Id]			= ( new MultiTextureTileItem(Tile::treeTrunk_Id - 512, treeTrunk, (int *)TreeTile::TREE_NAMES, 4) )->setIconName(L"log")->setDescriptionId(IDS_TILE_LOG)->setUseDescriptionId(IDS_DESC_LOG);
+	Item::items[wood_Id]				= ( new MultiTextureTileItem(Tile::wood_Id - 512, Tile::wood, (int *)WoodTile::WOOD_NAMES, 4, IDS_TILE_PLANKS))->setIconName(L"wood")->setDescriptionId(IDS_TILE_OAKWOOD_PLANKS)->setUseDescriptionId(IDS_DESC_LOG); //  <- TODO
+	Item::items[monsterStoneEgg_Id]		= ( new MultiTextureTileItem(Tile::monsterStoneEgg_Id - 512, monsterStoneEgg, (int *)StoneMonsterTile::STONE_MONSTER_NAMES, 3))->setIconName(L"monsterStoneEgg")->setDescriptionId(IDS_TILE_STONE_SILVERFISH)->setUseDescriptionId(IDS_DESC_STONE_SILVERFISH); // 4J - Brought forward from post-1.2 to fix stacking problem
+	Item::items[stoneBrick_Id]			= ( new MultiTextureTileItem(Tile::stoneBrick_Id - 512, stoneBrick,(int *)SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES, 4))->setIconName(L"stonebricksmooth")->setDescriptionId(IDS_TILE_STONE_BRICK_SMOOTH);
 
-	Item::items[stone_Id]				= ( new MultiTextureTileItem(Tile::stone_Id - 256,Tile::stone,(int*)StoneTile::STONE_NAMES, StoneTile::STONE_NAMES_LENGTH))->setIconName(L"stone")->setDescriptionId(IDS_TILE_STONE);
-	Item::items[endStone_Id]			= ( new MultiTextureTileItem(Tile::endStone_Id - 256, endStone,(int *)EndStoneTile::END_STONE_NAMES, 6))->setIconName(L"end_stone")->setDescriptionId(IDS_TILE_WHITESTONE);
-	Item::items[goldenclin_Id]			= ( new MultiTextureTileItem(Tile::goldenclin_Id - 256, goldenclin,(int *)GoldenclinTile::GOLDENCLIN_NAMES, 6))->setIconName(L"goldenclin")->setDescriptionId(IDS_TILE_GOLDENCLIN);
-	Item::items[netherPlanks_Id]		= ( new MultiTextureTileItem(Tile::netherPlanks_Id - 256, netherPlanks,(int *)NetherPlanksTile::NETHER_PLANK_NAMES, 4))->setIconName(L"planks_nether")->setDescriptionId(IDS_TILE_NETHER_PLANKS);
-	Item::items[aercloud_Id]			= ( new MultiTextureTileItem(Tile::aercloud_Id - 256,Tile::aercloud,(int*)AercloudTile::CLOUD_NAMES, AercloudTile::CLOUD_NAMES_LENGTH))->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD);
-	Item::items[glass_Id]				= ( new MultiTextureTileItem(Tile::glass_Id - 256,Tile::glass,(int*)GlassTile::GLASS_NAMES, GlassTile::GLASS_NAMES_LENGTH))->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS);
-	Item::items[netherLeaves_Id]		= ( new MultiTextureTileItem(Tile::netherLeaves_Id - 256,Tile::netherLeaves,(int*)NetherLeavesTile::NETHER_LEAVES_NAMES, NetherLeavesTile::NETHER_LEAVES_NAMES_LENGTH))->setIconName(L"nether_leaves")->setDescriptionId(IDS_TILE_NETHERLEAVES);
-	Item::items[holystone_Id]			= ( new MultiTextureTileItem(Tile::holystone_Id - 256,Tile::holystone,(int*)HolystoneTile::HOLYSTONE_NAMES, HolystoneTile::HOLYSTONE_NAMES_LENGTH))->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE);
-	Item::items[quicksoil_Id]			= ( new MultiTextureTileItem(Tile::quicksoil_Id - 256,Tile::quicksoil,(int*)QuicksoilTile::QUICKSOIL_NAMES, QuicksoilTile::QUICKSOIL_NAMES_LENGTH))->setIconName(L"quicksoil")->setDescriptionId(IDS_TILE_QUICKSOIL);
-	Item::items[stained_glass_Id]		= ( new MultiTextureTileItem(Tile::stained_glass_Id - 256,Tile::stained_glass,(int*)StainedGlassBlock::STAINED_GLASS_NAMES, StainedGlassBlock::STAINED_GLASS_NAMES_LENGTH))->setIconName(L"stainedGlass")->setDescriptionId(IDS_TILE_STAINED_GLASS);
-	Item::items[stained_glass_pane_Id]	= ( new MultiTextureTileItem(Tile::stained_glass_pane_Id - 256,Tile::stained_glass_pane,(int*)StainedGlassPaneBlock::STAINED_GLASS_NAMES, StainedGlassPaneBlock::STAINED_GLASS_NAMES_LENGTH))->setIconName(L"stainedGlass")->setDescriptionId(IDS_TILE_STAINED_GLASS_PANE);
-	Item::items[flower_Id]				= ( new MultiTextureTileItem(Tile::flower_Id - 256,Tile::flower,(int*)FlowerTile::FLOWER_NAMES, FlowerTile::FLOWER_NAMES_LENGTH))->setIconName(L"flower_dandelion")->setDescriptionId(IDS_TILE_FLOWER);
-	Item::items[dungeonStone_Id]		= ( new MultiTextureTileItem(Tile::dungeonStone_Id - 256,Tile::dungeonStone,(int*)DungeonStoneTile::DUNGEONSTONE_NAMES, DungeonStoneTile::DUNGEONSTONE_NAMES_LENGTH))->setIconName(L"carvedStone")->setDescriptionId(IDS_TILE_DUNGEON_STONE);
-	Item::items[dungeonLight_Id]		= ( new MultiTextureTileItem(Tile::dungeonLight_Id - 256,Tile::dungeonLight,(int*)DungeonLightTile::DUNGEONSTONE_NAMES, DungeonLightTile::DUNGEONSTONE_NAMES_LENGTH))->setIconName(L"carvedStone_light")->setDescriptionId(IDS_TILE_DUNGEON_STONE);
-	Item::items[nustone_Id]				= ( new MultiTextureTileItem(Tile::nustone_Id - 256,Tile::nustone,(int*)NustoneTile::NUSTONE_NAMES, NustoneTile::NUSTONE_NAMES_LENGTH))->setIconName(L"nustone")->setDescriptionId(IDS_TILE_NUSTONE);
-	Item::items[nusaCore_Id]			= ( new MultiTextureTileItem(Tile::nusaCore_Id - 256,Tile::nusaCore,(int*)NusaCoreTile::CORE_NAMES, NusaCoreTile::CORE_NAMES_LENGTH))->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE);
+	Item::items[stone_Id]				= ( new MultiTextureTileItem(Tile::stone_Id - 512,Tile::stone,(int*)StoneTile::STONE_NAMES, StoneTile::STONE_NAMES_LENGTH))->setIconName(L"stone")->setDescriptionId(IDS_TILE_STONE);
+	Item::items[endStone_Id]			= ( new MultiTextureTileItem(Tile::endStone_Id - 512, endStone,(int *)EndStoneTile::END_STONE_NAMES, 6))->setIconName(L"end_stone")->setDescriptionId(IDS_TILE_WHITESTONE);
+	Item::items[goldenclin_Id]			= ( new MultiTextureTileItem(Tile::goldenclin_Id - 512, goldenclin,(int *)GoldenclinTile::GOLDENCLIN_NAMES, 6))->setIconName(L"goldenclin")->setDescriptionId(IDS_TILE_GOLDENCLIN);
+	Item::items[netherPlanks_Id]		= ( new MultiTextureTileItem(Tile::netherPlanks_Id - 512, netherPlanks,(int *)NetherPlanksTile::NETHER_PLANK_NAMES, 4))->setIconName(L"planks_nether")->setDescriptionId(IDS_TILE_NETHER_PLANKS);
+	Item::items[aercloud_Id]			= ( new MultiTextureTileItem(Tile::aercloud_Id - 512,Tile::aercloud,(int*)AercloudTile::CLOUD_NAMES, AercloudTile::CLOUD_NAMES_LENGTH))->setIconName(L"aercloud")->setDescriptionId(IDS_TILE_AERCLOUD);
+	Item::items[glass_Id]				= ( new MultiTextureTileItem(Tile::glass_Id - 512,Tile::glass,(int*)GlassTile::GLASS_NAMES, GlassTile::GLASS_NAMES_LENGTH))->setIconName(L"glass")->setDescriptionId(IDS_TILE_GLASS);
+	Item::items[netherLeaves_Id]		= ( new MultiTextureTileItem(Tile::netherLeaves_Id - 512,Tile::netherLeaves,(int*)NetherLeavesTile::NETHER_LEAVES_NAMES, NetherLeavesTile::NETHER_LEAVES_NAMES_LENGTH))->setIconName(L"nether_leaves")->setDescriptionId(IDS_TILE_NETHERLEAVES);
+	Item::items[holystone_Id]			= ( new MultiTextureTileItem(Tile::holystone_Id - 512,Tile::holystone,(int*)HolystoneTile::HOLYSTONE_NAMES, HolystoneTile::HOLYSTONE_NAMES_LENGTH))->setIconName(L"holystone")->setDescriptionId(IDS_TILE_HOLYSTONE);
+	Item::items[quicksoil_Id]			= ( new MultiTextureTileItem(Tile::quicksoil_Id - 512,Tile::quicksoil,(int*)QuicksoilTile::QUICKSOIL_NAMES, QuicksoilTile::QUICKSOIL_NAMES_LENGTH))->setIconName(L"quicksoil")->setDescriptionId(IDS_TILE_QUICKSOIL);
+	Item::items[stained_glass_Id]		= ( new MultiTextureTileItem(Tile::stained_glass_Id - 512,Tile::stained_glass,(int*)StainedGlassBlock::STAINED_GLASS_NAMES, StainedGlassBlock::STAINED_GLASS_NAMES_LENGTH))->setIconName(L"stainedGlass")->setDescriptionId(IDS_TILE_STAINED_GLASS);
+	Item::items[stained_glass_pane_Id]	= ( new MultiTextureTileItem(Tile::stained_glass_pane_Id - 512,Tile::stained_glass_pane,(int*)StainedGlassPaneBlock::STAINED_GLASS_NAMES, StainedGlassPaneBlock::STAINED_GLASS_NAMES_LENGTH))->setIconName(L"stainedGlass")->setDescriptionId(IDS_TILE_STAINED_GLASS_PANE);
+	Item::items[flower_Id]				= ( new MultiTextureTileItem(Tile::flower_Id - 512,Tile::flower,(int*)FlowerTile::FLOWER_NAMES, FlowerTile::FLOWER_NAMES_LENGTH))->setIconName(L"flower_dandelion")->setDescriptionId(IDS_TILE_FLOWER);
+	Item::items[dungeonStone_Id]		= ( new MultiTextureTileItem(Tile::dungeonStone_Id - 512,Tile::dungeonStone,(int*)DungeonStoneTile::DUNGEONSTONE_NAMES, DungeonStoneTile::DUNGEONSTONE_NAMES_LENGTH))->setIconName(L"carvedStone")->setDescriptionId(IDS_TILE_DUNGEON_STONE);
+	Item::items[dungeonLight_Id]		= ( new MultiTextureTileItem(Tile::dungeonLight_Id - 512,Tile::dungeonLight,(int*)DungeonLightTile::DUNGEONSTONE_NAMES, DungeonLightTile::DUNGEONSTONE_NAMES_LENGTH))->setIconName(L"carvedStone_light")->setDescriptionId(IDS_TILE_DUNGEON_STONE);
+	Item::items[nustone_Id]				= ( new MultiTextureTileItem(Tile::nustone_Id - 512,Tile::nustone,(int*)NustoneTile::NUSTONE_NAMES, NustoneTile::NUSTONE_NAMES_LENGTH))->setIconName(L"nustone")->setDescriptionId(IDS_TILE_NUSTONE);
+	Item::items[nusaCore_Id]			= ( new MultiTextureTileItem(Tile::nusaCore_Id - 512,Tile::nusaCore,(int*)NusaCoreTile::CORE_NAMES, NusaCoreTile::CORE_NAMES_LENGTH))->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE);
 
-	Item::items[sandStone_Id]			= ( new MultiTextureTileItem(sandStone_Id - 256, sandStone, SandStoneTile::SANDSTONE_NAMES, SandStoneTile::SANDSTONE_BLOCK_NAMES) )->setIconName(L"sandStone")->setDescriptionId(IDS_TILE_SANDSTONE)->setUseDescriptionId(IDS_DESC_SANDSTONE);
-	Item::items[quartzBlock_Id]			= ( new MultiTextureTileItem(quartzBlock_Id - 256, quartzBlock, QuartzBlockTile::BLOCK_NAMES, QuartzBlockTile::QUARTZ_BLOCK_NAMES) )->setIconName(L"quartzBlock")->setDescriptionId(IDS_TILE_QUARTZ_BLOCK)->setUseDescriptionId(IDS_DESC_QUARTZ_BLOCK);
-	Item::items[stoneSlabHalf_Id]		= ( new StoneSlabTileItem(Tile::stoneSlabHalf_Id - 256, Tile::stoneSlabHalf,	Tile::stoneSlab, false) )->setIconName(L"stoneSlab")->setDescriptionId(IDS_TILE_STONESLAB)->setUseDescriptionId(IDS_DESC_HALFSLAB);
-	Item::items[stoneSlab_Id]			= ( new StoneSlabTileItem(Tile::stoneSlab_Id - 256,		Tile::stoneSlabHalf,	Tile::stoneSlab, true))->setIconName(L"stoneSlab")->setDescriptionId(IDS_DESC_STONESLAB)->setUseDescriptionId(IDS_DESC_SLAB);
+	Item::items[sandStone_Id]			= ( new MultiTextureTileItem(sandStone_Id - 512, sandStone, SandStoneTile::SANDSTONE_NAMES, SandStoneTile::SANDSTONE_BLOCK_NAMES) )->setIconName(L"sandStone")->setDescriptionId(IDS_TILE_SANDSTONE)->setUseDescriptionId(IDS_DESC_SANDSTONE);
+	Item::items[quartzBlock_Id]			= ( new MultiTextureTileItem(quartzBlock_Id - 512, quartzBlock, QuartzBlockTile::BLOCK_NAMES, QuartzBlockTile::QUARTZ_BLOCK_NAMES) )->setIconName(L"quartzBlock")->setDescriptionId(IDS_TILE_QUARTZ_BLOCK)->setUseDescriptionId(IDS_DESC_QUARTZ_BLOCK);
+	Item::items[stoneSlabHalf_Id]		= ( new StoneSlabTileItem(Tile::stoneSlabHalf_Id - 512, Tile::stoneSlabHalf,	Tile::stoneSlab, false) )->setIconName(L"stoneSlab")->setDescriptionId(IDS_TILE_STONESLAB)->setUseDescriptionId(IDS_DESC_HALFSLAB);
+	Item::items[stoneSlab_Id]			= ( new StoneSlabTileItem(Tile::stoneSlab_Id - 512,		Tile::stoneSlabHalf,	Tile::stoneSlab, true))->setIconName(L"stoneSlab")->setDescriptionId(IDS_DESC_STONESLAB)->setUseDescriptionId(IDS_DESC_SLAB);
 
-	Item::items[stoneSlab2Half_Id]		= ( new StoneSlabTileItem(Tile::stoneSlab2Half_Id - 256, Tile::stoneSlab2Half,	Tile::stoneSlab2, false) )->setIconName(L"stoneSlab")->setDescriptionId(IDS_TILE_STONESLAB)->setUseDescriptionId(IDS_DESC_HALFSLAB);
-	Item::items[stoneSlab2_Id]			= ( new StoneSlabTileItem(Tile::stoneSlab2_Id - 256,		Tile::stoneSlab2Half,	Tile::stoneSlab2, true))->setIconName(L"stoneSlab")->setDescriptionId(IDS_DESC_STONESLAB)->setUseDescriptionId(IDS_DESC_SLAB);
+	Item::items[stoneSlab2Half_Id]		= ( new StoneSlabTileItem(Tile::stoneSlab2Half_Id - 512, Tile::stoneSlab2Half,	Tile::stoneSlab2, false) )->setIconName(L"stoneSlab")->setDescriptionId(IDS_TILE_STONESLAB)->setUseDescriptionId(IDS_DESC_HALFSLAB);
+	Item::items[stoneSlab2_Id]			= ( new StoneSlabTileItem(Tile::stoneSlab2_Id - 512,		Tile::stoneSlab2Half,	Tile::stoneSlab2, true))->setIconName(L"stoneSlab")->setDescriptionId(IDS_DESC_STONESLAB)->setUseDescriptionId(IDS_DESC_SLAB);
 
-	Item::items[woodSlabHalf_Id]		= ( new StoneSlabTileItem(Tile::woodSlabHalf_Id - 256,	Tile::woodSlabHalf,		Tile::woodSlab, false))->setIconName(L"woodSlab")->setDescriptionId(IDS_DESC_WOODSLAB)->setUseDescriptionId(IDS_DESC_WOODSLAB);
-	Item::items[woodSlab_Id]			= ( new StoneSlabTileItem(Tile::woodSlab_Id - 256,		Tile::woodSlabHalf,		Tile::woodSlab, true))->setIconName(L"woodSlab")->setDescriptionId(IDS_DESC_WOODSLAB)->setUseDescriptionId(IDS_DESC_WOODSLAB);
-	Item::items[sapling_Id]				= ( new MultiTextureTileItem(Tile::sapling_Id - 256, Tile::sapling, Sapling::SAPLING_NAMES, 4) )->setIconName(L"sapling")->setDescriptionId(IDS_TILE_SAPLING)->setUseDescriptionId(IDS_DESC_SAPLING);
-	Item::items[leaves_Id]				= ( new LeafTileItem(Tile::leaves_Id - 256) )->setIconName(L"leaves")->setDescriptionId(IDS_TILE_LEAVES)->setUseDescriptionId(IDS_DESC_LEAVES);
-	Item::items[vine_Id]				= ( new ColoredTileItem(Tile::vine_Id - 256, false))->setDescriptionId(IDS_TILE_VINE)->setUseDescriptionId(IDS_DESC_VINE);
+	Item::items[woodSlabHalf_Id]		= ( new StoneSlabTileItem(Tile::woodSlabHalf_Id - 512,	Tile::woodSlabHalf,		Tile::woodSlab, false))->setIconName(L"woodSlab")->setDescriptionId(IDS_DESC_WOODSLAB)->setUseDescriptionId(IDS_DESC_WOODSLAB);
+	Item::items[woodSlab_Id]			= ( new StoneSlabTileItem(Tile::woodSlab_Id - 512,		Tile::woodSlabHalf,		Tile::woodSlab, true))->setIconName(L"woodSlab")->setDescriptionId(IDS_DESC_WOODSLAB)->setUseDescriptionId(IDS_DESC_WOODSLAB);
+	Item::items[sapling_Id]				= ( new MultiTextureTileItem(Tile::sapling_Id - 512, Tile::sapling, Sapling::SAPLING_NAMES, 4) )->setIconName(L"sapling")->setDescriptionId(IDS_TILE_SAPLING)->setUseDescriptionId(IDS_DESC_SAPLING);
+	Item::items[leaves_Id]				= ( new LeafTileItem(Tile::leaves_Id - 512) )->setIconName(L"leaves")->setDescriptionId(IDS_TILE_LEAVES)->setUseDescriptionId(IDS_DESC_LEAVES);
+	Item::items[vine_Id]				= ( new ColoredTileItem(Tile::vine_Id - 512, false))->setDescriptionId(IDS_TILE_VINE)->setUseDescriptionId(IDS_DESC_VINE);
 	int idsData[3] = {IDS_TILE_SHRUB, IDS_TILE_TALL_GRASS, IDS_TILE_FERN};
 	intArray ids = intArray(idsData, 3);
-	Item::items[tallgrass_Id]			= ( (ColoredTileItem *)(new ColoredTileItem(Tile::tallgrass_Id - 256, true))->setDescriptionId(IDS_TILE_TALL_GRASS))->setDescriptionPostfixes(ids);
-	Item::items[topSnow_Id]				= ( new SnowItem(topSnow_Id - 256, topSnow) );
-	Item::items[waterLily_Id]			= ( new WaterLilyTileItem(Tile::waterLily_Id - 256));
-	Item::items[pistonBase_Id]			= ( new PistonTileItem(Tile::pistonBase_Id - 256) )->setDescriptionId(IDS_TILE_PISTON_BASE)->setUseDescriptionId(IDS_DESC_PISTON);
-	Item::items[pistonStickyBase_Id]	= ( new PistonTileItem(Tile::pistonStickyBase_Id - 256) )->setDescriptionId(IDS_TILE_PISTON_STICK_BASE)->setUseDescriptionId(IDS_DESC_STICKY_PISTON);
-	Item::items[cobbleWall_Id]			= ( new MultiTextureTileItem(cobbleWall_Id - 256, cobbleWall, (int *)WallTile::COBBLE_NAMES, 16) )->setDescriptionId(IDS_TILE_COBBLESTONE_WALL)->setUseDescriptionId(IDS_DESC_COBBLESTONE_WALL);
+	Item::items[tallgrass_Id]			= ( (ColoredTileItem *)(new ColoredTileItem(Tile::tallgrass_Id - 512, true))->setDescriptionId(IDS_TILE_TALL_GRASS))->setDescriptionPostfixes(ids);
+	Item::items[topSnow_Id]				= ( new SnowItem(topSnow_Id - 512, topSnow) );
+	Item::items[waterLily_Id]			= ( new WaterLilyTileItem(Tile::waterLily_Id - 512));
+	Item::items[pistonBase_Id]			= ( new PistonTileItem(Tile::pistonBase_Id - 512) )->setDescriptionId(IDS_TILE_PISTON_BASE)->setUseDescriptionId(IDS_DESC_PISTON);
+	Item::items[pistonStickyBase_Id]	= ( new PistonTileItem(Tile::pistonStickyBase_Id - 512) )->setDescriptionId(IDS_TILE_PISTON_STICK_BASE)->setUseDescriptionId(IDS_DESC_STICKY_PISTON);
+	Item::items[cobbleWall_Id]			= ( new MultiTextureTileItem(cobbleWall_Id - 512, cobbleWall, (int *)WallTile::COBBLE_NAMES, 16) )->setDescriptionId(IDS_TILE_COBBLESTONE_WALL)->setUseDescriptionId(IDS_DESC_COBBLESTONE_WALL);
 	Item::items[anvil_Id]				= ( new AnvilTileItem(anvil) )->setDescriptionId(IDS_TILE_ANVIL)->setUseDescriptionId(IDS_DESC_ANVIL);
 
-	Item::items[fence_Id]				= ( new MultiTextureTileItem(fence_Id - 256, fence, (int *)FenceTile::FENCE_NAMES, 7) )->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
+	Item::items[fence_Id]				= ( new MultiTextureTileItem(fence_Id - 512, fence, (int *)FenceTile::FENCE_NAMES, 7) )->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);
 
-	for (int i = 0; i < 256; i++)
+	for (int i = 0; i < 512; i++)
 	{
 		if ( Tile::tiles[i] != NULL )
 		{
 			if( Item::items[i] == NULL)
 			{
-				Item::items[i] = new TileItem(i - 256);
+				Item::items[i] = new TileItem(i - 512);
 				Tile::tiles[i]->init();
 			}
 
@@ -1239,7 +1244,7 @@ bool Tile::mayPlace(Level *level, int x, int y, int z, int face)
 bool Tile::mayPlace(Level *level, int x, int y, int z)
 {
 	int t = level->getTile(x, y, z);
-	return t == 0 || Tile::tiles[t]->material->isReplaceable();
+	return t == 0 || Tile::tiles[t] == nullptr || Tile::tiles[t]->material->isReplaceable();	// 4J fork - unregistered tile ids (256-511 gaps) must not be deref'd
 }
 
 // 4J-PB - Adding a TestUse for tooltip display
