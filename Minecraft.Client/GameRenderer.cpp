@@ -409,7 +409,7 @@ float GameRenderer::getFov(float a, bool applyEffects)
 	}
 
 	int t = Camera::getBlockAt(mc->level, player, a);
-	if (t != 0 && Tile::tiles[t]->material == Material::water) fov = fov * 60 / 70;
+	if (t != 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == Material::water) fov = fov * 60 / 70;
 
 	return fov + fovOffsetO + (fovOffset - fovOffsetO) * a;
 
@@ -1710,7 +1710,7 @@ void GameRenderer::tickRain()
 		{
 			float xa = random->nextFloat();
 			float za = random->nextFloat();
-			if (t > 0)
+			if (t > 0 && Tile::tiles[t] != nullptr)
 			{
 				if (Tile::tiles[t]->material == Material::lava)
 				{
@@ -2024,7 +2024,7 @@ void GameRenderer::setupClearColor(float a)
 		fg = static_cast<float>(cc->y);
 		fb = static_cast<float>(cc->z);
 	}
-	else if (t != 0 && Tile::tiles[t]->material == Material::water)
+	else if (t != 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == Material::water)
 	{
 		float clearness = EnchantmentHelper::getOxygenBonus(player) * 0.2f;
 
@@ -2037,7 +2037,7 @@ void GameRenderer::setupClearColor(float a)
 		fg = static_cast<float>(greenComponent)/256 + clearness;//0.02f;
 		fb = static_cast<float>(blueComponent)/256 + clearness;//0.2f;
 	}
-	else if (t != 0 && Tile::tiles[t]->material == Material::lava)
+	else if (t != 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == Material::lava)
 	{
 		unsigned int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Under_Lava_Clear_Colour );
 		byte redComponent = ((colour>>16)&0xFF);
@@ -2191,7 +2191,7 @@ void GameRenderer::setupFog(int i, float alpha)
 		glFogi(GL_FOG_MODE, GL_EXP);
 		glFogf(GL_FOG_DENSITY, 0.1f); // was 0.06
 	}
-	else if (t > 0 && Tile::tiles[t]->material == Material::water)
+	else if (t > 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == Material::water)
 	{
 		glFogi(GL_FOG_MODE, GL_EXP);
 		if (player->hasEffect(MobEffect::waterBreathing))
@@ -2203,7 +2203,7 @@ void GameRenderer::setupFog(int i, float alpha)
 			glFogf(GL_FOG_DENSITY, 0.1f - (EnchantmentHelper::getOxygenBonus(player) * 0.03f)); // was 0.06
 		}
 	}
-	else if (t > 0 && Tile::tiles[t]->material == Material::lava)
+	else if (t > 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == Material::lava)
 	{
 		glFogi(GL_FOG_MODE, GL_EXP);
 		glFogf(GL_FOG_DENSITY, 0.05f); // was 0.06
