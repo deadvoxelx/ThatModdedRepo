@@ -1332,7 +1332,7 @@ void ClientConnection::handleChunkTilesUpdate(shared_ptr<ChunkTilesUpdatePacket>
 		for (int i = 0; i < packet->count; i++)
 		{
 			int pos = packet->positions[i];
-			int tile = packet->blocks[i] & 0xff;
+			int tile = packet->blocks[i] & 0x1ff;
 			int data = packet->data[i];
 
 
@@ -1449,7 +1449,7 @@ void ClientConnection::handleTileUpdate(shared_ptr<TileUpdatePacket> packet)
 	// This is used in creative mode as the point where a tile is first destroyed at the client end of things. Packets formed like this are potentially sent from
 	// ServerPlayerGameMode::destroyBlock
 	bool destroyTilePacket = false;
-	if( packet->block == 255 )
+	if( packet->block == 511 )
 	{
 		packet->block = 0;
 		destroyTilePacket = true;
@@ -2028,6 +2028,16 @@ void ClientConnection::handleChat(shared_ptr<ChatPacket> packet)
 	case ChatPacket::e_ChatCommandTeleportToMe:
 		message=app.GetString(IDS_COMMAND_TELEPORT_TO_ME);
 		replacePlayer = true;
+		break;
+
+	case ChatPacket::e_ChatHerobrineArrived:
+		message=app.GetString(IDS_HEROBRINE_ARRIVED);
+		break;
+	case ChatPacket::e_ChatCannotBeDone:
+		message=app.GetString(IDS_CANNOT_BE_DONE);
+		break;
+	case ChatPacket::e_ChatGameModeChanged:
+		message=app.GetString(IDS_GAME_MODE_CHANGED);
 		break;
 
 	default:
