@@ -64,7 +64,7 @@ void CreativeMode::creativeDestroyBlock(Minecraft *minecraft, GameMode *gameMode
 bool CreativeMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly, bool *pbUsedItem)
 {
 	int t = level->getTile(x, y, z);
-	if (t > 0)
+	if (t > 0 && Tile::tiles[t] != nullptr)
 	{
 		if (Tile::tiles[t]->use(level, x, y, z, player)) return true;
 	}
