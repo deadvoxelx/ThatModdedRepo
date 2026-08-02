@@ -310,7 +310,7 @@ void Fireball::readAdditionalSaveData(CompoundTag *tag)
     xTile = tag->getShort(L"xTile");
     yTile = tag->getShort(L"yTile");
     zTile = tag->getShort(L"zTile");
-    lastTile = tag->getByte(L"inTile") & 0xff;
+    lastTile = tag->getByte(L"inTile") & 0x1ff;
     inGround = tag->getByte(L"inGround") == 1;
 
 	// Load the stored direction and apply it to the fireball
