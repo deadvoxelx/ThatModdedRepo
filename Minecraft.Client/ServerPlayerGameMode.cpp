@@ -78,7 +78,7 @@ void ServerPlayerGameMode::tick()
 	{
 		int ticksSpentDestroying = gameTicks - delayedTickStart;
 		int t = level->getTile(delayedDestroyX, delayedDestroyY, delayedDestroyZ);
-		if (t == 0)
+		if (t == 0 || Tile::tiles[t] == nullptr)
 		{
 			hasDelayedDestroy = false;
 		}
@@ -150,7 +150,7 @@ void ServerPlayerGameMode::startDestroyBlock(int x, int y, int z, int face)
 	destroyProgressStart = gameTicks;
 	float progress = 1.0f;
 	int t = level->getTile(x, y, z);
-	if (t > 0)
+	if (t > 0 && Tile::tiles[t] != nullptr)
 	{
 		Tile::tiles[t]->attack(level, x, y, z, player);
 		progress = Tile::tiles[t]->getDestroyProgress(player, player->level, x, y, z);
@@ -177,7 +177,7 @@ void ServerPlayerGameMode::stopDestroyBlock(int x, int y, int z)
 	if (x == xDestroyBlock && y == yDestroyBlock && z == zDestroyBlock)
 	{
 		int t = level->getTile(x, y, z);
-		if (t != 0)
+		if (t != 0 && Tile::tiles[t] != nullptr)
 		{
 			Tile *tile = Tile::tiles[t];
 			// Anti-cheat: re-check destroy progress on the server for STOP_DESTROY.
@@ -295,7 +295,7 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z)
 	else 
 	{
 		shared_ptr<ItemInstance> item = player->getSelectedItem();
-		bool canDestroy = player->canDestroy(Tile::tiles[t]);
+		bool canDestroy = t > 0 && Tile::tiles[t] != nullptr && player->canDestroy(Tile::tiles[t]);
 		if (item != nullptr)
 		{
 			item->mineBlock(level, t, x, y, z, player);
@@ -304,7 +304,7 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z)
 				player->removeSelectedItem();
 			}
 		}
-		if (changed && canDestroy)
+		if (changed && canDestroy && t > 0 && Tile::tiles[t] != nullptr)
 		{
 			Tile::tiles[t]->playerDestroy(level, player, x, y, z, data);
 		}
@@ -348,7 +348,7 @@ bool ServerPlayerGameMode::useItemOn(shared_ptr<Player> player, Level *level, sh
 	int t = level->getTile(x, y, z);
 	if (!player->isSneaking() || player->getCarriedItem() == nullptr)
 	{
-		if (t > 0 && player->isAllowedToUse(Tile::tiles[t]))
+		if (t > 0 && Tile::tiles[t] != nullptr && player->isAllowedToUse(Tile::tiles[t]))
 		{
 			if(bTestUseOnOnly)
 			{
