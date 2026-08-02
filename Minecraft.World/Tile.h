@@ -451,6 +451,8 @@ public:
 	static const int nusaCore_Id = 253;
 	static const int nusaPortal_Id = 254;
 
+	static const int newTile_Id = 267;
+
 	static Tile *stone;
 	static GrassTile *grass;
 	static Tile *dirt;
@@ -705,6 +707,8 @@ public:
 	static Tile *nusaCube;
 	static Tile *nusaCore;
 	static NusaPortalTile *nusaPortal;
+
+	static Tile *newTile;
 
 	static void staticCtor();
 
