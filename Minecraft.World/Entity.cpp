@@ -1023,7 +1023,7 @@ void Entity::move(double xa, double ya, double za, bool noEntityCubes)   // 4J -
 		walkDist += Mth::sqrt(xm * xm + zm * zm) * 0.6;
 		moveDist += Mth::sqrt(xm * xm + ym * ym + zm * zm) * 0.6;
 
-		if (moveDist > nextStep && t > 0)
+		if (moveDist > nextStep && t > 0 && Tile::tiles[t] != nullptr)
 		{
 			nextStep = static_cast<int>(moveDist) + 1;
 			if (isInWater())
@@ -1081,7 +1081,7 @@ void Entity::checkInsideTiles()
 				for (int z = z0; z <= z1; z++)
 				{
 					int t = level->getTile(x, y, z);
-					if (t > 0)
+					if (t > 0 && Tile::tiles[t] != nullptr)
 					{
 						Tile::tiles[t]->entityInside(level, x, y, z, shared_from_this());
 					}
@@ -1092,6 +1092,7 @@ void Entity::checkInsideTiles()
 
 void Entity::playStepSound(int xt, int yt, int zt, int t)
 {
+	if (t <= 0 || Tile::tiles[t] == nullptr) return;
 	const Tile::SoundType *soundType = Tile::tiles[t]->soundType;
 	MemSect(31);
 
@@ -1222,7 +1223,7 @@ bool Entity::isUnderLiquid(Material *material)
 	int yt = Mth::floor(yp);	// 4J - this used to be a nested pair of floors for some reason
 	int zt = Mth::floor(z);
 	int t = level->getTile(xt, yt, zt);
-	if (t != 0 && Tile::tiles[t]->material == material) {
+	if (t > 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == material) {
 		float hh = LiquidTile::getHeight(level->getData(xt, yt, zt)) - 1 / 9.0f;
 		float h = yt + 1 - hh;
 		return yp < h;
