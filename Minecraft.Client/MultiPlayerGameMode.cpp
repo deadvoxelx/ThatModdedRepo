@@ -141,8 +141,8 @@ void MultiPlayerGameMode::startDestroyBlock(int x, int y, int z, int face)
         }
         connection->send(std::make_shared<PlayerActionPacket>(PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
         int t = minecraft->level->getTile(x, y, z);
-        if (t > 0 && destroyProgress == 0) Tile::tiles[t]->attack(minecraft->level, x, y, z, minecraft->player);
-        if (t > 0 &&
+        if (t > 0 && Tile::tiles[t] != nullptr && destroyProgress == 0) Tile::tiles[t]->attack(minecraft->level, x, y, z, minecraft->player);
+        if (t > 0 && Tile::tiles[t] != nullptr &&
 			(Tile::tiles[t]->getDestroyProgress(minecraft->player, minecraft->player->level, x, y, z) >= 1
 			// ||(app.DebugSettingsOn() && app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_InstantDestroy))
 			)
@@ -201,7 +201,7 @@ void MultiPlayerGameMode::continueDestroyBlock(int x, int y, int z, int face)
     if (sameDestroyTarget(x, y, z))
 	{
         int t = minecraft->level->getTile(x, y, z);
-        if (t == 0)
+        if (t == 0 || Tile::tiles[t] == nullptr)
 		{
             isDestroying = false;
             return;
@@ -297,7 +297,7 @@ bool MultiPlayerGameMode::useItemOn(shared_ptr<Player> player, Level *level, sha
 	if (!player->isSneaking() || player->getCarriedItem() == nullptr)
 	{
 		int t = level->getTile(x, y, z);	
-		if (t > 0 && player->isAllowedToUse(Tile::tiles[t]))
+		if (t > 0 && Tile::tiles[t] != nullptr && player->isAllowedToUse(Tile::tiles[t]))
 		{
 			if(bTestUseOnly)
 			{
@@ -368,7 +368,7 @@ bool MultiPlayerGameMode::useItemOn(shared_ptr<Player> player, Level *level, sha
 		// the source of the event.
 		// ---------------------------------------------------------------------------------
 		// Only call soundOnly version if we didn't already call the tile's use method above
-		if( !didSomething && ( t > 0 ) && ( !bTestUseOnly ) && player->isAllowedToUse(Tile::tiles[t]) )
+		if( !didSomething && ( t > 0 ) && Tile::tiles[t] != nullptr && ( !bTestUseOnly ) && player->isAllowedToUse(Tile::tiles[t]) )
 		{
 			Tile::tiles[t]->use(level, x, y, z, player, face, clickX, clickY, clickZ, true);
 		}
