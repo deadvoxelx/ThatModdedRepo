@@ -135,11 +135,11 @@ int WaterLevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, in
 
 	if( includeLighting )
 	{
-	    return s + s / 2 * 3;
+	    return s * 2 + s / 2 * 3;
 	}
 	else
 	{
-		return s + s / 2;
+		return s * 2 + s / 2;
 	}
 }
 
