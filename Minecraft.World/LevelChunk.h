@@ -51,6 +51,7 @@ public:
 	bool isRenderChunkEmpty(int y);
 	void setBlockData(byteArray data);	// Set block data to that passed in in the input array of size 32768
 	void getBlockData(byteArray data);	// Sets data in passed in array of size 32768, from the block data in this chunk
+	void getBlockData16(unsigned short *data);
 	int getBlocksAllocatedSize(int *count0, int *count1, int *count2, int *count4, int *count8);
 
 	bool loaded;
