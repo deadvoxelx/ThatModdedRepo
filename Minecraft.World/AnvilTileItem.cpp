@@ -2,7 +2,7 @@
 #include "net.minecraft.world.level.tile.h"
 #include "AnvilTileItem.h"
 
-AnvilTileItem::AnvilTileItem(Tile *tile) : MultiTextureTileItem(tile->id - 256, tile, (int *)AnvilTile::ANVIL_NAMES, 3)
+AnvilTileItem::AnvilTileItem(Tile *tile) : MultiTextureTileItem(tile->id - 512, tile, (int *)AnvilTile::ANVIL_NAMES, 3)
 {
 }
 
