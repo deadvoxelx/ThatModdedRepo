@@ -40,6 +40,10 @@ shared_ptr<ItemInstance> Inventory::getSelected()
 	// sanity checking to prevent exploits
 	if (selected < SELECTION_SIZE && selected >= 0)
 	{
+		if (items[selected] != nullptr && items[selected]->getItem() == nullptr)
+		{
+			return nullptr;
+		}
 		return items[selected];
 	}
 	return nullptr;
