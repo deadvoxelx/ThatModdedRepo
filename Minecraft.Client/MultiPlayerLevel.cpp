@@ -725,9 +725,9 @@ void MultiPlayerLevel::animateTickDoWork()
 			{
 				addParticle(eParticleType_depthsuspend, x + random->nextFloat(), y + random->nextFloat(), z + random->nextFloat(), 0, 0, 0);
 			}
-			else if (t > 0)
+			else if (t > 0 && Tile::tiles[t] != nullptr)
 			{
-				Tile::tiles[t]->animateTick(this, x, y, z, animateRandom);
+  				Tile::tiles[t]->animateTick(this, x, y, z, animateRandom);
 			}
 		}
 	}
