@@ -322,7 +322,7 @@ void ServerPlayer::doTickA()
 				shared_ptr<Packet> packet = (dynamic_cast<ComplexItem *>(Item::items[ie->id])->getUpdatePacket(ie, level, dynamic_pointer_cast<Player>( shared_from_this() ) ) );
 				if (packet != nullptr)
 				{
-					connection->send(packet);
+						connection->send(packet);
 				}
 			}
 		}
@@ -1551,6 +1551,19 @@ void ServerPlayer::displayClientMessage(int messageId)
 				player->connection->send(std::make_shared<ChatPacket>(name, ChatPacket::e_ChatPlayerMaxBoats));
 			}
 		}
+		break;
+
+	case IDS_HEROBRINE_ARRIVED:
+		messageType = ChatPacket::e_ChatHerobrineArrived;
+		connection->send(std::make_shared<ChatPacket>(L"", messageType));
+		break;
+	case IDS_CANNOT_BE_DONE:
+		messageType = ChatPacket::e_ChatCannotBeDone;
+		connection->send(std::make_shared<ChatPacket>(L"", messageType));
+		break;
+	case IDS_GAME_MODE_CHANGED:
+		messageType = ChatPacket::e_ChatGameModeChanged;
+		connection->send(std::make_shared<ChatPacket>(L"", messageType));
 		break;
 
 	default:
