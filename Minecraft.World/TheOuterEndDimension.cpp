@@ -67,7 +67,7 @@ bool TheOuterEndDimension::isValidSpawn(int x, int z) const
 {
     int topTile = level->getTopTile(x, z);
 
-    if (topTile == 0) return false;
+    if (topTile == 0 || Tile::tiles[topTile] == nullptr) return false;
 
     return Tile::tiles[topTile]->material->blocksMotion();
 }
