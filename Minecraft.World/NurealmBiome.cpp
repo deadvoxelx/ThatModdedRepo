@@ -25,3 +25,8 @@ Feature *NurealmBiome::getGrassFeature(Random *random)
 {
 	return new TallGrassFeature(Tile::nusaShrub_Id, 0);
 }
+
+int NurealmBiome::getSkyColor(float temp)
+{
+	return 0x2d002a;
+}
