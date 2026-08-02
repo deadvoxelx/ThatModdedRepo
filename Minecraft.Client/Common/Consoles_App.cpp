@@ -8813,6 +8813,8 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_NUSKULL);
 	case eTYPE_NUCLEAR_NUSKULL:
 		return app.GetString(IDS_NUCLEAR_NUSKULL);
+	case eTYPE_NUSA_DEMON:
+		return app.GetString(IDS_NUSA_DEMON);
 	};
 
 	return L"";
