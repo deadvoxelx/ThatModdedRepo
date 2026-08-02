@@ -18,11 +18,11 @@ const wstring FireTile::TEXTURE_SECOND = L"fire_1";
 
 FireTile::FireTile(int id) : Tile(id, Material::fire,isSolidRender())
 {
-	flameOdds = new int[256];
-	memset( flameOdds,0,sizeof(int)*256);
+	flameOdds = new int[512];
+	memset( flameOdds,0,sizeof(int)*512);
 
-	burnOdds = new int[256];
-	memset( burnOdds,0,sizeof(int)*256);
+	burnOdds = new int[512];
+	memset( burnOdds,0,sizeof(int)*512);
 
 	icons = NULL;
 
