@@ -30,7 +30,7 @@ void IUIScene_CreativeMenu::staticCtor()
 
 	// Building Blocks
 	DEF(eCreativeInventory_BuildingBlocks)
-		ITEM(Tile::nusaPortal_Id)		// Voxel - here for test purposes
+		//ITEM(Tile::nusaPortal_Id)		// Voxel - here for test purposes
 		ITEM(Tile::grass_Id)
 		ITEM(Tile::mycel_Id)
 		ITEM(Tile::dirt_Id)
