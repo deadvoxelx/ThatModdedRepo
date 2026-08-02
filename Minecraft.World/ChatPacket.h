@@ -107,6 +107,10 @@ public:
 		e_ChatCommandTeleportMe,
 		e_ChatCommandTeleportToMe,
 
+		e_ChatHerobrineArrived,
+		e_ChatCannotBeDone,
+		e_ChatGameModeChanged,
+
 	};
 
 public:
