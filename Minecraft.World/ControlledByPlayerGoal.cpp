@@ -70,7 +70,7 @@ void ControlledByPlayerGoal::tick()
 	{
 		friction = 0.6f * 0.91f;
 		int t = mob->level->getTile(x,y,z);
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			friction = Tile::tiles[t]->friction * 0.91f;
 		}
