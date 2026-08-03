@@ -35,4 +35,5 @@ public:
 	static const float EXHAUSTION_WALK;
 	static const float EXHAUSTION_SPRINT;
 	static const float EXHAUSTION_SWIM;
+	static const float EXHAUSTION_DASH;
 };
