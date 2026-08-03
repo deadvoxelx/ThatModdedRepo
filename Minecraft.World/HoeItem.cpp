@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
+#include "net.minecraft.world.entity.player.h"
 #include "ItemInstance.h"
 #include "HoeItem.h"
 
@@ -49,16 +49,23 @@ float HoeItem::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *tile
 
 bool HoeItem::mineBlock(shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, shared_ptr<LivingEntity> owner)
 {
-	// Don't damage weapons if the tile can be destroyed in one hit.
-	if (Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0) itemInstance->hurtAndBreak(1, owner);
+	if (Tile::tiles[tile] != nullptr && Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0) itemInstance->hurtAndBreak(1, owner);
+	if (id == Item::holystoneHoe_Id)
+	{
+		if (!level->isClientSide)
+		{
+			if (random->nextInt(10) == 0)
+			{
+				owner->spawnAtLocation(Item::ambrosiumShard->id, 1);
+			}
+		}
+	}
 	return true;
 }
 
 bool HoeItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
 {
 	if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
-
-	// 4J-PB - Adding a test only version to allow tooltips to be displayed
 
 	int targetType = level->getTile(x, y, z);
 	int above = level->getTile(x, y + 1, z);
@@ -76,7 +83,6 @@ bool HoeItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> player
 		}
 		return true;
 	}
-
 	return false;
 }
 
