@@ -2406,6 +2406,26 @@ void LevelChunk::setBlockData(byteArray data)
 	if(data.length > Level::COMPRESSED_CHUNK_SECTION_TILES) upperBlocks->setData(data,Level::COMPRESSED_CHUNK_SECTION_TILES);
 }
 
+void LevelChunk::sanitizeBlocks()
+{
+	for (int y = 0; y < Level::maxBuildHeight; y++)
+	{
+		CompressedTileStorage *blocks = y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperBlocks : lowerBlocks;
+		int yl = y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+		for (int x = 0; x < 16; x++)
+		{
+			for (int z = 0; z < 16; z++)
+			{
+				int tile = blocks->get(x, yl, z);
+				if (tile != 0 && (tile >= Tile::TILE_NUM_COUNT || Tile::tiles[tile] == nullptr))
+				{
+					blocks->set(x, yl, z, 0);
+				}
+			}
+		}
+	}
+}
+
 // Sets data in passed in array of size 32768, from the block data in this chunk
 void LevelChunk::getBlockData(byteArray data)
 {
