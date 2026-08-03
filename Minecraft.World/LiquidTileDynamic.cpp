@@ -181,7 +181,7 @@ void LiquidTileDynamic::trySpreadTo(Level *level, int x, int y, int z, int neigh
 	{
 		{
 			int old = level->getTile(x, y, z);
-			if (old > 0)
+			if (old > 0 && Tile::tiles[old] != nullptr)
 			{
 				if (material == Material::lava)
 				{
@@ -300,6 +300,7 @@ bool LiquidTileDynamic::isWaterBlocking(Level *level, int x, int y, int z)
 		return true;
 	}
 	if (t == 0) return false;
+	if (Tile::tiles[t] == nullptr) return false;
 	Material *m = Tile::tiles[t]->material;
 	if (m == Material::portal) return true;
 	if (m->blocksMotion()) return true;
