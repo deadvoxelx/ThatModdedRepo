@@ -194,7 +194,6 @@ bool DoorTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player,
 		return false;
 	}
 
-	// Match vanilla Java: iron doors don't consume right-click so held items still fire.
 	if (material == Material::metal) return false;
 
 	int compositeData = getCompositeData(level, x, y, z);
@@ -267,7 +266,7 @@ void DoorTile::neighborChanged(Level *level, int x, int y, int z, int type)
 		else
 		{
 			bool signal = level->hasNeighborSignal(x, y, z) || level->hasNeighborSignal(x, y + 1, z);
-			if ((signal || (type > 0 && Tile::tiles[type]->isSignalSource())) && type != id)
+			if ((signal || (type > 0 && Tile::tiles[type] != nullptr && Tile::tiles[type]->isSignalSource())) && type != id)
 			{
 				setOpen(level, x, y, z, signal);
 			}
