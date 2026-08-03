@@ -151,7 +151,7 @@ void PumpkinTile::onPlace(Level *level, int x, int y, int z)
 bool PumpkinTile::mayPlace(Level *level, int x, int y, int z)
 {
 	int t = level->getTile(x, y, z);
-	return (t == 0 || Tile::tiles[t]->material->isReplaceable()) && level->isTopSolidBlocking(x, y - 1, z);
+	return (t == 0 || Tile::tiles[t] == nullptr || Tile::tiles[t]->material->isReplaceable()) && level->isTopSolidBlocking(x, y - 1, z);
 
 }
 
