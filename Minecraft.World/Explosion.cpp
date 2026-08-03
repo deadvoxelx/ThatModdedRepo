@@ -69,7 +69,7 @@ void Explosion::explode()
 					int yt = Mth::floor(yp);
 					int zt = Mth::floor(zp);
 					int t = level->getTile(xt, yt, zt);
-					if (t > 0)
+					if (t > 0 && Tile::tiles[t] != nullptr)
 					{
 						Tile *tile = Tile::tiles[t];
 						float resistance = source != nullptr ? source->getTileExplosionResistance(this, level, xt, yt, zt, tile) : tile->getExplosionResistance(source);
@@ -228,7 +228,7 @@ void Explosion::finalizeExplosion(bool generateParticles, vector<TilePos> *toBlo
 				}
 			}
 
-			if (t > 0)
+			if (t > 0 && Tile::tiles[t] != nullptr)
 			{
 				Tile *tile = Tile::tiles[t];
 
