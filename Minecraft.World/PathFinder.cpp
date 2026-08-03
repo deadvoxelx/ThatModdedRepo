@@ -228,6 +228,7 @@ int PathFinder::isFree(Entity *entity, int x, int y, int z, Node *size, bool avo
 				}
 
 				Tile *tile = Tile::tiles[tileId];
+				if (tile == nullptr) return TYPE_BLOCKED;
 
 				// 4J Stu - Use new getTileRenderShape passing in the tileId we have already got
 				if (entity->level->getTileRenderShape(tileId) == Tile::SHAPE_RAIL)
