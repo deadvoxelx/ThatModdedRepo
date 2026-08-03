@@ -2542,7 +2542,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				// 4J-PB - very special case for boat and empty bucket and glass bottle and more
 				bool bUseItem = gameMode->useItem(player, level, itemInstance, true);
 
-				switch (itemInstance->getItem()->id)
+				switch ((itemInstance->getItem() != nullptr) ? itemInstance->getItem()->id : -1)
 				{
 					// food
 				case Item::potatoBaked_Id:
@@ -2747,7 +2747,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 						 */
 						if (bUseItemOn && itemInstance!=nullptr)
 						{
-							switch (itemInstance->getItem()->id)
+							switch ((itemInstance->getItem() != nullptr) ? itemInstance->getItem()->id : -1)
 							{
 							case Tile::mushroom_brown_Id:
 							case Tile::mushroom_red_Id:
@@ -2892,7 +2892,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 							// special case for a cauldron of water and an empty bottle
 							if (itemInstance)
 							{
-								int iID=itemInstance->getItem()->id;
+								int iID=(itemInstance->getItem()!=nullptr)?itemInstance->getItem()->id:0;
 								int currentData = level->getData(x, y, z);
 								if ((iID==Item::glassBottle_Id) && (currentData > 0))
 								{
@@ -2924,7 +2924,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 						case Tile::jukebox_Id:
 							if (!bUseItemOn && itemInstance!=nullptr)
 							{
-								int iID=itemInstance->getItem()->id;
+								int iID=(itemInstance->getItem()!=nullptr)?itemInstance->getItem()->id:0;
 								if ( (iID>=Item::record_01_Id) && (iID<=Item::record_12_Id) )
 								{
 									*piUse=IDS_TOOLTIPS_PLAY;
@@ -2944,7 +2944,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 						case Tile::flowerPot_Id:
 							if ( !bUseItemOn && (itemInstance != nullptr) && (iData == 0) )
 							{
-								int iID = itemInstance->getItem()->id;
+								int iID = (itemInstance->getItem() != nullptr) ? itemInstance->getItem()->id : 0;
 								if (iID<256) // is it a tile?
 								{
 									switch(iID)
@@ -3014,7 +3014,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 					{
 						heldItem = player->inventory->getSelected();
 					}
-					int heldItemId = heldItem != nullptr ? heldItem->getItem()->id : -1;
+					int heldItemId = (heldItem != nullptr && heldItem->getItem() != nullptr) ? heldItem->getItem()->id : -1;
 
 					switch(entityType)
 					{
