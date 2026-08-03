@@ -40,6 +40,11 @@
 #include "..\Minecraft.Client\Textures.h"
 #include "..\Minecraft.Client\LocalPlayer.h"
 #include "..\Minecraft.Client\HumanoidModel.h"
+#include "..\Minecraft.Client\Input.h"
+
+#ifdef _WINDOWS64
+#include "..\Minecraft.Client\Windows64\KeyboardMouseInput.h"
+#endif
 
 void Player::_init()
 {
@@ -103,7 +108,9 @@ void Player::_init()
 
 	enderChestInventory = std::make_shared<PlayerEnderChestContainer>();
 
-	m_bAwardedOnARail=false;
+	m_bAwardedOnARail = false;
+
+	dashTimer = 0;
 }
 
 Player::Player(Level *level, const wstring &name) : LivingEntity( level )
@@ -317,6 +324,18 @@ void Player::tick()
 	else if ((!isSneaking()) && (!isSleeping()))
 	{
 		setSize(0.6f, 1.8f);
+	}
+
+	if (!g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_DASH)) dashTimer = 5;
+	if (g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_DASH) && (dashTimer > 0) && (getFoodData()->getFoodLevel() >= 6))
+	{
+		--dashTimer;
+		Vec3* viewVector = getViewVector(1.0f);
+
+		xd = static_cast<float>(viewVector->x) * 0.75;
+		zd = static_cast<float>(viewVector->z) * 0.75;
+
+		causeFoodExhaustion(FoodConstants::EXHAUSTION_DASH);
 	}
 
 	xCloakO = xCloak;
@@ -2282,7 +2301,7 @@ bool Player::mayDestroyBlockAt(int x, int y, int z)
 		return true;
 	}
 	int t = level->getTile(x, y, z);
-	if (t > 0) {
+	if (t > 0 && Tile::tiles[t] != nullptr) {
 		Tile *tile = Tile::tiles[t];
 
 		if (tile->material->isDestroyedByHand())
