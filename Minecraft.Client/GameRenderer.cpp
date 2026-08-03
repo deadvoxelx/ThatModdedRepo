@@ -122,6 +122,7 @@ GameRenderer::GameRenderer(Minecraft *mc)
 	fogBr = 0.0f;
 	cameraFlip = 0;
 	_updateLightTexture = false;
+	fullbrightToggled = false;
 	blr = 0.0f;
 	blrt = 0.0f;
 	blg = 0.0f;
@@ -853,6 +854,11 @@ void GameRenderer::tickLightTexture()
 
 void GameRenderer::updateLightTexture(float a)
 {
+	if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_FULLBRIGHT))
+	{
+		fullbrightToggled = !fullbrightToggled;
+	}
+
     CachePlayerGammas();
 
     for (int j = 0; j < XUSER_MAX_COUNT; j++)
@@ -926,7 +932,7 @@ void GameRenderer::updateLightTexture(float a)
                 _b = _b * (1.0f - scale) + (_b * dist) * scale;
             }
 
-			if (g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_FULLBRIGHT)) //
+			if (fullbrightToggled)
 			{
 				const float scale = 1.0f;
                 float dist = 1.0f / _r;
