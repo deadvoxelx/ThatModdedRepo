@@ -439,6 +439,7 @@ LevelChunk *OldChunkStorage::load(Level *level, DataInputStream *dis)
 	}
 
 	levelChunk->readCompressedBlockData(dis);
+	levelChunk->sanitizeBlocks();
 	levelChunk->readCompressedDataData(dis);
 	levelChunk->readCompressedSkyLightData(dis);
 	levelChunk->readCompressedBlockLightData(dis);
@@ -504,8 +505,10 @@ LevelChunk *OldChunkStorage::load(Level *level, CompoundTag *tag)
 	LevelChunk *levelChunk = new LevelChunk(level, x, z);
 	// 4J - the original code uses the data in the tag directly, but this is now just used as a source when creating the compressed data, so
 	// we need to free up the data in the tag once we are done
-	levelChunk->setBlockData(tag->getByteArray(L"Blocks"));
-	delete [] tag->getByteArray(L"Blocks").data;
+	byteArray blocks = tag->getByteArray(L"Blocks");
+	levelChunk->setBlockData(blocks);
+	delete [] blocks.data;
+	levelChunk->sanitizeBlocks();
 	//	levelChunk->blocks = tag->getByteArray(L"Blocks");
 
 	// 4J - the original code uses the data in the tag directly, but this is now just used as a source when creating the compressed data, so
