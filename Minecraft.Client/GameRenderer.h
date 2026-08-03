@@ -121,6 +121,7 @@ private:
     int64_t lastNsTime;
 	// 4J - changes brought forward from 1.8.2
 	bool _updateLightTexture;
+	bool fullbrightToggled;
 public:
 	float blr;
 	float blrt;
