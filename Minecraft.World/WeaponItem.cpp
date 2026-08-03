@@ -60,7 +60,7 @@ bool WeaponItem::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Liv
 bool WeaponItem::mineBlock(shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, shared_ptr<LivingEntity> owner)
 {
 	// Don't damage weapons if the tile can be destroyed in one hit.
-	if (Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0) itemInstance->hurtAndBreak(2, owner);
+	if (Tile::tiles[tile] != nullptr && Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0) itemInstance->hurtAndBreak(2, owner);
 	return true;
 }
 
