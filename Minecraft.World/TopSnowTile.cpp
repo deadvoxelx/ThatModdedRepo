@@ -76,7 +76,7 @@ bool TopSnowTile::mayPlace(Level *level, int x, int y, int z)
 	if (t == id && (level->getData(x, y - 1, z) & HEIGHT_MASK) == MAX_HEIGHT + 1) return true;
 	// 4J Stu - Assume when placing that this is the server level and we don't care how it's going to be rendered
 	// Fix for #9407 - Gameplay: Destroying a block of snow on top of trees, removes any adjacent snow.
-	if (t != Tile::leaves_Id && !Tile::tiles[t]->isSolidRender(true)) return false;
+	if (t != Tile::leaves_Id && (Tile::tiles[t] == nullptr || !Tile::tiles[t]->isSolidRender(true))) return false;
 	return level->getMaterial(x, y - 1, z)->blocksMotion();
 }
 
