@@ -172,7 +172,7 @@ void LivingEntity::checkFallDamage(double ya, bool onGround)
 			}
 		}
 
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			Tile::tiles[t]->fallOn(level, xt, yt, zt, shared_from_this(), fallDistance);
 		}
@@ -1084,7 +1084,7 @@ void LivingEntity::causeFallDamage(float distance)
 		hurt(DamageSource::fall, dmg);
 
 		int t = level->getTile( Mth::floor(x), Mth::floor(y - 0.2f - this->heightOffset), Mth::floor(z));
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			const Tile::SoundType *soundType = Tile::tiles[t]->soundType;
 			MemSect(31);
@@ -1502,7 +1502,7 @@ void LivingEntity::travel(float xa, float ya)
 		{
 			friction = 0.6f * 0.91f;
 			int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1, Mth::floor(z));
-			if (t > 0)
+			if (t > 0 && Tile::tiles[t] != nullptr)
 			{
 				friction = Tile::tiles[t]->friction * 0.91f;
 			}
@@ -1527,7 +1527,7 @@ void LivingEntity::travel(float xa, float ya)
 		{
 			friction = 0.6f * 0.91f;
 			int t = level->getTile( Mth::floor(x), Mth::floor(bb->y0) - 1, Mth::floor(z));
-			if (t > 0)
+			if (t > 0 && Tile::tiles[t] != nullptr)
 			{
 				friction = Tile::tiles[t]->friction * 0.91f;
 			}
