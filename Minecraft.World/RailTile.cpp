@@ -26,7 +26,7 @@ void RailTile::registerIcons(IconRegister *iconRegister)
 
 void RailTile::updateState(Level *level, int x, int y, int z, int data, int dir, int type)
 {
-	if (type > 0 && Tile::tiles[type]->isSignalSource())
+	if (type > 0 && Tile::tiles[type] != nullptr && Tile::tiles[type]->isSignalSource())
 	{
 		if (Rail(level, x, y, z).countPotentialConnections() == 3)
 		{
