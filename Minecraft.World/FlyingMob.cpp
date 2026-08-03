@@ -46,7 +46,7 @@ void FlyingMob::travel(float xa, float ya)
 		{
 			friction = 0.6f * 0.91f;
 			int t = level->getTile( Mth::floor(x), Mth::floor(bb->y0) - 1, Mth::floor(z));
-			if (t > 0)
+			if (t > 0 && Tile::tiles[t] != nullptr)
 			{
 				friction = Tile::tiles[t]->friction * 0.91f;
 			}
@@ -60,7 +60,7 @@ void FlyingMob::travel(float xa, float ya)
 		{
 			friction = 0.6f * 0.91f;
 			int t = level->getTile( Mth::floor(x), Mth::floor(bb->y0) - 1, Mth::floor(z));
-			if (t > 0)
+			if (t > 0 && Tile::tiles[t] != nullptr)
 			{
 				friction = Tile::tiles[t]->friction * 0.91f;
 			}
