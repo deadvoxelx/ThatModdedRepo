@@ -117,7 +117,7 @@ void FenceGateTile::neighborChanged(Level *level, int x, int y, int z, int type)
 	int data = level->getData(x, y, z);
 
 	bool signal = level->hasNeighborSignal(x, y, z);
-	if (signal || ((type > 0 && Tile::tiles[type]->isSignalSource()) || type == 0))
+	if (signal || ((type > 0 && Tile::tiles[type] != nullptr && Tile::tiles[type]->isSignalSource()) || type == 0))
 	{
 		if (signal && !isOpen(data))
 		{
