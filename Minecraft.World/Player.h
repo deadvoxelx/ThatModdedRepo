@@ -32,6 +32,7 @@ class Merchant;
 class PlayerEnderChestContainer;
 class GameType;
 class Scoreboard;
+class Input;
 
 class Player : public LivingEntity, public CommandSender, public ScoreHolder
 {
@@ -47,7 +48,12 @@ public:
 
 	// 4J-PB - added for a red death fade in the gui
 	static const int DEATHFADE_DURATION = 21;
+
+	Input *input;
+
 private:
+	int dashTimer;
+
 	static const int FLY_ACHIEVEMENT_SPEED = 25;
 
 	static const int DATA_PLAYER_FLAGS_ID = 16;
