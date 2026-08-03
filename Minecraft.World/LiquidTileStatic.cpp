@@ -54,7 +54,7 @@ void LiquidTileStatic::tick(Level *level, int x, int y, int z, Random *random)
 					return;
 				}
 			}
-			else if (Tile::tiles[t]->material->blocksMotion())
+			else if (Tile::tiles[t] != nullptr && Tile::tiles[t]->material->blocksMotion())
 			{
 				return;
 			}
