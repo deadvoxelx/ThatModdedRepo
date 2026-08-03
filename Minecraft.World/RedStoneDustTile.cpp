@@ -361,7 +361,7 @@ bool RedStoneDustTile::shouldConnectTo(LevelSource *level, int x, int y, int z, 
 		int data = level->getData(x, y, z);
 		return direction == (data & DiodeTile::DIRECTION_MASK) || direction == Direction::DIRECTION_OPPOSITE[data & DiodeTile::DIRECTION_MASK];
 	}
-	else if (Tile::tiles[t]->isSignalSource() && direction != Direction::UNDEFINED) return true;
+	else if (Tile::tiles[t] != nullptr && Tile::tiles[t]->isSignalSource() && direction != Direction::UNDEFINED) return true;
 
 	return false;
 }
