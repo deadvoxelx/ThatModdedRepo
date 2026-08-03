@@ -157,6 +157,10 @@ void ItemInstance::load(CompoundTag *compoundTag)
 {
 	popTime = 0;
 	id = compoundTag->getShort(L"id");
+	if (id < 0 || id >= Item::ITEM_NUM_COUNT || Item::items[id] == nullptr)
+	{
+		id = 0;
+	}
 	count = compoundTag->getByte(L"Count");
 	auxValue = compoundTag->getShort(L"Damage");
 	if (auxValue < 0)
