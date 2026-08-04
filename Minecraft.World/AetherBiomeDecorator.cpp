@@ -16,6 +16,7 @@ AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 	gravititeOreFeature = new OreFeature(Tile::gravititeOre_Id, 0, 8, Tile::holystone_Id);
 	icestoneFeature = new OreFeature(Tile::icestone_Id, 0, 10, Tile::holystone_Id);
 	mossyHolystoneFeature = new OreFeature(Tile::holystone_Id, 1, 8, Tile::holystone_Id);
+	airFossilFeature = new OreFeature(Tile::fossilOre_Id, 2, 7, Tile::holystone_Id);
 
 	quicksoilShelfFeature = new QuicksoilShelfFeature();
 
@@ -185,9 +186,10 @@ void AetherBiomeDecorator::decorateAetherOres()
 {
 	level->setInstaTick(true);
 	decorateDepthSpan(16, ambrosiumOreFeature, 0, Level::genDepth);
-	decorateDepthSpan(10, zaniteOreFeature, 0, Level::genDepth / 2);
-	decorateDepthSpan(7, gravititeOreFeature, 0, Level::genDepth / 4);
+	decorateDepthSpan(12, zaniteOreFeature, 0, Level::genDepth / 2);
+	decorateDepthSpan(9, gravititeOreFeature, 0, Level::genDepth / 4);
 	decorateDepthSpan(16, icestoneFeature, 0, Level::genDepth);
 	decorateDepthSpan(12, mossyHolystoneFeature, 0, Level::genDepth);
+	decorateDepthSpan(10, airFossilFeature, 0, Level::genDepth / 2);
 	level->setInstaTick(false);
 }
