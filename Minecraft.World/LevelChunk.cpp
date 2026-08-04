@@ -10,6 +10,7 @@
 #include "DataLayer.h"
 #include "SparseLightStorage.h"
 #include "BlockReplacements.h"
+#include "FileHeader.h"
 #include "LevelChunk.h"
 #include "BasicTypeContainers.h"
 #include "..\Minecraft.Client\MinecraftServer.h"
@@ -2406,8 +2407,11 @@ void LevelChunk::setBlockData(byteArray data)
 	if(data.length > Level::COMPRESSED_CHUNK_SECTION_TILES) upperBlocks->setData(data,Level::COMPRESSED_CHUNK_SECTION_TILES);
 }
 
+// Voxel - convert invalid block/item IDs to 0 to avoid crashes/corrupting worlds
+// for worlds made before the tile ID expansion, just perge anything over 255, to prevent corrupt data
 void LevelChunk::sanitizeBlocks()
 {
+	const bool bAllowExpandedTileIds = level->getOriginalSaveVersion() >= SAVE_FILE_VERSION_TILE_ID_EXPANSION;
 	for (int y = 0; y < Level::maxBuildHeight; y++)
 	{
 		CompressedTileStorage *blocks = y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperBlocks : lowerBlocks;
@@ -2417,9 +2421,25 @@ void LevelChunk::sanitizeBlocks()
 			for (int z = 0; z < 16; z++)
 			{
 				int tile = blocks->get(x, yl, z);
-				if (tile != 0 && (tile >= Tile::TILE_NUM_COUNT || Tile::tiles[tile] == nullptr))
+				if (tile != 0)
 				{
-					blocks->set(x, yl, z, 0);
+					bool bInvalid = false;
+					if (tile >= Tile::TILE_NUM_COUNT)
+					{
+						bInvalid = true;
+					}
+					else if (!bAllowExpandedTileIds && tile >= 256)
+					{
+						bInvalid = true;
+					}
+					else if (Tile::tiles[tile] == nullptr)
+					{
+						bInvalid = true;
+					}
+					if (bInvalid)
+					{
+						blocks->set(x, yl, z, 0);
+					}
 				}
 			}
 		}
@@ -2502,32 +2522,6 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs, 
 	memcpy(&data.data[p],biomes.data,biomes.length);
 
 	return data;
-
-	//byteArray rawBuffer = byteArray( Level::CHUNK_TILE_COUNT + (3* Level::HALF_CHUNK_TILE_COUNT) );
-	//for( int x = 0; x < 16; x++ )
-	//{
-	//	for( int z = 0; z < 16; z++ )
-	//	{
-	//		for( int y = 0; y < Level::maxBuildHeight; y++ )
-	//		{
-	//			int slot = y << 8 | z << 4 | x;
-
-	//			rawBuffer[slot] = lc->getTile(x,y,z);
-	//		}
-	//	}
-	//}
-	//
-	//unsigned int offset = Level::CHUNK_TILE_COUNT;
-	//// Don't bother reordering block data, block light or sky light as they don't seem to make much difference
-	//byteArray dataData = byteArray(rawBuffer.data+offset, Level::HALF_CHUNK_TILE_COUNT);
-	//lc->getDataData(dataData);
-	//offset += Level::HALF_CHUNK_TILE_COUNT;
-	//byteArray blockLightData = byteArray(rawBuffer.data + offset, Level::HALF_CHUNK_TILE_COUNT);
-	//offset += Level::HALF_CHUNK_TILE_COUNT;
-	//byteArray skyLightData = byteArray(rawBuffer.data + offset, Level::HALF_CHUNK_TILE_COUNT);
-	//lc->getBlockLightData(blockLightData);
-	//lc->getSkyLightData(skyLightData);
-	//return rawBuffer;
 }
 
 void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs, byteArray *data)
@@ -2569,30 +2563,4 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs, byteA
 	memcpy(newBuffer.data + (tileCount*2), data->data + (tileCount*2), 3*halfTileCount + biomesLength);
 	delete [] data->data;
 	data->data = newBuffer.data;
-
-	//int p = 0;
-	//setBlocksAndData(*data, x0, y0, z0, x1, y1, z1, p);
-
-	//// If it is a full chunk, we'll need to rearrange into the order the rest of the game expects
-	//if( xs == 16 && ys == 128 && zs == 16 && ( ( x & 15 ) == 0 ) && ( y == 0 ) && ( ( z & 15 ) == 0 ) )
-	//{
-	//	byteArray newBuffer = byteArray(81920);
-	//	for( int x = 0; x < 16; x++ )
-	//	{
-	//		for( int z = 0; z < 16; z++ )
-	//		{
-	//			for( int y = 0; y < 128; y++ )
-	//			{
-	//				int slot = x << 11 | z << 7 | y;
-	//				int slot2 = y << 8 | z << 4 | x;
-
-	//				newBuffer[slot] = buffer[slot2];
-	//			}
-	//		}
-	//	}
-	//	// Copy over block data, block light & skylight as-is
-	//	memcpy(newBuffer.data + 32768, buffer.data + 32768, 49152);
-	//	delete buffer.data;
-	//	buffer.data = newBuffer.data;
-	//}
 }
