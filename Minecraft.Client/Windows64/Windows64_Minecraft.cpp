@@ -724,7 +724,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
 
 	g_hWnd = CreateWindowW(	L"MinecraftClass",
-		L"Minecraft: Hellish Ends",
+		L"Minecraft: Hellish Ends 2.0",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		0,
