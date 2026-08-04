@@ -4745,6 +4745,14 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_NUSA_DEMON, L"Nusa Demon");
 		m_stringTable->registerString(IDS_WORKSHOP, L"Emerald Workshop");
 		m_stringTable->registerString(IDS_FARLANDS, L"Farlands (Expect Lower Framerates)");
+		m_stringTable->registerString(IDS_ITEM_SHELL_FOSSIL, L"Shell Fossil");
+		m_stringTable->registerString(IDS_ITEM_FIRE_FOSSIL, L"Fire Fossil");
+		m_stringTable->registerString(IDS_ITEM_AIR_FOSSIL, L"Air Fossil");
+		m_stringTable->registerString(IDS_ITEM_RIB_FOSSIL, L"Otherworld Fossil");
+		m_stringTable->registerString(IDS_DESC_FOSSIL, L"One of the 4 different fossils");
+		m_stringTable->registerString(IDS_TILE_FOSSIL, L"Fossil");
+		m_stringTable->registerString(IDS_TILE_FOSSIL_ORE, L"Fossil Ore");
+		m_stringTable->registerString(IDS_TILE_STAINED_SAND, L"Stained Sand");
 
 	}
 	else
