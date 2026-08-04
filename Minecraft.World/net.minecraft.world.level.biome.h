@@ -39,3 +39,4 @@
 #include "LavenderForestBiome.h"
 #include "NurealmBiome.h"
 #include "NurealmBiomeDecorator.h"
+#include "RedDesertBiome.h"
