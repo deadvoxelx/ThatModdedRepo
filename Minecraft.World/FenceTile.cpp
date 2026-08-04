@@ -51,6 +51,7 @@ Icon *FenceTile::getTexture(int face, int data)
 	{
 		return Tile::netherPlanks->getTexture(face, 2);
 	}
+	return Tile::wood->getTexture(face, 0);
 }
 
 int FenceTile::getRenderShape()
