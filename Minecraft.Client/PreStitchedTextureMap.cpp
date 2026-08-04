@@ -738,6 +738,11 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(23,		14,	L"phoenixBow_pull1")
 		ADD_ICON(23,		15,	L"phoenixBow_pull2")
 
+		ADD_ICON(24,		0,	L"shellFossil")
+		ADD_ICON(24,		1,	L"fireFossil")
+		ADD_ICON(24,		2,	L"airFossil")
+		ADD_ICON(24,		3,	L"ribFossil")
+
 		// Special cases
 		ClockTexture *dataClock = new ClockTexture();
 		Icon *oldClock = texturesByName[L"clock"];
@@ -1236,5 +1241,9 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(26,	4,	L"nusaVine");
 	ADD_ICON(26,	5,	L"nusaCube_side");
 	ADD_ICON(26,	6,	L"nusaCube_top");
+	ADD_ICON(26,	7,	L"fossilStone");
+	ADD_ICON(26,	8,	L"fossilNetherrack");
+	ADD_ICON(26,	9,	L"fossilHolystone");
+	ADD_ICON(26,	10,	L"fossilEndstone");
 	}
 }
