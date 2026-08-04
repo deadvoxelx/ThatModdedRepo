@@ -11,18 +11,6 @@ BiomeInitLayer::BiomeInitLayer(int64_t seed, shared_ptr<Layer>parent, LevelType 
 
 	if(levelType == LevelType::lvl_normal_1_1)
 	{
-		startBiomes = BiomeArray(8);
-		startBiomes[0] = Biome::desert;
-		startBiomes[1] = Biome::forest;
-		startBiomes[2] = Biome::extremeHills;
-		startBiomes[3] = Biome::swampland;
-		startBiomes[4] = Biome::plains;
-		startBiomes[5] = Biome::taiga;
-		startBiomes[6] = Biome::birchForest;
-		startBiomes[7] = Biome::lavenderForest;
-	}
-	else
-	{
 		startBiomes = BiomeArray(9);
 		startBiomes[0] = Biome::desert;
 		startBiomes[1] = Biome::forest;
@@ -32,7 +20,21 @@ BiomeInitLayer::BiomeInitLayer(int64_t seed, shared_ptr<Layer>parent, LevelType 
 		startBiomes[5] = Biome::taiga;
 		startBiomes[6] = Biome::birchForest;
 		startBiomes[7] = Biome::lavenderForest;
-		startBiomes[8] = Biome::jungle;
+		startBiomes[8] = Biome::redDesert;
+	}
+	else
+	{
+		startBiomes = BiomeArray(10);
+		startBiomes[0] = Biome::desert;
+		startBiomes[1] = Biome::forest;
+		startBiomes[2] = Biome::extremeHills;
+		startBiomes[3] = Biome::swampland;
+		startBiomes[4] = Biome::plains;
+		startBiomes[5] = Biome::taiga;
+		startBiomes[6] = Biome::birchForest;
+		startBiomes[7] = Biome::lavenderForest;
+		startBiomes[8] = Biome::redDesert;
+		startBiomes[9] = Biome::jungle;
 	}
 }
 
