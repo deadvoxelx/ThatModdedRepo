@@ -2552,3 +2552,11 @@
 #define IDS_NUSA_DEMON										   2546
 #define IDS_WORKSHOP										   2547
 #define IDS_FARLANDS										   2548
+#define IDS_ITEM_SHELL_FOSSIL								   2549
+#define IDS_ITEM_FIRE_FOSSIL								   2550
+#define IDS_ITEM_AIR_FOSSIL									   2551
+#define IDS_ITEM_RIB_FOSSIL									   2552
+#define IDS_DESC_FOSSIL										   2553
+#define IDS_TILE_FOSSIL										   2554
+#define IDS_TILE_FOSSIL_ORE									   2555
+#define IDS_TILE_STAINED_SAND								   2556
