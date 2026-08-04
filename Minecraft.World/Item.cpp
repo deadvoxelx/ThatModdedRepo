@@ -351,6 +351,10 @@ Item *Item::aphalafShard = NULL;
 Item *Item::aphalafRod = NULL;
 Item *Item::nusaShard = NULL;
 Item *Item::endothaniumIngot = NULL;
+Item *Item::shellFossil = NULL;
+Item *Item::fireFossil = NULL;
+Item *Item::airFossil = NULL;
+Item *Item::ribFossil = NULL;
 
 void Item::staticCtor()
 {
@@ -681,6 +685,10 @@ void Item::staticCtor()
 	Item::aphalafRod = (new Item(257))																->setBaseItemTypeAndMaterial(eBaseItemType_stick,	eMaterial_stick)->setIconName(L"aphalafRod")->setDescriptionId(IDS_ITEM_APHALAF_ROD)->setUseDescriptionId(IDS_ITEM_APHALAF_ROD);
 	Item::nusaShard = (new SimpleFoiledItem(258))													->setIconName(L"nusaShard")->setDescriptionId(IDS_ITEM_NUSA_SHARD)->setUseDescriptionId(IDS_ITEM_NUSA_SHARD);
 	Item::endothaniumIngot = (new Item(259))														->setIconName(L"endothanium")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDOTHANIUM)->setUseDescriptionId(IDS_ITEM_ENDOTHANIUM);
+	Item::shellFossil = (new Item(260))																->setIconName(L"shellFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_SHELL_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
+	Item::fireFossil = (new Item(261))																->setIconName(L"fireFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_FIRE_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
+	Item::airFossil = (new Item(262))																->setIconName(L"airFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_AIR_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
+	Item::ribFossil = (new Item(263))																->setIconName(L"ribFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_RIB_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 
 }
 
