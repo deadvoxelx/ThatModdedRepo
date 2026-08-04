@@ -148,6 +148,15 @@ void TheOuterEndBiomeDecorator::decorate()
 		int z = zo + random->nextInt(16);
 		mossyEndStoneFeature.place(level, random, x, y, z);
 	}
+
+	OreFeature endFossilFeature(Tile::fossilOre_Id, 3, 7, Tile::endStone_Id);
+	for (int i = 0; i < 6; i++)
+	{
+		int x = xo + random->nextInt(16);
+		int y = random->nextInt(Level::genDepth);
+		int z = zo + random->nextInt(16);
+		endFossilFeature.place(level, random, x, y, z);
+	}
 	PIXEndNamedEvent();
 }
 
