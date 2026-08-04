@@ -1287,12 +1287,12 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				if (level->getTile(x, y + posty, z + 2) == 0)
 				{
-					placeBlock(level, x, y + 1 + posty, z + 2, Tile::nusaLog_Id, 0);
+					placeBlock(level, x, y + posty + 1, z + 2, Tile::nusaLog_Id, 0);
 				}
 			}
 			for (int laddery = 0; laddery <= 23; laddery++)
 			{
-				placeBlock(level, x, y + 1 + laddery, z + 1, Tile::ladder_Id, 2);
+				placeBlock(level, x, y + laddery + 1, z + 1, Tile::ladder_Id, 2);
 			}
 
 		//Chest/Core
