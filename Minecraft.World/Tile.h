@@ -397,7 +397,7 @@ public:
 	static const int nether_furnace_lit_Id = 189;
 	//static const int endBricks_Id = 190;
 	//static const int endBricksChiseled_Id = 191;
-	//static const int endStoneSmooth_Id = 192;
+	static const int stainedSand_Id = 192;
 	static const int endothaniumBlock_Id = 193;
 	static const int aetherGrass_Id = 194;
 	static const int veloettGrass_Id = 195;
@@ -451,7 +451,7 @@ public:
 	static const int nusaCore_Id = 253;
 	static const int nusaPortal_Id = 254;
 
-	static const int newTile_Id = 267;
+	static const int fossilOre_Id = 255;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -654,7 +654,7 @@ public:
 	static Tile *nether_furnace_lit;
 	//static Tile *endBricks;
 	//static Tile *endBricksChiseled;
-	//static Tile *endStoneSmooth;
+	static Tile *stainedSand;
 	static Tile *endothaniumBlock;
 	static Tile *aetherGrass;
 	static Tile *veloettGrass;
@@ -708,7 +708,7 @@ public:
 	static Tile *nusaCore;
 	static NusaPortalTile *nusaPortal;
 
-	static Tile *newTile;
+	static Tile *fossilOre;
 
 	static void staticCtor();
 
