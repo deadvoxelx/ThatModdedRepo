@@ -108,7 +108,7 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::nusaLog, 1, 0),
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Item::stick, 4), //
+	addShapedRecipy(new ItemInstance(Item::stick, 8), //
 		L"ssctg",
 		L"#", //
 		L"#", //
@@ -116,12 +116,20 @@ Recipes::Recipes()
 		L'#', Tile::wood,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Item::stick, 4), //
+	addShapedRecipy(new ItemInstance(Item::stick, 8), //
 		L"ssctg",
 		L"#", //
 		L"#", //
 
 		L'#', Tile::netherPlanks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Item::stick, 8), //
+		L"ssctg",
+		L"#", //
+		L"#", //
+
+		L'#', Tile::endactus,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Item::aphalafRod, 1), //
