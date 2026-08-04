@@ -69,3 +69,4 @@
 #include "NusaShrubFeature.h"
 #include "NusaTowerFeature.h"
 #include "NusaTempleFeature.h"
+#include "TentFeature.h"
