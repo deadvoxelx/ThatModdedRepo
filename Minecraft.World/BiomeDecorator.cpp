@@ -4,6 +4,7 @@
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "net.minecraft.world.level.biome.h"
 #include "HerobrineFeature.h"
+#include "TentFeature.h"
 #include "SwampMushroomHugeFeature.h"
 
 BiomeDecorator::BiomeDecorator(Biome *biome)
@@ -64,6 +65,8 @@ void BiomeDecorator::_init()
 	waterlilyFeature = new WaterlilyFeature();
 
 	herobrineFeature = new HerobrineFeature(Tile::goldBlock_Id);
+	tentFeature = new TentFeature(Tile::wool_Id);
+	fossilFeature = new OreFeature(Tile::fossilOre_Id, 7);
 
 	waterlilyCount = 0;
 	treeCount = 0;
@@ -274,6 +277,14 @@ void BiomeDecorator::decorate()
 		herobrineFeature->place(level, random, x, y, z);
 	}
 
+	for (int i = 0; i < 1; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int y = random->nextInt(Level::genDepth);
+		int z = zo + random->nextInt(16) + 8;
+		tentFeature->place(level, random, x, y, z);
+	}
+
 
 	PIXEndNamedEvent();
 	PIXBeginNamedEvent(0,"Decorate liquids");
@@ -343,5 +354,6 @@ void BiomeDecorator::decorateOres()
 	decorateDepthSpan(8, redStoneOreFeature, 0, Level::genDepth / 8);
 	decorateDepthSpan(1, diamondOreFeature, 0, Level::genDepth / 8);
 	decorateDepthAverage(1, lapisOreFeature, Level::genDepth / 8, Level::genDepth / 8);
+	decorateDepthSpan(5, fossilFeature, 0, Level::genDepth / 4);
 	level->setInstaTick(false);
 }
