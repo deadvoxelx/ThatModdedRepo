@@ -106,6 +106,7 @@ public:
 		eMaterial_zanite,
 		eMaterial_gravitite,
 		eMaterial_cloud,
+		eMaterial_fossil,
 
 	}
 	eMaterial;
@@ -531,6 +532,10 @@ public:
 	static Item *aphalafRod;
 	static Item *nusaShard;
 	static Item *endothaniumIngot;
+	static Item *shellFossil;
+	static Item *fireFossil;
+	static Item *airFossil;
+	static Item *ribFossil;
 
 
 	static const int shovel_iron_Id			= 512;
@@ -814,6 +819,10 @@ public:
 	static const int aphalafRod_Id = 769;
 	static const int nusaShard_Id = 770;
 	static const int endothaniumIngot_Id = 771;
+	static const int shellFossil_Id = 772;
+	static const int fireFossil_Id = 773;
+	static const int airFossil_Id = 774;
+	static const int ribFossil_Id = 775;
 
 public:
 	const int id;
