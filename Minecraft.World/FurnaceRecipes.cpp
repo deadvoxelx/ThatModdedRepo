@@ -21,6 +21,7 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::goldOre_Id, new ItemInstance(Item::goldIngot), 1);
 	addFurnaceRecipy(Tile::diamondOre_Id, new ItemInstance(Item::diamond), 1);
 	addFurnaceRecipy(Tile::sand_Id, new ItemInstance(Tile::glass, 1, 0), .1f);
+	addFurnaceRecipy(Tile::stainedSand_Id, new ItemInstance(Tile::glass, 1, 0), .1f);
 	addFurnaceRecipy(Tile::soulsand_Id, new ItemInstance(Tile::glass, 1, 1), .1f);
 	addFurnaceRecipy(Tile::endSand_Id, new ItemInstance(Tile::glass), .1f);
 	addFurnaceRecipy(Item::porkChop_raw_Id, new ItemInstance(Item::porkChop_cooked), .35f);
