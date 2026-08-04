@@ -15,6 +15,7 @@ protected:
 	Feature *gravititeOreFeature;
 	Feature *icestoneFeature;
 	Feature *mossyHolystoneFeature;
+	Feature *airFossilFeature;
 
 	Feature *quicksoilShelfFeature;
 
