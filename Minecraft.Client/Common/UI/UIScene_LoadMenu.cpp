@@ -8,6 +8,7 @@
 #include "..\..\MinecraftServer.h"
 #include "..\..\..\Minecraft.World\LevelSettings.h"
 #include "..\..\..\Minecraft.World\StringHelpers.h"
+#include "..\..\..\Minecraft.World\ConsoleSaveFileOriginal.h"
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
 #include "Common\Network\Sony\SonyHttp.h"
 #endif
@@ -787,22 +788,6 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 
 		if(pTexturePack==nullptr)
 		{
-#if TO_BE_IMPLEMENTED
-			// They've selected a texture pack they don't have yet
-			// upsell
-			CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
-			// get the current index of the list, and then get the data
-			ListItem=m_pTexturePacksList->GetData(m_currentTexturePackIndex);
-
-
-			// upsell the texture pack
-			// tell sentient about the upsell of the full version of the skin pack
-			ULONGLONG ullOfferID_Full;
-			app.GetDLCFullOfferIDForPackID(m_MoreOptionsParams.dwTexturePack,&ullOfferID_Full);
-
-			TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
-#endif
-
 			UINT uiIDA[2];
 
 			uiIDA[0]=IDS_TEXTUREPACK_FULLVERSION;
@@ -841,22 +826,6 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 		// do we have a license?
 		if(m_pDLCPack && !m_pDLCPack->hasPurchasedFile( DLCManager::e_DLCType_Texture, L"" ))
 		{
-			// no
-
-			// We need to allow people to use a trial texture pack if they are offline - we only need them online if they want to buy it.
-
-			/*
-			UINT uiIDA[1];
-			uiIDA[0]=IDS_OK;
-
-			if(!ProfileManager.IsSignedInLive(m_iPad))
-			{
-				// need to be signed in to live
-				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
-				m_bIgnoreInput = false;
-				return;
-			}
-			else */
 			{
 				// upsell
 #ifdef _XBOX
@@ -935,11 +904,6 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 	app.SetGameNewHellScale(newHellScale);
 	app.SetGameHostOption(eGameHostOption_WorldSize, m_MoreOptionsParams.newWorldSize);
 
-#endif
-
-#if TO_BE_IMPLEMENTED
-	// Reset the background downloading, in case we changed it by attempting to download a texture pack
-	XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_AUTO);
 #endif
 
 	// Check if they have the Reset Nether flag set, and confirm they want to do this
@@ -1099,6 +1063,11 @@ void UIScene_LoadMenu::LaunchGame(void)
 	killTimer(CHECKFORAVAILABLETEXTUREPACKS_TIMER_ID);
 #endif
 
+	// NOTE: Old saves (original save version < SAVE_FILE_VERSION_TILE_ID_EXPANSION) are rejected in
+	// LoadSaveDataReturned(), once the save data is actually in memory and the header version is
+	// readable. The level does not exist yet at this point (and this scene never gets a valid one), so
+	// it cannot be used to check the version here.
+
 	if( (m_bGameModeCreative == true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges == TRUE)
 	{			
 		UINT uiIDA[2];
@@ -1135,19 +1104,6 @@ void UIScene_LoadMenu::LaunchGame(void)
 						app.DebugPrintf("Loading save s [%s]\n",pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex].UTF8SaveTitle,pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex].UTF8SaveFilename);
 #endif
 						C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveData(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataReturned,this);
-
-#if TO_BE_IMPLEMENTED
-						if(eLoadStatus==C4JStorage::ELoadGame_DeviceRemoved)
-						{
-							// disable saving 
-							StorageManager.SetSaveDisabled(true);
-							StorageManager.SetSaveDeviceSelected(m_iPad,false);
-							UINT uiIDA[1];
-							uiIDA[0]=IDS_OK;
-							ui.RequestErrorMessage(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,this);
-
-						}
-#endif
 					}
 				}
 				else
@@ -1177,21 +1133,8 @@ void UIScene_LoadMenu::LaunchGame(void)
 			app.DebugPrintf("Loading save %s [%s]\n",pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex].UTF8SaveTitle,pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex].UTF8SaveFilename);
 #endif
 			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveData(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataReturned,this);
-
-#if TO_BE_IMPLEMENTED
-			if(eLoadStatus==C4JStorage::ELoadGame_DeviceRemoved)
-			{
-				// disable saving 
-				StorageManager.SetSaveDisabled(true);
-				StorageManager.SetSaveDeviceSelected(m_iPad,false);
-				UINT uiIDA[1];
-				uiIDA[0]=IDS_OK;
-				ui.RequestErrorMessage(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,this);
-			}
-#endif
 		}
 	}
-	//return 0;
 }
 
 int UIScene_LoadMenu::CheckResetNetherReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
@@ -1501,6 +1444,39 @@ int UIScene_LoadMenu::LoadSaveDataReturned(void *pParam,bool bIsCorrupt, bool bI
 	UIScene_LoadMenu* pClass = static_cast<UIScene_LoadMenu *>(pParam);
 
 	pClass->m_bIsCorrupt=bIsCorrupt;
+
+#ifdef _WINDOWS64
+	// Voxel - only load saves made after the tile ID expansion, to prevent loss of old worlds
+	if(!bIsCorrupt)
+	{
+		unsigned int fileSize = StorageManager.GetSaveSize();
+		if(fileSize > 0)
+		{
+			void *pvSaveData = malloc(fileSize);
+			if(pvSaveData != nullptr)
+			{
+				StorageManager.GetSaveData(pvSaveData, &fileSize);
+
+				ConsoleSaveFileOriginal saveHeaderPeek(L"", pvSaveData, fileSize, false, SAVE_FILE_PLATFORM_LOCAL);
+				int originalSaveVersion = saveHeaderPeek.getOriginalSaveVersion();
+
+				free(pvSaveData);
+
+				if(originalSaveVersion < SAVE_FILE_VERSION_TILE_ID_EXPANSION)
+				{
+					app.DebugPrintf("Refusing to load save created with original save version %d (tile ID expansion requires >= %d)\n", originalSaveVersion, SAVE_FILE_VERSION_TILE_ID_EXPANSION);
+
+					pClass->m_bIgnoreInput=false;
+
+					UINT uiIDA[1];
+					uiIDA[0]=IDS_CONFIRM_OK;
+					ui.RequestAlertMessage(IDS_TITLE_START_GAME, IDS_SAVE_TRANSFER_WRONG_VERSION, uiIDA, 1, pClass->m_iPad);
+					return 0;
+				}
+			}
+		}
+	}
+#endif
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined (__PSVITA__)
 	if(app.GetGameHostOption(eGameHostOption_WasntSaveOwner))
