@@ -171,3 +171,5 @@
 #include "NustoneTile.h"
 #include "NusaCubeTile.h"
 #include "NusaCoreTile.h"
+#include "FossilTile.h"
+#include "SandTile.h"
