@@ -9,6 +9,7 @@ CarrotTile::CarrotTile(int id) : CropTile(id)
 
 Icon *CarrotTile::getTexture(int face, int data)
 {
+	if (data < 0) data = 0;
 	if (data < 7)
 	{
 		if (data == 6)
