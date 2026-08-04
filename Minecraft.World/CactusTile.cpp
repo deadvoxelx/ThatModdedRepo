@@ -98,7 +98,7 @@ bool CactusTile::canSurvive(Level *level, int x, int y, int z)
 	if (level->getMaterial(x, y, z - 1)->isSolid()) return false;
 	if (level->getMaterial(x, y, z + 1)->isSolid()) return false;
 	int below = level->getTile(x, y - 1, z);
-	return below == Tile::cactus_Id || below == Tile::sand_Id;
+	return below == Tile::cactus_Id || below == Tile::sand_Id || below == Tile::stainedSand_Id;
 }
 
 void CactusTile::entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
