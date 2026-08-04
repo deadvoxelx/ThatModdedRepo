@@ -2563,4 +2563,4 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs, byteA
 	memcpy(newBuffer.data + (tileCount*2), data->data + (tileCount*2), 3*halfTileCount + biomesLength);
 	delete [] data->data;
 	data->data = newBuffer.data;
-}
+} 
