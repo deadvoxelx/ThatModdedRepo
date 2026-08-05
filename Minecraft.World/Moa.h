@@ -3,7 +3,11 @@
 using namespace std;
 
 #include "TamableAnimal.h"
+#include "SharedConstants.h"
+
 class DamageSource;
+class Player;
+class Level;
 
 class Moa : public TamableAnimal
 {
