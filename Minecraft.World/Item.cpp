@@ -32,6 +32,7 @@ const _Tier *_Tier::ENDORIUM = new _Tier(6, 2032, 12, 5, 15); //
 const _Tier *_Tier::ZANITE = new _Tier(2, 250, 6, 2, 14); //
 const _Tier *_Tier::GRAVITITE = new _Tier(4, 1561, 9, 4, 15); //
 const _Tier *_Tier::VAMPIRE = new _Tier(3, 1000, 8, 3, 10); //
+const _Tier *_Tier::VALKYRIE = new _Tier(3, 1000, 8, 3, 10); //
 const _Tier *_Tier::APHALAF = new _Tier(4, 1561, 9, 4, 15); //
 
 Random *Item::random = new Random();
@@ -355,6 +356,22 @@ Item *Item::shellFossil = NULL;
 Item *Item::fireFossil = NULL;
 Item *Item::airFossil = NULL;
 Item *Item::ribFossil = NULL;
+Item *Item::ironBubble = NULL;
+Item *Item::ironPendant = NULL;
+Item *Item::ironRing = NULL;
+Item *Item::goldPendant = NULL;
+Item *Item::goldRing = NULL;
+Item *Item::zanitePendant = NULL;
+Item *Item::zaniteRing = NULL;
+Item *Item::agilityCape = NULL;
+Item *Item::invisibilityCape = NULL;
+Item *Item::swetCape = NULL;
+Item *Item::valkyrieCape = NULL;
+Item *Item::valkyrieLance = NULL;
+Item *Item::valkyrieAxe = NULL;
+Item *Item::valkyriePickaxe = NULL;
+Item *Item::valkyrieShovel = NULL;
+Item *Item::valkyrieHoe = NULL;
 
 void Item::staticCtor()
 {
@@ -664,9 +681,9 @@ void Item::staticCtor()
 	Item::blueBerryEnchanted = (new FoodItem(226, 6, FoodConstants::FOOD_SATURATION_MAX, false))	->setIconName(L"blueBerryEnchanted")->setDescriptionId(IDS_ITEM_BLUEBERRY_ENCHANTED)->setUseDescriptionId(IDS_ITEM_BLUEBERRY_ENCHANTED);
 	Item::swetBall = (new Item(227))																->setIconName(L"swetBall")->setDescriptionId(IDS_ITEM_SWETBALL)->setUseDescriptionId(IDS_ITEM_SWETBALL);
 	Item::healingStone = (HealingStoneItem *)(new HealingStoneItem(228))							->setIconName(L"healingStone")->setDescriptionId(IDS_ITEM_HEALINGSTONE)->setUseDescriptionId(IDS_ITEM_HEALINGSTONE);
-	Item::gummySwetBlue = (new FoodItem(234, 10, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"gummySwetBlue")->setDescriptionId(IDS_ITEM_SWETGUMMY)->setUseDescriptionId(IDS_ITEM_SWETGUMMY);
-	Item::gummySwetGold = (new FoodItem(235, 10, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"gummySwetGold")->setDescriptionId(IDS_ITEM_SWETGUMMY)->setUseDescriptionId(IDS_ITEM_SWETGUMMY);
-	Item::regenerationStone = (HealingStoneItem *)(new HealingStoneItem(236))						->setIconName(L"regenerationStone")->setDescriptionId(IDS_ITEM_REGENSTONE)->setUseDescriptionId(IDS_ITEM_REGENSTONE);
+	Item::gummySwetBlue = (new FoodItem(234, 20, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"gummySwetBlue")->setDescriptionId(IDS_ITEM_SWETGUMMY)->setUseDescriptionId(IDS_ITEM_SWETGUMMY);
+	Item::gummySwetGold = (new FoodItem(235, 20, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"gummySwetGold")->setDescriptionId(IDS_ITEM_SWETGUMMY)->setUseDescriptionId(IDS_ITEM_SWETGUMMY);
+	Item::regenerationStone = (HealingStoneItem *)(new HealingStoneItem(236))						->setIconName(L"regenerationStone")->setDescriptionId(IDS_ITEM_REGENSTONE)->setUseDescriptionId(IDS_ITEM_REGENSTONE)->setMaxStackSize(1);
 	Item::lifeShard = (HealingStoneItem *)(new HealingStoneItem(237))								->setIconName(L"lifeShard")->setDescriptionId(IDS_ITEM_LIFESHARD)->setUseDescriptionId(IDS_ITEM_LIFESHARD);
 	Item::skyrootBucket_empty = ( new BucketItem(238, 0) )											->setBaseItemTypeAndMaterial(eBaseItemType_utensil,	eMaterial_water)->setIconName(L"skyrootBucket_empty")->setDescriptionId(IDS_ITEM_SKYROOT_BUCKET)->setUseDescriptionId(IDS_ITEM_SKYROOT_BUCKET)->setMaxStackSize(16);
 	Item::skyrootBucket_water = ( new BucketItem(239, Tile::water_Id) )								->setIconName(L"skyrootBucket_water")->setDescriptionId(IDS_ITEM_SKYROOT_BUCKET_WATER)->setCraftingRemainingItem(Item::skyrootBucket_empty)->setUseDescriptionId(IDS_ITEM_SKYROOT_BUCKET_WATER);
@@ -689,6 +706,22 @@ void Item::staticCtor()
 	Item::fireFossil = (new Item(261))																->setIconName(L"fireFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_FIRE_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 	Item::airFossil = (new Item(262))																->setIconName(L"airFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_AIR_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 	Item::ribFossil = (new Item(263))																->setIconName(L"ribFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_RIB_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
+	Item::ironBubble = (new Item(264))																->setIconName(L"ironBubble")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_BUBBLE)->setUseDescriptionId(IDS_ITEM_IRON_BUBBLE)->setMaxStackSize(1);
+	Item::ironPendant = (new Item(265))																->setIconName(L"ironPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_PENDANT)->setUseDescriptionId(IDS_ITEM_IRON_PENDANT)->setMaxStackSize(1);
+	Item::ironRing = (new Item(266))																->setIconName(L"ironRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_RING)->setUseDescriptionId(IDS_ITEM_IRON_RING)->setMaxStackSize(1);
+	Item::goldPendant = (new Item(267))																->setIconName(L"goldPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gold)->setDescriptionId(IDS_ITEM_GOLD_PENDANT)->setUseDescriptionId(IDS_ITEM_GOLD_PENDANT)->setMaxStackSize(1);
+	Item::goldRing = (new Item(268))																->setIconName(L"goldRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gold)->setDescriptionId(IDS_ITEM_GOLD_RING)->setUseDescriptionId(IDS_ITEM_GOLD_RING)->setMaxStackSize(1);
+	Item::zanitePendant = (new Item(269))															->setIconName(L"zanitePendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_zanite)->setDescriptionId(IDS_ITEM_ZANITE_PENDANT)->setUseDescriptionId(IDS_ITEM_ZANITE_PENDANT)->setMaxStackSize(1);
+	Item::zaniteRing = (new Item(270))																->setIconName(L"zaniteRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_zanite)->setDescriptionId(IDS_ITEM_ZANITE_RING)->setUseDescriptionId(IDS_ITEM_ZANITE_RING)->setMaxStackSize(1);
+	Item::agilityCape = (new Item(271))																->setIconName(L"agilityCape")->setDescriptionId(IDS_ITEM_AGILITY_CAPE)->setUseDescriptionId(IDS_ITEM_AGILITY_CAPE)->setMaxStackSize(1);
+	Item::invisibilityCape = (new Item(272))														->setIconName(L"invisibilityCape")->setDescriptionId(IDS_ITEM_INVISIBILITY_CAPE)->setUseDescriptionId(IDS_ITEM_INVISIBILITY_CAPE)->setMaxStackSize(1);
+	Item::swetCape = (new Item(273))																->setIconName(L"swetCape")->setDescriptionId(IDS_ITEM_SWET_CAPE)->setUseDescriptionId(IDS_ITEM_SWET_CAPE)->setMaxStackSize(1);
+	Item::valkyrieCape = (new Item(274))															->setIconName(L"valkyrieCape")->setDescriptionId(IDS_ITEM_VALKYRIE_CAPE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_CAPE)->setMaxStackSize(1);
+	Item::valkyrieLance = ( new WeaponItem(275, _Tier::VALKYRIE) )									->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_iron)->setIconName(L"valkyrieLance")->setDescriptionId(IDS_ITEM_VALKYRIE_LANCE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_LANCE);
+	Item::valkyrieAxe = ( new HatchetItem(276, _Tier::VALKYRIE) )									->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_iron)->setIconName(L"valkyrieAxe")->setDescriptionId(IDS_ITEM_VALKYRIE_AXE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_AXE);
+	Item::valkyriePickaxe = ( new PickaxeItem(277, _Tier::VALKYRIE) )								->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_iron)->setIconName(L"valkyriePickaxe")->setDescriptionId(IDS_ITEM_VALKYRIE_PICKAXE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_PICKAXE);
+	Item::valkyrieShovel = ( new ShovelItem(278, _Tier::VALKYRIE) )									->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_iron)->setIconName(L"valkyrieShovel")->setDescriptionId(IDS_ITEM_VALKYRIE_SHOVEL)->setUseDescriptionId(IDS_ITEM_VALKYRIE_SHOVEL);
+	Item::valkyrieHoe = ( new HoeItem(279, _Tier::VALKYRIE) )										->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_iron)->setIconName(L"valkyrieHoe")->setDescriptionId(IDS_ITEM_VALKYRIE_HOE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_HOE);
 
 }
 
