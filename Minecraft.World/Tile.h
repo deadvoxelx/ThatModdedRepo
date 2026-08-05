@@ -451,7 +451,7 @@ public:
 	static const int nusaCore_Id = 253;
 	static const int nusaPortal_Id = 254;
 
-	static const int fossilOre_Id = 255;
+	static const int fossilOre_Id = 256;
 
 	static Tile *stone;
 	static GrassTile *grass;
