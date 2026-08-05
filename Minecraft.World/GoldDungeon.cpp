@@ -168,7 +168,7 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 				        shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity >( level->getTileEntity(x + a, y + k, z + b) );
 				        if (chest != NULL )
 				        {
-					        WeighedTreasure::addChestItems(random, treasure, chest, 5 + random->nextInt(3));
+					        WeighedTreasure::addChestItems(random, treasure, chest, 9);
 				        } 
                     }
 			        else if (m == 3 || m == -3)
@@ -195,11 +195,23 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 
 WeighedTreasure *GoldDungeon::goldDungeonTreasure[GoldDungeon::TREASURE_ITEMS_COUNT] = 
 {
-	new WeighedTreasure(Item::lifeShard_Id, 0, 1, 1, 2),
-	new WeighedTreasure(Item::regenerationStone_Id, 0, 1, 1, 2),
-	new WeighedTreasure(Item::gummySwetBlue_Id, 0, 1, 3, 2),
-	new WeighedTreasure(Item::gummySwetGold_Id, 0, 1, 3, 2),
-    new WeighedTreasure(Item::vampireBlade_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::lifeShard_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::regenerationStone_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::ironBubble_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::zanitePendant_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::zaniteRing_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::gummySwetBlue_Id, 0, 1, 3, 3),
+	new WeighedTreasure(Item::gummySwetGold_Id, 0, 1, 3, 3),
+    new WeighedTreasure(Item::vampireBlade_Id, 0, 1, 1, 3),
+    new WeighedTreasure(Item::valkyrieLance_Id, 0, 1, 1, 3),
+    new WeighedTreasure(Item::valkyrieAxe_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::valkyriePickaxe_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::valkyrieShovel_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::valkyrieHoe_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::agilityCape_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::invisibilityCape_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::swetCape_Id, 0, 1, 1, 2),
+    new WeighedTreasure(Item::valkyrieCape_Id, 0, 1, 1, 2),
     new WeighedTreasure(Item::gravititeSword_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::gravititeHelmet_Id, 0, 1, 1, 1),
 	new WeighedTreasure(Item::gravititeChestplate_Id, 0, 1, 1, 1),
