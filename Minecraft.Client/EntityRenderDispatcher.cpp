@@ -132,6 +132,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_MOOBLOOM] = new MoobloomRenderer(new CowModel(), 0.7f);
 	renderers[eTYPE_SHEEPUFF] = new SheepuffRenderer(new SheepuffModel(), new SheepuffFurModel(), 0.7f);
 	renderers[eTYPE_FLYING_COW] = new FlyingCowRenderer(new FlyingCowModel(), 0.7f);
+	renderers[eTYPE_MOA] = new MoaRenderer();
 
 	renderers[eTYPE_HUSK] = new ZombieRenderer();
 	renderers[eTYPE_ZOMBICE] = new ZombieRenderer();
