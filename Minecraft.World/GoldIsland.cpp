@@ -51,6 +51,11 @@ GoldIsland::GoldIsland(int blockId) : Feature(blockId)
 
 bool GoldIsland::place(Level *level, Random *random, int x, int y, int z)
 {
+    return place(level, random, x, y, z, true);
+}
+
+bool GoldIsland::place(Level *level, Random *random, int x, int y, int z, bool spawnBoss)
+{
     int r = 16 * 3;
 
 	int xc = Mth::floor(x * 1.0);
@@ -76,10 +81,10 @@ bool GoldIsland::place(Level *level, Random *random, int x, int y, int z)
 	{
 		return false;
 	}
-    return generate(level, random, x, y, z, 24);
+    return generate(level, random, x, y, z, 24, spawnBoss);
 }
   
-bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int l)
+bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int l, bool spawnBoss)
 {
     if (y - l <= 0) y = l + 1; 
     if (y + l >= 116) y = 116 - l - 1; 
@@ -145,7 +150,7 @@ bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int
       generateBlob(level, random, l4, k5, i6, Mth::floor(l / 3.0));
     }
     bool flag = false;
-    flag = (new GoldDungeon(Tile::holystone_Id))->generate(level, random, x, y, z, 24); 
+    flag = (new GoldDungeon(Tile::holystone_Id))->generate(level, random, x, y, z, 24, spawnBoss); 
     return true;
 }
 
