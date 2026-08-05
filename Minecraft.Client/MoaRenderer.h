@@ -2,12 +2,16 @@
 #include "MobRenderer.h"
 
 class Cockatrice;
+class Moa;
 class MoaModel;
 
 class MoaRenderer : public MobRenderer
 {
 private:
 	static ResourceLocation COCKATRICE_LOCATION;
+	static ResourceLocation MOA_LOCATION;
+	static ResourceLocation MOA_WHITE_LOCATION;
+	static ResourceLocation MOA_BLACK_LOCATION;
 
 public:
 	MoaRenderer();
