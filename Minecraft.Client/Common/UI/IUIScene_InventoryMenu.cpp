@@ -20,6 +20,16 @@ IUIScene_AbstractContainerMenu::ESceneSection IUIScene_InventoryMenu::GetSection
 				newSection = eSectionInventoryUsing;
 			}
 			break;
+		case eSectionInventoryAether:
+			if(eTapDirection == eTapStateDown)
+			{
+				newSection = eSectionInventoryInventory;
+			}
+			else if(eTapDirection == eTapStateUp)
+			{
+				newSection = eSectionInventoryUsing;
+			}
+			break;
 		case eSectionInventoryInventory:
 			if(eTapDirection == eTapStateDown)
 			{
@@ -57,6 +67,9 @@ int IUIScene_InventoryMenu::getSectionStartOffset(ESceneSection eSection)
 	{
 		case eSectionInventoryArmor:
 			offset = InventoryMenu::ARMOR_SLOT_START;
+			break;
+		case eSectionInventoryAether:
+			offset = InventoryMenu::AETHER_SLOT_START;
 			break;
 		case eSectionInventoryInventory:
 			offset = InventoryMenu::INV_SLOT_START;
