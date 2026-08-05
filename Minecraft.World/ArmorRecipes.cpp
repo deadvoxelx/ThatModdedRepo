@@ -105,6 +105,8 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::helmet_gold_Id:
 	case Item::nethaniumHelmet_Id:
 	case Item::endoriumHelmet_Id:
+	case Item::zaniteHelmet_Id:
+	case Item::gravititeHelmet_Id:
 		return eArmorType_Helmet;
 		break;
 
@@ -115,6 +117,8 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::chestplate_gold_Id:
 	case Item::nethaniumChestplate_Id:
 	case Item::endoriumChestplate_Id:
+	case Item::zaniteChestplate_Id:
+	case Item::gravititeChestplate_Id:
 		return eArmorType_Chestplate;
 		break;
 
@@ -125,6 +129,8 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::leggings_gold_Id:
 	case Item::nethaniumLeggings_Id:
 	case Item::endoriumLeggings_Id:
+	case Item::zaniteLeggings_Id:
+	case Item::gravititeLeggings_Id:
 		return eArmorType_Leggings;
 		break;
 
@@ -135,6 +141,8 @@ ArmorRecipes::_eArmorType ArmorRecipes::GetArmorType(int iId)
 	case Item::boots_gold_Id:
 	case Item::nethaniumBoots_Id:
 	case Item::endoriumBoots_Id:
+	case Item::zaniteBoots_Id:
+	case Item::gravititeBoots_Id:
 		return eArmorType_Boots;
 		break;
 	}
