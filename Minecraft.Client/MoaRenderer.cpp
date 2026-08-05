@@ -22,26 +22,24 @@ void MoaRenderer::render(shared_ptr<Entity> _mob, double x, double y, double z, 
 
 ResourceLocation *MoaRenderer::getTextureLocation(shared_ptr<Entity> entity)
 {
-	shared_ptr<Cockatrice> cockatrice = dynamic_pointer_cast<Cockatrice>(entity);
-	shared_ptr<Moa> moa = dynamic_pointer_cast<Moa>(entity);
-
 	if (entity->instanceof(eTYPE_COCKATRICE))
 	{
         return &COCKATRICE_LOCATION;
     }
 
-    if (moa->getMoaType() == Moa::TYPE_DEFAULT)
-	{
-        return &MOA_LOCATION;
+    shared_ptr<Moa> moa = dynamic_pointer_cast<Moa>(entity);
+    if (moa != nullptr)
+    {
+        if (moa->getMoaType() == Moa::TYPE_WHITE)
+        {
+            return &MOA_WHITE_LOCATION;
+        }
+        if (moa->getMoaType() == Moa::TYPE_BLACK)
+        {
+            return &MOA_BLACK_LOCATION;
+        }
     }
-    if (moa->getMoaType() == Moa::TYPE_WHITE)
-	{
-        return &MOA_WHITE_LOCATION;
-    }
-	if (moa->getMoaType() == Moa::TYPE_BLACK)
-	{
-        return &MOA_BLACK_LOCATION;
-    }
+    return &MOA_LOCATION;
 }
 
 void MoaRenderer::scale(shared_ptr<LivingEntity> mob, float a)
