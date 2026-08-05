@@ -6,6 +6,42 @@
 #include "net.minecraft.world.item.h"
 #include "GoldIsland.h"
 
+static bool inIslandShape(int dx, int dy, int dz, int l)
+{
+	int k3 = Mth::floor(dx * (1.0 + (dy / l) * 10.0) / 0.8f);
+	int i4 = dy;
+	if (dy > l * 0.625)
+	{
+		i4 = Mth::floor(i4 * 1.375);
+		i4 -= Mth::floor(l * 0.25);
+	}
+	else if (dy < l * -0.625)
+	{
+		i4 = Mth::floor(i4 * 1.350000023841858);
+		i4 += Mth::floor(l * 0.25);
+	}
+	int k4 = Mth::floor(dz * (1.0 + (dy / l) * 10.0) / 0.8f);
+	return Mth::sqrt(k3 * k3 + i4 * i4 + k4 * k4 + 0.0) <= l;
+}
+
+static bool inBlobShape(int dx, int dy, int dz, int l)
+{
+	int k2 = dx;
+	int i3 = dy;
+	if (dy > l * 0.625)
+	{
+		i3 = Mth::floor(i3 * 1.375);
+		i3 -= Mth::floor(l * 0.25);
+	}
+	else if (dy < l * -0.625)
+	{
+		i3 = Mth::floor(i3 * 1.350000023841858);
+		i3 += Mth::floor(l * 0.25);
+	}
+	int k3 = dz;
+	return Mth::sqrt(k2 * k2 + i3 * i3 + k3 * k3 + 0.0) <= l;
+}
+
 GoldIsland::GoldIsland(int blockId) : Feature(blockId)
 {
     whiteFlowerFeature = new FlowerFeature(Tile::flower_Id, 1);
@@ -47,42 +83,18 @@ bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int
 {
     if (y - l <= 0) y = l + 1; 
     if (y + l >= 116) y = 116 - l - 1; 
-    int i1 = 0;
-    int j1 = Mth::floor(l * 0.875);
-    for (int k1 = -j1; k1 <= j1; k1++)
-    {
-      for (int l1 = l; l1 >= -j1; l1--)
-      {
-        for (int k2 = -j1; k2 <= j1; k2++)
-        {
-          if (!level->isEmptyTile(k1 + x, l1 + y, k2 + z) && ++i1 > l / 2)
-            return false; 
-        } 
-      } 
-    } 
-    float f = 0.8f;
     for (int i2 = -l; i2 <= l; i2++)
     {
       for (int l2 = l; l2 >= -l; l2--)
       {
         for (int i3 = -l; i3 <= l; i3++)
         {
-          int k3 = Mth::floor(i2 * (1.0 + l2 / l * 10.0) / f);
-          int i4 = l2;
-          if (l2 > l * 0.625)
+          if (!inIslandShape(i2, l2, i3, l)) continue;
+          if (level->getTile(i2 + x, l2 + y, i3 + z) == Tile::chest_Id) continue;
+          bool surface = (l2 > Mth::floor(l / 5.0)) && !inIslandShape(i2, l2 + 1, i3, l);
+          bool aboveIsSurface = (l2 + 1 > Mth::floor(l / 5.0)) && inIslandShape(i2, l2 + 1, i3, l) && !inIslandShape(i2, l2 + 2, i3, l);
+          if (surface)
           {
-            i4 = Mth::floor(i4 * 1.375);
-            i4 -= Mth::floor(l * 0.25);
-          }
-          else if (l2 < l * -0.625)
-          {
-            i4 = Mth::floor(i4 * 1.350000023841858);
-            i4 += Mth::floor(l * 0.25);
-          }
-          int k4 = Mth::floor(i3 * (1.0 + l2 / l * 10.0) / f);
-          if (Mth::sqrt(k3 * k3 + i4 * i4 + k4 * k4 + 0.0) <= l)
-            if (level->isEmptyTile(i2 + x, l2 + y + 1, i3 + z) && l2 > Mth::floor(l / 5.0))
-            {
               placeBlock(level, i2 + x, l2 + y, i3 + z, Tile::aetherGrass_Id, 0);
               placeBlock(level, i2 + x, l2 + y - 1, i3 + z, Tile::aetherDirt_Id, 0);
               placeBlock(level, i2 + x, l2 + y - 1 + random->nextInt(2), i3 + z, Tile::aetherDirt_Id, 0);
@@ -111,11 +123,13 @@ bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int
                 } 
               } 
             }
-			else if
-			(level->isEmptyTile(i2 + x, l2 + y, i3 + z))
-			{
+          else if (aboveIsSurface)
+          {
+          }
+          else
+          {
               placeBlock(level, i2 + x, l2 + y, i3 + z, Tile::holystone_Id, 0);
-            }  
+          }  
         } 
       } 
     } 
@@ -139,29 +153,18 @@ bool GoldIsland::generateBlob(Level *level, Random *random, int x, int y, int z,
 {
     if (y - l <= 0) y = l + 1; 
     if (y + l >= 127) y = 127 - l - 1; 
-    float f = 1.0f;
     for (int i1 = -l; i1 <= l; i1++)
     {
       for (int k1 = l; k1 >= -l; k1--)
       {
         for (int i2 = -l; i2 <= l; i2++)
         {
-          int k2 = Mth::floor(i1 / f);
-          int i3 = k1;
-          if (k1 > l * 0.625)
+          if (!inBlobShape(i1, k1, i2, l)) continue;
+          if (level->getTile(i1 + x, k1 + y, i2 + z) == Tile::chest_Id) continue;
+          bool surface = (k1 > Mth::floor(l / 5.0)) && !inBlobShape(i1, k1 + 1, i2, l);
+          bool aboveIsSurface = (k1 + 1 > Mth::floor(l / 5.0)) && inBlobShape(i1, k1 + 1, i2, l) && !inBlobShape(i1, k1 + 2, i2, l);
+          if (surface)
           {
-            i3 = Mth::floor(i3 * 1.375);
-            i3 -= Mth::floor(l * 0.25);
-          }
-          else if (k1 < l * -0.625)
-          {
-            i3 = Mth::floor(i3 * 1.350000023841858);
-            i3 += Mth::floor(l * 0.25);
-          } 
-          int k3 = Mth::floor(i2 / f);
-          if (Mth::sqrt((k2 * k2 + i3 * i3 + k3 * k3 + 0.0)) <= l)
-            if (level->isEmptyTile(i1 + x, k1 + y + 1, i2 + z) && k1 > Mth::floor(l / 5.0))
-            {
               placeBlock(level, i1 + x, k1 + y, i2 + z, Tile::aetherGrass_Id, 0);
               placeBlock(level, i1 + x, k1 + y - 1, i2 + z, Tile::aetherDirt_Id, 0);
               placeBlock(level, i1 + x, k1 + y - 1 + random->nextInt(2), i2 + z, Tile::aetherDirt_Id, 0);
@@ -179,10 +182,13 @@ bool GoldIsland::generateBlob(Level *level, Random *random, int x, int y, int z,
                 }
               }
             }
-            else if (level->isEmptyTile(i1 + x, k1 + y, i2 + z))
-            {
+          else if (aboveIsSurface)
+          {
+          }
+          else
+          {
               placeBlock(level, i1 + x, k1 + y, i2 + z, Tile::holystone_Id, 0);
-            }
+          }
         }
       }
     } 
