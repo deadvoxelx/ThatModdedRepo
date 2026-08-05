@@ -6,6 +6,9 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.animal.h"
 
 ResourceLocation MoaRenderer::COCKATRICE_LOCATION = ResourceLocation(TN_MOB_COCKATRICE);
+ResourceLocation MoaRenderer::MOA_LOCATION = ResourceLocation(TN_MOB_MOABLUE);
+ResourceLocation MoaRenderer::MOA_WHITE_LOCATION = ResourceLocation(TN_MOB_MOAWHITE);
+ResourceLocation MoaRenderer::MOA_BLACK_LOCATION = ResourceLocation(TN_MOB_MOABLACK);
 
 MoaRenderer::MoaRenderer() : MobRenderer(new MoaModel(), 1.0f)
 {
@@ -20,25 +23,25 @@ void MoaRenderer::render(shared_ptr<Entity> _mob, double x, double y, double z, 
 ResourceLocation *MoaRenderer::getTextureLocation(shared_ptr<Entity> entity)
 {
 	shared_ptr<Cockatrice> cockatrice = dynamic_pointer_cast<Cockatrice>(entity);
-	//shared_ptr<Moa> moa = dynamic_pointer_cast<Moa>(entity);
+	shared_ptr<Moa> moa = dynamic_pointer_cast<Moa>(entity);
 
 	if (entity->instanceof(eTYPE_COCKATRICE))
 	{
         return &COCKATRICE_LOCATION;
     }
 
-    //if (moa->getMoaType() == Moa::TYPE_BLUE)
-	//{
-    //    return &MOABLUE_LOCATION;
-    //}
-    //if (moa->getMoaType() == Moa::TYPE_WHITE)
-	//{
-    //    return &MOAWHITE_LOCATION;
-    //}
-	//if (moa->getMoaType() == Moa::TYPE_BLACK)
-	//{
-    //    return &MOABLACK_LOCATION;
-    //}
+    if (moa->getMoaType() == Moa::TYPE_DEFAULT)
+	{
+        return &MOA_LOCATION;
+    }
+    if (moa->getMoaType() == Moa::TYPE_WHITE)
+	{
+        return &MOA_WHITE_LOCATION;
+    }
+	if (moa->getMoaType() == Moa::TYPE_BLACK)
+	{
+        return &MOA_BLACK_LOCATION;
+    }
 }
 
 void MoaRenderer::scale(shared_ptr<LivingEntity> mob, float a)
@@ -49,11 +52,23 @@ void MoaRenderer::scale(shared_ptr<LivingEntity> mob, float a)
 float MoaRenderer::getBob(shared_ptr<LivingEntity> _mob, float a)
 {
 	shared_ptr<Cockatrice> mob = dynamic_pointer_cast<Cockatrice>(_mob);
+	shared_ptr<Moa> moa = dynamic_pointer_cast<Moa>(_mob);
 
-    float flap = mob->oFlap+(mob->flap-mob->oFlap)*a;
-    float flapSpeed = mob->oFlapSpeed+(mob->flapSpeed-mob->oFlapSpeed)*a;
-        
-    return (Mth::sin(flap)+1)*flapSpeed;
+	if (mob != nullptr)
+	{
+		float flap = mob->oFlap+(mob->flap-mob->oFlap)*a;
+		float flapSpeed = mob->oFlapSpeed+(mob->flapSpeed-mob->oFlapSpeed)*a;
+		return (Mth::sin(flap)+1)*flapSpeed;
+	}
+
+	if (moa != nullptr)
+	{
+		float flapm = moa->oFlapM+(moa->flapM-moa->oFlapM)*a;
+		float flapSpeedm = moa->oFlapSpeedM+(moa->flapSpeedM-moa->oFlapSpeedM)*a;
+		return (Mth::sin(flapm)+1)*flapSpeedm;
+	}
+
+	return 0.0f;
 }
 
 /*int EvupulRenderer::prepareArmor(shared_ptr<LivingEntity> _mob, int layer, float a)
