@@ -17,6 +17,8 @@ public:
 	static const int CRAFT_SLOT_END;
 	static const int ARMOR_SLOT_START;
 	static const int ARMOR_SLOT_END;
+	static const int AETHER_SLOT_START;
+	static const int AETHER_SLOT_END;
 	static const int INV_SLOT_START;
 	static const int INV_SLOT_END;
 	static const int USE_ROW_SLOT_START;
