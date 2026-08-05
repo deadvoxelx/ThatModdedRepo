@@ -116,6 +116,7 @@ void Moa::defineSynchedData()
 {
 	TamableAnimal::defineSynchedData();
 	entityData->define(DATA_HEALTH_ID, getHealth());
+	entityData->define(DATA_TYPE_ID, static_cast<byte>(0));
 }
 
 void Moa::addAdditonalSaveData(CompoundTag *tag) 
@@ -260,7 +261,7 @@ bool Moa::mobInteract(shared_ptr<Player> player)
 		}
 		if (equalsIgnoreCase(player->getUUID(), getOwnerUUID()))
 		{
-			if (!level->isClientSide && item->id != Item::blueBerry->id)
+			if (!level->isClientSide && (item == nullptr || item->id != Item::blueBerry->id))
 			{
 				sitGoal->wantToSit(!isSitting());
 				jumping = false;
@@ -341,7 +342,7 @@ void Moa::setAngry(bool value)
 
 int Moa::GetSynchedHealth()	
 {
-	return getEntityData()->getInteger(DATA_HEALTH_ID);
+	return (int) getEntityData()->getFloat(DATA_HEALTH_ID);
 }	
 
 shared_ptr<AgableMob> Moa::getBreedOffspring(shared_ptr<AgableMob> target)
