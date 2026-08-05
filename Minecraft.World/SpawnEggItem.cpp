@@ -95,6 +95,16 @@ shared_ptr<Entity> SpawnEggItem::canSpawn(int iAuxVal, Level *level, int *piResu
 				*piResult=eSpawnResult_FailTooManyWolves;
 			}
 			break;
+		case eTYPE_MOA:
+			if(level->canCreateMore( eTYPE_MOA, Level::eSpawnType_Egg) )
+			{
+				canSpawn = true;
+			}
+			else
+			{
+				*piResult=eSpawnResult_FailTooManyPigsCowsSheepCats;
+			}
+			break;
 		case eTYPE_VILLAGER:
 			if(level->canCreateMore( eTYPE_VILLAGER, Level::eSpawnType_Egg) )
 			{
