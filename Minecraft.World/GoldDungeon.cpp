@@ -2,6 +2,8 @@
 #include "net.minecraft.world.level.material.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.tile.entity.h"
+#include "net.minecraft.world.entity.h"
+#include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.item.h"
 #include "WeighedTreasure.h"
 #include "DungeonStoneFeature.h"
@@ -31,10 +33,10 @@ GoldDungeon::GoldDungeon(int blockId) : Feature(blockId)
 
 bool GoldDungeon::place(Level *level, Random *random, int x, int y, int z)
 {
-    return generate(level, random, x, y, z, 24);
+    return generate(level, random, x, y, z, 24, true);
 }
   
-bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, int r)
+bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, int r, bool spawnBoss)
 {
     int islandL = r;
     r = Mth::floor(r * 0.8);
@@ -178,10 +180,9 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 			        else if (i == wid + 5)
 			        {
                         placeBlock(level, x + a, y + k, z + b, Tile::dungeonStone_Id, 2);
-                    }
-			        else if (i == wid + 4 && m == 0 && k == -2)
-			        {
-                        if (level->getTile(x + a, y + k, z + b) != Tile::chest_Id)
+                    }				        else if (i == wid + 4 && m == 0 && k == -2)
+				        {
+                        if (spawnBoss && level->getTile(x + a, y + k, z + b) != Tile::chest_Id)
                         {
                         level->setTileAndData(x + a, y + k, z + b, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
 				        WeighedTreasureArray wrapperArray(goldDungeonTreasure, TREASURE_ITEMS_COUNT);
@@ -190,7 +191,10 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 				        if (chest != NULL )
 				        {
 					        WeighedTreasure::addChestItems(random, treasure, chest, 9);
-				        } 
+				        }
+				        shared_ptr<SunSpirit> sunSpirit = shared_ptr<SunSpirit>(new SunSpirit(level));
+				        sunSpirit->moveTo(x, y - 1, z, wid, direction);
+				        level->addEntity(sunSpirit);
                         }
                     }
 			        else if (m == 3 || m == -3)
@@ -210,8 +214,6 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
             }
         }
     }
-    //EntityFireMonster boss = new EntityFireMonster(world, x, y - 1, z, wid, direction);
-    //world.spawnEntityInWorld(boss);
     return true;
 }
 
