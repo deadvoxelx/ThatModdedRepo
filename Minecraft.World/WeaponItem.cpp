@@ -46,13 +46,17 @@ float WeaponItem::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *t
 bool WeaponItem::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<LivingEntity> mob, shared_ptr<LivingEntity> attacker) 
 {
 	itemInstance->hurtAndBreak(1, attacker);
+	if (id == Item::nethaniumSword_Id)
+	{
+		mob->setOnFire(3);
+	}
 	if (id == Item::gravititeSword_Id)
 	{
 		mob->yd = 1.0f;
 	}
 	if (id == Item::vampireBlade_Id)
 	{
-		attacker->setHealth(attacker->getHealth() + 2);
+		if (random->nextInt(3) == 0) attacker->setHealth(attacker->getHealth() + 2);
 	}
 	return true;
 }
