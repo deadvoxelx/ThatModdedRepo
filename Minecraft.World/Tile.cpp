@@ -615,7 +615,7 @@ void Tile::staticCtor()
 	Tile::nusaCore = (new NusaCoreTile(253, Material::metal))			->setDestroyTime(-1)->setExplodeable(6000000)->setSoundType(SOUND_METAL)->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE)->setUseDescriptionId(IDS_TILE_NUSA_CORE);
 	Tile::nusaPortal = (NusaPortalTile *)(new NusaPortalTile(254, Material::portal))->setIconName(L"nusa_portal")->setDescriptionId(IDS_TILE_NUSA_PORTAL)->setUseDescriptionId(IDS_TILE_NUSA_PORTAL);
 
-	Tile::fossilOre = (new FossilTile(255))								->setDestroyTime(2.5f)->setExplodeable(15)->setSoundType(SOUND_STONE)->setIconName(L"fossilStone")->setDescriptionId(IDS_TILE_FOSSIL_ORE)->setUseDescriptionId(IDS_TILE_FOSSIL_ORE);
+	Tile::fossilOre = (new FossilTile(256))								->setDestroyTime(2.5f)->setExplodeable(15)->setSoundType(SOUND_STONE)->setIconName(L"fossilStone")->setDescriptionId(IDS_TILE_FOSSIL_ORE)->setUseDescriptionId(IDS_TILE_FOSSIL_ORE);
 
 
 	// Special cases for certain items since they can have different icons
