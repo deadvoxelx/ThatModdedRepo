@@ -131,6 +131,7 @@ enum eINSTANCEOF
 
 								eTYPE_OCELOT		= eTYPE_TAMABLE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x1,
 								eTYPE_WOLF			= eTYPE_TAMABLE_ANIMAL                                   | 0x2,
+								eTYPE_MOA			= eTYPE_TAMABLE_ANIMAL                                   | 0x3,
 
 							eTYPE_HORSE				= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x1,
 							eTYPE_SHEEP				= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x2,
@@ -443,6 +444,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_MOOBLOOM				)->addParent( eTYPE_COW ) );
 		classes->push_back( SUBCLASS(eTYPE_FLYING_COW			)->addParent( eTYPE_COW ) );
 		classes->push_back( SUBCLASS(eTYPE_SHEEPUFF				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
+		classes->push_back( SUBCLASS(eTYPE_MOA					)->addParent( eTYPE_TAMABLE_ANIMAL ) );
 
 		classes->push_back( SUBCLASS(eTYPE_HUSK					)->addParent( eTYPE_ZOMBIE ) );
 		classes->push_back( SUBCLASS(eTYPE_ZOMBICE				)->addParent( eTYPE_ZOMBIE ) );
