@@ -525,6 +525,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 123); // Nuskull
 		ITEM_AUX(Item::spawnEgg_Id, 124); // Nuclear Nuskull
 		ITEM_AUX(Item::spawnEgg_Id, 125); // Nusa Demon
+		ITEM_AUX(Item::spawnEgg_Id, 126); // Moa
 		ITEM_AUX(Item::spawnEgg_Id, 118); // Aerwhale
 		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr
 		ITEM_AUX(Item::spawnEgg_Id, 122); // Swet
@@ -720,18 +721,35 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::gravititeHoe_Id)
 		ITEM(Item::vampireBlade_Id)
 
-		ITEM(Item::cloudParachute_Id)		// 0
-		ITEM(Item::bow_Id)					// 1
-		ITEM(Item::arrow_Id)				// 2
-		ITEM(Item::dartShooterGold_Id)		// 3
-		ITEM(Item::dartShooterEnchanted_Id)	// 4
-		ITEM(Item::dartGold_Id)				// 5
-		ITEM(Item::dartPoison_Id)			// 6
-		ITEM(Item::dartEnchanted_Id)		// 7
+		ITEM(Item::ironPendant_Id)			// 0
+		ITEM(Item::ironRing_Id)				// 1
+		ITEM(Item::goldPendant_Id)			// 2
+		ITEM(Item::goldRing_Id)				// 3
+		ITEM(Item::zanitePendant_Id)		// 4
+		ITEM(Item::zaniteRing_Id)			// 5
+		ITEM(Item::ironBubble_Id)			// 6
+		ITEM(Item::regenerationStone_Id)	// 7
 		ITEM(Item::healingStone_Id)			// 8
 		ITEM(Item::lifeShard_Id)			// 9
 
-		ITEM(Item::regenerationStone_Id)	// 0
+		ITEM(Item::agilityCape_Id)			// 0
+		ITEM(Item::invisibilityCape_Id)		// 1
+		ITEM(Item::swetCape_Id)				// 2
+		ITEM(Item::valkyrieCape_Id)			// 3
+		ITEM(Item::cloudParachute_Id)		// 4
+		ITEM(Item::dartShooterGold_Id)		// 5
+		ITEM(Item::dartShooterEnchanted_Id)	// 6
+		ITEM(Item::dartGold_Id)				// 7
+		ITEM(Item::dartPoison_Id)			// 8
+		ITEM(Item::dartEnchanted_Id)		// 9
+
+		ITEM(Item::bow_Id)					// 0
+		ITEM(Item::arrow_Id)				// 1
+		ITEM(Item::valkyrieLance_Id)		// 2
+		ITEM(Item::valkyrieAxe_Id)			// 3
+		ITEM(Item::valkyriePickaxe_Id)		// 4
+		ITEM(Item::valkyrieShovel_Id)		// 5
+		ITEM(Item::valkyrieHoe_Id)			// 6
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{
