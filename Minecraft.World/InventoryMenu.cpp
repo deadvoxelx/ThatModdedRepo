@@ -4,6 +4,7 @@
 #include "net.minecraft.world.entity.player.h"
 #include "ResultSlot.h"
 #include "ArmorSlot.h"
+#include "AetherSlot.h"
 #include "CraftingContainer.h"
 #include "ResultContainer.h"
 #include "InventoryMenu.h"
@@ -15,7 +16,9 @@ const int InventoryMenu::CRAFT_SLOT_START = 1;
 const int InventoryMenu::CRAFT_SLOT_END = InventoryMenu::CRAFT_SLOT_START + 4;
 const int InventoryMenu::ARMOR_SLOT_START = InventoryMenu::CRAFT_SLOT_END;
 const int InventoryMenu::ARMOR_SLOT_END = InventoryMenu::ARMOR_SLOT_START + 4;
-const int InventoryMenu::INV_SLOT_START = InventoryMenu::ARMOR_SLOT_END;
+const int InventoryMenu::AETHER_SLOT_START = InventoryMenu::ARMOR_SLOT_END;
+const int InventoryMenu::AETHER_SLOT_END = InventoryMenu::AETHER_SLOT_START + 4;
+const int InventoryMenu::INV_SLOT_START = InventoryMenu::AETHER_SLOT_END;
 const int InventoryMenu::INV_SLOT_END = InventoryMenu::INV_SLOT_START + 9 * 3;
 const int InventoryMenu::USE_ROW_SLOT_START = InventoryMenu::INV_SLOT_END;
 const int InventoryMenu::USE_ROW_SLOT_END = InventoryMenu::USE_ROW_SLOT_START + 9;
@@ -44,10 +47,11 @@ void InventoryMenu::_init(shared_ptr<Inventory> inventory, bool active)
 
 	for (int i = 0; i < 4; i++)
 	{
-		// 4J Stu I removed an anonymous class that was here whose only purpose seemed to be a way of using the
-		// loop counter i within the functions, rather than making it a member of the object. I have moved all that
-		// out to the ArmorSlot class
-		addSlot(new ArmorSlot(i, inventory, inventory->getContainerSize() - 1 - i, 8, 8 + i * 18) );
+		addSlot(new ArmorSlot(i, inventory, inventory->getContainerSize() - 1 - (i + 4), 8, 8 + i * 18) );
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		addSlot(new AetherSlot(i, inventory, inventory->getContainerSize() - 1 - i, 8 + 18, 8 + i * 18));
 	}
 	for (int y = 0; y < 3; y++)
 	{
