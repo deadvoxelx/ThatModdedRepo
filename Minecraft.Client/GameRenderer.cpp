@@ -257,6 +257,16 @@ void GameRenderer::pick(float a)
 	mc->crosshairPickMob = nullptr;
 
 	double range = mc->gameMode->getPickRange();
+
+	bool valkReach = false;
+	shared_ptr<Player> pickPlayer = dynamic_pointer_cast<Player>(mc->cameraTargetPlayer);
+	if (pickPlayer != nullptr && pickPlayer->inventory != nullptr)
+	{
+		shared_ptr<ItemInstance> held = pickPlayer->inventory->getSelected();
+		valkReach = (held != nullptr && (held->id == Item::valkyrieLance_Id || held->id == Item::valkyrieAxe_Id || held->id == Item::valkyriePickaxe_Id || held->id == Item::valkyrieShovel_Id || held->id == Item::valkyrieHoe_Id));
+	}
+	if (valkReach) range += 1.0;
+
 	delete mc->hitResult;
 	MemSect(31);
 	mc->hitResult = mc->cameraTargetPlayer->pick(range, a);
@@ -295,7 +305,8 @@ void GameRenderer::pick(float a)
 	}
 	else
 	{
-		if (dist > 3) dist = 3;
+		double entityRange = valkReach ? 6 : 5;
+		if (dist > entityRange) dist = entityRange;
 		range = dist;
 	}
 
