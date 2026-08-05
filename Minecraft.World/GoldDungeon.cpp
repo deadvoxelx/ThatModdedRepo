@@ -7,6 +7,24 @@
 #include "DungeonStoneFeature.h"
 #include "GoldDungeon.h"
 
+static bool inIslandShape(int dx, int dy, int dz, int l)
+{
+	int k3 = Mth::floor(dx * (1.0 + (dy / l) * 10.0) / 0.8f);
+	int i4 = dy;
+	if (dy > l * 0.625)
+	{
+		i4 = Mth::floor(i4 * 1.375);
+		i4 -= Mth::floor(l * 0.25);
+	}
+	else if (dy < l * -0.625)
+	{
+		i4 = Mth::floor(i4 * 1.350000023841858);
+		i4 += Mth::floor(l * 0.25);
+	}
+	int k4 = Mth::floor(dz * (1.0 + (dy / l) * 10.0) / 0.8f);
+	return Mth::sqrt(k3 * k3 + i4 * i4 + k4 * k4 + 0.0) <= l;
+}
+
 GoldDungeon::GoldDungeon(int blockId) : Feature(blockId)
 {
 }
@@ -18,6 +36,7 @@ bool GoldDungeon::place(Level *level, Random *random, int x, int y, int z)
   
 bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, int r)
 {
+    int islandL = r;
     r = Mth::floor(r * 0.8);
 	
     int wid = Mth::sqrt(r * r / 2.0);
@@ -162,6 +181,8 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
                     }
 			        else if (i == wid + 4 && m == 0 && k == -2)
 			        {
+                        if (level->getTile(x + a, y + k, z + b) != Tile::chest_Id)
+                        {
                         level->setTileAndData(x + a, y + k, z + b, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
 				        WeighedTreasureArray wrapperArray(goldDungeonTreasure, TREASURE_ITEMS_COUNT);
 				        WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(wrapperArray, Item::enchantedBook->createForRandomTreasure(random));
@@ -170,6 +191,7 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
 				        {
 					        WeighedTreasure::addChestItems(random, treasure, chest, 9);
 				        } 
+                        }
                     }
 			        else if (m == 3 || m == -3)
 			        {
