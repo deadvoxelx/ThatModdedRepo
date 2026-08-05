@@ -161,6 +161,7 @@ public:
 		eBaseItemType_stick,
 		eBaseItemType_tnt,
 		eBaseItemType_wall,
+		eBaseItemType_accessory,
 		eBaseItemType_MAXTYPES,
 	}
 	eBaseItemType;
@@ -184,6 +185,7 @@ public:
 		static const Tier *ZANITE; //
 		static const Tier *GRAVITITE; //
 		static const Tier *VAMPIRE; //
+		static const Tier *VALKYRIE; //
 		static const Tier *APHALAF; //
 
 	private:
@@ -536,6 +538,22 @@ public:
 	static Item *fireFossil;
 	static Item *airFossil;
 	static Item *ribFossil;
+	static Item *ironBubble;
+	static Item *ironPendant;
+	static Item *ironRing;
+	static Item *goldPendant;
+	static Item *goldRing;
+	static Item *zanitePendant;
+	static Item *zaniteRing;
+	static Item *agilityCape;
+	static Item *invisibilityCape;
+	static Item *swetCape;
+	static Item *valkyrieCape;
+	static Item *valkyrieLance;
+	static Item *valkyrieAxe;
+	static Item *valkyriePickaxe;
+	static Item *valkyrieShovel;
+	static Item *valkyrieHoe;
 
 
 	static const int shovel_iron_Id			= 512;
@@ -823,6 +841,22 @@ public:
 	static const int fireFossil_Id = 773;
 	static const int airFossil_Id = 774;
 	static const int ribFossil_Id = 775;
+	static const int ironBubble_Id = 776;
+	static const int ironPendant_Id = 777;
+	static const int ironRing_Id = 778;
+	static const int goldPendant_Id = 779;
+	static const int goldRing_Id = 780;
+	static const int zanitePendant_Id = 781;
+	static const int zaniteRing_Id = 782;
+	static const int agilityCape_Id = 783;
+	static const int invisibilityCape_Id = 784;
+	static const int swetCape_Id = 785;
+	static const int valkyrieCape_Id = 786;
+	static const int valkyrieLance_Id = 787;
+	static const int valkyrieAxe_Id = 788;
+	static const int valkyriePickaxe_Id = 789;
+	static const int valkyrieShovel_Id = 790;
+	static const int valkyrieHoe_Id = 791;
 
 public:
 	const int id;
