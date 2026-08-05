@@ -2,8 +2,10 @@
 #include "com.mojang.nbt.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.item.h"
+#include "net.minecraft.world.effect.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.stats.h"
+#include "SharedConstants.h"
 #include "Material.h"
 #include "Inventory.h"
 
@@ -19,6 +21,7 @@ Inventory::Inventory(Player *player)
 {
 	items = ItemInstanceArray( INVENTORY_SIZE );
 	armor = ItemInstanceArray( 4 );
+	aether = ItemInstanceArray( 4 );
 
 	selected = 0;
 
@@ -33,6 +36,7 @@ Inventory::~Inventory()
 {
 	delete [] items.data;
 	delete [] armor.data;
+	delete [] aether.data;
 }
 
 shared_ptr<ItemInstance> Inventory::getSelected()
@@ -181,6 +185,16 @@ int Inventory::clearInventory(int id, int data)
 		count += item->count;
 		armor[i] = nullptr;
 	}
+	for (int i = 0; i < aether.length; i++)
+	{
+		shared_ptr<ItemInstance> item = aether[i];
+		if (item == nullptr) continue;
+		if (id > -1 && item->id != id) continue;
+		if (data > -1 && item->getAuxValue() != data) continue;
+
+		count += item->count;
+		aether[i] = nullptr;
+	}
 
 	if (carried != nullptr)
 	{
@@ -279,6 +293,104 @@ void Inventory::tick()
 		if (items[i] != nullptr)
 		{
 			items[i]->inventoryTick(player->level, player->shared_from_this(), i, selected == i);
+		}
+	}
+
+	{
+		bool regenStone = false;
+		for (unsigned int i = 0; i < aether.length; i++)
+		{
+			if (aether[i] != nullptr && aether[i]->id == Item::regenerationStone_Id)
+			{
+				regenStone = true;
+				break;
+			}
+		}
+		bool ironBubble = false;
+		for (unsigned int i = 0; i < aether.length; i++)
+		{
+			if (aether[i] != nullptr && aether[i]->id == Item::ironBubble_Id)
+			{
+				ironBubble = true;
+				break;
+			}
+		}
+		bool zaniteAccessory = false;
+		for (unsigned int i = 0; i < aether.length; i++)
+		{
+			if (aether[i] != nullptr && aether[i]->id == Item::zanitePendant_Id || aether[i] != nullptr && aether[i]->id == Item::zaniteRing_Id)
+			{
+				zaniteAccessory = true;
+				break;
+			}
+		}
+		bool agilityCape = false;
+		for (unsigned int i = 0; i < aether.length; i++)
+		{
+			if (aether[i] != nullptr && aether[i]->id == Item::agilityCape_Id)
+			{
+				agilityCape = true;
+				break;
+			}
+		}
+		bool invisCape = false;
+		for (unsigned int i = 0; i < aether.length; i++)
+		{
+			if (aether[i] != nullptr && aether[i]->id == Item::invisibilityCape_Id)
+			{
+				invisCape = true;
+				break;
+			}
+		}
+		bool valkCape = false;
+		for (unsigned int i = 0; i < aether.length; i++)
+		{
+			if (aether[i] != nullptr && aether[i]->id == Item::valkyrieCape_Id)
+			{
+				valkCape = true;
+				break;
+			}
+		}
+
+		if (regenStone)
+		{
+			MobEffectInstance *regen = player->getEffect(MobEffect::regeneration);
+			if (regen == nullptr || regen->getDuration() < SharedConstants::TICKS_PER_SECOND)
+			{
+				player->addEffect(new MobEffectInstance(MobEffect::regeneration->id, 100, 0));
+			}
+		}
+		if (ironBubble)
+		{
+			MobEffectInstance *waterBreath = player->getEffect(MobEffect::waterBreathing);
+			if (waterBreath == nullptr || waterBreath->getDuration() < SharedConstants::TICKS_PER_SECOND)
+			{
+				player->addEffect(new MobEffectInstance(MobEffect::waterBreathing->id, 100, 0));
+			}
+		}
+		if (zaniteAccessory)
+		{
+			MobEffectInstance *haste = player->getEffect(MobEffect::digSpeed);
+			if (haste == nullptr || haste->getDuration() < SharedConstants::TICKS_PER_SECOND)
+			{
+				player->addEffect(new MobEffectInstance(MobEffect::digSpeed->id, 100, 0));
+			}
+		}
+		player->footSize = agilityCape ? 1.0f : 0.5f;
+		if (invisCape)
+		{
+			MobEffectInstance *invis = player->getEffect(MobEffect::invisibility);
+			if (invis == nullptr || invis->getDuration() < SharedConstants::TICKS_PER_SECOND)
+			{
+				player->addEffect(new MobEffectInstance(MobEffect::invisibility->id, 100, 0));
+			}
+		}
+		if (valkCape)
+		{
+			if (!player->onGround && player->yd < 0)
+			{
+				player->yd *= 0.6;
+			}
 		}
 	}
 }
@@ -425,10 +537,15 @@ shared_ptr<ItemInstance> Inventory::removeItem(unsigned int slot, int count)
 {
 
 	ItemInstanceArray pile = items;
-	if (slot >= items.length)
+	if (slot >= items.length + armor.length)
+	{
+		pile = aether;
+		slot -= (items.length + armor.length);
+	}
+	else if (slot >= items.length)
 	{
 		pile = armor;
-		slot -= items.length;
+		slot -= (items.length);
 	}
 
 	if (pile[slot] != nullptr)
@@ -452,10 +569,15 @@ shared_ptr<ItemInstance> Inventory::removeItem(unsigned int slot, int count)
 shared_ptr<ItemInstance> Inventory::removeItemNoUpdate(int slot)
 {
 	ItemInstanceArray pile = items;
-	if (slot >= items.length)
+	if (slot >= items.length + armor.length)
+	{
+		pile = aether;
+		slot -= (items.length + armor.length);
+	}
+	else if (slot >= items.length)
 	{
 		pile = armor;
-		slot -= items.length;
+		slot -= (items.length);
 	}
 
 	if (pile[slot] != nullptr)
@@ -484,7 +606,11 @@ void Inventory::setItem(unsigned int slot, shared_ptr<ItemInstance> item)
 	}
 #endif
 	// 4J Stu - Changed this a little from Java to be less funn
-	if( slot >= items.length )
+	if (slot >= items.length + armor.length)
+	{
+		aether[slot - items.length - armor.length] = item;
+	}
+	else if (slot >= items.length)
 	{
 		armor[slot - items.length] = item;
 	}
@@ -493,16 +619,6 @@ void Inventory::setItem(unsigned int slot, shared_ptr<ItemInstance> item)
 		items[slot] = item;
 	}
 	player->handleCollectItem(item);
-	/*
-	ItemInstanceArray& pile = items;
-	if (slot >= pile.length)
-	{
-	slot -= pile.length;
-	pile = armor;
-	}
-
-	pile[slot] = item;
-	*/
 }
 
 float Inventory::getDestroySpeed(Tile *tile)
@@ -534,6 +650,16 @@ ListTag<CompoundTag> *Inventory::save(ListTag<CompoundTag> *listTag)
 			listTag->add(tag);
 		}
 	}
+	for (unsigned int i = 0; i < aether.length; i++)
+	{
+		if (aether[i] != nullptr)
+		{
+			CompoundTag* tag = new CompoundTag();
+			tag->putByte(L"Slot", static_cast<byte>(i + 104));
+			aether[i]->save(tag);
+			listTag->add(tag);
+		}
+	}
 	return listTag;
 }
 
@@ -550,8 +676,15 @@ void Inventory::load(ListTag<CompoundTag> *inventoryList)
 		armor.data = nullptr;
 
 	}
+	if( aether.data != nullptr)
+	{
+		delete[] aether.data;
+		aether.data = nullptr;
+
+	}
 	items = ItemInstanceArray( INVENTORY_SIZE );
 	armor = ItemInstanceArray( 4 );
+	aether = ItemInstanceArray( 4 );
 	for (int i = 0; i < inventoryList->size(); i++)
 	{
 		CompoundTag *tag = inventoryList->get(i);
@@ -560,20 +693,24 @@ void Inventory::load(ListTag<CompoundTag> *inventoryList)
 		if (item != nullptr)
 		{
 			if (slot >= 0 && slot < items.length) items[slot] = item;
-			if (slot >= 100 && slot < armor.length + 100) armor[slot - 100] = item;
+			if (slot >= 104 && slot < aether.length + 104) aether[slot - 104] = item;
 		}
 	}
 }
 
 unsigned int Inventory::getContainerSize()
 {
-	return items.length + 4;
+	return items.length + 8;
 }
 
 shared_ptr<ItemInstance> Inventory::getItem(unsigned int slot)
 {
 	// 4J Stu - Changed this a little from the Java so it's less funny
-	if( slot >= items.length )
+	if( slot >= items.length + armor.length )
+	{
+		return aether[ slot - items.length - armor.length ];
+	}
+	else if (slot >= items.length)
 	{
 		return armor[ slot - items.length ];
 	}
@@ -581,16 +718,6 @@ shared_ptr<ItemInstance> Inventory::getItem(unsigned int slot)
 	{
 		return items[ slot ];
 	}
-	/*
-	ItemInstanceArray pile = items;
-	if (slot >= pile.length)
-	{
-	slot -= pile.length;
-	pile = armor;
-	}
-
-	return pile[slot];
-	*/
 }
 
 wstring Inventory::getName()
@@ -680,6 +807,14 @@ void Inventory::dropAll()
 			armor[i] = nullptr;
 		}
 	}
+	for (unsigned int i = 0; i < aether.length; i++)
+	{
+		if (aether[i] != nullptr)
+		{
+			player->drop(aether[i], true);
+			aether[i] = nullptr;
+		}
+	}
 }
 
 void Inventory::setChanged()
@@ -696,6 +831,10 @@ bool Inventory::isSame(shared_ptr<Inventory> copy)
 	for (unsigned int i = 0; i < armor.length; i++)
 	{
 		if (!isSame( copy->armor[i], armor[i])) return false;
+	}
+	for (unsigned int i = 0; i < aether.length; i++)
+	{
+		if (!isSame( copy->aether[i], aether[i])) return false;
 	}
 	return true;
 }
@@ -720,6 +859,10 @@ shared_ptr<Inventory> Inventory::copy()
 	for (unsigned int i = 0; i < armor.length; i++)
 	{
 		copy->armor[i] = armor[i] != nullptr ? armor[i]->copy() : nullptr;
+	}
+	for (unsigned int i = 0; i < aether.length; i++)
+	{
+		copy->aether[i] = aether[i] != nullptr ? aether[i]->copy() : nullptr;
 	}
 	return copy;
 }
@@ -747,6 +890,10 @@ bool Inventory::contains(shared_ptr<ItemInstance> itemInstance)
 	for (unsigned int i = 0; i < armor.length; i++)
 	{
 		if (armor[i] != nullptr && armor[i]->sameItem(itemInstance)) return true;
+	}
+	for (unsigned int i = 0; i < aether.length; i++)
+	{
+		if (aether[i] != nullptr && aether[i]->sameItem(itemInstance)) return true;
 	}
 	for (unsigned int i = 0; i < items.length; i++)
 	{
@@ -779,6 +926,10 @@ void Inventory::replaceWith(shared_ptr<Inventory> other)
 	for (int i = 0; i < armor.length; i++)
 	{
 		armor[i] = ItemInstance::clone(other->armor[i]);
+	}
+	for (int i = 0; i < aether.length; i++)
+	{
+		aether[i] = ItemInstance::clone(other->aether[i]);
 	}
 
 	selected = other->selected;
