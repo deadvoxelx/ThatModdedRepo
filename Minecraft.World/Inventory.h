@@ -20,6 +20,7 @@ private:
 public:
 	ItemInstanceArray items;
 	ItemInstanceArray armor;
+	ItemInstanceArray aether;
 
 	int selected;
 	Player *player; // This is owned by shared_ptrs, but we are owned by it
