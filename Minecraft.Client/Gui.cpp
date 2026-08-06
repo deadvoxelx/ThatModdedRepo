@@ -1242,6 +1242,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
 		// Disable the depth test so the text shows on top of the paperdoll
         glDisable(GL_DEPTH_TEST);
+        float debugScale = 1.0f;
 #ifdef _WINDOWS64
 		float scaleWidth = (g_rScreenWidth / 1920.0f);
 		float scaleHeight = (g_rScreenHeight / 1080.0f);
@@ -1253,6 +1254,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
         {
 			scale = scale - 0.33f; // tame overscaling on 1440p
 		}
+		debugScale = scale;
 			
 		glScalef(scale, scale, 1);
 #endif
@@ -1264,14 +1266,15 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
             yPos += 10;
         }
 
+		// Coordinates
 		const int primaryPad = ProfileManager.GetPrimaryPad();
 		if (app.GetGameSettings(primaryPad, eGameSetting_DisplayHUD) == 1)
 		{
 			WCHAR posString[44]; // Allows upto 7 digit positions (+-9_999_999)
 			swprintf(posString, 44, L"%.3f / %.3f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
 			lines.push_back(L"XYZ: " + std::wstring(posString));
-			if(minecraft->player->m_iScreenSection == C4JRender::VIEWPORT_TYPE_FULLSCREEN) drawCenteredString(font, posString, 322, 221, 0x44ff00);
-			else drawCenteredString(font, posString, 420, 221, 0x44ff00);
+			const float centerX = ((vpW / 2.0f - debugLeft) / fontScale + debugLeft) / debugScale;
+			drawCenteredString(font, posString, Mth::floor(centerX + 0.5f), 221, 0x44ff00);
 		}
 
 #ifdef _WINDOWS64
