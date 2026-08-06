@@ -133,7 +133,10 @@ bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int
           }
           else
           {
-              placeBlock(level, i2 + x, l2 + y, i3 + z, Tile::holystone_Id, 0);
+              if (level->getTile(i2 + x, l2 + y, i3 + z) != Tile::chest_Id)
+              {
+                  placeBlock(level, i2 + x, l2 + y, i3 + z, Tile::holystone_Id, 0);
+              }
           }  
         } 
       } 
@@ -192,7 +195,10 @@ bool GoldIsland::generateBlob(Level *level, Random *random, int x, int y, int z,
           }
           else
           {
-              placeBlock(level, i1 + x, k1 + y, i2 + z, Tile::holystone_Id, 0);
+              if (level->getTile(i1 + x, k1 + y, i2 + z) != Tile::chest_Id)
+              {
+                  placeBlock(level, i1 + x, k1 + y, i2 + z, Tile::holystone_Id, 0);
+              }
           }
         }
       }
