@@ -750,6 +750,13 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(24,		9,	L"zanitePendant")
 		ADD_ICON(24,		10,	L"zaniteRing")
 
+		ADD_ICON(25,		0,	L"sunFish")
+		ADD_ICON(25,		1,	L"sunFishCooked")
+		ADD_ICON(25,		2,	L"moonFish")
+		ADD_ICON(25,		3,	L"moonFishCooked")
+		ADD_ICON(25,		4,	L"cloudFish")
+		ADD_ICON(25,		5,	L"cloudFishCooked")
+
 		// Special cases
 		ClockTexture *dataClock = new ClockTexture();
 		Icon *oldClock = texturesByName[L"clock"];
