@@ -372,6 +372,12 @@ Item *Item::valkyrieAxe = NULL;
 Item *Item::valkyriePickaxe = NULL;
 Item *Item::valkyrieShovel = NULL;
 Item *Item::valkyrieHoe = NULL;
+Item *Item::sunFish = NULL;
+Item *Item::sunFishCooked = NULL;
+Item *Item::moonFish = NULL;
+Item *Item::moonFishCooked = NULL;
+Item *Item::cloudFish = NULL;
+Item *Item::cloudFishCooked = NULL;
 
 void Item::staticCtor()
 {
@@ -722,6 +728,12 @@ void Item::staticCtor()
 	Item::valkyriePickaxe = ( new PickaxeItem(277, _Tier::VALKYRIE) )								->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_iron)->setIconName(L"valkyriePickaxe")->setDescriptionId(IDS_ITEM_VALKYRIE_PICKAXE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_PICKAXE);
 	Item::valkyrieShovel = ( new ShovelItem(278, _Tier::VALKYRIE) )									->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_iron)->setIconName(L"valkyrieShovel")->setDescriptionId(IDS_ITEM_VALKYRIE_SHOVEL)->setUseDescriptionId(IDS_ITEM_VALKYRIE_SHOVEL);
 	Item::valkyrieHoe = ( new HoeItem(279, _Tier::VALKYRIE) )										->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_iron)->setIconName(L"valkyrieHoe")->setDescriptionId(IDS_ITEM_VALKYRIE_HOE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_HOE);
+	Item::sunFish = ( new FoodItem(280, 2, FoodConstants::FOOD_SATURATION_LOW, false) )				->setIconName(L"sunFish")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);
+	Item::sunFishCooked = ( new FoodItem(281, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setIconName(L"sunFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
+	Item::moonFish = ( new FoodItem(282, 2, FoodConstants::FOOD_SATURATION_LOW, false) )			->setIconName(L"moonFish")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);
+	Item::moonFishCooked = ( new FoodItem(283, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setIconName(L"moonFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
+	Item::cloudFish = ( new FoodItem(284, 2, FoodConstants::FOOD_SATURATION_LOW, false) )			->setIconName(L"cloudFish")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);
+	Item::cloudFishCooked = ( new FoodItem(285, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setIconName(L"cloudFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
 
 }
 
