@@ -56,15 +56,13 @@ void SunSpiritModel::render(shared_ptr<Entity> entity, float time, float r, floa
 {
     setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
-    //head->render(scale, usecompiled);
     torso->render(scale, usecompiled);
-    //rightArm->render(scale, usecompiled);
-    //leftArm->render(scale, usecompiled);
 }
 
 void SunSpiritModel::setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, shared_ptr<Entity> entity, unsigned int uiBitmaskOverrideAnim)
 {
     head->yRot = yRot / (float) (180 / PI);
+    head->xRot = xRot / (float) (180 / PI);
 
     rightArm->xRot = -(Mth::sin(time * 0.067f) * 0.05f);
     rightArm->yRot = 0.0f;
