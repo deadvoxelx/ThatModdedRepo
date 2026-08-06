@@ -554,6 +554,12 @@ public:
 	static Item *valkyriePickaxe;
 	static Item *valkyrieShovel;
 	static Item *valkyrieHoe;
+	static Item *sunFish;
+	static Item *sunFishCooked;
+	static Item *moonFish;
+	static Item *moonFishCooked;
+	static Item *cloudFish;
+	static Item *cloudFishCooked;
 
 
 	static const int shovel_iron_Id			= 512;
@@ -857,6 +863,12 @@ public:
 	static const int valkyriePickaxe_Id = 789;
 	static const int valkyrieShovel_Id = 790;
 	static const int valkyrieHoe_Id = 791;
+	static const int sunFish_Id = 792;
+	static const int sunFishCooked_Id = 793;
+	static const int moonFish_Id = 794;
+	static const int moonFishCooked_Id = 795;
+	static const int cloudFish_Id = 796;
+	static const int cloudFishCooked_Id = 797;
 
 public:
 	const int id;
