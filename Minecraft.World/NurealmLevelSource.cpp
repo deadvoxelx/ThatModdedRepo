@@ -29,6 +29,8 @@ NurealmLevelSource::NurealmLevelSource(Level *level, int64_t seed)
 
 	scaleNoise = new PerlinNoise(random, 10);
 	depthNoise = new PerlinNoise(random, 16);
+
+	terrainHeightNoise = new PerlinNoise(random, 8);
 }
 
 NurealmLevelSource::~NurealmLevelSource()
@@ -42,6 +44,7 @@ NurealmLevelSource::~NurealmLevelSource()
 	delete perlinNoise3;
 
 	delete carvingNoise;
+	delete terrainHeightNoise;
 
 	delete scaleNoise;
 	delete depthNoise;
@@ -240,9 +243,11 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 	}
 
 	double s = 1 * 684.412;
+	//double s = 1 * 1.79414499328E8;
 	double hs = 1 * 684.412;
+	//double hs = 1 * 1.79414499328E8;
 
-	doubleArray pnr, ar, br, sr, dr, fi, fis, cnr;	// 4J - used to be declared with class level scope but moved here for thread safety
+	doubleArray pnr, ar, br, sr, dr, fi, fis, cnr, hr;	// 4J - used to be declared with class level scope but moved here for thread safety
 
 	sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
 	dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
@@ -254,6 +259,8 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 	br = lperlinNoise2->getRegion(br, x, y, z, xSize, ySize, zSize, s, hs, s);
 
 	cnr = carvingNoise->getRegion(cnr, x, y, z, xSize, ySize, zSize, s / 30.0, hs / 30.0, s / 30.0);
+
+	hr = terrainHeightNoise->getRegion(hr, x, z, xSize, zSize, 20.0, 20.0, 0.5);
 
 	int p = 0;
 	int pp = 0;
@@ -276,8 +283,13 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 			scale = scale + 0.5;
 			depth = depth * ySize / 16;
 
+			double height = hr[pp] * 0.04;
+			if (height > 10) height = 10;
+			if (height < -10) height = -10;
+			double surfaceFadeStart = ySize / 2.0 - 2.0 + height;
+
 			pp++;
-			
+
 			double yCenter = ySize / 2.0 + depth * 4;
 
 			for (int yy = 0; yy < ySize; yy++)
@@ -302,16 +314,16 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 					val += (carve + 6.0) * 2.0;
 				}
 
-				// keep top/bottom fadeout from The End generator so islands stay floating
-				int r = 2;
-				if (yy > ySize / 2 - r)
+				// keep top/bottom fadeout from The End generator so islands stay floating,
+				// but vary the top fade position with noise so surface heights differ
+				if (yy > surfaceFadeStart)
 				{
-					double slide = (yy - (ySize / 2 - r)) / 64.0f;
+					double slide = (yy - surfaceFadeStart) / 64.0f;
 					if (slide < 0) slide = 0;
 					if (slide > 1) slide = 1;
 					val = val * (1 - slide) + -3000 * slide;
 				}
-				r = 8;
+				int r = 8;
 				if (yy < r)
 				{
 					double slide = (r - yy) / (r - 1.0f);
@@ -331,6 +343,8 @@ doubleArray NurealmLevelSource::getHeights(doubleArray buffer, int x, int y, int
 	delete [] dr.data;
 	delete [] fi.data;
 	delete [] fis.data;
+	delete [] cnr.data;
+	delete [] hr.data;
 
 	return buffer;
 
@@ -460,7 +474,7 @@ bool NurealmLevelSource::shouldSave()
 
 wstring NurealmLevelSource::gatherStats()
 {
-	return L"RandomLevelSource";
+	return L"NurealmLevelSource";
 }
 
 vector<Biome::MobSpawnerData *> *NurealmLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
