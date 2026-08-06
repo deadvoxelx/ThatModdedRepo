@@ -2576,3 +2576,4 @@
 #define IDS_ITEM_VALKYRIE_PICKAXE							   2570
 #define IDS_ITEM_VALKYRIE_SHOVEL							   2571
 #define IDS_ITEM_VALKYRIE_HOE								   2572
+#define IDS_SUN_SPIRIT										   2573
