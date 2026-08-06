@@ -186,6 +186,7 @@ enum eINSTANCEOF
 						eTYPE_NUSKULL			= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x18,
 						eTYPE_NUCLEAR_NUSKULL	= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x19,
 						eTYPE_NUSA_DEMON		= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x20,
+						eTYPE_SUN_SPIRIT		= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x21,
 
 
 				eTYPE_AMBIENT				= eTYPE_MOB | BIT_AMBIENT_MOB,
@@ -462,6 +463,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_NUSKULL				)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
 		classes->push_back( SUBCLASS(eTYPE_NUCLEAR_NUSKULL		)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
 		classes->push_back( SUBCLASS(eTYPE_NUSA_DEMON			)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
+		classes->push_back( SUBCLASS(eTYPE_SUN_SPIRIT			)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
 
 		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
 		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
