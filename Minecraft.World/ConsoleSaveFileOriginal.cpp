@@ -718,6 +718,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		{
 			seed = sv->levels[0]->getLevelData()->getSeed();
 			hasSeed = true;
+			app.SetGameHostOption(eGameHostOption_HasBeenInCreative, sv->levels[0]->getLevelData()->getHasBeenInCreative());
 		}
 		int metaLen = app.CreateImageTextData(meta, seed, hasSeed,
 											  app.GetGameHostOption(eGameHostOption_All), Minecraft::GetInstance()->getCurrentTexturePackId());
@@ -879,6 +880,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		{
 			seed = MinecraftServer::getInstance()->levels[0]->getLevelData()->getSeed();
 			hasSeed = true;
+			app.SetGameHostOption(eGameHostOption_HasBeenInCreative, MinecraftServer::getInstance()->levels[0]->getLevelData()->getHasBeenInCreative());
 		}
 
 		int iTextMetadataBytes = app.CreateImageTextData(bTextMetadata, seed, hasSeed, app.GetGameHostOption(eGameHostOption_All), Minecraft::GetInstance()->getCurrentTexturePackId());
