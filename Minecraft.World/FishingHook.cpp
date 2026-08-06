@@ -2,13 +2,19 @@
 #include "net.minecraft.stats.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.damagesource.h"
+#include "net.minecraft.network.packet.h"
 #include "com.mojang.nbt.h"
+#include "..\Minecraft.Client\ServerPlayer.h"
+#include "..\Minecraft.Client\PlayerConnection.h"
+#include "EnchantmentHelper.h"
+#include "WeighedTreasure.h"
 #include "FishingHook.h"
 #include "SoundTypes.h"
 
@@ -329,26 +335,41 @@ void FishingHook::tick()
 		} 
 		else
 		{
-			int nibbleOdds = 500;
-			if (level->isRainingAt( Mth::floor(x), Mth::floor(y) + 1, Mth::floor(z))) nibbleOdds = 300;
+			int nibbleOdds = 100;
+			if (level->isRainingAt( Mth::floor(x), Mth::floor(y) + 1, Mth::floor(z))) nibbleOdds = 60;
 
 			if (random->nextInt(nibbleOdds) == 0)
 			{
 				nibble = random->nextInt(30) + 10;
 				yd -= 0.2f;
 				playSound(eSoundType_RANDOM_SPLASH, 0.25f, 1 + (random->nextFloat() - random->nextFloat()) * 0.4f);
-				float yt = static_cast<float>(Mth::floor(bb->y0));
-				for (int i = 0; i < 1 + bbWidth * 20; i++)
+				if (level->isClientSide)
 				{
-					float xo = (random->nextFloat() * 2 - 1) * bbWidth;
-					float zo = (random->nextFloat() * 2 - 1) * bbWidth;
-					level->addParticle(eParticleType_bubble, x + xo, yt + 1, z + zo, xd, yd - random->nextFloat() * 0.2f, zd);
+					float yt = static_cast<float>(Mth::floor(bb->y0));
+					for (int i = 0; i < 8; i++)
+					{
+						float xo = (level->random->nextFloat() * 2 - 1) * bbWidth;
+						float zo = (level->random->nextFloat() * 2 - 1) * bbWidth;
+						level->addParticle(eParticleType_splash, x + xo, y, z + zo, 0, 0.25, 0);
+						level->addParticle(eParticleType_bubble, x + xo, y, z + zo, 0, 0.25, 0);
+					}
 				}
-				for (int i = 0; i < 1 + bbWidth * 20; i++)
+
+				if (!level->isClientSide && owner != nullptr && owner->GetType() == eTYPE_SERVERPLAYER)
 				{
-					float xo = (random->nextFloat() * 2 - 1) * bbWidth;
-					float zo = (random->nextFloat() * 2 - 1) * bbWidth;
-					level->addParticle(eParticleType_splash, x + xo, yt + 1, z + zo, xd, yd, zd);
+					shared_ptr<ServerPlayer> serverPlayer = dynamic_pointer_cast<ServerPlayer>(owner);
+					if (serverPlayer != nullptr && serverPlayer->connection != nullptr)
+					{
+						wstring bubbleName = std::to_wstring(static_cast<int>(eParticleType_bubble));
+						wstring splashName = std::to_wstring(static_cast<int>(eParticleType_splash));
+						for (int i = 0; i < 8; i++)
+						{
+							float xo = (level->random->nextFloat() * 2 - 1) * bbWidth;
+							float zo = (level->random->nextFloat() * 2 - 1) * bbWidth;
+							serverPlayer->connection->send(std::make_shared<LevelParticlesPacket>(bubbleName, static_cast<float>(x + xo), static_cast<float>(y), static_cast<float>(z + zo), 0.0f, 0.0f, 0.0f, 0.0f, 1));
+							serverPlayer->connection->send(std::make_shared<LevelParticlesPacket>(splashName, static_cast<float>(x + xo), static_cast<float>(y), static_cast<float>(z + zo), 0.0f, 0.0f, 0.0f, 0.0f, 1));
+						}
+					}
 				}
 			}
 		}
@@ -420,7 +441,38 @@ int FishingHook::retrieve()
 	}
 	else if (nibble > 0)
 	{
-		shared_ptr<ItemEntity> ie = std::make_shared<ItemEntity>(this->Entity::level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Item::fish_raw)));
+		WeighedTreasureArray treasureArray(fishingLoot, TREASURE_ITEMS_COUNT);
+		WeighedTreasureArray aetherTreasureArray(aetherFishingLoot, AETHER_TREASURE_ITEMS_COUNT);
+		WeighedTreasure *treasure = static_cast<WeighedTreasure *>(WeighedRandom::getRandomItem(random, *((WeighedRandomItemArray *)&treasureArray)));
+		WeighedTreasure *aetherTreasure = static_cast<WeighedTreasure *>(WeighedRandom::getRandomItem(random, *((WeighedRandomItemArray *)&aetherTreasureArray)));
+
+		shared_ptr<ItemInstance> catchItem = catchItem;
+
+		if (level->dimension->id == 3)
+		{
+			int count = aetherTreasure->getMinCount() + random->nextInt(aetherTreasure->getMaxCount() - aetherTreasure->getMinCount() + 1);
+			catchItem = aetherTreasure->getItem()->copy();
+			catchItem->count = count;
+
+			if (catchItem->id == Item::enchantedBook_Id)
+			{
+				EnchantmentHelper::enchantItem(random, catchItem, 30);
+			}
+		}
+		else
+		{
+			int count = treasure->getMinCount() + random->nextInt(treasure->getMaxCount() - treasure->getMinCount() + 1);
+			catchItem = treasure->getItem()->copy();
+			catchItem->count = count;
+
+			if (catchItem->id == Item::bow_Id || catchItem->id == Item::sword_iron_Id || catchItem->id == Item::chestplate_iron_Id || catchItem->id == Item::enchantedBook_Id)
+			{
+				EnchantmentHelper::enchantItem(random, catchItem, 30);
+			}
+		}
+
+		shared_ptr<ItemEntity> ie = std::make_shared<ItemEntity>(this->Entity::level, x, y, z, catchItem);
+		
 		double xa = owner->x - x;
 		double ya = owner->y - y;
 		double za = owner->z - z;
@@ -441,9 +493,46 @@ int FishingHook::retrieve()
 	return dmg;
 }
 
-// 4J Stu - Brought forward from 1.4
 void FishingHook::remove()
 {
 	Entity::remove();
 	if (owner != nullptr) owner->fishing = nullptr;
 }
+
+WeighedTreasure *FishingHook::fishingLoot[FishingHook::TREASURE_ITEMS_COUNT] = 
+{
+	new WeighedTreasure(Item::fish_raw_Id, 0, 1, 1, 30),
+	new WeighedTreasure(Item::string_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::rotten_flesh_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::bone_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::leather_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::slimeBall_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::shellFossil_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::boots_leather_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::nameTag_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::bucket_water_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::ironIngot_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::goldIngot_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::sword_iron_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::chestplate_iron_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::bow_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::enchantedBook_Id, 0, 1, 1, 1),
+};
+
+WeighedTreasure *FishingHook::aetherFishingLoot[FishingHook::AETHER_TREASURE_ITEMS_COUNT] = 
+{
+	new WeighedTreasure(Item::sunFish_Id, 0, 1, 1, 10),
+	new WeighedTreasure(Item::moonFish_Id, 0, 1, 1, 10),
+	new WeighedTreasure(Item::cloudFish_Id, 0, 1, 1, 10),
+	new WeighedTreasure(Item::string_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::goldenAmber_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::swetBall_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::airFossil_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::boots_leather_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::nameTag_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::skyrootBucket_water_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::zaniteGemstone_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::goldIngot_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::dartShooterGold_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::enchantedBook_Id, 0, 1, 1, 1),
+};
