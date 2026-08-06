@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "WitherBoss.h"
 #include "AphalafBoss.h"
+#include "SunSpirit.h"
 #include "net.minecraft.world.entity.ambient.h"
 #include "net.minecraft.world.entity.animal.h"
 #include "net.minecraft.world.entity.item.h"
@@ -128,6 +129,7 @@ void EntityIO::staticCtor()
 	setId(NuclearNuskull::create, eTYPE_NUCLEAR_NUSKULL, L"NuclearNuskull", 124, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Creeper_Colour1, IDS_NUCLEAR_NUSKULL);
 	setId(NusaDemon::create, eTYPE_NUSA_DEMON, L"NusaDemon", 125, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Enderman_Colour1, IDS_NUSA_DEMON);
 	setId(Moa::create, eTYPE_MOA, L"Moa", 126, eMinecraftColour_Mob_Zombie_Colour1, eMinecraftColour_Mob_Squid_Colour1, IDS_MOA);
+	setId(SunSpirit::create, eTYPE_SUN_SPIRIT, L"SunSpirit", 127, eMinecraftColour_Mob_Spider_Colour2, eMinecraftColour_Mob_Blaze_Colour1, IDS_SUN_SPIRIT);
 
 	setId(EnderCrystal::create, eTYPE_ENDER_CRYSTAL, L"EnderCrystal", 200);
 
