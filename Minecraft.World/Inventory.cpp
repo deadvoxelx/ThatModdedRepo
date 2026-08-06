@@ -693,7 +693,8 @@ void Inventory::load(ListTag<CompoundTag> *inventoryList)
 		if (item != nullptr)
 		{
 			if (slot >= 0 && slot < items.length) items[slot] = item;
-			if (slot >= 104 && slot < aether.length + 104) aether[slot - 104] = item;
+			else if (slot >= 100 && slot < armor.length + 100) armor[slot - 100] = item;
+			else if (slot >= 104 && slot < aether.length + 104) aether[slot - 104] = item;
 		}
 	}
 }
