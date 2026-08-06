@@ -17,4 +17,5 @@ public:
 	virtual Pos *getSpawnPos();
 	virtual int getSpawnYPosition();
 	virtual bool isFoggyAt(int x, int z);
+	virtual int getXZSize();
 };
