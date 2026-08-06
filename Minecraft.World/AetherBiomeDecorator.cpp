@@ -44,13 +44,28 @@ AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 	cactusCount = 0;
 	waterlilyCount = 0;
 	hugeMushrooms = 0;
-	liquids = false;
+	liquids = true;
 }
 
 void AetherBiomeDecorator::decorate()
 {
 	PIXBeginNamedEvent(0, "Decorate Aether ores");
 	decorateAetherOres();
+	PIXEndNamedEvent();
+
+	PIXBeginNamedEvent(0,"Decorate Aether liquids");
+	if( liquids )
+	{
+		AetherSpringFeature *aetherSpringFeature = new AetherSpringFeature(Tile::water_Id);
+		for (int i = 0; i < 50; i++)
+		{
+			int x = xo + random->nextInt(16) + 8;
+			int y = random->nextInt(random->nextInt(Level::genDepth - 8) + 8);
+			int z = zo + random->nextInt(16) + 8;
+			aetherSpringFeature->place(level, random, x, y, z);
+		}
+		delete aetherSpringFeature;
+	}
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0, "Decorate Aether forests");
