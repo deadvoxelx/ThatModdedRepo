@@ -435,12 +435,50 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Aether Dungeons");
-	if (pprandom->nextInt(96) == 0)
+	for (int ixc = -3; ixc <= 3; ixc++)
 	{
-		int x = xo + pprandom->nextInt(16) + 8;
-		int y = 48 + random->nextInt(24);
-		int z = zo + pprandom->nextInt(16) + 8;
-		GoldIsland(Tile::holystone_Id).place(level, pprandom, x, y, z);
+		for (int izc = -3; izc <= 3; izc++)
+		{
+			int xc = xt + ixc;
+			int zc = zt + izc;
+			Random islandRandom(((xc * xScale) + (zc * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
+			if (islandRandom.nextInt(512) == 0)
+			{
+				int x = xc * 16 + islandRandom.nextInt(16) + 8;
+				int y = 64 + islandRandom.nextInt(24);
+				int z = zc * 16 + islandRandom.nextInt(16) + 8;
+				bool blocked = false;
+				for (int oxc = -4; oxc <= 4 && !blocked; oxc++)
+				{
+					for (int ozc = -4; ozc <= 4; ozc++)
+					{
+						if (oxc == 0 && ozc == 0) continue;
+						int ox = xc + oxc;
+						int oz = zc + ozc;
+						Random otherRandom(((ox * xScale) + (oz * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
+						if (otherRandom.nextInt(512) != 0) continue;
+						int oX = ox * 16 + otherRandom.nextInt(16) + 8;
+						int oZ = oz * 16 + otherRandom.nextInt(16) + 8;
+						int dX = oX - x;
+						int dZ = oZ - z;
+						if (dX * dX + dZ * dZ < 54 * 54)
+						{
+							if (ox < xc || (ox == xc && oz < zc))
+							{
+								blocked = true;
+								break;
+							}
+						}
+					}
+				}
+				if (blocked) continue;
+				if (x - 27 <= xt * 16 + 15 && x + 27 >= xt * 16 && z - 27 <= zt * 16 + 15 && z + 27 >= zt * 16)
+				{
+					bool spawnBoss = (xt == (x >> 4) && zt == (z >> 4));
+					GoldIsland(Tile::holystone_Id).place(level, &islandRandom, x, y, z, spawnBoss);
+				}
+			}
+		}
 	}
 	PIXEndNamedEvent();
 
