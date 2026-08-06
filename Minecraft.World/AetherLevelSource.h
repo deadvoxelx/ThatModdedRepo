@@ -12,7 +12,8 @@ private:
 	Random *random;
 	Random *pprandom;
 
-private:
+	LargeFeature *caveFeature;
+
 	PerlinNoise *lperlinNoise1;
 	PerlinNoise *lperlinNoise2;
 	PerlinNoise *perlinNoise1;
@@ -24,6 +25,7 @@ private:
 	PerlinNoise *floatingIslandScale;
 	PerlinNoise *floatingIslandNoise;
 	PerlinNoise *carvingNoise;
+	PerlinNoise *terrainHeightNoise;
 
 	Level *level;
 
@@ -54,5 +56,5 @@ public:
 public:
 	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
 	virtual TilePos *findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z);
-	virtual void recreateLogicStructuresForChunk(int chunkX, int chunkZ);
+	void recreateLogicStructuresForChunk(int chunkX, int chunkZ);
 };
