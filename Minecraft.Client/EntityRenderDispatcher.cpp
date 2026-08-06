@@ -102,6 +102,8 @@
 #include "SwetRenderer.h"
 #include "NuskullRenderer.h"
 #include "NusaDemonRenderer.h"
+#include "SunSpiritModel.h"
+#include "SunSpiritRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -150,6 +152,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_NUSKULL] = new NuskullRenderer();
 	renderers[eTYPE_NUCLEAR_NUSKULL] = new NuskullRenderer();
 	renderers[eTYPE_NUSA_DEMON] = new NusaDemonRenderer();
+	renderers[eTYPE_SUN_SPIRIT] = new SunSpiritRenderer();
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
