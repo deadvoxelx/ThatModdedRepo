@@ -1547,6 +1547,8 @@ source_group("net/minecraft/world/level/levelgen" FILES ${_MINECRAFT_WORLD_COMMO
 set(_MINECRAFT_WORLD_COMMON_NET_MINECRAFT_WORLD_LEVEL_LEVELGEN_FEATURE
   "${CMAKE_CURRENT_SOURCE_DIR}/AercloudFeature.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/AercloudFeature.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/AetherSpringFeature.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/AetherSpringFeature.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/BasicTree.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/BasicTree.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/BerryBushFeature.cpp"
