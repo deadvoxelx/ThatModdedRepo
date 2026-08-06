@@ -92,6 +92,11 @@ int NurealmDimension::getSpawnYPosition()
 	return 64;
 }
 
+int NurealmDimension::getXZSize()
+{
+	return NUREALM_LEVEL_MAX_WIDTH;
+}
+
 void NurealmDimension::updateLightRamp()
 {
     float ambientLight = 0.01f;
