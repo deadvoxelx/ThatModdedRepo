@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "net.minecraft.world.level.h"
+#include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.biome.h"
 #include "net.minecraft.world.level.levelgen.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "net.minecraft.world.level.levelgen.structure.h"
 #include "net.minecraft.world.level.levelgen.synth.h"
-#include "net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.level.storage.h"
+#include "net.minecraft.world.entity.h"
 #include "BiomeSource.h"
 #include "TheOuterEndLevelRandomLevelSource.h"
 
@@ -18,7 +18,7 @@ TheOuterEndLevelRandomLevelSource::TheOuterEndLevelRandomLevelSource(Level *leve
 	this->level = level;
 
 	random = new Random(seed);
-	pprandom = new Random(seed);	// 4J added
+	pprandom = new Random(seed);
 	lperlinNoise1 = new PerlinNoise(random, 16);
 	lperlinNoise2 = new PerlinNoise(random, 16);
 	perlinNoise1 = new PerlinNoise(random, 8);
@@ -45,7 +45,7 @@ TheOuterEndLevelRandomLevelSource::~TheOuterEndLevelRandomLevelSource()
 
 void TheOuterEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
 {
-	doubleArray buffer;	// 4J - used to be declared with class level scope but tidying up for thread safety reasons
+	doubleArray buffer;
 
 	int xChunks = 16 / CHUNK_WIDTH;
 
@@ -115,7 +115,6 @@ void TheOuterEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs, byt
 		}
 	}
 	delete [] buffer.data;
-
 }
 
 void TheOuterEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
@@ -124,26 +123,27 @@ void TheOuterEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byte
 
 	double s = 1 / 32.0;
 
+	doubleArray grassBuffer(16*16);
 	doubleArray sandBuffer(16*16);
-	doubleArray gravelBuffer(16*16);
 	doubleArray depthBuffer(16*16);
 
-	sandBuffer = perlinNoise2->getRegion(sandBuffer, xOffs * 16, zOffs * 16, 0, 16, 16, 1, s, s, 1);
-	gravelBuffer = perlinNoise2->getRegion(gravelBuffer, xOffs * 16, 109, zOffs * 16, 16, 1, 16, s, 1, s);
+	grassBuffer = perlinNoise2->getRegion(grassBuffer, xOffs * 16, zOffs * 16, 0, 16, 16, 1, s, s, 1);
+	sandBuffer = perlinNoise2->getRegion(sandBuffer, xOffs * 16, 109, zOffs * 16, 16, 1, 16, s, 1, s);
 	depthBuffer = perlinNoise3->getRegion(depthBuffer, xOffs * 16, zOffs * 16, 0, 16, 16, 1, s * 2, s * 2, s * 2);
 
 	for (int x = 0; x < 16; x++)
 	{
 		for (int z = 0; z < 16; z++)
 		{
+			bool grass = (grassBuffer[x + z * 16] + random->nextDouble() * 0.2) > 0;
 			bool sand = (sandBuffer[x + z * 16] + random->nextDouble() * 0.2) > 0;
-			bool gravel = (gravelBuffer[x + z * 16] + random->nextDouble() * 0.2) > 0;
 			int runDepth = (int) (depthBuffer[x + z * 16] / 3 + 3 + random->nextDouble() * 0.25);
 
 			int run = -1;
 
 			byte top = (byte) Tile::endStone_Id;
 			byte material = (byte) Tile::endStone_Id;
+			byte base = (byte) Tile::endStone_Id;
 
 			for (int y = Level::genDepthMinusOne; y >= 0; y--)
 			{
@@ -161,21 +161,20 @@ void TheOuterEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byte
 						{
 							if (runDepth <= 0)
 							{
-								top = (byte) 0;
-								material = (byte) Tile::endStone_Id;
+								top = 0;
+								material = base;
 							}
 							else if (y >= waterHeight - 16 && y <= waterHeight + 16)
 							{
 								top = (byte) Tile::endStone_Id;
 								material = (byte) Tile::endStone_Id;
-								if (gravel) top = (byte) Tile::endSand_Id;
-								if (gravel) material = (byte) Tile::endSand_Id;
-								if (sand) top = (byte) Tile::veloettGrass_Id;
-								if (sand) material = (byte) Tile::endStone_Id;
+								if (sand) top = (byte) Tile::endSand_Id;
+								if (sand) material = (byte) Tile::endSand_Id;
+								if (grass) top = (byte) Tile::veloettGrass_Id;
+								if (grass) material = (byte) Tile::endStone_Id;
 							}
 							run = runDepth;
-							if (y >= waterHeight - 1 || sand) blocks[offs] = top;
-							else blocks[offs] = material;
+							blocks[offs] = top;
 						}
 						else if (run > 0)
 						{
@@ -188,7 +187,7 @@ void TheOuterEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byte
 		}
 	}
 	delete [] sandBuffer.data;
-	delete [] gravelBuffer.data;
+	delete [] grassBuffer.data;
 	delete [] depthBuffer.data;
 }
 
@@ -202,27 +201,21 @@ LevelChunk *TheOuterEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs)
 	random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
 	BiomeArray biomes;
-	// 4J - now allocating this with a physical alloc & bypassing general memory management so that it will get cleanly freed
 	unsigned int blocksSize = Level::genDepth * 16 * 16;
 	byte *tileData = static_cast<byte *>(XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096, PAGE_READWRITE));
 	XMemSet128(tileData,0,blocksSize);
 	byteArray blocks = byteArray(tileData,blocksSize);
-	//    byteArray blocks = byteArray(16 * level->depth * 16);
 
-	//    LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);			// 4J moved below
 	level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16, 16, true);
 
 	prepareHeights(xOffs, zOffs, blocks, biomes);
 	buildSurfaces(xOffs, zOffs, blocks, biomes);
 
-	// 4J - this now creates compressed block data from the blocks array passed in, so moved it until after the blocks are actually finalised. We also
-	// now need to free the passed in blocks as the LevelChunk doesn't use the passed in allocation anymore.
 	LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
 	XPhysicalFree(tileData);
 
 	levelChunk->recalcHeightmap();
 
-	//delete blocks.data; // Don't delete the blocks as the array data is actually owned by the chunk now
 	delete biomes.data;
 
 	return levelChunk;
@@ -238,7 +231,7 @@ doubleArray TheOuterEndLevelRandomLevelSource::getHeights(doubleArray buffer, in
 	double s = 1 * 684.412;
 	double hs = 1 * 684.412;
 
-	doubleArray pnr, ar, br, sr, dr, fi, fis;	// 4J - used to be declared with class level scope but moved here for thread safety
+	doubleArray pnr, ar, br, sr, dr, fi, fis;
 
 	sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
 	dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
@@ -290,7 +283,6 @@ doubleArray TheOuterEndLevelRandomLevelSource::getHeights(doubleArray buffer, in
 				val -= 8;
 				val -= yOffs * 0.05;
 
-				// keep top/bottom fadeout from The End generator so islands stay floating
 				int r = 2;
 				if (yy > ySize / 2 - r)
 				{
@@ -385,7 +377,6 @@ void TheOuterEndLevelRandomLevelSource::calcWaterDepths(ChunkSource *parent, int
 			}
 		}
 	}
-
 }
 
 void TheOuterEndLevelRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
@@ -394,16 +385,13 @@ void TheOuterEndLevelRandomLevelSource::postProcess(ChunkSource *parent, int xt,
 	int xo = xt * 16;
 	int zo = zt * 16;
 
-	// 4J - added. The original java didn't do any setting of the random seed here, and passes the level random to the biome decorator.
-	// We'll be running our postProcess in parallel with getChunk etc. so we need to use a separate random - have used the same initialisation code as
-	// used in RandomLevelSource::postProcess to make sure this random value is consistent for each world generation.
 	pprandom->setSeed(level->getSeed());
 	int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
 	int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
 	pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
 	Biome *biome = level->getBiome(xo + 16, zo + 16);
-	biome->decorate(level, pprandom, xo, zo);		// 4J - passing pprandom rather than level->random here to make this consistent with our parallel world generation
+	biome->decorate(level, pprandom, xo, zo);
 
 	HeavyTile::instaFall = false;
 
@@ -427,7 +415,7 @@ bool TheOuterEndLevelRandomLevelSource::shouldSave()
 
 wstring TheOuterEndLevelRandomLevelSource::gatherStats()
 {
-	return L"RandomLevelSource";
+	return L"OuterEndRandomLevelSource";
 }
 
 vector<Biome::MobSpawnerData *> *TheOuterEndLevelRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
