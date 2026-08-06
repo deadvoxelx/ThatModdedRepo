@@ -94,3 +94,8 @@ int TheEndDimension::getSpawnYPosition()
 {
 	return 50;
 }
+
+int TheEndDimension::getXZSize()
+{
+	return END_LEVEL_MAX_WIDTH;
+}
