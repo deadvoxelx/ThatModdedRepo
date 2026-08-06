@@ -70,3 +70,4 @@
 #include "NusaTowerFeature.h"
 #include "NusaTempleFeature.h"
 #include "TentFeature.h"
+#include "AetherSpringFeature.h"
