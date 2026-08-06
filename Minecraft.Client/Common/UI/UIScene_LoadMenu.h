@@ -64,7 +64,6 @@ private:
 #ifdef __PS3__
 	std::vector<SonyCommerce::ProductInfo>*m_pvProductInfo;
 #endif
-	//int *m_iConfigA; // track the texture packs that we don't have installed
 
 	PBYTE m_pbThumbnailData;
 	unsigned int m_uiThumbnailSize;
@@ -86,11 +85,9 @@ public:
 	virtual void handleTouchBoxRebuild();
 
 protected:
-	// TODO: This should be pure virtual in this class
 	virtual wstring getMoviePath();
 
 public:
-	// INPUT
 	virtual void handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled);
 	virtual void handleTimerComplete(int id);
 
@@ -103,6 +100,8 @@ private:
 	void StartSharedLaunchFlow();
 	virtual void checkStateAndStartGame();
 	void LaunchGame(void);
+
+	void applyThumbnailMetadata();
 
 #ifdef _DURANGO
 	static void checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad);
@@ -119,7 +118,6 @@ private:
 	static int DeleteSaveDataReturned(void *pParam,bool bSuccess);
 	static int MustSignInReturnedPSN(void *pParam,int iPad,C4JStorage::EMessageResult result);
 #ifdef __ORBIS__
-	//static int PSPlusReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int ContinueOffline(void *pParam,int iPad,C4JStorage::EMessageResult result);
 #endif
 
