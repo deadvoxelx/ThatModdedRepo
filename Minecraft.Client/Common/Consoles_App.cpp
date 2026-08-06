@@ -4769,6 +4769,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_VALKYRIE_PICKAXE, L"Valkyrie Pickaxe");
 		m_stringTable->registerString(IDS_ITEM_VALKYRIE_SHOVEL, L"Valkyrie Shovel");
 		m_stringTable->registerString(IDS_ITEM_VALKYRIE_HOE, L"Valkyrie Hoe");
+		m_stringTable->registerString(IDS_SUN_SPIRIT, L"Sun Spirit");
 
 	}
 	else
