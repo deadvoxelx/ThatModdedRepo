@@ -460,6 +460,8 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/SuspendedParticle.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/SuspendedTownParticle.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/SwetRenderer.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/SunSpiritModel.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/SunSpiritRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/TakeAnimationParticle.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/TeleportCommand.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/TerrainParticle.cpp"
