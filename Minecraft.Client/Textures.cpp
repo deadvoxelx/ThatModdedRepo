@@ -205,6 +205,8 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/nuclearNuskullLegacyOverlay",
 	L"mob/nusademon",
 	L"mob/nusademonoverlay",
+	L"mob/sun_spirit",
+	L"mob/frozen_sun_spirit",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
@@ -587,6 +589,11 @@ void Textures::bind(int id)
 ResourceLocation *Textures::getTextureLocation(shared_ptr<Entity> entity)
 {
 	shared_ptr<ItemEntity> item = dynamic_pointer_cast<ItemEntity>(entity);
+	// 4J - guard against dropped items holding an unregistered item id (ItemInstance::getItem() returns nullptr)
+	if (item == nullptr || item->getItem() == nullptr || item->getItem()->getItem() == nullptr)
+	{
+		return getTextureLocation(Icon::TYPE_ITEM);
+	}
 	int iconType = item->getItem()->getIconType();
 	return getTextureLocation(iconType);
 }
