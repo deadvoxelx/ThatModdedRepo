@@ -182,19 +182,34 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
                         placeBlock(level, x + a, y + k, z + b, Tile::dungeonStone_Id, 2);
                     }				        else if (i == wid + 4 && m == 0 && k == -2)
 				        {
-                        if (spawnBoss && level->getTile(x + a, y + k, z + b) != Tile::chest_Id)
+                        if (level->getTile(x + a, y + k, z + b) != Tile::chest_Id)
                         {
                         level->setTileAndData(x + a, y + k, z + b, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
-				        WeighedTreasureArray wrapperArray(goldDungeonTreasure, TREASURE_ITEMS_COUNT);
-				        WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(wrapperArray, Item::enchantedBook->createForRandomTreasure(random));
 				        shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity >( level->getTileEntity(x + a, y + k, z + b) );
 				        if (chest != NULL )
 				        {
-					        WeighedTreasure::addChestItems(random, treasure, chest, 9);
+					        bool hasLoot = false;
+					        for (unsigned int slot = 0; slot < chest->getContainerSize(); slot++)
+					        {
+						        if (chest->getItem(slot) != NULL)
+						        {
+							        hasLoot = true;
+							        break;
+						        }
+					        }
+					        if (!hasLoot)
+					        {
+						        WeighedTreasureArray wrapperArray(goldDungeonTreasure, TREASURE_ITEMS_COUNT);
+						        WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(wrapperArray, Item::enchantedBook->createForRandomTreasure(random));
+						        WeighedTreasure::addChestItems(random, treasure, chest, 9);
+					        }
 				        }
-				        shared_ptr<SunSpirit> sunSpirit = shared_ptr<SunSpirit>(new SunSpirit(level));
-				        sunSpirit->moveTo(x, y - 1, z, wid, direction);
-				        level->addEntity(sunSpirit);
+                        }
+                        if (spawnBoss)
+                        {
+				            shared_ptr<SunSpirit> sunSpirit = shared_ptr<SunSpirit>(new SunSpirit(level));
+				            sunSpirit->moveTo(x, y - 1, z, wid, direction);
+				            level->addEntity(sunSpirit);
                         }
                     }
 			        else if (m == 3 || m == -3)
