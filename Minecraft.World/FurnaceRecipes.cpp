@@ -62,6 +62,9 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Item::blueBerry_Id, new ItemInstance(Item::blueBerryEnchanted), .35f);
 	addFurnaceRecipy(Item::dartGold_Id, new ItemInstance(Item::dartEnchanted), .15f);
 	addFurnaceRecipy(Item::dartShooterGold_Id, new ItemInstance(Item::dartShooterEnchanted), 1);
+	addFurnaceRecipy(Item::sunFish_Id, new ItemInstance(Item::sunFishCooked), .35);
+	addFurnaceRecipy(Item::moonFish_Id, new ItemInstance(Item::moonFishCooked), .35);
+	addFurnaceRecipy(Item::cloudFish_Id, new ItemInstance(Item::cloudFishCooked), .35);
 }
 
 void FurnaceRecipes::addFurnaceRecipy(int itemId, ItemInstance *result, float value)
