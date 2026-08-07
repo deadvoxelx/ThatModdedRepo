@@ -442,11 +442,11 @@ void EnderDragon::aiStep()
 		{
 			if( m_actionTicks < (FLAME_TICKS - 10) )
 			{
-				vector<shared_ptr<Entity> > *targets = level->getEntities(shared_from_this(), m_acidArea);
+				vector<shared_ptr<Entity> > targets = *level->getEntities(shared_from_this(), m_acidArea);
 
-				if ( targets )
+				if ( !targets.empty() )
 				{
-					for (auto& it : *targets )
+					for (auto& it : targets )
 					{
 						if ( it->instanceof(eTYPE_LIVINGENTITY))
 						{
@@ -646,10 +646,10 @@ void EnderDragon::aiStep()
 	if (!level->isClientSide) checkAttack();
 	if (!level->isClientSide && hurtDuration == 0)
 	{
-		knockBack(level->getEntities(shared_from_this(), wing1->bb->grow(4, 2, 4)->move(0, -2, 0)));
-		knockBack(level->getEntities(shared_from_this(), wing2->bb->grow(4, 2, 4)->move(0, -2, 0)));
-		hurt(level->getEntities(shared_from_this(), neck->bb->grow(1, 1, 1)));
-		hurt(level->getEntities(shared_from_this(), head->bb->grow(1, 1, 1)));
+		knockBack(vector<shared_ptr<Entity> >(*level->getEntities(shared_from_this(), wing1->bb->grow(4, 2, 4)->move(0, -2, 0))));
+		knockBack(vector<shared_ptr<Entity> >(*level->getEntities(shared_from_this(), wing2->bb->grow(4, 2, 4)->move(0, -2, 0))));
+		hurt(vector<shared_ptr<Entity> >(*level->getEntities(shared_from_this(), neck->bb->grow(1, 1, 1))));
+		hurt(vector<shared_ptr<Entity> >(*level->getEntities(shared_from_this(), head->bb->grow(1, 1, 1))));
 	}
 
 	double p1components[3];
@@ -835,15 +835,15 @@ void EnderDragon::checkAttack()
 	}
 }
 
-void EnderDragon::knockBack(vector<shared_ptr<Entity> > *entities)
+void EnderDragon::knockBack(vector<shared_ptr<Entity> > entities)
 {
 	double xm = (body->bb->x0 + body->bb->x1) / 2;
 	//        double ym = (body.bb.y0 + body.bb.y1) / 2;
 	double zm = (body->bb->z0 + body->bb->z1) / 2;
 
-	if ( entities )
+	if ( !entities.empty() )
 	{
-		for ( auto& it : *entities )
+		for ( auto& it : entities )
 		{
 			if (it->instanceof(eTYPE_LIVINGENTITY))
 			{
@@ -857,11 +857,11 @@ void EnderDragon::knockBack(vector<shared_ptr<Entity> > *entities)
 	}
 }
 
-void EnderDragon::hurt(vector<shared_ptr<Entity> > *entities)
+void EnderDragon::hurt(vector<shared_ptr<Entity> > entities)
 {
-	if ( entities )
+	if ( !entities.empty() )
 	{
-		for ( auto& it : *entities )
+		for ( auto& it : entities )
 		{
 
 			if ( it->instanceof(eTYPE_LIVINGENTITY))
