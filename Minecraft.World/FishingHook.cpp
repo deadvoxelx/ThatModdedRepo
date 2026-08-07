@@ -237,11 +237,11 @@ void FishingHook::tick()
 		to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
 	}
 	shared_ptr<Entity> hitEntity = nullptr;
-	vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
+	vector<shared_ptr<Entity> > objects = *level->getEntities(shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
 	double nearest = 0;
-	for (auto it = objects->begin(); it != objects->end(); it++)
+	for (auto it = objects.begin(); it != objects.end(); it++)
 	{
-		shared_ptr<Entity> e = *it; // objects->at(i);
+		shared_ptr<Entity> e = *it;
 		if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
 		float rr = 0.3f;
