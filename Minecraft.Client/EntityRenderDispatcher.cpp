@@ -156,7 +156,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
-	renderers[eTYPE_ZEPHYRBALL] = new FireballRenderer(2.0f);
+	renderers[eTYPE_ZEPHYRBALL] = new ItemSpriteRenderer(Item::snowBall);
 	renderers[eTYPE_DART] = new ArrowRenderer();
 	renderers[eTYPE_DARTENCHANTED] = new ArrowRenderer();
 	//
