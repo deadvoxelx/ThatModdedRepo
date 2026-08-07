@@ -5,6 +5,7 @@
 
 ResourceLocation ArrowRenderer::ARROW_LOCATION = ResourceLocation(TN_ITEM_ARROWS);
 ResourceLocation ArrowRenderer::DART_LOCATION = ResourceLocation(TN_MOB_DART);
+ResourceLocation ArrowRenderer::DART_ENCHANTED_LOCATION = ResourceLocation(TN_MOB_DARTENCHANTED);
 
 void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, double z, float rot, float a)
 {
@@ -27,10 +28,10 @@ void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, doubl
 
     glPushMatrix();
 
-	float yRot = arrow->yRot;
-	float xRot = arrow->xRot;
-	float yRotO = arrow->yRotO;
-	float xRotO = arrow->xRotO;
+	float yRot = _entity->yRot;
+	float xRot = _entity->xRot;
+	float yRotO = _entity->yRotO;
+	float xRotO = _entity->xRotO;
 	if( ( yRot - yRotO ) > 180.0f ) yRot -= 360.0f;
 	else if( ( yRot - yRotO ) < -180.0f ) yRot += 360.0f;
 	if( ( xRot - xRotO ) > 180.0f ) xRot -= 360.0f;
@@ -55,7 +56,10 @@ void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, doubl
 
     glEnable(GL_RESCALE_NORMAL);
 
-    float shake = arrow->shakeTime-a;
+    float shake = 0.0f;
+	if (arrow != nullptr) shake = arrow->shakeTime - a;
+	else if (dart != nullptr) shake = static_cast<float>(dart->shakeTime) - a;
+	else if (dartE != nullptr) shake = static_cast<float>(dartE->shakeTime) - a;
 
     if (shake>0)
     {
@@ -105,6 +109,7 @@ ResourceLocation *ArrowRenderer::getTextureLocation(shared_ptr<Entity> entity)
 {
     shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(entity);
     shared_ptr<Dart> dart = dynamic_pointer_cast<Dart>(entity);
+    shared_ptr<DartEnchanted> dartE = dynamic_pointer_cast<DartEnchanted>(entity);
 
     if (entity->instanceof(eTYPE_ARROW))
 	{
@@ -116,6 +121,6 @@ ResourceLocation *ArrowRenderer::getTextureLocation(shared_ptr<Entity> entity)
     }
     if (entity->instanceof(eTYPE_DARTENCHANTED))
 	{
-        return &DART_LOCATION;
+        return &DART_ENCHANTED_LOCATION;
     }
 }
