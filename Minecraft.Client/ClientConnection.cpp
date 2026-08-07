@@ -525,15 +525,15 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 		break;
 
 	case AddEntityPacket::DART:
-		e = std::make_shared<Arrow>(level, x, y, z);
+		e = std::make_shared<Dart>(level, x, y, z);
 		break;
 
 	/*case AddEntityPacket::DARTPOISON:
-		e = std::make_shared<Arrow>(level, x, y, z);
+		e = std::make_shared<DartPoison>(level, x, y, z);
 		break;*/
 
 	case AddEntityPacket::DARTENCHANTED:
-		e = std::make_shared<Arrow>(level, x, y, z);
+		e = std::make_shared<DartEnchanted>(level, x, y, z);
 		break;
 
 	case AddEntityPacket::SNOWBALL:
@@ -541,7 +541,7 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 		break;
 
 	case AddEntityPacket::HELLSPHERE:
-		e = std::make_shared<Snowball>(level, x, y, z);
+		e = std::make_shared<HellSphere>(level, x, y, z);
 		break;
 
 	case AddEntityPacket::ITEM_FRAME:
@@ -623,75 +623,6 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 		assert(0);
 #endif
 	}
-
- /*   if (packet->type == AddEntityPacket::MINECART_RIDEABLE) e = shared_ptr<Entity>( new Minecart(level, x, y, z, Minecart::RIDEABLE) );
-	if (packet->type == AddEntityPacket::MINECART_CHEST) e = shared_ptr<Entity>( new Minecart(level, x, y, z, Minecart::CHEST) );
-	if (packet->type == AddEntityPacket::MINECART_FURNACE) e = shared_ptr<Entity>( new Minecart(level, x, y, z, Minecart::FURNACE) );
-	if (packet->type == AddEntityPacket::FISH_HOOK)
-	{
-		// 4J Stu - Brought forward from 1.4 to be able to drop XP from fishing
-		shared_ptr<Entity> owner = getEntity(packet->data);
-
-		// 4J - check all local players to find match
-		if( owner == nullptr )
-		{
-			for( int i = 0; i < XUSER_MAX_COUNT; i++ )
-			{
-				if( minecraft->localplayers[i] )
-				{
-					if( minecraft->localplayers[i]->entityId == packet->data )
-					{
-
-						owner = minecraft->localplayers[i];
-						break;
-					}
-				}
-			}
-		}
-		shared_ptr<Player> player = dynamic_pointer_cast<Player>(owner);
-		if (player != nullptr)
-		{
-			shared_ptr<FishingHook> hook = shared_ptr<FishingHook>( new FishingHook(level, x, y, z, player) );
-			e = hook;
-			// 4J Stu - Move the player->fishing out of the ctor as we cannot reference 'this'
-			player->fishing = hook;
-		}
-		packet->data = 0;
-	}
-
-	if (packet->type == AddEntityPacket::ARROW) e = shared_ptr<Entity>( new Arrow(level, x, y, z) );
-	if (packet->type == AddEntityPacket::SNOWBALL) e = shared_ptr<Entity>( new Snowball(level, x, y, z) );
-	if (packet->type == AddEntityPacket::THROWN_ENDERPEARL) e = shared_ptr<Entity>( new ThrownEnderpearl(level, x, y, z) );
-	if (packet->type == AddEntityPacket::EYEOFENDERSIGNAL) e = shared_ptr<Entity>( new EyeOfEnderSignal(level, x, y, z) );
-	if (packet->type == AddEntityPacket::FIREBALL)
-	{
-		e = shared_ptr<Entity>( new Fireball(level, x, y, z, packet->xa / 8000.0, packet->ya / 8000.0, packet->za / 8000.0) );
-		packet->data = 0;
-	}
-	if (packet->type == AddEntityPacket::SMALL_FIREBALL)
-	{
-		e = shared_ptr<Entity>( new SmallFireball(level, x, y, z, packet->xa / 8000.0, packet->ya / 8000.0, packet->za / 8000.0) );
-		packet->data = 0;
-	}
-	if (packet->type == AddEntityPacket::EGG) e = shared_ptr<Entity>( new ThrownEgg(level, x, y, z) );
-	if (packet->type == AddEntityPacket::THROWN_POTION)
-	{
-		e = shared_ptr<Entity>( new ThrownPotion(level, x, y, z, packet->data) );
-		packet->data = 0;
-	}
-	if (packet->type == AddEntityPacket::THROWN_EXPBOTTLE)
-	{
-		e = shared_ptr<Entity>( new ThrownExpBottle(level, x, y, z) );
-		packet->data = 0;
-	}
-	if (packet->type == AddEntityPacket::BOAT) e = shared_ptr<Entity>( new Boat(level, x, y, z) );
-	if (packet->type == AddEntityPacket::PRIMED_TNT) e = shared_ptr<Entity>( new PrimedTnt(level, x, y, z) );
-	if (packet->type == AddEntityPacket::ENDER_CRYSTAL) e = shared_ptr<Entity>( new EnderCrystal(level, x, y, z) );
-	if (packet->type == AddEntityPacket::FALLING_SAND) e = shared_ptr<Entity>( new FallingTile(level, x, y, z, Tile::sand->id) );
-	if (packet->type == AddEntityPacket::FALLING_GRAVEL) e = shared_ptr<Entity>( new FallingTile(level, x, y, z, Tile::gravel->id) );
-	if (packet->type == AddEntityPacket::FALLING_EGG) e = shared_ptr<Entity>( new FallingTile(level, x, y, z, Tile::dragonEgg_Id) );
-
-	*/
 
 	if (e != nullptr)
 	{
@@ -788,7 +719,7 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 
 				if ( owner != nullptr && owner->instanceof(eTYPE_LIVINGENTITY) )
 				{
-					dynamic_pointer_cast<Arrow>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
+					dynamic_pointer_cast<Dart>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
 				}
 			}
 
@@ -838,7 +769,7 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 
 				if ( owner != nullptr && owner->instanceof(eTYPE_LIVINGENTITY) )
 				{
-					dynamic_pointer_cast<Arrow>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
+					dynamic_pointer_cast<DartEnchanted>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
 				}
 			}
 
