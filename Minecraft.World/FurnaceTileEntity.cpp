@@ -24,6 +24,9 @@ static bool isEnchanterInput(int id)
 		case Item::blueBerry_Id:
 		case Item::dartGold_Id:
 		case Item::dartShooterGold_Id:
+		case Item::sunFish_Id:
+		case Item::moonFish_Id:
+		case Item::cloudFish_Id:
 		return true;
 
 	default:
