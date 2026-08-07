@@ -2,6 +2,7 @@
 #include "com.mojang.nbt.h"
 #include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.level.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.player.h"
@@ -170,6 +171,23 @@ void DartEnchanted::tick()
 {
 	Entity::tick();
 
+	if (!level->isClientSide)
+	{
+		if (!level->hasChunkAt(Mth::floor(x), Mth::floor(y), Mth::floor(z)))
+		{
+			remove();
+			return;
+		}
+
+		int minXZ = -(level->dimension->getXZSize() * 16) / 2;
+		int maxXZ = (level->dimension->getXZSize() * 16) / 2 - 1;
+		if ((x <= minXZ) || (x >= maxXZ) || (z <= minXZ) || (z >= maxXZ))
+		{
+			remove();
+			return;
+		}
+	}
+
 
 	if (xRotO == 0 && yRotO == 0) 
 	{
@@ -235,9 +253,9 @@ void DartEnchanted::tick()
 		to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
 	}
 	shared_ptr<Entity> hitEntity = nullptr;
-	vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+	vector<shared_ptr<Entity> > objects = *level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
 	double nearest = 0;
-	for ( auto& e : *objects )
+	for ( auto& e : objects )
 	{
 		if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
@@ -403,7 +421,6 @@ void DartEnchanted::tick()
 	yRot = yRotO + (yRot - yRotO) * 0.2f;
 
 	float inertia = 0.99f;
-	float gravity = 0.05f;
 
 	if (isInWater())
 	{
@@ -418,7 +435,6 @@ void DartEnchanted::tick()
 	xd *= inertia;
 	yd *= inertia;
 	zd *= inertia;
-	yd -= gravity;
 
 	setPos(x, y, z);
 
