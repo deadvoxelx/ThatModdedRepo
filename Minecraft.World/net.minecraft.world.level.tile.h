@@ -173,3 +173,4 @@
 #include "NusaCoreTile.h"
 #include "FossilTile.h"
 #include "SandTile.h"
+#include "TreasureChestTile.h"
