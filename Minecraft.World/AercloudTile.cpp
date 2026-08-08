@@ -6,7 +6,8 @@
 #include "net.minecraft.world.h"
 #include "..\Minecraft.Client\Minecraft.h"
 
-const unsigned int AercloudTile::CLOUD_NAMES[CLOUD_NAMES_LENGTH] = {
+const unsigned int AercloudTile::CLOUD_NAMES[CLOUD_NAMES_LENGTH] =
+{
 	IDS_TILE_AERCLOUD,
 	IDS_TILE_AERCLOUD_BLUE,
 	IDS_TILE_AERCLOUD_GOLD,
@@ -46,7 +47,7 @@ void AercloudTile::entityInside(Level *level, int x, int y, int z, shared_ptr<En
 	entity->xd *= 0.4;
 	entity->zd *= 0.4;
 	entity->fallDistance = 0;
-	if (level->getData(x, y, z) == 1)
+	if (level->getData(x, y, z) == AercloudTile::TYPE_BLUE)
 	{
 		entity->yd = 2.0f;
 
