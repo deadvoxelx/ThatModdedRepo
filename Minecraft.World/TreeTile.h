@@ -40,6 +40,7 @@ public:
 	virtual int getResourceCount(Random *random);
 	virtual int getResource(int data, Random *random, int playerBonusLevel);
 	virtual void onRemove(Level *level, int x, int y, int z, int id, int data);
+	virtual void playerWillDestroy(Level *level, int x, int y, int z, int data, shared_ptr<Player> player);
 	virtual unsigned int getDescriptionId(int iData = -1);
 
 protected:
@@ -49,6 +50,9 @@ protected:
 public:
 	static int getWoodType(int data);
 	void registerIcons(IconRegister *iconRegister);
+
+	static bool isHoldingAxe(shared_ptr<Player> player);
+	static void chopTreeColumn(Level *level, int x, int y, int z, shared_ptr<Player> player, int woodType = -1);
 
 protected:
 	virtual shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
