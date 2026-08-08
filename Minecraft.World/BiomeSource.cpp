@@ -605,6 +605,24 @@ bool BiomeSource::getIsMatch(float *frac)
 		return false;
 	}
 
+	// Don't want more than 10% birch forest
+	if( frac[25] > 0.1f )
+	{
+		return false;
+	}
+
+	// Don't want more than 10% lavender forest
+	if( frac[26] > 0.1f )
+	{
+		return false;
+	}
+
+	// Don't want more than 15% red desert
+	if( frac[28] > 0.15f )
+	{
+		return false;
+	}
+
 	// Consider mushroom shore & islands as the same by finding max
 	frac[14] = ( ( frac[15] > frac[14] ) ? frac[15] : frac[14] );
 
