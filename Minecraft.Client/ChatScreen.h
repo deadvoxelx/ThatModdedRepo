@@ -16,11 +16,13 @@ private:
 	static std::vector<wstring> s_chatHistory;
 	static int s_historyIndex;
 	static wstring s_historyDraft;
+	static int s_chatIndex;
 	static const wstring allowedChars;
 	static bool isAllowedChatChar(wchar_t c);
 
 public:
 	ChatScreen();
+	ChatScreen(const wstring &initialMessage);
 	virtual void init();
 	virtual void removed();
 	virtual void tick();
