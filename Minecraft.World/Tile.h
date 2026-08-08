@@ -41,6 +41,7 @@ class Icon;
 class IconRegister;
 class AetherPortalTile;
 class NusaPortalTile;
+class TreasureChestTile;
 
 class ChunkRebuildData;
 
@@ -440,6 +441,7 @@ public:
 	static const int ambrosiumBlock_Id = 232;
 	static const int dungeonStone_Id = 233;
 	static const int dungeonLight_Id = 234;
+	static const int treasureChest_Id = 235;
 
 	static const int nustone_Id = 246;
 	static const int nugrass_Id = 247;
@@ -697,6 +699,7 @@ public:
 	static Tile *ambrosiumBlock;
 	static Tile *dungeonStone;
 	static Tile *dungeonLight;
+	static TreasureChestTile *treasureChest;
 
 	static Tile *nustone;
 	static Tile *nugrass;
