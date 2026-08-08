@@ -1,5 +1,7 @@
 #include "stdafx.h"
+#include "net.minecraft.world.item.h"
 #include "net.minecraft.world.level.h"
+#include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.tile.piston.h"
 #include "net.minecraft.h"
 #include "net.minecraft.world.h"
@@ -7,11 +9,13 @@
 
 #include "TreeTile.h"
 
-const unsigned int TreeTile::TREE_NAMES[ TreeTile::TREE_NAMES_LENGTH] = {	IDS_TILE_LOG_OAK,
-													IDS_TILE_LOG_SPRUCE,
-													IDS_TILE_LOG_BIRCH,
-													IDS_TILE_LOG_JUNGLE
-												};
+const unsigned int TreeTile::TREE_NAMES[ TreeTile::TREE_NAMES_LENGTH] =
+{
+	IDS_TILE_LOG_OAK,
+	IDS_TILE_LOG_SPRUCE,
+	IDS_TILE_LOG_BIRCH,
+	IDS_TILE_LOG_JUNGLE
+};
 
 const wstring  TreeTile::TREE_STRING_NAMES[ TreeTile::TREE_NAMES_LENGTH] = {L"oak", L"spruce", L"birch", L"jungle"};
 
@@ -76,6 +80,54 @@ Icon *TreeTile::getTopTexture(int type)
 int TreeTile::getWoodType(int data)
 {
 	return data & MASK_TYPE;
+}
+
+void TreeTile::playerWillDestroy(Level *level, int x, int y, int z, int data, shared_ptr<Player> player)
+{
+	Tile::playerWillDestroy(level, x, y, z, data, player);
+
+	chopTreeColumn(level, x, y, z, player, getWoodType(data));
+}
+
+bool TreeTile::isHoldingAxe(shared_ptr<Player> player)
+{
+	if (player == nullptr) return false;
+
+	shared_ptr<ItemInstance> held = player->getSelectedItem();
+	if (held == nullptr || held->getItem() == nullptr) return false;
+	return held->getItem()->getBaseItemType() == Item::eBaseItemType_hatchet;
+}
+
+void TreeTile::chopTreeColumn(Level *level, int x, int y, int z, shared_ptr<Player> player, int woodType)
+{
+	if (level->isClientSide || player == nullptr || player->abilities.instabuild) return;
+	if (!isHoldingAxe(player)) return;
+
+	Tile *logTile = Tile::tiles[level->getTile(x, y, z)];
+	if (logTile == nullptr) return;
+
+	shared_ptr<ItemInstance> held = player->getSelectedItem();
+
+	for (int yy = y + 1; yy < Level::maxBuildHeight; yy++)
+	{
+		if (level->getTile(x, yy, z) != logTile->id) break;
+		int upData = level->getData(x, yy, z);
+		if (woodType >= 0 && (upData & MASK_TYPE) != woodType) break;
+
+		level->levelEvent(player, LevelEvent::PARTICLES_DESTROY_BLOCK, x, yy, z, logTile->id + (upData << Tile::TILE_NUM_SHIFT));
+		logTile->playerDestroy(level, player, x, yy, z, upData);
+		level->removeTile(x, yy, z);
+
+		if (held != nullptr)
+		{
+			held->mineBlock(level, logTile->id, x, yy, z, player);
+			if (held->count == 0)
+			{
+				player->removeSelectedItem();
+				break;
+			}
+		}
+	}
 }
 
 shared_ptr<ItemInstance> TreeTile::getSilkTouchItemInstance(int data)
