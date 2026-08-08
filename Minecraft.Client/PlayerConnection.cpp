@@ -33,6 +33,14 @@
 // 4J Added
 #include "..\Minecraft.World\net.minecraft.world.item.crafting.h"
 #include "Options.h"
+#include "TeleportCommand.h"
+#include "../Minecraft.World/GiveItemCommand.h"
+#include "../Minecraft.World/TimeCommand.h"
+#include "../Minecraft.World/KillCommand.h"
+#include "../Minecraft.World/GameModeCommand.h"
+#include "../Minecraft.World/ToggleDownfallCommand.h"
+#include "../Minecraft.World/ByteArrayOutputStream.h"
+#include <sstream>
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
 #include "..\Minecraft.Server\ServerLogManager.h"
 #endif
@@ -689,9 +697,142 @@ void PlayerConnection::handleChat(shared_ptr<ChatPacket> packet)
 void PlayerConnection::handleCommand(const wstring& message)
 {
 	// 4J - TODO
-#if 0
-	server.getCommandDispatcher().performCommand(player, message);
-#endif
+wstringstream ss(message.substr(1));
+	wstring cmd;
+	ss >> cmd;
+	if (cmd == L"tp" || cmd == L"teleport")
+	{
+		wstring arg1, arg2;
+		ss >> arg1 >> arg2;
+		shared_ptr<ServerPlayer> target;
+		shared_ptr<ServerPlayer> destination;
+		if (arg1.empty())
+		{
+			warn(L"Usage: /tp [player] <target_player>");
+			return;
+		}
+
+		if (arg2.empty())
+		{
+			target = player;
+			destination = server->getPlayers()->getPlayer(arg1);
+		}
+		else
+		{
+			target = server->getPlayers()->getPlayer(arg1);
+			destination = server->getPlayers()->getPlayer(arg2);
+		}
+
+		if (target && destination)
+		{
+			shared_ptr<GameCommandPacket> packet = TeleportCommand::preparePacket(target->getXuid(), destination->getXuid());
+			server->getCommandDispatcher()->performCommand(player, eGameCommand_Teleport, packet->data);
+		}
+		else
+		{
+			warn(L"Player not found.");
+		}
+	}
+	else if (cmd == L"time")
+	{
+		wstring action;
+		ss >> action;
+		if (action == L"set")
+		{
+			wstring timeVal;
+			ss >> timeVal;
+			bool night = (timeVal == L"night");
+			shared_ptr<GameCommandPacket> packet = TimeCommand::preparePacket(night);
+			server->getCommandDispatcher()->performCommand(player, eGameCommand_Time, packet->data);
+		}
+		else
+		{
+			warn(L"Usage: /time set <day|night>");
+		}
+	}
+	else if (cmd == L"kill")
+	{
+		server->getCommandDispatcher()->performCommand(player, eGameCommand_Kill, byteArray());
+	}
+	else if (cmd == L"toggledownfall")
+	{
+		shared_ptr<GameCommandPacket> packet = ToggleDownfallCommand::preparePacket();
+		server->getCommandDispatcher()->performCommand(player, eGameCommand_ToggleDownfall, packet->data);
+	}
+	else if (cmd == L"gamemode")
+	{
+    	wstring modeStr, targetName;
+    	ss >> modeStr >> targetName;
+    	if (modeStr.empty())
+		{
+        	warn(L"Usage: /gamemode <mode> [player]");
+        	return;
+    	}
+
+    	int mode = -1;
+    	if      (modeStr == L"0" || modeStr == L"s" || modeStr == L"survival")
+        	mode = 0;
+    	else if (modeStr == L"1" || modeStr == L"c" || modeStr == L"creative")
+        	mode = 1;
+    	else if (modeStr == L"2" || modeStr == L"a" || modeStr == L"adventure")
+        	mode = 2;
+    	else
+		{
+        	warn(L"Unknown game mode: " + modeStr);
+        	return;
+    	}
+
+    	shared_ptr<ServerPlayer> target;
+    	if (targetName.empty())
+		{
+        	target = player;
+    	}
+		else
+		{
+        	target = server->getPlayers()->getPlayer(targetName);
+        	if (!target)
+			{
+            	warn(L"Player not found: " + targetName);
+            	return;
+        	}
+    	}
+
+    	shared_ptr<GameCommandPacket> packet = GameModeCommand::preparePacket(target, mode);
+    	server->getCommandDispatcher()->performCommand(player, eGameCommand_GameMode, packet->data);
+	}
+	else if (cmd == L"give")
+	{
+    	wstring targetName, itemStr, amountStr, auxStr;
+    	ss >> targetName >> itemStr >> amountStr >> auxStr;
+    	if (targetName.empty() || itemStr.empty())
+		{
+        	warn(L"Usage: /give <player> <item_id> [amount] [data]");
+        	return;
+    	}
+
+    	shared_ptr<ServerPlayer> target = server->getPlayers()->getPlayer(targetName);
+    	if (!target)
+		{
+        	warn(L"Player not found: " + targetName);
+        	return;
+    	}
+
+    	int item, amount = 1, aux = 0;
+    	try
+		{
+        	item = std::stoi(itemStr);
+        	if (!amountStr.empty()) amount = std::stoi(amountStr);
+        	if (!auxStr.empty()) aux = std::stoi(auxStr);
+    	}
+		catch (...)
+		{
+        	warn(L"Invalid item ID or amount");
+        	return;
+    	}
+
+    	shared_ptr<GameCommandPacket> packet = GiveItemCommand::preparePacket(target, item, amount, aux);
+    	server->getCommandDispatcher()->performCommand(player, eGameCommand_Give, packet->data);
+	}
 }
 
 void PlayerConnection::handleAnimate(shared_ptr<AnimatePacket> packet)
@@ -777,13 +918,13 @@ int PlayerConnection::countDelayedPackets()
 void PlayerConnection::info(const wstring& string)
 {
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
-	//send( shared_ptr<ChatPacket>( new ChatPacket(L"�7" + string) ) );
+	send( shared_ptr<ChatPacket>( new ChatPacket(L"§7" + string) ) );
 }
 
 void PlayerConnection::warn(const wstring& string)
 {
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
-	//send( shared_ptr<ChatPacket>( new ChatPacket(L"�9" + string) ) );
+	send( shared_ptr<ChatPacket>( new ChatPacket(L"§c" + string) ) );
 }
 
 wstring PlayerConnection::getConsoleName()
