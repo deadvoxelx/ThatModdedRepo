@@ -1547,7 +1547,7 @@ void Minecraft::run_middle()
 						}
 
 						// Utility keys always work regardless of KBM active state
-						if(g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_PAUSE) && !ui.GetMenuDisplayed(i))
+						if(g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_PAUSE) && !ui.GetMenuDisplayed(i) && screen == nullptr)
 						{
 							localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_PAUSEMENU;
 							app.DebugPrintf("PAUSE PRESSED (keyboard) - ipad = %d\n",i);
@@ -1569,6 +1569,14 @@ void Minecraft::run_middle()
 						{
 							if (localplayers[i]->abilities.flying && !ui.GetMenuDisplayed(i))
 								localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_SNEAK_TOGGLE;
+						}
+
+						if (g_KBMInput.IsKBMActive() && g_KBMInput.IsMouseGrabbed() &&
+							localgameModes[i] != nullptr && localgameModes[i]->isInputAllowed(MINECRAFT_ACTION_SNEAK_TOGGLE) &&
+							g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_SNEAK_ALT))
+						{
+							if (localplayers[i]->input != nullptr)
+								localplayers[i]->input->sneakToggle = !localplayers[i]->input->sneakToggle;
 						}
 					}
 #endif
@@ -2945,7 +2953,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 							if ( !bUseItemOn && (itemInstance != nullptr) && (iData == 0) )
 							{
 								int iID = (itemInstance->getItem() != nullptr) ? itemInstance->getItem()->id : 0;
-								if (iID<256) // is it a tile?
+								if (iID<512) // is it a tile?
 								{
 									switch(iID)
 									{
