@@ -151,10 +151,6 @@ void LocalPlayer::serverAiStep()
 	xBobO = xBob;
 	xBob += (xRot - xBob) * 0.5;
 	yBob += (yRot - yBob) * 0.5;
-
-	// TODO 4J - Remove
-	//if (input->jumping)
-	//	mapPlayerChunk(8);
 }
 
 bool LocalPlayer::isEffectiveAi()
@@ -358,6 +354,8 @@ void LocalPlayer::aiStep()
 
 	if (isRidingJumpable())
 	{
+		bool instantJumpMount = riding != nullptr && riding->GetType() == eTYPE_MOA;
+
 		if (jumpRidingTicks < 0)
 		{
 			jumpRidingTicks++;
@@ -371,25 +369,34 @@ void LocalPlayer::aiStep()
 		{
 			// jump release
 			jumpRidingTicks = -10;
-			sendRidingJump();
+			if (!instantJumpMount)
+			{
+				sendRidingJump();
+			}
 		}
 		else if (!wasJumping && input->jumping)
 		{
 			// jump press
 			jumpRidingTicks = 0;
 			jumpRidingScale = 0;
+			if (instantJumpMount)
+			{
+				sendRidingJump();
+			}
 		}
 		else if (wasJumping)
 		{
-			// calc jump scale
-			jumpRidingTicks++;
-			if (jumpRidingTicks < 10)
+			if (!instantJumpMount)
 			{
-				jumpRidingScale = static_cast<float>(jumpRidingTicks) * .1f;
-			}
-			else 
-			{
-				jumpRidingScale = .8f + (2.f / static_cast<float>(jumpRidingTicks - 9)) * .1f;
+				jumpRidingTicks++;
+				if (jumpRidingTicks < 10)
+				{
+					jumpRidingScale = static_cast<float>(jumpRidingTicks) * .1f;
+				}
+				else 
+				{
+					jumpRidingScale = .8f + (2.f / static_cast<float>(jumpRidingTicks - 9)) * .1f;
+				}
 			}
 		}
 	}
@@ -1191,6 +1198,11 @@ void LocalPlayer::playSound(int soundId, float volume, float pitch)
 }
 
 bool LocalPlayer::isRidingJumpable()
+{
+	return riding != nullptr && (riding->GetType() == eTYPE_HORSE || riding->GetType() == eTYPE_MOA);
+}
+
+bool LocalPlayer::isRidingJumpChargeable()
 {
 	return riding != nullptr && riding->GetType() == eTYPE_HORSE;
 }
