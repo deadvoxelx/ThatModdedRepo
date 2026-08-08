@@ -17,7 +17,7 @@ FurnaceMenu::FurnaceMenu(shared_ptr<Inventory> inventory, shared_ptr<FurnaceTile
 	this->furnace = furnace;
 
 	addSlot(new Slot(furnace, 0, 52 + 4, 13 + 4));
-	addSlot(new Slot(furnace, 1, 52 + 4, 49 + 4));
+	addSlot(new FuelSlot(furnace, FUEL_SLOT, 52 + 4, 49 + 4));
 	addSlot(new FurnaceResultSlot( dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), furnace, 2, 112 + 4, 31 + 4));
 
 	for (int y = 0; y < 3; y++)
@@ -31,6 +31,15 @@ FurnaceMenu::FurnaceMenu(shared_ptr<Inventory> inventory, shared_ptr<FurnaceTile
 	{
 		addSlot(new Slot(inventory, x, 8 + x * 18, 142));
 	}
+}
+
+FurnaceMenu::FuelSlot::FuelSlot(shared_ptr<Container> container, int slot, int x, int y) : Slot(container, slot, x, y)
+{
+}
+
+bool FurnaceMenu::FuelSlot::mayPlace(shared_ptr<ItemInstance> item)
+{
+	return container->canPlaceItem(FUEL_SLOT, item);
 }
 
 void FurnaceMenu::addSlotListener(ContainerListener *listener)
@@ -119,7 +128,7 @@ shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(shared_ptr<Player> player, 
 				return nullptr;
 			}
 		}
-		else if (FurnaceTileEntity::isFuel(stack))
+		else if (furnace->getFuelBurnDuration(stack) > 0)
 		{
 			if (!moveItemStackTo(stack, FUEL_SLOT, FUEL_SLOT + 1, false))
 			{
