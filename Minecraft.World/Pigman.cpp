@@ -5,6 +5,7 @@
 #include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.item.h"
+#include "net.minecraft.world.item.enchantment.h"
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.ai.attributes.h"
 #include "net.minecraft.world.entity.ai.goal.h"
@@ -13,19 +14,23 @@
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.entity.global.h"
+#include "net.minecraft.network.packet.h"
 #include "Pigman.h"
 #include "..\Minecraft.Client\Textures.h"
+#include "..\Minecraft.Client\ServerPlayer.h"
+#include "..\Minecraft.Client\PlayerConnection.h"
+#include "ItemInstance.h"
+#include "EnchantmentHelper.h"
+#include "WeighedTreasure.h"
 #include "MobCategory.h"
-
-
 
 Pigman::Pigman(Level *level) : Animal( level )
 {
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that
-	// the derived version of the function is called
 	this->defineSynchedData();
 	registerAttributes();
 	setHealth(getMaxHealth());
+
+	tradeTimer = 0;
 
 	setSize(0.6f, 1.8f);
 
@@ -57,8 +62,81 @@ void Pigman::registerAttributes()
 void Pigman::newServerAiStep()
 {
 	Animal::newServerAiStep();
+
+	if (!level->isClientSide && tradeTimer > 0)
+	{
+		if (--tradeTimer <= 0)
+		{
+			finishTradeOffer();
+		}
+	}
 }
 
+bool Pigman::mobInteract(shared_ptr<Player> player)
+{
+	shared_ptr<ItemInstance> item = player->inventory->getSelected();
+
+	if (item != nullptr && item->id == Item::goldIngot_Id && tradeTimer <= 0)
+	{
+		player->swing();
+
+		if (!level->isClientSide)
+		{
+			if (!player->abilities.instabuild)
+			{
+				item->count--;
+			}
+
+			tradeTimer = GOLD_INGOT_HOLD_TICKS;
+			playSound(eSoundType_MOB_PIG_AMBIENT, 1.0f, 1.0f);
+			setEquippedSlot(SLOT_WEAPON, std::make_shared<ItemInstance>(Item::goldIngot_Id, 1, 0));
+		}
+
+		return true;
+	}
+
+	return Animal::mobInteract(player);
+}
+
+void Pigman::finishTradeOffer()
+{
+	setEquippedSlot(SLOT_WEAPON, nullptr);
+
+	WeighedTreasureArray treasureArray(pigmanLoot, TREASURE_ITEMS_COUNT);
+	WeighedTreasure *treasure = static_cast<WeighedTreasure *>(WeighedRandom::getRandomItem(random, *((WeighedRandomItemArray *)&treasureArray)));
+
+	if (treasure != nullptr)
+	{
+		int count = treasure->getMinCount() + random->nextInt(treasure->getMaxCount() - treasure->getMinCount() + 1);
+		shared_ptr<ItemInstance> copy = treasure->getItem()->copy();
+		copy->count = count;
+
+		if (copy->id == Item::enchantedBook_Id)
+		{
+			Enchantment *enchantment = Enchantment::validEnchantments[random->nextInt(Enchantment::validEnchantments.size())];
+			int level = Mth::nextInt(random, enchantment->getMinLevel(), enchantment->getMaxLevel());
+			Item::enchantedBook->addEnchantment(copy, new EnchantmentInstance(enchantment, level));
+		}
+		else if (copy->id == Item::bow_Id || copy->id == Item::nethaniumChestplate_Id)
+		{
+			EnchantmentHelper::enchantItem(random, copy, 30);
+		}
+
+		playSound(eSoundType_MOB_PIG_AMBIENT, 1.0f, 1.0f);
+		spawnAtLocation(copy, 0);
+	}
+}
+
+void Pigman::readAdditionalSaveData(CompoundTag *tag)
+{
+	Animal::readAdditionalSaveData(tag);
+
+	shared_ptr<ItemInstance> carried = getCarriedItem();
+	if (carried != nullptr && carried->id == Item::goldIngot_Id)
+	{
+		setEquippedSlot(SLOT_WEAPON, nullptr);
+	}
+}
 
 int Pigman::getAmbientSound() 
 {
@@ -114,7 +192,6 @@ void Pigman::thunderHit(const LightningBolt *lightningBolt)
 
 shared_ptr<AgableMob> Pigman::getBreedOffspring(shared_ptr<AgableMob> target)
 {
-	// 4J - added limit to number of animals that can be bred
 	if( level->canCreateMore( GetType(), Level::eSpawnType_Breed) )
 	{
 		return std::make_shared<Pigman>(level);
@@ -129,3 +206,20 @@ bool Pigman::removeWhenFarAway()
 {
 	return false;
 }
+
+WeighedTreasure *Pigman::pigmanLoot[Pigman::TREASURE_ITEMS_COUNT] = 
+{
+	new WeighedTreasure(Item::netherBread_Id, 0, 7, 12, 20),
+	new WeighedTreasure(Item::carrotGolden_Id, 0, 7, 12, 20),
+	new WeighedTreasure(Item::magmaCream_Id, 0, 7, 11, 20),
+	new WeighedTreasure(Item::ghastTear_Id, 0, 3, 7, 20),
+	new WeighedTreasure(Item::gunpowder_Id, 0, 6, 10, 20),
+	new WeighedTreasure(Tile::goldenclin_Id, 0, 12, 24, 15),
+	new WeighedTreasure(Tile::obsidian_Id, 0, 1, 3, 10),
+	new WeighedTreasure(Item::enderPearl_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::hellSphere_Id, 0, 3, 5, 5),
+	new WeighedTreasure(Item::fireFossil_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::bow_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::enchantedBook_Id, 0, 1, 1, 5),
+	new WeighedTreasure(Item::nethaniumChestplate_Id, 0, 1, 1, 5),
+};
