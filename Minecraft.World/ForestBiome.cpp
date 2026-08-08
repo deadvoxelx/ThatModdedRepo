@@ -7,7 +7,7 @@
 
 ForestBiome::ForestBiome(int id) : Biome(id)
 {
-	friendlies_wolf.push_back(new MobSpawnerData(eTYPE_WOLF, 5, 4, 4));		// 4J - moved to their own category
+	friendlies_wolf.push_back(new MobSpawnerData(eTYPE_WOLF, 5, 4, 4));
     friendlies.push_back(new MobSpawnerData(eTYPE_MOOBLOOM, 5, 1, 2));
 
 	decorator->treeCount = 10;
@@ -16,13 +16,13 @@ ForestBiome::ForestBiome(int id) : Biome(id)
 
 Feature *ForestBiome::getTreeFeature(Random *random)
 {
-    if (random->nextInt(5) == 0)
+    if (random->nextInt(10) == 0)
 	{
-        return new BirchFeature(false); // 4J used to return member birchTree, now returning newly created object so that caller can be consistently resposible for cleanup
+        return new BirchFeature(false);
     }
     if (random->nextInt(10) == 0)
 	{
-        return new BasicTree(false); // 4J used to return member fancyTree, now returning newly created object so that caller can be consistently resposible for cleanup
+        return new BasicTree(false);
     }
-    return new TreeFeature(false); // 4J used to return member normalTree, now returning newly created object so that caller can be consistently resposible for cleanup
+    return new TreeFeature(false);
 }
