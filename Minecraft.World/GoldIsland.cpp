@@ -95,7 +95,7 @@ bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int
         for (int i3 = -l; i3 <= l; i3++)
         {
           if (!inIslandShape(i2, l2, i3, l)) continue;
-          if (level->getTile(i2 + x, l2 + y, i3 + z) == Tile::chest_Id) continue;
+          if (level->getTile(i2 + x, l2 + y, i3 + z) == Tile::treasureChest_Id) continue;
           bool surface = (l2 > Mth::floor(l / 5.0)) && !inIslandShape(i2, l2 + 1, i3, l);
           bool aboveIsSurface = (l2 + 1 > Mth::floor(l / 5.0)) && inIslandShape(i2, l2 + 1, i3, l) && !inIslandShape(i2, l2 + 2, i3, l);
           if (surface)
@@ -133,7 +133,7 @@ bool GoldIsland::generate(Level *level, Random *random, int x, int y, int z, int
           }
           else
           {
-              if (level->getTile(i2 + x, l2 + y, i3 + z) != Tile::chest_Id)
+              if (level->getTile(i2 + x, l2 + y, i3 + z) != Tile::treasureChest_Id)
               {
                   placeBlock(level, i2 + x, l2 + y, i3 + z, Tile::holystone_Id, 0);
               }
@@ -168,7 +168,7 @@ bool GoldIsland::generateBlob(Level *level, Random *random, int x, int y, int z,
         for (int i2 = -l; i2 <= l; i2++)
         {
           if (!inBlobShape(i1, k1, i2, l)) continue;
-          if (level->getTile(i1 + x, k1 + y, i2 + z) == Tile::chest_Id) continue;
+          if (level->getTile(i1 + x, k1 + y, i2 + z) == Tile::treasureChest_Id) continue;
           bool surface = (k1 > Mth::floor(l / 5.0)) && !inBlobShape(i1, k1 + 1, i2, l);
           bool aboveIsSurface = (k1 + 1 > Mth::floor(l / 5.0)) && inBlobShape(i1, k1 + 1, i2, l) && !inBlobShape(i1, k1 + 2, i2, l);
           if (surface)
@@ -195,7 +195,7 @@ bool GoldIsland::generateBlob(Level *level, Random *random, int x, int y, int z,
           }
           else
           {
-              if (level->getTile(i1 + x, k1 + y, i2 + z) != Tile::chest_Id)
+              if (level->getTile(i1 + x, k1 + y, i2 + z) != Tile::treasureChest_Id)
               {
                   placeBlock(level, i1 + x, k1 + y, i2 + z, Tile::holystone_Id, 0);
               }
