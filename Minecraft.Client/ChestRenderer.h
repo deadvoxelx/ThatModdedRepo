@@ -12,6 +12,7 @@ private:
 	static ResourceLocation CHEST_TRAP_LOCATION;
 	//static ResourceLocation CHEST_XMAS_LOCATION;
 	static ResourceLocation CHEST_LOCATION;
+	static ResourceLocation CHEST_TREASURE_LOCATION;
 
 	ChestModel *chestModel;
 	ChestModel *largeChestModel;
