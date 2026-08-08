@@ -57,7 +57,7 @@ FurnaceRecipes::FurnaceRecipes()
 	//Enchanter recipes; only work in the Enchanter
 	addFurnaceRecipy(Tile::quicksoil_Id, new ItemInstance(Tile::glass, 1, 2), .1f);
 	addFurnaceRecipy(Tile::gravititeOre_Id, new ItemInstance(Tile::enchantedGravitite), 1);
-	addFurnaceRecipy(Tile::aercloud_Id, new ItemInstance(Tile::aercloud, 1, 2), .1f);
+	addFurnaceRecipy(Tile::aercloud_Id, new ItemInstance(Tile::aercloud, 1, 1), .1f);
 	addFurnaceRecipy(Tile::holystone_Id, new ItemInstance(Item::healingStone), .35f);
 	addFurnaceRecipy(Item::blueBerry_Id, new ItemInstance(Item::blueBerryEnchanted), .35f);
 	addFurnaceRecipy(Item::dartGold_Id, new ItemInstance(Item::dartEnchanted), .15f);
