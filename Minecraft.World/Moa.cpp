@@ -20,6 +20,8 @@
 #include "..\Minecraft.Client\Textures.h"
 #include "SoundTypes.h"
 
+static const float MOA_JUMP_STRENGTH = 1.5f;
+
 Moa::Moa(Level *level) : TamableAnimal( level )
 {
 	this->defineSynchedData();
@@ -182,6 +184,79 @@ void Moa::tick()
 	TamableAnimal::tick();
 }
 
+void Moa::travel(float xa, float ya)
+{
+	if (rider.lock() == nullptr)
+	{
+		footSize = .5f;
+		flyingSpeed = .02f;
+		TamableAnimal::travel(xa, ya);
+		return;
+	}
+
+	yRotO = yRot = rider.lock()->yRot;
+	xRot = rider.lock()->xRot * 0.5f;
+	setRot(yRot, xRot);
+	yHeadRot = yBodyRot = yRot;
+
+	shared_ptr<LivingEntity> livingRider = dynamic_pointer_cast<LivingEntity>(rider.lock());
+	xa = livingRider->xxa * .5f;
+	ya = livingRider->yya;
+
+	// move much slower backwards
+	if (ya <= 0)
+	{
+		ya *= .25f;
+	}
+
+	if (playerJumpPendingScale > 0 && !isEntityJumping && onGround)
+	{
+		yd = MOA_JUMP_STRENGTH * playerJumpPendingScale;
+		isEntityJumping = true;
+		hasImpulse = true;
+
+		if (ya > 0)
+		{
+			float sin = Mth::sin(yRot * Mth::DEGRAD);
+			float cos = Mth::cos(yRot * Mth::DEGRAD);
+
+			xd += -0.4f * sin * playerJumpPendingScale;
+			zd += 0.4f * cos * playerJumpPendingScale;
+		}
+		playerJumpPendingScale = 0;
+	}
+
+	footSize = 1;
+	flyingSpeed = getSpeed() * .1f;
+	if (!level->isClientSide)
+	{
+		setSpeed(static_cast<float>(getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->getValue()));
+		TamableAnimal::travel(xa, ya);
+	}
+
+	if (onGround)
+	{
+		playerJumpPendingScale = 0;
+		isEntityJumping = false;
+	}
+	walkAnimSpeedO = walkAnimSpeed;
+	double dx = x - xo;
+	double dz = z - zo;
+	float wst = Mth::sqrt(dx * dx + dz * dz) * 4.0f;
+	if (wst > 1.0f)
+	{
+		wst = 1.0f;
+	}
+
+	walkAnimSpeed += (wst - walkAnimSpeed) * 0.4f;
+	walkAnimPos += walkAnimSpeed;
+}
+
+void Moa::onPlayerJump(int jumpAmount)
+{
+	playerJumpPendingScale = 1.0f;
+}
+
 bool Moa::hurt(DamageSource *source, float dmg) 
 {
 	if (isTame())
@@ -261,13 +336,26 @@ bool Moa::mobInteract(shared_ptr<Player> player)
 		}
 		if (equalsIgnoreCase(player->getUUID(), getOwnerUUID()))
 		{
-			if (!level->isClientSide && (item == nullptr || item->id != Item::blueBerry->id))
+			if (!level->isClientSide)
 			{
-				sitGoal->wantToSit(!isSitting());
-				jumping = false;
-				setPath(nullptr);
-				setAttackTarget(nullptr);
-				setTarget(nullptr);
+				if (player->isSneaking())
+				{
+					if (rider.lock() == player) player->ride(nullptr);
+					sitGoal->wantToSit(!isSitting());
+					jumping = false;
+					setPath(nullptr);
+					setAttackTarget(nullptr);
+					setTarget(nullptr);
+				}
+				else
+				{
+					shared_ptr<Entity> currentRider = rider.lock();
+					if (currentRider == nullptr || currentRider == player)
+					{
+						sitGoal->wantToSit(false);
+						player->ride(currentRider == player ? nullptr : shared_from_this());
+					}
+				}
 			}
 		}
 	}
@@ -307,6 +395,7 @@ bool Moa::mobInteract(shared_ptr<Player> player)
 			return false;
 		}
 	}
+	player->swing();
 	return TamableAnimal::mobInteract(player);
 }
 
