@@ -190,6 +190,7 @@ public:
 	virtual shared_ptr<ItemInstance> getCarriedItem();
 	virtual void playSound(int soundId, float volume, float pitch);
 	bool isRidingJumpable();
+	bool isRidingJumpChargeable();
 	float getJumpRidingScale();
 
 protected:
