@@ -6,8 +6,8 @@ class AercloudTile : public HalfTransparentTile
 	friend class Tile;
 public:
 	static const int TYPE_DEFAULT = 0;
-	static const int TYPE_BLUE = 1;
-	static const int TYPE_GOLD = 2;
+	static const int TYPE_GOLD = 1;
+	static const int TYPE_BLUE = 2;
 
 	static const int CLOUD_NAMES_LENGTH = 3;
 
