@@ -1020,7 +1020,7 @@ bool ServerPlayer::openFurnace(shared_ptr<FurnaceTileEntity> furnace)
 	if(containerMenu == inventoryMenu)
 	{
 		nextContainerCounter();
-		connection->send(std::make_shared<ContainerOpenPacket>(containerCounter, ContainerOpenPacket::FURNACE, furnace->getCustomName(), furnace->getContainerSize(), furnace->hasCustomName()));
+		connection->send(std::make_shared<ContainerOpenPacket>(containerCounter, ContainerOpenPacket::FURNACE, furnace->getName(), furnace->getContainerSize(), true));
 		containerMenu = new FurnaceMenu(inventory, furnace);
 		containerMenu->containerId = containerCounter;
 		containerMenu->addSlotListener(this);
