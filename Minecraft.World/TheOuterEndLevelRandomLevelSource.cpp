@@ -393,6 +393,18 @@ void TheOuterEndLevelRandomLevelSource::postProcess(ChunkSource *parent, int xt,
 	Biome *biome = level->getBiome(xo + 16, zo + 16);
 	biome->decorate(level, pprandom, xo, zo);
 
+	PIXBeginNamedEvent(0,"Lakes");
+	if (pprandom->nextInt(4) == 0)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth);
+		int z = zo + pprandom->nextInt(16) + 8;
+
+		LakeFeature calmWater(Tile::calmWater_Id);
+		calmWater.place(level, pprandom, x, y, z);
+	}
+	PIXEndNamedEvent();
+
 	HeavyTile::instaFall = false;
 
 	app.processSchematics(parent->getChunk(xt,zt));
