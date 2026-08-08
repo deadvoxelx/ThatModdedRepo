@@ -20,6 +20,10 @@ private:
 
 	static const int DATA_TYPE_ID = 14;
 
+	// 4J - rider-controlled movement/jump state (mirrors EntityHorse)
+	float playerJumpPendingScale;
+	bool isEntityJumping;
+
 public:
 	float flapM;
     float flapSpeedM;
@@ -49,11 +53,13 @@ protected:
 	virtual void registerAttributes();
 	virtual void serverAiMobStep();
 	virtual void defineSynchedData();
+	virtual void travel(float xa, float ya);
 
 	virtual int getDeathLoot();
 	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 
 public:
+	virtual void onPlayerJump(int jumpAmount);
 	virtual void aiStep();
 	virtual void tick();
 	virtual bool hurt(DamageSource *source, float dmg);
