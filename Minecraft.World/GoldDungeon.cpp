@@ -182,9 +182,9 @@ bool GoldDungeon::generate(Level *level, Random *random, int x, int y, int z, in
                         placeBlock(level, x + a, y + k, z + b, Tile::dungeonStone_Id, 2);
                     }				        else if (i == wid + 4 && m == 0 && k == -2)
 				        {
-                        if (level->getTile(x + a, y + k, z + b) != Tile::chest_Id)
+                        if (level->getTile(x + a, y + k, z + b) != Tile::treasureChest_Id)
                         {
-                        level->setTileAndData(x + a, y + k, z + b, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
+                        level->setTileAndData(x + a, y + k, z + b, Tile::treasureChest_Id, 0, Tile::UPDATE_CLIENTS);
 				        shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity >( level->getTileEntity(x + a, y + k, z + b) );
 				        if (chest != NULL )
 				        {
