@@ -729,10 +729,14 @@ void PlayerConnection::handlePlayerCommand(shared_ptr<PlayerCommandPacket> packe
 	}
 	else if (packet->action == PlayerCommandPacket::RIDING_JUMP)
 	{
-		// currently only supported by horses...
+		// currently only supported by horses and moas...
 		if ( (player->riding != nullptr) && player->riding->GetType() == eTYPE_HORSE)
 		{
 			dynamic_pointer_cast<EntityHorse>(player->riding)->onPlayerJump(packet->data);
+		}
+		else if ( (player->riding != nullptr) && player->riding->GetType() == eTYPE_MOA)
+		{
+			dynamic_pointer_cast<Moa>(player->riding)->onPlayerJump(packet->data);
 		}
 	}
 	else if (packet->action == PlayerCommandPacket::OPEN_INVENTORY)
