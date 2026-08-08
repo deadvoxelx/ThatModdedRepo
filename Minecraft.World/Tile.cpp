@@ -290,6 +290,7 @@ Tile *Tile::enchanter = NULL;
 Tile *Tile::ambrosiumBlock = NULL;
 Tile *Tile::dungeonStone = NULL;
 Tile *Tile::dungeonLight = NULL;
+TreasureChestTile *Tile::treasureChest = NULL;
 
 Tile *Tile::nustone = NULL;
 Tile *Tile::nugrass = NULL;
@@ -604,6 +605,7 @@ void Tile::staticCtor()
 	Tile::ambrosiumBlock = (new MetalTile(232))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_ambrosium)->setDestroyTime(3.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L"ambrosiumBlock")->setDescriptionId(IDS_TILE_AMBROSIUM_BLOCK)->setUseDescriptionId(IDS_TILE_AMBROSIUM_BLOCK);
 	Tile::dungeonStone = (new DungeonStoneTile(233))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
 	Tile::dungeonLight = (new DungeonLightTile(234))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock, Item::eMaterial_stone)->setLightEmission(0.5f)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"carvedStone_light")->setDescriptionId(IDS_TILE_DUNGEON_STONE)->setUseDescriptionId(IDS_TILE_DUNGEON_STONE);
+	Tile::treasureChest = (TreasureChestTile *)(new TreasureChestTile(235))->setBaseItemTypeAndMaterial(Item::eBaseItemType_chest,	Item::eMaterial_stone)->setDestroyTime(-1)->setExplodeable(6000000)->setSoundType(Tile::SOUND_STONE)->setIconName(L"chest_treasure")->setDescriptionId(IDS_TILE_CHEST)->sendTileData()->setUseDescriptionId(IDS_DESC_CHEST);
 
 	Tile::nustone = (new NustoneTile(246))								->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_endStone)->setDestroyTime(3.0f)->setExplodeable(20)->setSoundType(SOUND_STONE)->setIconName(L"nustone")->setDescriptionId(IDS_TILE_NUSTONE)->setUseDescriptionId(IDS_TILE_NUSTONE);
 	Tile::nugrass = (new VeloettGrassTile(247))							->setDestroyTime(3.0f)->setExplodeable(20)->setSoundType(SOUND_STONE)->setIconName(L"nugrass")->setDescriptionId(IDS_TILE_NUGRASS)->setUseDescriptionId(IDS_TILE_NUGRASS);
