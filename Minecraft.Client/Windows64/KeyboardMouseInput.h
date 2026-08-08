@@ -20,6 +20,7 @@ public:
 	static const int KEY_RIGHT = 'D';
 	static const int KEY_JUMP = VK_SPACE;
 	static const int KEY_SNEAK = VK_LSHIFT;
+	static const int KEY_SNEAK_ALT = VK_CAPITAL;
 	static const int KEY_SPRINT = VK_LCONTROL;
 	static const int KEY_SPRINT_ALT = 'Q';
 	static const int KEY_INVENTORY = 'E';
@@ -30,7 +31,7 @@ public:
 	static const int KEY_CHAT_ALT = VK_OEM_2;
 	static const int KEY_ZOOM = 'V';
 	static const int KEY_FULLBRIGHT = 'F';
-	static const int KEY_DASH = VK_CAPITAL;
+	static const int KEY_DASH = VK_TAB;
 	static const int KEY_CONFIRM = VK_RETURN;
 	static const int KEY_CANCEL = VK_ESCAPE;
 	static const int KEY_PAUSE = VK_ESCAPE;
@@ -40,7 +41,7 @@ public:
 	static const int KEY_DEBUG_MENU = VK_F4;
 	static const int KEY_THIRD_PERSON = VK_F5;
 	static const int KEY_DEBUG_CONSOLE = VK_F6;
-	static const int KEY_HOST_SETTINGS = VK_TAB;
+	static const int KEY_HOST_SETTINGS = VK_OEM_3;
 	static const int KEY_FULLSCREEN = VK_F11;
 	
 
