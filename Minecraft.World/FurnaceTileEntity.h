@@ -74,6 +74,8 @@ public:
 	static int getBurnDuration(shared_ptr<ItemInstance> itemInstance);
 	static bool isFuel(shared_ptr<ItemInstance> item);
 
+	int getFuelBurnDuration(shared_ptr<ItemInstance> itemInstance);
+
 public:
 	virtual bool stillValid(shared_ptr<Player> player);
 	virtual void setChanged();
@@ -92,4 +94,3 @@ public:
 	// 4J-JEV: Added for 'Renewable Energy' achievement.
 	bool wasCharcoalUsed() { return m_charcoalUsed; }
 };
- 
