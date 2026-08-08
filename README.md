@@ -9,6 +9,7 @@
 - **Inventory**: `E`
 - **Chat**: `T`
 - **Zoom**: `V`
+- **Fullbright**: `F`
 - **Drop Item**: `B`
 - **Crafting**: `C` Use `Q` and `E` to move through tabs (cycles Left/Right)
 - **Toggle View (FPS/TPS)**: `F5`
