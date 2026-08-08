@@ -13,6 +13,7 @@ class ChestTile : public BaseEntityTile
 public:
 	static const int TYPE_BASIC = 0;
 	static const int TYPE_TRAP = 1;
+	static const int TYPE_TREASURE = 2;
 
 	static const int EVENT_SET_OPEN_COUNT = 1;
 
