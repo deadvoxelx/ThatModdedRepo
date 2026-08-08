@@ -481,6 +481,14 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 
 	netherBridgeFeature->postProcess(level, pprandom, xt, zt);
 
+	if (pprandom->nextInt(3) == 0)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = 16 + pprandom->nextInt(72);
+		int z = zo + pprandom->nextInt(16) + 8;
+		NetherrackSpikeFeature(Tile::netherRack_Id).place(level, pprandom, x, y, z);
+	}
+
 	for (int i = 0; i < 8; i++)
 	{
 		int x = xo + pprandom->nextInt(16) + 8;
