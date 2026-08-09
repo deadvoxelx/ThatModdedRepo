@@ -52,6 +52,7 @@
 #include "..\Minecraft.World\net.minecraft.world.level.chunk.h"
 #include "..\Minecraft.World\net.minecraft.world.level.dimension.h"
 #include "..\Minecraft.World\net.minecraft.world.item.h"
+#include "..\Minecraft.World\net.minecraft.world.inventory.h"
 #include "..\Minecraft.World\Minecraft.World.h"
 #include "Windows64\Windows64_Xuid.h"
 #include "ClientConnection.h"
@@ -4038,32 +4039,27 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 
 				if (itemSlot >= 0)
 				{
-					// Item is already in hotbar
 					if (itemSlot < 9)
 					{
 						inventory->selected = itemSlot;
 					}
-					// There are free slots in the hotbar
 					else if (firstEmpty >= 0 && firstEmpty < 9)
 					{
 						inventory->selected = firstEmpty;
-						// Use quick move the item
 						gameMode->handleInventoryMouseClick(
 							containerId,
-							itemSlot,
+							InventoryMenu::INV_SLOT_START + (itemSlot - 9),
 							AbstractContainerMenu::CLICK_QUICK_MOVE,
 							true,
 							player
 						);
 					}
-					// Swap with item in inventory
 					else {
 						int currentHotbarSlot = inventory->selected;
 						short changeUid = inventoryMenu->backup(inventory);
 
-						// Perform client side swap and sync with server using CLICK_SWAP to avoid ghost blocks
 						shared_ptr<ItemInstance> clicked = inventoryMenu->clicked(
-							itemSlot,
+							InventoryMenu::INV_SLOT_START + (itemSlot - 9),
 							currentHotbarSlot,
 							AbstractContainerMenu::CLICK_SWAP,
 							player
@@ -4071,7 +4067,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 
 						player->connection->send(make_shared<ContainerClickPacket>(
 							containerId, 
-							itemSlot, 
+							InventoryMenu::INV_SLOT_START + (itemSlot - 9), 
 							currentHotbarSlot, 
 							AbstractContainerMenu::CLICK_SWAP,
 							clicked, 
@@ -4086,9 +4082,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 					shared_ptr<ItemInstance> selectedItem = inventory->getSelected();
 					if (gameMode && selectedItem)
 					{
-						// Hotbar starts at slot 36
-						// Sync new item instance with the server in creative mode
-						gameMode->handleCreativeModeItemAdd(selectedItem, 36 + player->inventory->selected);
+						gameMode->handleCreativeModeItemAdd(selectedItem, InventoryMenu::USE_ROW_SLOT_START + player->inventory->selected);
 					}
 				}
 			}
@@ -4102,24 +4096,6 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 			setScreen(nullptr);
 		}
 	}
-
-	// monitor for keyboard input
-	// #ifndef _CONTENT_PACKAGE
-	// 	if(!(ui.GetMenuDisplayed(iPad)))
-	// 	{
-	// 		WCHAR wchInput;
-	// 		if(InputManager.InputDetected(iPad,&wchInput))
-	// 		{
-	// 			printf("Input Detected!\n");
-	//
-	// 			// see if we can react to this
-	// 			if(app.GetXuiAction(iPad)==eAppAction_Idle)
-	// 			{
-	// 				app.SetAction(iPad,eAppAction_DebugText,(LPVOID)wchInput);
-	// 			}
-	// 		}
-	// 	}
-	// #endif
 
 #if 0
 	// 4J - TODO - some replacement for input handling...
