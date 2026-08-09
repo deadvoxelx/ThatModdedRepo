@@ -126,14 +126,14 @@ void EvupulDark::newServerAiStep() //honestly feel free to improve this or sum, 
 	FlyingMonster::newServerAiStep();
 	{
 		shared_ptr<LivingEntity> target = getTarget();
-		if ((target == nullptr)/* && (getAttackTarget() == nullptr)*/)	//this half determines random empty tiles to move to, kinda chopped but it works
-		{															//but only for aimless flying, its ass for targeting
-			if (targetPosition != nullptr && (!level->isEmptyTile(targetPosition->x, targetPosition->y, targetPosition->z) || targetPosition->y))
-			{
+		if ((target == nullptr))	//this half determines random empty tiles to move to, kinda chopped but it works
+		{							//but only for aimless flying, its ass for targeting
+			if (targetPosition != nullptr && !level->isEmptyTile(targetPosition->x, targetPosition->y, targetPosition->z))
+			{	//finally improved this; the others mirror this fix
 				delete targetPosition;
 				targetPosition = nullptr;
 			}
-			if (targetPosition == nullptr || random->nextInt(256) == 0 || targetPosition->distSqr(static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)))
+			if (targetPosition == nullptr || random->nextInt(256) == 0 || targetPosition->distSqr(static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)) <= 4)
 			{
 				delete targetPosition;
 				targetPosition = new Pos(static_cast<int>(x) + random->nextInt(48) - random->nextInt(48), static_cast<int>(y) + random->nextInt(12) - random->nextInt(12), static_cast<int>(z) + random->nextInt(48) - random->nextInt(48));
@@ -141,15 +141,13 @@ void EvupulDark::newServerAiStep() //honestly feel free to improve this or sum, 
 		}
 		else	//this half forcefully moves it towards its target, also kinda chopped, but its the best i can come up with
 		{		//we take whatever wins we can, i have no idea what im doing lmfao
-			if (targetPosition != nullptr)
-			{
-				delete targetPosition;
-				targetPosition = nullptr;
-			}
 			if (targetPosition == nullptr)
 			{
-				delete targetPosition;
-      			targetPosition = new Pos(target->x, target->y, target->z);	//idk why this was so difficult for me to figure out lol
+				targetPosition = new Pos(static_cast<int>(target->x), static_cast<int>(target->y), static_cast<int>(target->z));
+			}
+			else
+			{
+				targetPosition->set(static_cast<int>(target->x), static_cast<int>(target->y), static_cast<int>(target->z));	//idk why this was so difficult for me to figure out lol
 			}	//this change fixes the crash when it targets the Wither
 
 			//delete targetPosition;
@@ -160,9 +158,9 @@ void EvupulDark::newServerAiStep() //honestly feel free to improve this or sum, 
 		double dy = (targetPosition->y + .1) - y;
 		double dz = (targetPosition->z + .3) - z;
 
-		xd = xd + (signum(dx) * .5f - xd) * .1f;
-		yd = yd + (signum(dy) * .7f - yd) * .1f;
-		zd = zd + (signum(dz) * .5f - zd) * .1f;
+		xd = xd + (signum(dx) * .4f - xd) * .1f;
+		yd = yd + (signum(dy) * .42f - yd) * .1f;
+		zd = zd + (signum(dz) * .4f - zd) * .1f;
 
 		float yRotD = static_cast<float>(atan2(zd, xd) * 180 / PI) - 90;
 		float rotDiff = Mth::wrapDegrees(yRotD - yRot);
