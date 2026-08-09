@@ -1283,11 +1283,11 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 		
 		
 		//Ladder
-			for (int posty = 0; posty <= 23; posty++)
+			for (int posty = 0; posty <= 24; posty++)
 			{
 				if (level->getTile(x, y + posty, z + 2) == 0)
 				{
-					placeBlock(level, x, y + posty + 1, z + 2, Tile::nusaLog_Id, 0);
+					placeBlock(level, x, y + posty, z + 2, Tile::nusaLog_Id, 0);
 				}
 			}
 			for (int laddery = 0; laddery <= 23; laddery++)
@@ -1335,4 +1335,8 @@ WeighedTreasure *NusaTowerFeature::nusaTowerTreasure[NusaTowerFeature::TREASURE_
 	new WeighedTreasure(Item::nusaShard_Id, 0, 1, 5, 5),
 	new WeighedTreasure(Item::lifeShard_Id, 0, 1, 1, 3),
 	new WeighedTreasure(Item::vampireBlade_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::valkyrieLance_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::valkyrieAxe_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::agilityCape_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::ironBubble_Id, 0, 1, 1, 2),
 };
