@@ -15,6 +15,7 @@ NurealmBiomeDecorator::NurealmBiomeDecorator(Biome *biome) : BiomeDecorator(biom
 {
 	nusaTowerFeature = new NusaTowerFeature(Tile::nustone_Id);
 	nusaShrubFeature = new NusaShrubFeature();
+	treeCount = 1;
 	grassCount = 3;
 }
 
@@ -26,7 +27,7 @@ void NurealmBiomeDecorator::decorate()
 	if(y>level->GetHighestY()) level->SetHighestY(y);
 
 	PIXBeginNamedEvent(0,"Nurealm structures");
-	for (int i = 0; i < 1; i++)
+	if (random->nextInt(8) == 0)
 	{
 		int x = xo + random->nextInt(16) + 8;
 		int y = random->nextInt(Level::genDepth);
@@ -44,12 +45,25 @@ void NurealmBiomeDecorator::decorate()
 		GlowingNustoneFeature().place(level, random, x, y, z);
 	}
 
-	for (int i = 0; i < 96; i++)
+	int forests = treeCount;
+	if (random->nextInt(10) == 0) forests += 1;
+	for (int i = 0; i < forests; i++)
+	{
+		int x = xo + random->nextInt(16) + 8;
+		int z = zo + random->nextInt(16) + 8;
+		Feature *tree = biome->getTreeFeature(random);
+		tree->init(1, 1, 1);
+		tree->place(level, random, x, level->getHeightmap(x, z), z);
+		delete tree;
+	}
+
+	NusaVineFeature nusaVineFeature;
+	for (int i = 0; i < 32; i++)
 	{
 		int x = xo + random->nextInt(16) + 8;
 		int y = random->nextInt(Level::genDepth);
 		int z = zo + random->nextInt(16) + 8;
-		NusaTreeFeature(false).place(level, random, x, y, z);
+		nusaVineFeature.place(level, random, x, y, z);
 	}
 
 	for (int i = 0; i < 32; i++)
@@ -57,16 +71,7 @@ void NurealmBiomeDecorator::decorate()
 		int x = xo + random->nextInt(16) + 8;
 		int y = random->nextInt(Level::genDepth);
 		int z = zo + random->nextInt(16) + 8;
-		NusaVineFeature *nusaVineFeature = new NusaVineFeature();
-		nusaVineFeature->place(level, random, x, y, z);
-	}
-
-	for (int i = 0; i < 32; i++)
-	{
-		int x = xo + random->nextInt(16) + 8;
-		int y = random->nextInt(Level::genDepth);
-		int z = zo + random->nextInt(16) + 8;
-		NusaShrubFeature().place(level, random, x, y, z);
+		nusaShrubFeature->place(level, random, x, y, z);
 	}
 	PIXEndNamedEvent();
 }
