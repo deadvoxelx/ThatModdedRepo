@@ -150,12 +150,12 @@ void Evupul::newServerAiStep()
 	{
 		if (!hasRider())
 		{
-			if (targetPosition != nullptr && (!level->isEmptyTile(targetPosition->x, targetPosition->y, targetPosition->z) || targetPosition->y))
+			if (targetPosition != nullptr && !level->isEmptyTile(targetPosition->x, targetPosition->y, targetPosition->z))
 			{
 				delete targetPosition;
 				targetPosition = nullptr;
 			}
-			if (targetPosition == nullptr || random->nextInt(256) == 0 || targetPosition->distSqr(static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)))
+			if (targetPosition == nullptr || random->nextInt(256) == 0 || targetPosition->distSqr(static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)) <= 4)
 			{
 				delete targetPosition;
 				targetPosition = new Pos(static_cast<int>(x) + random->nextInt(48) - random->nextInt(48), static_cast<int>(y) + random->nextInt(12) - random->nextInt(12), static_cast<int>(z) + random->nextInt(48) - random->nextInt(48));
@@ -172,9 +172,9 @@ void Evupul::newServerAiStep()
 			double dy = (targetPosition->y + .1) - y;
 			double dz = (targetPosition->z + .3) - z;
 
-			xd = xd + (signum(dx) * .5f - xd) * .1f;
-			yd = yd + (signum(dy) * .7f - yd) * .1f;
-			zd = zd + (signum(dz) * .5f - zd) * .1f;
+			xd = xd + (signum(dx) * .4f - xd) * .1f;
+			yd = yd + (signum(dy) * .42f - yd) * .1f;
+			zd = zd + (signum(dz) * .4f - zd) * .1f;
 
 			onGround = false;
 		}
@@ -232,6 +232,7 @@ MobGroupData *Evupul::finalizeMobSpawn(MobGroupData *groupData, int extraData)
 	{
 		setEvupulType(TYPE_GOLD);
 		getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(40);
+		setHealth(40);
 		xpReward = Enemy::XP_REWARD_LARGE;
 	}
 	else
@@ -240,6 +241,41 @@ MobGroupData *Evupul::finalizeMobSpawn(MobGroupData *groupData, int extraData)
 	}
 
 	return groupData;
+}
+
+int Evupul::getHurtSound()
+{
+	int type = getEvupulType();
+	if (type == TYPE_GOLD)
+	{
+		return eSoundType_MOB_EVUPULGOLD_HURT;
+	}
+	return eSoundType_DAMAGE_HURT;
+}
+
+int Evupul::getDeathSound()
+{
+	int type = getEvupulType();
+	if (type == TYPE_GOLD)
+	{
+		return eSoundType_MOB_EVUPULGOLD_DEATH;
+	}
+	return eSoundType_DAMAGE_HURT;
+}
+
+int Evupul::getAmbientSound()
+{
+	return eSoundType_MOB_EVUPULGOLD_AMBIENT;
+}
+
+float Evupul::getSoundVolume()
+{
+	int type = getEvupulType();
+	if (type == TYPE_GOLD)
+	{
+		return 10;
+	}
+	return 1;
 }
 
 void Evupul::readAdditionalSaveData(CompoundTag *tag)
