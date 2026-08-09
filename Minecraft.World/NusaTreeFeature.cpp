@@ -13,6 +13,8 @@ bool NusaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 	int belowTile = level->getTile(x, y - 1, z);
 	int trunkHeight = 6 + random->nextInt(7);
 
+	if (belowTile != Tile::nugrass_Id && belowTile != Tile::nustone_Id) return false;
+
 	for (int ix = -3; ix <= 3; ix++)
 	{
 		for (int iy = 0; iy <= trunkHeight + 1; iy++)
@@ -25,15 +27,12 @@ bool NusaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 		}
 	}
 
-	if (belowTile == Tile::nugrass_Id || belowTile == Tile::nustone_Id)
+	placeBlock(level, x, y - 1, z, Tile::nustone_Id, 0);
+
+	for (int trunkbase = 0; trunkbase <= trunkHeight; trunkbase++)
 	{
-		placeBlock(level, x, y - 1, z, Tile::nustone_Id, 0);
-			
-		for (int trunkbase = 0; trunkbase <= trunkHeight; trunkbase++)
-		{
-			placeBlock(level, x, y + trunkbase, z, Tile::nusaLog_Id, 0);
-			foliage(level, random, x, y + trunkHeight + 1, z);
-		}
+		placeBlock(level, x, y + trunkbase, z, Tile::nusaLog_Id, 0);
+		foliage(level, random, x, y + trunkHeight + 1, z);
 	}
     return true;
 }
