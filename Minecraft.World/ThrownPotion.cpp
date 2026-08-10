@@ -141,7 +141,7 @@ void ThrownPotion::readAdditionalSaveData(CompoundTag *tag)
 
 	if (tag->contains(L"Potion"))
 	{
-		potionItem = ItemInstance::fromTag(tag->getCompound(L"Potion"));
+		potionItem = ItemInstance::fromTag(tag->getCompound(L"Potion"), level);
 	}
 	else
 	{
