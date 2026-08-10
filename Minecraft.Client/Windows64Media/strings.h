@@ -2577,3 +2577,13 @@
 #define IDS_ITEM_VALKYRIE_SHOVEL							   2571
 #define IDS_ITEM_VALKYRIE_HOE								   2572
 #define IDS_SUN_SPIRIT										   2573
+#define IDS_TILE_BLACKROOT									   2574
+#define IDS_ITEM_BLACKROOT									   2575
+#define IDS_ITEM_MAGMAROOT									   2576
+#define IDS_TILE_LAVAREED									   2577
+#define IDS_ITEM_LAVAREED									   2578
+#define IDS_ITEM_FLAX										   2579
+#define IDS_TILE_BONE_VINE									   2580
+#define IDS_TILE_VELOETT_VINE								   2581
+#define IDS_TILE_VELOETT_FLOWER								   2582
+#define IDS_TILE_ENDESERT_BUSH								   2583
