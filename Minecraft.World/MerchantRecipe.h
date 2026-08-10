@@ -1,5 +1,7 @@
 #pragma once
 
+class Level;
+
 class MerchantRecipe
 {
 private:
@@ -13,6 +15,7 @@ private:
 
 public:
 	MerchantRecipe(CompoundTag *tag);
+	MerchantRecipe(CompoundTag *tag, Level *level);	// Voxel - level-aware load (legacy save item id remap)
 	MerchantRecipe(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstance> buyB, shared_ptr<ItemInstance> sell, int uses = 0, int maxUses = 7);
 	MerchantRecipe(shared_ptr<ItemInstance> buy, shared_ptr<ItemInstance> sell);
 	MerchantRecipe(shared_ptr<ItemInstance> buy, Item *sell);
@@ -31,5 +34,6 @@ public:
 	bool isDeprecated();
 	void enforceDeprecated();
 	void load(CompoundTag *tag);
+	void load(CompoundTag *tag, Level *level);	// Voxel - level-aware load (legacy save item id remap)
 	CompoundTag *createTag();
 };
