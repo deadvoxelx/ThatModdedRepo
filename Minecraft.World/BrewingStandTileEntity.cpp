@@ -311,7 +311,7 @@ void BrewingStandTileEntity::load(CompoundTag *base)
 	{
 		CompoundTag *tag = inventoryList->get(i);
 		int slot = tag->getByte(L"Slot");
-		if (slot >= 0 && slot < items.length) items[slot] = ItemInstance::fromTag(tag);
+		if (slot >= 0 && slot < items.length) items[slot] = ItemInstance::fromTag(tag, level);
 	}
 
 	brewTime = base->getShort(L"BrewTime");
