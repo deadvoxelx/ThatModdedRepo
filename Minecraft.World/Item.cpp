@@ -32,7 +32,7 @@ const _Tier *_Tier::ENDORIUM = new _Tier(6, 2032, 12, 5, 15); //
 const _Tier *_Tier::ZANITE = new _Tier(2, 250, 6, 2, 14); //
 const _Tier *_Tier::GRAVITITE = new _Tier(4, 1561, 9, 4, 15); //
 const _Tier *_Tier::VAMPIRE = new _Tier(3, 1000, 8, 3, 10); //
-const _Tier *_Tier::VALKYRIE = new _Tier(3, 1000, 8, 3, 10); //
+const _Tier *_Tier::VALKYRIE = new _Tier(3, 1561, 8, 3, 10); //
 const _Tier *_Tier::APHALAF = new _Tier(4, 1561, 9, 4, 15); //
 
 Random *Item::random = new Random();
@@ -378,6 +378,10 @@ Item *Item::moonFish = NULL;
 Item *Item::moonFishCooked = NULL;
 Item *Item::cloudFish = NULL;
 Item *Item::cloudFishCooked = NULL;
+Item *Item::blackrootBerry = NULL;
+Item *Item::magmarootBerry = NULL;
+Item *Item::lavaReeds = NULL;
+Item *Item::netherFlax = NULL;
 
 void Item::staticCtor()
 {
@@ -511,15 +515,13 @@ void Item::staticCtor()
 	Item::stick = ( new Item(24) )													->setBaseItemTypeAndMaterial(eBaseItemType_stick,	eMaterial_stick)->setIconName(L"stick")->handEquipped()->setDescriptionId(IDS_ITEM_STICK)->setUseDescriptionId(IDS_DESC_STICK);
 	Item::mushroomStew = ( new BowlFoodItem(26, 6) )								->setIconName(L"mushroomStew")->setDescriptionId(IDS_ITEM_MUSHROOM_STEW)->setUseDescriptionId(IDS_DESC_MUSHROOMSTEW);
 
-	Item::string = ( new TilePlanterItem(31, Tile::tripWire) )						->setIconName(L"string")->setDescriptionId(IDS_ITEM_STRING)->setUseDescriptionId(IDS_DESC_STRING);
+	Item::string = ( new TilePlanterItem(31, Tile::tripWire) )						->setBaseItemTypeAndMaterial(eBaseItemType_paper,	eMaterial_paper)->setIconName(L"string")->setDescriptionId(IDS_ITEM_STRING)->setUseDescriptionId(IDS_DESC_STRING);
 	Item::feather = ( new Item(32) )												->setIconName(L"feather")->setDescriptionId(IDS_ITEM_FEATHER)->setUseDescriptionId(IDS_DESC_FEATHER);
 	Item::gunpowder = ( new Item(33) )												->setIconName(L"sulphur")->setDescriptionId(IDS_ITEM_SULPHUR)->setUseDescriptionId(IDS_DESC_SULPHUR)->setPotionBrewingFormula(PotionBrewing::MOD_GUNPOWDER);
-
 
 	Item::seeds_wheat = ( new SeedItem(39, Tile::wheat_Id, Tile::farmland_Id) )			->setIconName(L"seeds")->setDescriptionId(IDS_ITEM_WHEAT_SEEDS)->setUseDescriptionId(IDS_DESC_WHEAT_SEEDS);
 	Item::wheat = ( new Item(40) )														->setBaseItemTypeAndMaterial(eBaseItemType_treasure,	eMaterial_wheat)->setIconName(L"wheat")->setDescriptionId(IDS_ITEM_WHEAT)->setUseDescriptionId(IDS_DESC_WHEAT);
 	Item::bread = ( new FoodItem(41, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"bread")->setDescriptionId(IDS_ITEM_BREAD)->setUseDescriptionId(IDS_DESC_BREAD);
-
 
 	Item::flint = ( new Item(62) )																->setIconName(L"flint")->setDescriptionId(IDS_ITEM_FLINT)->setUseDescriptionId(IDS_DESC_FLINT);
 	Item::porkChop_raw = ( new FoodItem(63, 3, FoodConstants::FOOD_SATURATION_LOW, true) )		->setIconName(L"porkchopRaw")->setDescriptionId(IDS_ITEM_PORKCHOP_RAW)->setUseDescriptionId(IDS_DESC_PORKCHOP_RAW);
@@ -528,10 +530,7 @@ void Item::staticCtor()
 
 	Item::apple_gold = ( new GoldenAppleItem(66, 4, FoodConstants::FOOD_SATURATION_SUPERNATURAL, false) )->setCanAlwaysEat()->setEatEffect(MobEffect::regeneration->id, 5, 1, 1.0f)
 																								->setBaseItemTypeAndMaterial(eBaseItemType_giltFruit,eMaterial_apple)->setIconName(L"appleGold")->setDescriptionId(IDS_ITEM_APPLE_GOLD);//->setUseDescriptionId(IDS_DESC_GOLDENAPPLE);
-
 	Item::sign = ( new SignItem(67) )															->setBaseItemTypeAndMaterial(eBaseItemType_HangingItem, eMaterial_wood)->setIconName(L"sign")->setDescriptionId(IDS_ITEM_SIGN)->setUseDescriptionId(IDS_DESC_SIGN);
-
-
 
 	Item::minecart = ( new MinecartItem(72, Minecart::TYPE_RIDEABLE) )	->setIconName(L"minecart")->setDescriptionId(IDS_ITEM_MINECART)->setUseDescriptionId(IDS_DESC_MINECART);
 	Item::saddle = ( new SaddleItem(73) )								->setIconName(L"saddle")->setDescriptionId(IDS_ITEM_SADDLE)->setUseDescriptionId(IDS_DESC_SADDLE);
@@ -567,7 +566,6 @@ void Item::staticCtor()
 
 	Item::repeater = ( new TilePlanterItem(100, (Tile *)Tile::diode_off) )				->setIconName(L"diode")->setDescriptionId(IDS_ITEM_DIODE)->setUseDescriptionId(IDS_DESC_REDSTONEREPEATER);
 	Item::cookie = ( new FoodItem(101, 2, FoodConstants::FOOD_SATURATION_POOR, false) )	->setIconName(L"cookie")->setDescriptionId(IDS_ITEM_COOKIE)->setUseDescriptionId(IDS_DESC_COOKIE);
-
 
 	Item::shears = (ShearsItem *)( new ShearsItem(103) )								->setIconName(L"shears")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_shears)->setDescriptionId(IDS_ITEM_SHEARS)->setUseDescriptionId(IDS_DESC_SHEARS);
 
@@ -664,8 +662,8 @@ void Item::staticCtor()
 	Item::hellSphere = ( new HellSphereItem(172) )													->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_setfire)->setIconName(L"hellsphere")->setDescriptionId(IDS_ITEM_HELLSPHERE)->setUseDescriptionId(IDS_DESC_HELLSPHERE);
 	Item::relicMallet	= ( new RelicMalletItem(177, _Tier::NETHANIUM) )							->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_nethanium)->setIconName(L"relicMallet")->setDescriptionId(IDS_ITEM_RELICMALLET)->setUseDescriptionId(IDS_DESC_RELICMALLET);
 	Item::netherBread = ( new FoodItem(178, 6, FoodConstants::FOOD_SATURATION_GOOD, false) )		->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"netherwartBread")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD)->setUseDescriptionId(IDS_DESC_BREAD);
-	Item::goldBread = ( new FoodItem(179, 7, FoodConstants::FOOD_SATURATION_GOOD, false) )			->setCanAlwaysEat()->setEatEffect(MobEffect::regeneration->id, 10, 1, 1.0f)->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"netherwartBreadGold")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD_GOLD)->setUseDescriptionId(IDS_ITEM_NETHERWARTBREAD_GOLD);
-	Item::nethaniumBread = ( new FoodItem(180, 8, FoodConstants::FOOD_SATURATION_SUPERNATURAL, false) ) ->setCanAlwaysEat()->setEatEffect(MobEffect::damageResistance->id, 300, 3, 1.0f)->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"netherwartBreadNethanium")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD_NETHANIUM)->setUseDescriptionId(IDS_ITEM_NETHERWARTBREAD_NETHANIUM);
+	Item::goldBread = ( new FoodItem(179, 7, FoodConstants::FOOD_SATURATION_GOOD, false) )			->setCanAlwaysEat()->setEatEffect(MobEffect::regeneration->id, 10, 0, 1.0f)->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"netherwartBreadGold")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD_GOLD)->setUseDescriptionId(IDS_ITEM_NETHERWARTBREAD_GOLD);
+	Item::nethaniumBread = ( new FoodItem(180, 8, FoodConstants::FOOD_SATURATION_SUPERNATURAL, false) ) ->setCanAlwaysEat()->setEatEffect(MobEffect::damageResistance->id, 300, 2, 1.0f)->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"netherwartBreadNethanium")->setDescriptionId(IDS_ITEM_NETHERWARTBREAD_NETHANIUM)->setUseDescriptionId(IDS_ITEM_NETHERWARTBREAD_NETHANIUM);
 	Item::endorium = (new Item(181))																->setIconName(L"endorium")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDORIUM)->setUseDescriptionId(IDS_DESC_ENDORIUM);
 	Item::veloettBerry = ( new FoodItem(182, 4, FoodConstants::FOOD_SATURATION_NORMAL, false) )		->setIconName(L"veloettBerry")->setDescriptionId(IDS_ITEM_VELOETTBERRY)->setUseDescriptionId(IDS_DESC_VELOETTBERRY);
 	Item::evupulWing = (new Item(188))																->setIconName(L"evupulWing")->setDescriptionId(IDS_ITEM_EVUPUL_WING)->setUseDescriptionId(IDS_ITEM_EVUPUL_WING);
@@ -729,11 +727,15 @@ void Item::staticCtor()
 	Item::valkyrieShovel = ( new ShovelItem(278, _Tier::VALKYRIE) )									->setBaseItemTypeAndMaterial(eBaseItemType_shovel,	eMaterial_iron)->setIconName(L"valkyrieShovel")->setDescriptionId(IDS_ITEM_VALKYRIE_SHOVEL)->setUseDescriptionId(IDS_ITEM_VALKYRIE_SHOVEL);
 	Item::valkyrieHoe = ( new HoeItem(279, _Tier::VALKYRIE) )										->setBaseItemTypeAndMaterial(eBaseItemType_hoe,	eMaterial_iron)->setIconName(L"valkyrieHoe")->setDescriptionId(IDS_ITEM_VALKYRIE_HOE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_HOE);
 	Item::sunFish = ( new FoodItem(280, 2, FoodConstants::FOOD_SATURATION_LOW, false) )				->setIconName(L"sunFish")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);
-	Item::sunFishCooked = ( new FoodItem(281, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setIconName(L"sunFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
+	Item::sunFishCooked = ( new FoodItem(281, 5, FoodConstants::FOOD_SATURATION_GOOD, false) )		->setIconName(L"sunFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
 	Item::moonFish = ( new FoodItem(282, 2, FoodConstants::FOOD_SATURATION_LOW, false) )			->setIconName(L"moonFish")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);
-	Item::moonFishCooked = ( new FoodItem(283, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setIconName(L"moonFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
+	Item::moonFishCooked = ( new FoodItem(283, 5, FoodConstants::FOOD_SATURATION_GOOD, false) )		->setIconName(L"moonFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
 	Item::cloudFish = ( new FoodItem(284, 2, FoodConstants::FOOD_SATURATION_LOW, false) )			->setIconName(L"cloudFish")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);
-	Item::cloudFishCooked = ( new FoodItem(285, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )	->setIconName(L"cloudFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
+	Item::cloudFishCooked = ( new FoodItem(285, 5, FoodConstants::FOOD_SATURATION_GOOD, false) )	->setIconName(L"cloudFishCooked")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);
+	Item::blackrootBerry = (new FoodItem(286, 4, FoodConstants::FOOD_SATURATION_NORMAL, false))		->setIconName(L"blackrootBerry")->setDescriptionId(IDS_ITEM_BLACKROOT)->setUseDescriptionId(IDS_ITEM_BLACKROOT);
+	Item::magmarootBerry = (new FoodItem(287, 6, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"magmarootBerry")->setDescriptionId(IDS_ITEM_MAGMAROOT)->setUseDescriptionId(IDS_ITEM_MAGMAROOT);
+	Item::lavaReeds = ( new TilePlanterItem(288, Tile::lavaReed) )									->setIconName(L"lavaReeds")->setDescriptionId(IDS_ITEM_LAVAREED)->setUseDescriptionId(IDS_ITEM_LAVAREED);
+	Item::netherFlax = (new FoodItem(289, 8, FoodConstants::FOOD_SATURATION_GOOD, false))			->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"flax")->setDescriptionId(IDS_ITEM_FLAX)->setUseDescriptionId(IDS_ITEM_FLAX);
 
 }
 
