@@ -6,6 +6,7 @@ class CompoundTag;
 class ItemInstance;
 class DataOutputStream;
 class DataInputStream;
+class Level;
 
 class MerchantRecipeList
 {
@@ -15,6 +16,7 @@ private:
 public:
 	MerchantRecipeList();
 	MerchantRecipeList(CompoundTag *tag);
+	MerchantRecipeList(CompoundTag *tag, Level *level);	// Voxel - level-aware load (legacy save item id remap)
 	~MerchantRecipeList();
 
 	MerchantRecipe *getRecipeFor(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstance> buyB, int selectionHint);
@@ -23,6 +25,7 @@ public:
 	void writeToStream(DataOutputStream *stream);
 	static MerchantRecipeList *createFromStream(DataInputStream *stream);
 	void load(CompoundTag *tag);
+	void load(CompoundTag *tag, Level *level);	// Voxel - level-aware load (legacy save item id remap)
 	CompoundTag *createTag();
 
 	void push_back(MerchantRecipe *recipe);
