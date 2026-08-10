@@ -390,6 +390,7 @@ void Inventory::tick()
 			if (!player->onGround && player->yd < 0)
 			{
 				player->yd *= 0.6;
+				player->fallDistance /= 8;
 			}
 		}
 	}
@@ -663,7 +664,7 @@ ListTag<CompoundTag> *Inventory::save(ListTag<CompoundTag> *listTag)
 	return listTag;
 }
 
-void Inventory::load(ListTag<CompoundTag> *inventoryList)
+void Inventory::load(ListTag<CompoundTag> *inventoryList, Level *level)
 {
 	if( items.data != nullptr)
 	{
@@ -689,7 +690,7 @@ void Inventory::load(ListTag<CompoundTag> *inventoryList)
 	{
 		CompoundTag *tag = inventoryList->get(i);
 		unsigned int slot = tag->getByte(L"Slot") & 0xff;
-		shared_ptr<ItemInstance> item = shared_ptr<ItemInstance>( ItemInstance::fromTag(tag) );
+		shared_ptr<ItemInstance> item = shared_ptr<ItemInstance>( ItemInstance::fromTag(tag, level) );
 		if (item != nullptr)
 		{
 			if (slot >= 0 && slot < items.length) items[slot] = item;
