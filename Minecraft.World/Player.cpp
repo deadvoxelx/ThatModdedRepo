@@ -1123,7 +1123,7 @@ void Player::readAdditionalSaveData(CompoundTag *entityTag)
 {
 	LivingEntity::readAdditionalSaveData(entityTag);
 	ListTag<CompoundTag> *inventoryList = (ListTag<CompoundTag> *) entityTag->getList(L"Inventory");
-	inventory->load(inventoryList);
+	inventory->load(inventoryList, level);
 	inventory->selected = entityTag->getInt(L"SelectedItemSlot");
 	m_isSleeping = entityTag->getBoolean(L"Sleeping");
 	sleepCounter = entityTag->getShort(L"SleepTimer");
@@ -1151,7 +1151,7 @@ void Player::readAdditionalSaveData(CompoundTag *entityTag)
 	if (entityTag->contains(L"EnderItems"))
 	{
 		ListTag<CompoundTag> *enderItemsList = (ListTag<CompoundTag> *) entityTag->getList(L"EnderItems");
-		enderChestInventory->setItemsByTag(enderItemsList);
+		enderChestInventory->setItemsByTag(enderItemsList, level);
 	}
 
 	m_uiGamePrivileges = entityTag->getInt(L"GamePrivileges");
