@@ -197,7 +197,7 @@ void Villager::readAdditionalSaveData(CompoundTag *tag)
 	{
 		CompoundTag *compound = tag->getCompound(L"Offers");
 		delete offers;
-		offers = new MerchantRecipeList(compound);
+		offers = new MerchantRecipeList(compound, level);
 	}
 }
 
