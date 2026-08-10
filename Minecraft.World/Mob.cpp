@@ -331,7 +331,7 @@ void Mob::readAdditionalSaveData(CompoundTag *tag)
 
 		for (int i = 0; i < equipment.length; i++)
 		{
-			equipment[i] = ItemInstance::fromTag(gear->get(i));
+			equipment[i] = ItemInstance::fromTag(gear->get(i), level);
 		}
 	}
 
