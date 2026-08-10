@@ -9,7 +9,7 @@
 #include "net.minecraft.world.inventory.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.phys.h"
-#include "Facing.h" // needed for direction-dependent chest logic
+#include "Facing.h"
 #include "ChestPair.h"
 #include "ChestTileEntity.h"
 #include "ContainerOpenPacket.h"
@@ -413,7 +413,7 @@ void ChestTileEntity::load(CompoundTag *base)
 	{
 		CompoundTag *tag = inventoryList->get(i);
 		unsigned int slot = tag->getByte(L"Slot") & 0xff;
-		if (slot >= 0 && slot < items->length) (*items)[slot] = ItemInstance::fromTag(tag);
+		if (slot >= 0 && slot < items->length) (*items)[slot] = ItemInstance::fromTag(tag, level);
 	}
 	isBonusChest = base->getBoolean(L"bonus");
 }
