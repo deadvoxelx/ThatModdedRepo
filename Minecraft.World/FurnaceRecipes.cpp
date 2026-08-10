@@ -47,6 +47,7 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::stoneBrick_Id, new ItemInstance(Tile::stoneBrick, 1, 2), 1);
 	addFurnaceRecipy(Tile::ambrosiumOre_Id, new ItemInstance(Item::ambrosiumShard), 1);
 	addFurnaceRecipy(Tile::zaniteOre_Id, new ItemInstance(Item::zaniteGemstone), 1);
+	addFurnaceRecipy(Item::blackrootBerry_Id, new ItemInstance(Item::magmarootBerry), .35f);
 	
 	// special silk touch related recipes:
 	addFurnaceRecipy(Tile::coalOre_Id, new ItemInstance(Item::coal), .1f);
