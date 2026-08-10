@@ -261,7 +261,7 @@ void ItemEntity::readAdditionalSaveData(CompoundTag *tag)
 	health = tag->getShort(L"Health") & 0xff;
 	age = tag->getShort(L"Age");
 	CompoundTag *itemTag = tag->getCompound(L"Item");
-	setItem(ItemInstance::fromTag(itemTag));
+	setItem(ItemInstance::fromTag(itemTag, level));
 	if (getItem() == nullptr) remove();
 }
 
