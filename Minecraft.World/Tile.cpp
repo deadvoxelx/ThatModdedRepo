@@ -15,7 +15,6 @@
 #include "net.minecraft.world.food.h"
 #include "net.minecraft.world.h"
 #include "net.minecraft.h"
-#include "EndGatewayTile.h"
 #include "Tile.h"
 
 wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile."; 
@@ -303,6 +302,9 @@ Tile *Tile::nusaCore = NULL;
 NusaPortalTile *Tile::nusaPortal = NULL;
 
 Tile *Tile::fossilOre = NULL;
+Tile *Tile::blackroot = NULL;
+Tile *Tile::lavaReed = NULL;
+Tile *Tile::boneVine = NULL;
 
 DWORD Tile::tlsIdxShape = TlsAlloc();
 
@@ -576,10 +578,10 @@ void Tile::staticCtor()
 	Tile::purulLog = (new NetherWoodTile(203))							->setDestroyTime(2.0f)->setLightEmission(7 / 16.0f)->setSoundType(SOUND_WOOD)->setIconName(L"purul_log")->setDescriptionId(IDS_TILE_PURULLOG)->setUseDescriptionId(IDS_DESC_LOG_NETHER);
 	Tile::icestone = (new IcestoneTile(204))							->setDestroyTime(1.5f)->setExplodeable(5)->setSoundType(SOUND_STONE)->setIconName(L"icestone")->setDescriptionId(IDS_TILE_ICESTONE)->setUseDescriptionId(IDS_TILE_ICESTONE);
 	Tile::endactus = (new EndactusTile(205))							->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"endactus")->setDescriptionId(IDS_TILE_ENDACTUS)->setUseDescriptionId(IDS_DESC_CACTUS)->disableMipmap();
-	Tile::endesertBush = (EndesertBushTile *)(new EndesertBushTile(206))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"endesert_bush")->setDescriptionId(IDS_TILE_DEAD_BUSH)->setUseDescriptionId(IDS_DESC_DEAD_BUSH)->disableMipmap();
+	Tile::endesertBush = (EndesertBushTile *)(new EndesertBushTile(206))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"endesert_bush")->setDescriptionId(IDS_TILE_ENDESERT_BUSH)->setUseDescriptionId(IDS_TILE_ENDESERT_BUSH)->disableMipmap();
 	Tile::veloettShrub = (VeloettShrubTile *)(new VeloettShrubTile(207))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"veloett_shrub")->setDescriptionId(IDS_TILE_SHRUB)->setUseDescriptionId(IDS_DESC_TALL_GRASS)->disableMipmap();
-	Tile::veloettFlower = (VeloettFlowerTile *)(new VeloettFlowerTile(208))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"veloett_flower")->setDescriptionId(IDS_TILE_FLOWER)->setUseDescriptionId(IDS_DESC_FLOWER)->disableMipmap();
-	Tile::veloettVine = (VeloettVineTile *)(new VeloettVineTile(209))	->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"veloett_vine")->setDescriptionId(IDS_TILE_VINE)->setUseDescriptionId(IDS_DESC_VINE)->disableMipmap();
+	Tile::veloettFlower = (VeloettFlowerTile *)(new VeloettFlowerTile(208))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"veloett_flower")->setDescriptionId(IDS_TILE_VELOETT_FLOWER)->setUseDescriptionId(IDS_DESC_FLOWER)->disableMipmap();
+	Tile::veloettVine = (VeloettVineTile *)(new VeloettVineTile(209))	->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"veloett_vine")->setDescriptionId(IDS_TILE_VELOETT_VINE)->setUseDescriptionId(IDS_DESC_VINE)->disableMipmap();
 	Tile::pumpkinFaceless = (new PumpkinFacelessTile(210))				->setDestroyTime(1.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L"pumpkin")->setDescriptionId(IDS_TILE_PUMPKIN)->sendTileData()->setUseDescriptionId(IDS_DESC_PUMPKIN);
 
 	Tile::stoneSlab2 = (HalfSlabTile *) (new StoneSlab2Tile(Tile::stoneSlab2_Id, true))			->setBaseItemTypeAndMaterial(Item::eBaseItemType_slab,	Item::eMaterial_stone)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"stoneSlab")->setDescriptionId(IDS_TILE_STONESLAB)->setUseDescriptionId(IDS_DESC_SLAB);
@@ -618,6 +620,9 @@ void Tile::staticCtor()
 	Tile::nusaPortal = (NusaPortalTile *)(new NusaPortalTile(254, Material::portal))->setIconName(L"nusa_portal")->setDescriptionId(IDS_TILE_NUSA_PORTAL)->setUseDescriptionId(IDS_TILE_NUSA_PORTAL);
 
 	Tile::fossilOre = (new FossilTile(256))								->setDestroyTime(2.5f)->setExplodeable(15)->setSoundType(SOUND_STONE)->setIconName(L"fossilStone")->setDescriptionId(IDS_TILE_FOSSIL_ORE)->setUseDescriptionId(IDS_TILE_FOSSIL_ORE);
+	Tile::blackroot = (BlackrootTile *)(new BlackrootTile(257))			->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"blackroot")->setDescriptionId(IDS_TILE_BLACKROOT)->setUseDescriptionId(IDS_TILE_BLACKROOT)->disableMipmap();
+	Tile::lavaReed = (new LavaReedTile(258))							->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"lavaReed")->setDescriptionId(IDS_TILE_LAVAREED)->setNotCollectStatistics()->setUseDescriptionId(IDS_TILE_LAVAREED)->disableMipmap();
+	Tile::boneVine = (BoneVineTile *)(new  BoneVineTile(259))			->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"boneVine")->setDescriptionId(IDS_TILE_BONE_VINE)->setUseDescriptionId(IDS_DESC_VINE)->disableMipmap();
 
 
 	// Special cases for certain items since they can have different icons
@@ -646,6 +651,7 @@ void Tile::staticCtor()
 	Item::items[nustone_Id]				= ( new MultiTextureTileItem(Tile::nustone_Id - 512,Tile::nustone,(int*)NustoneTile::NUSTONE_NAMES, NustoneTile::NUSTONE_NAMES_LENGTH))->setIconName(L"nustone")->setDescriptionId(IDS_TILE_NUSTONE);
 	Item::items[nusaCore_Id]			= ( new MultiTextureTileItem(Tile::nusaCore_Id - 512,Tile::nusaCore,(int*)NusaCoreTile::CORE_NAMES, NusaCoreTile::CORE_NAMES_LENGTH))->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE);
 	Item::items[fossilOre_Id]			= ( new MultiTextureTileItem(Tile::fossilOre_Id - 512,Tile::fossilOre,(int*)FossilTile::FOSSIL_NAMES, FossilTile::FOSSIL_NAMES_LENGTH))->setIconName(L"fossilStone")->setDescriptionId(IDS_TILE_FOSSIL_ORE);
+	Item::items[blackroot_Id]			= ( new MultiTextureTileItem(Tile::blackroot_Id - 512,Tile::blackroot,(int*)BlackrootTile::BLACKROOT_NAMES, BlackrootTile::BLACKROOT_NAMES_LENGTH))->setIconName(L"blackroot")->setDescriptionId(IDS_TILE_BLACKROOT);
 
 	Item::items[sandStone_Id]			= ( new MultiTextureTileItem(sandStone_Id - 512, sandStone, SandStoneTile::SANDSTONE_NAMES, SandStoneTile::SANDSTONE_BLOCK_NAMES) )->setIconName(L"sandStone")->setDescriptionId(IDS_TILE_SANDSTONE)->setUseDescriptionId(IDS_DESC_SANDSTONE);
 	Item::items[quartzBlock_Id]			= ( new MultiTextureTileItem(quartzBlock_Id - 512, quartzBlock, QuartzBlockTile::BLOCK_NAMES, QuartzBlockTile::QUARTZ_BLOCK_NAMES) )->setIconName(L"quartzBlock")->setDescriptionId(IDS_TILE_QUARTZ_BLOCK)->setUseDescriptionId(IDS_DESC_QUARTZ_BLOCK);
