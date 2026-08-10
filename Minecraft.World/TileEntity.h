@@ -55,6 +55,7 @@ public:
 	virtual void save(CompoundTag *tag);
 	virtual void tick();
 	static shared_ptr<TileEntity> loadStatic(CompoundTag *tag);
+	static shared_ptr<TileEntity> loadStatic(CompoundTag *tag, Level *level);	// Voxel - level-aware load (legacy save item id remap)
 	virtual int getData();
 	virtual void setData(int data, int updateFlags);
 	virtual void setChanged();
