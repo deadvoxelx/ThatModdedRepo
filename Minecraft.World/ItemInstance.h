@@ -65,6 +65,9 @@ public:
 	ItemInstance(int id, int count, int damage);
 
 	static shared_ptr<ItemInstance> fromTag(CompoundTag *itemTag);
+	static shared_ptr<ItemInstance> fromTag(CompoundTag *itemTag, Level *level);
+	static int remapLegacySaveItemId(int id, Level *level);
+
 private:
 	ItemInstance()	{ _init(-1,0,0); }
 
@@ -82,6 +85,7 @@ public:
 	shared_ptr<ItemInstance> useTimeDepleted(Level *level, shared_ptr<Player> player);
 	CompoundTag *save(CompoundTag *compoundTag);
 	void load(CompoundTag *compoundTag);
+	void load(CompoundTag *compoundTag, Level *level);
 	int getMaxStackSize() const;
 	bool isStackable();
 	bool isDamageableItem();
