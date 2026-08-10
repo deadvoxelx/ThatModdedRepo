@@ -11,13 +11,18 @@ void MerchantRecipe::_init(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstanc
 	maxUses = 7;
 }
 
-MerchantRecipe::MerchantRecipe(CompoundTag *tag)
+MerchantRecipe::MerchantRecipe(CompoundTag *tag) : MerchantRecipe(tag, nullptr)
+{
+}
+
+// Voxel - level-aware variant so pre-expansion saves' trade items can be remapped on load
+MerchantRecipe::MerchantRecipe(CompoundTag *tag, Level *level)
 {
 	buyA = nullptr;
 	buyB = nullptr;
 	sell = nullptr;
 	uses = 0;
-	load(tag);
+	load(tag, level);
 }
 
 MerchantRecipe::MerchantRecipe(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstance> buyB, shared_ptr<ItemInstance> sell, int uses, int maxUses)
@@ -109,13 +114,19 @@ void MerchantRecipe::enforceDeprecated()
 
 void MerchantRecipe::load(CompoundTag *tag)
 {
+	load(tag, nullptr);
+}
+
+// Voxel - level-aware load (legacy save item id remap)
+void MerchantRecipe::load(CompoundTag *tag, Level *level)
+{
 	CompoundTag *buyTag = tag->getCompound(L"buy");
-	buyA = ItemInstance::fromTag(buyTag);
+	buyA = ItemInstance::fromTag(buyTag, level);
 	CompoundTag *sellTag = tag->getCompound(L"sell");
-	sell = ItemInstance::fromTag(sellTag);
+	sell = ItemInstance::fromTag(sellTag, level);
 	if (tag->contains(L"buyB"))
 	{
-		buyB = ItemInstance::fromTag(tag->getCompound(L"buyB"));
+		buyB = ItemInstance::fromTag(tag->getCompound(L"buyB"), level);
 	}
 	if (tag->contains(L"uses"))
 	{
