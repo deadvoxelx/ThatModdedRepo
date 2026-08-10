@@ -152,7 +152,7 @@ void FireworksRocketEntity::readAdditionalSaveData(CompoundTag *tag)
 	CompoundTag *itemTag = tag->getCompound(L"FireworksItem");
 	if (itemTag != nullptr)
 	{
-		shared_ptr<ItemInstance> fromTag = ItemInstance::fromTag(itemTag);
+		shared_ptr<ItemInstance> fromTag = ItemInstance::fromTag(itemTag, level);
 		if (fromTag != nullptr)
 		{
 			entityData->set(DATA_ID_FIREWORKS_ITEM, fromTag);
