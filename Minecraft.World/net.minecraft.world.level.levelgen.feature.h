@@ -35,6 +35,7 @@
 #include "MegaTreeFeature.h"
 #include "VinesFeature.h"
 #include "GroundBushFeature.h"
+
 #include "NetherTreeFeature.h"
 #include "NetherDungeonFeature.h"
 #include "NetherSoilFireFeature.h"
@@ -71,3 +72,6 @@
 #include "NusaTempleFeature.h"
 #include "TentFeature.h"
 #include "AetherSpringFeature.h"
+#include "NetherrackSpikeFeature.h"
+#include "BlackrootFeature.h"
+#include "BoneVineFeature.h"
