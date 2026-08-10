@@ -193,7 +193,7 @@ int Skeleton::getDeathLoot()
 
 void Skeleton::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 {
-	if (getSkeletonType() == TYPE_WITHER)
+	if (getSkeletonType() == TYPE_WITHER || getSkeletonType() == TYPE_RAIDER)
 	{
 		int count = random->nextInt(3 + playerBonusLevel) - 1;
 		for (int i = 0; i < count; i++)
@@ -343,10 +343,10 @@ void Skeleton::setSkeletonType(int type)
 {
 	entityData->set(DATA_TYPE_ID, (byte) type);
 
-	fireImmune = type == TYPE_WITHER;
-	if (type == TYPE_WITHER)
+	if (type == TYPE_WITHER || type == TYPE_RAIDER)
 	{
 		setSize(0.6f * 1.2f, 1.8f * 1.3f);
+		fireImmune = true;
 	}
 	else
 	{
