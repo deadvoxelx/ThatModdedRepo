@@ -42,6 +42,8 @@ class IconRegister;
 class AetherPortalTile;
 class NusaPortalTile;
 class TreasureChestTile;
+class HangingPlant;
+class BlackrootTile;
 
 class ChunkRebuildData;
 
@@ -380,6 +382,7 @@ public:
 	static const int woolCarpet_Id = 171;
 	static const int clayHardened_Id = 172;
 	static const int coalBlock_Id = 173;
+
 	static const int netherDiamond_Id = 174;
 	static const int netherGold_Id = 175;
 	static const int goldenclin_Id = 176;
@@ -396,8 +399,8 @@ public:
 	static const int netherSapling_Id = 187;
 	static const int nether_furnace_Id = 188;
 	static const int nether_furnace_lit_Id = 189;
-	//static const int endBricks_Id = 190;
-	//static const int endBricksChiseled_Id = 191;
+	//static const int nethanium_furnace_Id = 190;
+	//static const int nethanium_furnace_lit_Id = 191;
 	static const int stainedSand_Id = 192;
 	static const int endothaniumBlock_Id = 193;
 	static const int aetherGrass_Id = 194;
@@ -454,6 +457,9 @@ public:
 	static const int nusaPortal_Id = 254;
 
 	static const int fossilOre_Id = 256;
+	static const int blackroot_Id = 257;
+	static const int lavaReed_Id = 258;
+	static const int boneVine_Id = 259;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -712,6 +718,9 @@ public:
 	static NusaPortalTile *nusaPortal;
 
 	static Tile *fossilOre;
+	static Tile *blackroot;
+	static Tile *lavaReed;
+	static Tile *boneVine;
 
 	static void staticCtor();
 
