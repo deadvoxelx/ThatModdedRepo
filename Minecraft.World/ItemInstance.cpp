@@ -7,9 +7,11 @@
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.level.h"
+#include "LevelStorage.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.world.item.enchantment.h"
+#include "FileHeader.h"
 #include "Item.h"
 #include "ItemInstance.h"
 #include "HtmlString.h"
@@ -79,9 +81,28 @@ ItemInstance::ItemInstance(int id, int count, int damage)
 
 shared_ptr<ItemInstance> ItemInstance::fromTag(CompoundTag *itemTag)
 {
+	return fromTag(itemTag, nullptr);
+}
+
+shared_ptr<ItemInstance> ItemInstance::fromTag(CompoundTag *itemTag, Level *level)
+{
 	shared_ptr<ItemInstance> itemInstance = shared_ptr<ItemInstance>(new ItemInstance());
-	itemInstance->load(itemTag);
+	itemInstance->load(itemTag, level);
 	return itemInstance->getItem() != nullptr ? itemInstance : nullptr;
+}
+
+int ItemInstance::remapLegacySaveItemId(int id, Level *level)
+{	// Voxel - convert items from older saves to the new IDs
+	// Dont shift block-item IDs since those are fine
+	// I mean... they *should* be
+	if (level != nullptr
+		&& ( (id >= 256 && id < 512) || (id >= 2256 && id < 2268) )
+		&& level->getLevelStorage() != nullptr && level->getLevelStorage()->getSaveFile() != nullptr
+		&& level->getOriginalSaveVersion() < SAVE_FILE_VERSION_TILE_ID_EXPANSION)
+	{
+		id += 256;
+	}
+	return id;
 }
 
 ItemInstance::~ItemInstance()
@@ -155,11 +176,21 @@ CompoundTag *ItemInstance::save(CompoundTag *compoundTag)
 
 void ItemInstance::load(CompoundTag *compoundTag)
 {
+	load(compoundTag, nullptr);
+}
+
+void ItemInstance::load(CompoundTag *compoundTag, Level *level)
+{
 	popTime = 0;
 	id = compoundTag->getShort(L"id");
+
+	id = remapLegacySaveItemId(id, level);	// Voxel - convert items from older saves to the new IDs
+
 	if (id < 0 || id >= Item::ITEM_NUM_COUNT || Item::items[id] == nullptr)
 	{
-		id = 0;
+		id = 0;	// Voxel - convert invalid blocks or items to air
+		// This is good for the longevity of this project
+		// This is also necessary for future mod support if i ever get that in somehow
 	}
 	count = compoundTag->getByte(L"Count");
 	auxValue = compoundTag->getShort(L"Damage");
