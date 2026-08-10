@@ -535,6 +535,30 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		HellPortalFeature().place(level, pprandom, x, y, z);
 	}
 
+	for (int i = 0; i < 24; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth - 8) + 4;
+		int z = zo + pprandom->nextInt(16) + 8;
+		BlackrootFeature().place(level, pprandom, x, y, z);
+	}
+
+	for (int i = 0; i < 16; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = 30 + pprandom->nextInt(4);
+		int z = zo + pprandom->nextInt(16) + 8;
+		ReedsFeature().place(level, random, x, y, z);
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = 36 + pprandom->nextInt(86);
+		int z = zo + pprandom->nextInt(16) + 8;
+		BoneVineFeature().place(level, random, x, y, z);
+	}
+	
 	for (int i = 0; i < 96; i++)
 	{
 		int x = xo + pprandom->nextInt(16) + 8;
