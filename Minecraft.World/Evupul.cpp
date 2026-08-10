@@ -243,7 +243,7 @@ MobGroupData *Evupul::finalizeMobSpawn(MobGroupData *groupData, int extraData)
 	return groupData;
 }
 
-int Evupul::getHurtSound()
+/*int Evupul::getHurtSound()
 {
 	int type = getEvupulType();
 	if (type == TYPE_GOLD)
@@ -276,7 +276,7 @@ float Evupul::getSoundVolume()
 		return 10;
 	}
 	return 1;
-}
+}*/
 
 void Evupul::readAdditionalSaveData(CompoundTag *tag)
 {
