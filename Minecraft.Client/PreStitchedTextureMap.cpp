@@ -719,7 +719,7 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(22,		12,	L"dartShooterGold")
 		ADD_ICON(22,		13,	L"dartShooterPoison")
 		ADD_ICON(22,		14,	L"dartShooterEnchanted")
-		//ADD_ICON(22,		15,	L"unused")
+		ADD_ICON(22,		15,	L"ironBubble")
 
 		ADD_ICON(23,		0,	L"valkyrie_helmet")
 		ADD_ICON(23,		1,	L"valkyrie_chestplate")
@@ -742,13 +742,12 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(24,		1,	L"fireFossil")
 		ADD_ICON(24,		2,	L"airFossil")
 		ADD_ICON(24,		3,	L"ribFossil")
-		ADD_ICON(24,		4,	L"ironBubble")
-		ADD_ICON(24,		5,	L"ironPendant")
-		ADD_ICON(24,		6,	L"ironRing")
-		ADD_ICON(24,		7,	L"goldPendant")
-		ADD_ICON(24,		8,	L"goldRing")
-		ADD_ICON(24,		9,	L"zanitePendant")
-		ADD_ICON(24,		10,	L"zaniteRing")
+		ADD_ICON(24,		4,	L"ironPendant")
+		ADD_ICON(24,		5,	L"ironRing")
+		ADD_ICON(24,		6,	L"goldPendant")
+		ADD_ICON(24,		7,	L"goldRing")
+		ADD_ICON(24,		8,	L"zanitePendant")
+		ADD_ICON(24,		9,	L"zaniteRing")
 
 		ADD_ICON(25,		0,	L"sunFish")
 		ADD_ICON(25,		1,	L"sunFishCooked")
@@ -756,6 +755,10 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(25,		3,	L"moonFishCooked")
 		ADD_ICON(25,		4,	L"cloudFish")
 		ADD_ICON(25,		5,	L"cloudFishCooked")
+		ADD_ICON(25,		6,	L"blackrootBerry")
+		ADD_ICON(25,		7,	L"magmarootBerry")
+		ADD_ICON(25,		8,	L"lavaReeds")
+		ADD_ICON(25,		9,	L"flax")
 
 		// Special cases
 		ClockTexture *dataClock = new ClockTexture();
@@ -1259,5 +1262,9 @@ void PreStitchedTextureMap::loadUVs()
 	ADD_ICON(26,	8,	L"fossilNetherrack");
 	ADD_ICON(26,	9,	L"fossilHolystone");
 	ADD_ICON(26,	10,	L"fossilEndstone");
+	ADD_ICON(26,	11,	L"blackrootGrown");
+	ADD_ICON(26,	12,	L"blackroot");
+	ADD_ICON(26,	13,	L"lavaReed");
+	ADD_ICON(26,	14,	L"boneVine");
 	}
 }
