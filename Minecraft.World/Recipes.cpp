@@ -943,6 +943,13 @@ Recipes::Recipes()
 		L'#', Item::nethanium, L'X', Item::netherBread,
 		L'F');
 
+	addShapedRecipy(new ItemInstance(Item::netherFlax, 1), //
+		L"scig",
+		L"###", //
+
+		L'#', Item::lavaReeds,
+		L'F');
+
 	// Moved bow and arrow in from weapons to avoid stacking on the group name display
 	addShapedRecipy(new ItemInstance((Item *)Item::bow, 1), //
 		L"ssscicig",
@@ -1330,6 +1337,13 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', Item::reeds,
+		L'D');
+
+	addShapedRecipy(new ItemInstance(Item::string, 3), //
+		L"scig",
+		L"#", //
+
+		L'#', Item::netherFlax,
 		L'D');
 
 	addShapelessRecipy(new ItemInstance(Item::book, 1),
