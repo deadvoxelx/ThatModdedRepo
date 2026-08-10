@@ -58,7 +58,7 @@ class TileRenderer
 	float getShadeBrightness( Tile *tt, LevelSource *level, int x, int y, int z);
 	bool isTranslucentAt( LevelSource *level, int x, int y, int z);
 	unsigned int *cache;
-	unsigned char *tileIds;
+	unsigned short *tileIds;
 	static const unsigned int cache_getLightColor_valid			= 0x80000000;
 	static const unsigned int cache_isTranslucentAt_valid		= 0x40000000;
 	static const unsigned int cache_isSolidBlockingTile_valid	= 0x20000000;
@@ -70,7 +70,7 @@ class TileRenderer
 	void _init();
 
 public:
-	TileRenderer( LevelSource* level, int xMin, int yMin, int zMin, unsigned char *tileIds );
+	TileRenderer( LevelSource* level, int xMin, int yMin, int zMin, unsigned short *tileIds );
 	TileRenderer( LevelSource* level );
 	TileRenderer();
 	~TileRenderer();
