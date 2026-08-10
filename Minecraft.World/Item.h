@@ -560,6 +560,10 @@ public:
 	static Item *moonFishCooked;
 	static Item *cloudFish;
 	static Item *cloudFishCooked;
+	static Item *blackrootBerry;
+	static Item *magmarootBerry;
+	static Item *lavaReeds;
+	static Item *netherFlax;
 
 
 	static const int shovel_iron_Id			= 512;
@@ -869,6 +873,10 @@ public:
 	static const int moonFishCooked_Id = 795;
 	static const int cloudFish_Id = 796;
 	static const int cloudFishCooked_Id = 797;
+	static const int blackrootBerry_Id = 798;
+	static const int magmarootBerry_Id = 799;
+	static const int lavaReeds_Id = 800;
+	static const int netherFlax_Id = 801;
 
 public:
 	const int id;
