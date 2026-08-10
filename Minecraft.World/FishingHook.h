@@ -58,6 +58,11 @@ public:
 	virtual float getShadowHeightOffs();
 	int retrieve();
 
-	// 4J Stu - Brought forward from 1.4
 	virtual void remove();
+
+private:
+	static const int TREASURE_ITEMS_COUNT = 16;
+	static const int AETHER_TREASURE_ITEMS_COUNT = 14;
+	static WeighedTreasure *fishingLoot[TREASURE_ITEMS_COUNT];
+	static WeighedTreasure *aetherFishingLoot[AETHER_TREASURE_ITEMS_COUNT];
 };

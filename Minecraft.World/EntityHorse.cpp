@@ -430,7 +430,7 @@ void EntityHorse::causeFallDamage(float fallDistance)
 	}
 
 	int id = level->getTile(Mth::floor(x), Mth::floor(y - 0.2 - yRotO), Mth::floor(z));
-	if (id > 0)
+	if (id > 0 && Tile::tiles[id] != nullptr)
 	{
 		const Tile::SoundType *stepsound = Tile::tiles[id]->soundType;
 		level->playEntitySound(shared_from_this(), stepsound->getStepSound(), stepsound->getVolume() * 0.5f, stepsound->getPitch() * 0.75f);
@@ -667,6 +667,7 @@ int EntityHorse::getMadSound()
 
 void EntityHorse::playStepSound(int xt, int yt, int zt, int t)
 {
+	if (t <= 0 || Tile::tiles[t] == nullptr) return;
 	const Tile::SoundType *soundType = Tile::tiles[t]->soundType;
 	if (level->getTile(xt, yt + 1, zt) == Tile::topSnow_Id)
 	{
@@ -1524,14 +1525,14 @@ void EntityHorse::readAdditionalSaveData(CompoundTag *tag)
 
 			if (slot >= INV_BASE_COUNT && slot < inventory->getContainerSize())
 			{
-				inventory->setItem(slot, ItemInstance::fromTag(compoundTag));
+				inventory->setItem(slot, ItemInstance::fromTag(compoundTag, level));
 			}
 		}
 	}
 
 	if (tag->contains(L"ArmorItem"))
 	{
-		shared_ptr<ItemInstance> armor = ItemInstance::fromTag(tag->getCompound(L"ArmorItem"));
+		shared_ptr<ItemInstance> armor = ItemInstance::fromTag(tag->getCompound(L"ArmorItem"), level);
 		if (armor != nullptr && isHorseArmor(armor->id))
 		{
 			inventory->setItem(INV_SLOT_ARMOR, armor);
@@ -1540,7 +1541,7 @@ void EntityHorse::readAdditionalSaveData(CompoundTag *tag)
 
 	if (tag->contains(L"SaddleItem"))
 	{
-		shared_ptr<ItemInstance> saddleItem = ItemInstance::fromTag(tag->getCompound(L"SaddleItem"));
+		shared_ptr<ItemInstance> saddleItem = ItemInstance::fromTag(tag->getCompound(L"SaddleItem"), level);
 		if (saddleItem != nullptr && saddleItem->id == Item::saddle_Id)
 		{
 			inventory->setItem(INV_SLOT_SADDLE, saddleItem);

@@ -127,9 +127,9 @@ int TileRenderer::getLightColor( Tile *tt, LevelSource *level, int x, int y, int
 					offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
 				}
 
-				unsigned char ucTileId = tileIds[ offset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 0 ) << 7 ) | ( indexY + 0 ) ) ];
-				// Tiles that were determined to be invisible (by being surrounded by solid stuff) will be set to 255 rather than their actual ID
-				if( ucTileId != 255 )
+				unsigned short ucTileId = tileIds[ offset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 0 ) << 7 ) | ( indexY + 0 ) ) ];
+				// Tiles that were determined to be invisible (by being surrounded by solid stuff) will be set to 65535 rather than their actual ID
+				if( ucTileId != 0xffff )
 				{
 					tileId = static_cast<int>(ucTileId);
 				}
@@ -142,7 +142,7 @@ int TileRenderer::getLightColor( Tile *tt, LevelSource *level, int x, int y, int
 	return tt->getLightColor(level, x, y, z);
 }
 
-TileRenderer::TileRenderer( LevelSource* level, int xMin, int yMin, int zMin, unsigned char *tileIds )
+TileRenderer::TileRenderer( LevelSource* level, int xMin, int yMin, int zMin, unsigned short *tileIds )
 {
 	this->level = level;
 	_init();

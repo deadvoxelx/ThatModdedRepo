@@ -30,7 +30,8 @@ void IUIScene_CreativeMenu::staticCtor()
 
 	// Building Blocks
 	DEF(eCreativeInventory_BuildingBlocks)
-		ITEM(Tile::nusaPortal_Id)		// Voxel - here for test purposes
+		//ITEM(Tile::nusaPortal_Id)		// Voxel - here for test purposes
+		//ITEM(Tile::newTile_Id)		// Voxel - here for test purposes
 		ITEM(Tile::grass_Id)
 		ITEM(Tile::mycel_Id)
 		ITEM(Tile::dirt_Id)
@@ -42,6 +43,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Tile::stoneBrick_Id,SmoothStoneBrickTile::TYPE_CRACKED)
 		ITEM_AUX(Tile::stoneBrick_Id,SmoothStoneBrickTile::TYPE_DETAIL)
 		ITEM(Tile::sand_Id)
+		ITEM(Tile::stainedSand_Id)
 		ITEM(Tile::sandStone_Id)
 		ITEM_AUX(Tile::sandStone_Id, SandStoneTile::TYPE_SMOOTHSIDE)
 		ITEM_AUX(Tile::sandStone_Id, SandStoneTile::TYPE_HEIROGLYPHS)
@@ -69,6 +71,10 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Tile::ambrosiumOre_Id)
 		ITEM(Tile::zaniteOre_Id)
 		ITEM(Tile::gravititeOre_Id)
+		ITEM_AUX(Tile::fossilOre_Id, FossilTile::TYPE_DEFAULT)
+		ITEM_AUX(Tile::fossilOre_Id, FossilTile::TYPE_NETHER)
+		ITEM_AUX(Tile::fossilOre_Id, FossilTile::TYPE_AETHER)
+		ITEM_AUX(Tile::fossilOre_Id, FossilTile::TYPE_END) 
 
 		ITEM(Tile::coalBlock_Id)
 		ITEM(Tile::ironBlock_Id)
@@ -227,9 +233,11 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::skull_Id,SkullTileEntity::TYPE_CREEPER)
 		ITEM(Tile::sponge_Id)
 		ITEM(Tile::melon_Id)
-			ITEM(Tile::pumpkinFaceless_Id)
+		ITEM(Tile::pumpkinFaceless_Id)
 		ITEM(Tile::pumpkin_Id)
-		ITEM(Tile::litPumpkin_Id)	
+		ITEM(Tile::litPumpkin_Id)
+		ITEM(Tile::blackroot_Id)
+		ITEM(Tile::berryBushStem_Id)
 		ITEM_AUX(Tile::sapling_Id, Sapling::TYPE_DEFAULT)
 		ITEM_AUX(Tile::sapling_Id, Sapling::TYPE_EVERGREEN)
 		ITEM_AUX(Tile::sapling_Id, Sapling::TYPE_BIRCH)
@@ -237,7 +245,6 @@ void IUIScene_CreativeMenu::staticCtor()
 			ITEM(Tile::netherSapling_Id)
 			ITEM(Tile::skyrootSapling_Id)
 			ITEM(Tile::goldenOakSapling_Id)
-			ITEM(Tile::berryBushStem_Id)
 		ITEM_AUX(Tile::leaves_Id, LeafTile::NORMAL_LEAF)
 		ITEM_AUX(Tile::leaves_Id, LeafTile::EVERGREEN_LEAF)
 		ITEM_AUX(Tile::leaves_Id, LeafTile::BIRCH_LEAF)
@@ -253,7 +260,9 @@ void IUIScene_CreativeMenu::staticCtor()
 			ITEM_AUX(Tile::netherLeaves_Id, NetherLeavesTile::TYPE_NUSA)
 		ITEM(Tile::vine)
 			ITEM(Tile::netherVine)
+			ITEM(Tile::boneVine)
 			ITEM(Tile::veloettVine)
+			ITEM(Tile::nusaVine)
 		ITEM(Tile::waterLily_Id)
 		ITEM(Tile::torch_Id)
 		ITEM(Tile::ambrosiumTorch_Id)
@@ -263,6 +272,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Tile::deadBush_Id)
 			ITEM(Tile::veloettShrub_Id)
 			ITEM(Tile::endesertBush_Id)
+			ITEM(Tile::nusaShrub_Id)
 		ITEM(Tile::rose_Id)
 		ITEM_AUX(Tile::flower_Id, FlowerTile::YELLOW)
 			ITEM_AUX(Tile::flower_Id, FlowerTile::WHITE)
@@ -440,6 +450,7 @@ void IUIScene_CreativeMenu::staticCtor()
 	DEF(eCreativeInventory_Misc)
 		ITEM(Tile::chest_Id)
 		ITEM(Tile::enderChest_Id)
+		ITEM(Tile::treasureChest_Id)
 		ITEM(Tile::workBench_Id)
 		ITEM(Tile::furnace_Id)
 		ITEM(Tile::nether_furnace_Id)
@@ -519,6 +530,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 123); // Nuskull
 		ITEM_AUX(Item::spawnEgg_Id, 124); // Nuclear Nuskull
 		ITEM_AUX(Item::spawnEgg_Id, 125); // Nusa Demon
+		ITEM_AUX(Item::spawnEgg_Id, 126); // Moa
 		ITEM_AUX(Item::spawnEgg_Id, 118); // Aerwhale
 		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr
 		ITEM_AUX(Item::spawnEgg_Id, 122); // Swet
@@ -562,32 +574,41 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::apple_gold_Id)
 		ITEM_AUX(Item::apple_gold_Id,1) // Enchanted
 		ITEM(Item::melon_Id)
-		ITEM(Item::mushroomStew_Id)
-		ITEM(Item::bread_Id)
-		ITEM(Item::netherBread_Id)
-		ITEM(Item::goldBread_Id)
-		ITEM(Item::nethaniumBread_Id)
-		ITEM(Item::cake_Id)
-		ITEM(Item::cookie_Id)
-		ITEM(Item::fish_cooked_Id)
-		ITEM(Item::fish_raw_Id)
-		ITEM(Item::porkChop_cooked_Id)
-		ITEM(Item::porkChop_raw_Id)
-		ITEM(Item::beef_cooked_Id)
-		ITEM(Item::beef_raw_Id)
-		ITEM(Item::chicken_raw_Id)
-		ITEM(Item::chicken_cooked_Id)
-		ITEM(Item::rotten_flesh_Id)
-		ITEM(Item::spiderEye_Id)
 		ITEM(Item::potato_Id)
 		ITEM(Item::potatoBaked_Id)
 		ITEM(Item::potatoPoisonous_Id)
 		ITEM(Item::carrots_Id)
 		ITEM(Item::carrotGolden_Id)
-		ITEM(Item::pumpkinPie_Id)
-		ITEM(Item::veloettBerry_Id)
 		ITEM(Item::blueBerry_Id)
+		ITEM(Item::blackrootBerry_Id)
+		ITEM(Item::magmarootBerry_Id)
+		ITEM(Item::netherFlax_Id)
 		ITEM(Item::blueBerryEnchanted_Id)
+		ITEM(Item::veloettBerry_Id)
+		ITEM(Item::bread_Id)
+		ITEM(Item::netherBread_Id)
+		ITEM(Item::goldBread_Id)
+		ITEM(Item::nethaniumBread_Id)
+		ITEM(Item::cookie_Id)
+		ITEM(Item::pumpkinPie_Id)
+		ITEM(Item::cake_Id)
+		ITEM(Item::chicken_raw_Id)
+		ITEM(Item::chicken_cooked_Id)
+		ITEM(Item::porkChop_raw_Id)
+		ITEM(Item::porkChop_cooked_Id)
+		ITEM(Item::beef_raw_Id)
+		ITEM(Item::beef_cooked_Id)
+		ITEM(Item::fish_raw_Id)
+		ITEM(Item::fish_cooked_Id)
+		ITEM(Item::sunFish_Id)
+		ITEM(Item::sunFishCooked_Id)
+		ITEM(Item::moonFish_Id)
+		ITEM(Item::moonFishCooked_Id)
+		ITEM(Item::cloudFish_Id)
+		ITEM(Item::cloudFishCooked_Id)
+		ITEM(Item::rotten_flesh_Id)
+		ITEM(Item::spiderEye_Id)
+		ITEM(Item::mushroomStew_Id)
 		ITEM(Item::gummySwetBlue_Id)
 		ITEM(Item::gummySwetGold_Id)
 
@@ -714,18 +735,35 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::gravititeHoe_Id)
 		ITEM(Item::vampireBlade_Id)
 
-		ITEM(Item::cloudParachute_Id)		// 0
-		ITEM(Item::bow_Id)					// 1
-		ITEM(Item::arrow_Id)				// 2
-		ITEM(Item::dartShooterGold_Id)		// 3
-		ITEM(Item::dartShooterEnchanted_Id)	// 4
-		ITEM(Item::dartGold_Id)				// 5
-		ITEM(Item::dartPoison_Id)			// 6
-		ITEM(Item::dartEnchanted_Id)		// 7
+		ITEM(Item::ironPendant_Id)			// 0
+		ITEM(Item::ironRing_Id)				// 1
+		ITEM(Item::goldPendant_Id)			// 2
+		ITEM(Item::goldRing_Id)				// 3
+		ITEM(Item::zanitePendant_Id)		// 4
+		ITEM(Item::zaniteRing_Id)			// 5
+		ITEM(Item::ironBubble_Id)			// 6
+		ITEM(Item::regenerationStone_Id)	// 7
 		ITEM(Item::healingStone_Id)			// 8
 		ITEM(Item::lifeShard_Id)			// 9
 
-		ITEM(Item::regenerationStone_Id)	// 0
+		ITEM(Item::agilityCape_Id)			// 0
+		ITEM(Item::invisibilityCape_Id)		// 1
+		ITEM(Item::swetCape_Id)				// 2
+		ITEM(Item::valkyrieCape_Id)			// 3
+		ITEM(Item::cloudParachute_Id)		// 4
+		ITEM(Item::dartShooterGold_Id)		// 5
+		ITEM(Item::dartShooterEnchanted_Id)	// 6
+		ITEM(Item::dartGold_Id)				// 7
+		ITEM(Item::dartPoison_Id)			// 8
+		ITEM(Item::dartEnchanted_Id)		// 9
+
+		ITEM(Item::bow_Id)					// 0
+		ITEM(Item::arrow_Id)				// 1
+		ITEM(Item::valkyrieLance_Id)		// 2
+		ITEM(Item::valkyrieAxe_Id)			// 3
+		ITEM(Item::valkyriePickaxe_Id)		// 4
+		ITEM(Item::valkyrieShovel_Id)		// 5
+		ITEM(Item::valkyrieHoe_Id)			// 6
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{
@@ -758,6 +796,10 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::endothaniumIngot_Id)
 		ITEM(Item::ambrosiumShard_Id)
 		ITEM(Item::zaniteGemstone_Id)
+		ITEM(Item::shellFossil_Id)
+		ITEM(Item::fireFossil_Id)
+		ITEM(Item::airFossil_Id)
+		ITEM(Item::ribFossil_Id)
 		ITEM(Item::brick_Id)
 		ITEM(Item::stick_Id)
 		ITEM(Item::bowl_Id)
@@ -773,6 +815,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::seeds_pumpkin_Id)
 		ITEM(Item::wheat_Id)
 		ITEM(Item::reeds_Id)
+		ITEM(Item::lavaReeds_Id)
 		ITEM(Item::egg_Id)
 		ITEM(Item::sugar_Id)
 		ITEM(Item::slimeBall_Id)

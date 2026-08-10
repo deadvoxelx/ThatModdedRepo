@@ -3,6 +3,7 @@
 #include "SimpleContainer.h"
 
 class EnderChestTileEntity;
+class Level;
 
 class PlayerEnderChestContainer : public SimpleContainer
 {
@@ -15,7 +16,7 @@ public:
 	virtual int getContainerType();
 
 	void setActiveChest(shared_ptr<EnderChestTileEntity> activeChest);
-	void setItemsByTag(ListTag<CompoundTag> *enderItemsList);
+	void setItemsByTag(ListTag<CompoundTag> *enderItemsList, Level *level);	// Voxel - level-aware load (legacy save item id remap)
 	ListTag<CompoundTag> *createTag();
 	bool stillValid(shared_ptr<Player> player);
 	void startOpen();

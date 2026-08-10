@@ -174,7 +174,7 @@ void DispenserTileEntity::load(CompoundTag *base)
 	{
 		CompoundTag *tag = inventoryList->get(i);
 		unsigned int slot = tag->getByte(L"Slot") & 0xff;
-		if (slot >= 0 && slot < items.length) items[slot] = ItemInstance::fromTag(tag);
+		if (slot >= 0 && slot < items.length) items[slot] = ItemInstance::fromTag(tag, level);
 	}
 	if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
 }

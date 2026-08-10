@@ -136,7 +136,7 @@ void FallingTile::tick()
 					{
 						hv->onLand(level, xt, yt, zt, data);
 					}
-					if (tileData != nullptr && Tile::tiles[tile]->isEntityTile())
+					if (tileData != nullptr && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->isEntityTile())	// 4J fork - unregistered tile ids (256-511 gaps) must not be deref'd
 					{
 						shared_ptr<TileEntity> tileEntity = level->getTileEntity(xt, yt, zt);
 
@@ -161,13 +161,13 @@ void FallingTile::tick()
 				}
 				else
 				{
-					if(dropItem && !cancelDrop) spawnAtLocation(std::make_shared<ItemInstance>(tile, 1, Tile::tiles[tile]->getSpawnResourcesAuxValue(data)), 0);
+					if(dropItem && !cancelDrop && Tile::tiles[tile] != nullptr) spawnAtLocation(std::make_shared<ItemInstance>(tile, 1, Tile::tiles[tile]->getSpawnResourcesAuxValue(data)), 0);	// 4J fork - unregistered tile ids (256-511 gaps) must not be deref'd
 				}
 			}
 		}
 		else if ( (time > 20 * 5 && !level->isClientSide && (yt < 1 || yt > Level::maxBuildHeight)) || (time > 20 * 30))
 		{
-			if(dropItem) spawnAtLocation(std::make_shared<ItemInstance>(tile, 1, Tile::tiles[tile]->getSpawnResourcesAuxValue(data)), 0);
+			if(dropItem && Tile::tiles[tile] != nullptr) spawnAtLocation(std::make_shared<ItemInstance>(tile, 1, Tile::tiles[tile]->getSpawnResourcesAuxValue(data)), 0);	// 4J fork - unregistered tile ids (256-511 gaps) must not be deref'd
 			remove();
 		}
 	}
@@ -231,7 +231,7 @@ void FallingTile::readAdditionalSaveData(CompoundTag *tag)
 	}
 	else
 	{
-		tile = tag->getByte(L"Tile") & 0xff;
+		tile = tag->getByte(L"Tile") & 0x1ff;
 	}
 	data = tag->getByte(L"Data") & 0xff;
 	time = tag->getByte(L"Time") & 0xff;

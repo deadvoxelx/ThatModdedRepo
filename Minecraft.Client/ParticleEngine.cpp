@@ -211,7 +211,7 @@ void ParticleEngine::setLevel(Level *level)
 
 void ParticleEngine::destroy(int x, int y, int z, int tid, int data)
 {
-    if (tid == 0) return;
+    if (tid == 0 || Tile::tiles[tid] == nullptr) return;
 
     Tile *tile = Tile::tiles[tid];
     int SD = 4;
@@ -230,7 +230,7 @@ void ParticleEngine::destroy(int x, int y, int z, int tid, int data)
 void ParticleEngine::crack(int x, int y, int z, int face)
 {
     int tid = level->getTile(x, y, z);
-    if (tid == 0) return;
+    if (tid == 0 || Tile::tiles[tid] == nullptr) return;
     Tile *tile = Tile::tiles[tid];
     float r = 0.10f;
     double xp = x + random->nextDouble() * ((tile->getShapeX1() - tile->getShapeX0()) - r * 2) + r + tile->getShapeX0();

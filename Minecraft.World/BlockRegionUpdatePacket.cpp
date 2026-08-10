@@ -77,8 +77,8 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs, in
 	{
 		// We don't know how this will compress - just make a fixed length buffer to initially decompress into
 		// Some small sets of blocks can end up compressing into something bigger than their source
-		unsigned char *ucTemp = new unsigned char[(256 * 16 * 16 * 5)/2];
-		unsigned int inputSize = (256 * 16 * 16 * 5)/2;
+		unsigned char *ucTemp = new unsigned char[(256 * 16 * 16 * 7)/2 + (16 * 16) + 4096];
+		unsigned int inputSize = (256 * 16 * 16 * 7)/2 + (16 * 16) + 4096;
 	
 		Compression::getCompression()->CompressLZXRLE(ucTemp, &inputSize, rawBuffer.data, (unsigned int) rawBuffer.length);
 		//app.DebugPrintf("Chunk (%d,%d) compressed from %d to size %d\n", x>>4, z>>4, rawBuffer.length, inputSize);
@@ -128,7 +128,7 @@ void BlockRegionUpdatePacket::read(DataInputStream *dis) //throws IOException
 		byteArray compressedBuffer(size);
 		bool success = dis->readFully(compressedBuffer);
 
-		int bufferSize = xs * ys * zs * 5/2;
+		int bufferSize = xs * ys * zs * ( bIsFullChunk ? 7 : 5 ) / 2;
 		// Add the size of the biome data if it's a full chunk
 		if(bIsFullChunk) bufferSize += (16*16);
 		buffer = byteArray(bufferSize);

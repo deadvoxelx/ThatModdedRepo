@@ -724,7 +724,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
 
 	g_hWnd = CreateWindowW(	L"MinecraftClass",
-		L"Minecraft: Hellish Ends",
+		L"Minecraft: Hellish Ends 2.0",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		0,
@@ -1859,10 +1859,18 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 
 		// Open chat
-		if ((g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_CHAT) || g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_CHAT_ALT)) && app.GetGameStarted() && !ui.GetMenuDisplayed(0) && pMinecraft->screen == NULL)
+		if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_CHAT) && app.GetGameStarted() && !ui.GetMenuDisplayed(0) && pMinecraft->screen == NULL)
 		{
 			g_KBMInput.ClearCharBuffer();
 			pMinecraft->setScreen(new ChatScreen());
+			SetFocus(g_hWnd);
+		}
+
+		// Open commands
+		if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_CHAT_ALT) && app.GetGameStarted() && !ui.GetMenuDisplayed(0) && pMinecraft->screen == NULL)
+		{
+			g_KBMInput.ClearCharBuffer();
+			pMinecraft->setScreen(new ChatScreen(L"/"));
 			SetFocus(g_hWnd);
 		}
 

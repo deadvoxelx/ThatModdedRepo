@@ -175,7 +175,7 @@ void TrapDoorTile::neighborChanged(Level *level, int x, int y, int z, int type)
 	}
 
 	bool signal = level->hasNeighborSignal(x, y, z);
-	if( signal || ((type > 0 && Tile::tiles[type]->isSignalSource())) )
+	if( signal || ((type > 0 && Tile::tiles[type] != nullptr && Tile::tiles[type]->isSignalSource())) )
 	{
 		setOpen(level, x, y, z, signal);
 	}

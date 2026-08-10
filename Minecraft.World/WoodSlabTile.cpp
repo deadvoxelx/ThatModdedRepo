@@ -45,6 +45,8 @@ Icon *WoodSlabTile::getTexture(int face, int data)
 		return Tile::netherPlanks->getTexture(face, 1);
 	case SKYROOT_SLAB:
 		return Tile::netherPlanks->getTexture(face, 2);
+	default:
+		return Tile::wood->getTexture(face, 0);
 	}
 }
 

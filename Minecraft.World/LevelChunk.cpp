@@ -10,6 +10,7 @@
 #include "DataLayer.h"
 #include "SparseLightStorage.h"
 #include "BlockReplacements.h"
+#include "FileHeader.h"
 #include "LevelChunk.h"
 #include "BasicTypeContainers.h"
 #include "..\Minecraft.Client\MinecraftServer.h"
@@ -525,7 +526,7 @@ void LevelChunk::recalcHeightmapOnly()
 			}
 #else
 			CompressedTileStorage *blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
-			while (y > 0 && Tile::lightBlock[blocks->get(x,(y - 1) % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,z) & 0xff] == 0)		// 4J - was blocks->get() was blocks[p + y - 1]
+			while (y > 0 && Tile::lightBlock[blocks->get(x,(y - 1) % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,z)] == 0)
 			{
 				y--;
 				blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
@@ -582,7 +583,7 @@ void LevelChunk::recalcHeightmap()
 			}
 #else
 			CompressedTileStorage *blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
-			while (y > 0 && Tile::lightBlock[blocks->get(x,(y-1) % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,z) & 0xff] == 0)			// 4J - was blocks->get() was blocks[p + y - 1]
+			while (y > 0 && Tile::lightBlock[blocks->get(x,(y-1) % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,z)] == 0)
 			{
 				y--;
 				blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
@@ -630,7 +631,7 @@ void LevelChunk::recalcHeightmap()
 				SparseLightStorage *skyLight = yy >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT? upperSkyLight : lowerSkyLight;
 				do
 				{
-					br -= Tile::lightBlock[blocks->get(x,(yy % Level::COMPRESSED_CHUNK_SECTION_HEIGHT),z) & 0xff];					// 4J - blocks->get() was blocks[p + yy]
+					br -= Tile::lightBlock[blocks->get(x,(yy % Level::COMPRESSED_CHUNK_SECTION_HEIGHT),z)];
 					if (br > 0)
 					{
 						skyLight->set(x, (yy % Level::COMPRESSED_CHUNK_SECTION_HEIGHT), z, br);
@@ -803,7 +804,7 @@ void LevelChunk::recalcHeight(int x, int yStart, int z)
 	//    int p = x << level->depthBitsPlusFour | z << level->depthBits;		// 4J - removed
 
 	CompressedTileStorage *blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
-	while (y > 0 && Tile::lightBlock[blocks->get(x,(y-1) % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,z) & 0xff] == 0)		// 4J - blocks->get() was blocks[p + y - 1]
+	while (y > 0 && Tile::lightBlock[blocks->get(x,(y-1) % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,z)] == 0)
 	{
 		y--;
 		blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
@@ -919,7 +920,7 @@ int LevelChunk::getTile(int x, int y, int z)
 
 bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data)
 {
-	byte tile = static_cast<byte>(_tile);
+	int tile = _tile;
 
 	// Optimisation brought forward from 1.8.2, change from int to unsigned char & this special value changed from -999 to 255
 	int slot = z << 4 | x;
@@ -948,14 +949,14 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data)
 	}
 	int xOffs = this->x * 16 + x;
 	int zOffs = this->z * 16 + z;
-	if (old != 0 && !level->isClientSide)
+	if (old != 0 && !level->isClientSide && Tile::tiles[old] != nullptr)
 	{
 		Tile::tiles[old]->onRemoving(level, xOffs, y, zOffs, oldData);
 	}
 	PIXBeginNamedEvent(0,"Chunk setting tile");
 	blocks->set(x,y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,z,tile);
 	PIXEndNamedEvent();
-	if (old != 0)
+	if (old != 0 && Tile::tiles[old] != nullptr)
 	{
 		if (!level->isClientSide)
 		{
@@ -971,7 +972,7 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data)
 	PIXEndNamedEvent();
 
 	// 4J added - flag if something emissive is being added. This is used during level creation to determine what chunks need extra lighting processing
-	if( Tile::lightEmission[tile & 0xff] > 0 )
+	if( Tile::lightEmission[tile] > 0 )
 	{
 		emissiveAdded = true;
 	}
@@ -979,11 +980,11 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data)
 	PIXBeginNamedEvent(0,"Updating lighting");
 	// 4J - There isn't any point in recalculating heights or updating sky lighting if this tile has
 	// the same light-blocking capabilities as the one it is replacing
-	if( Tile::lightBlock[tile & 0xff] != Tile::lightBlock[old & 0xff] )
+	if( Tile::lightBlock[tile] != Tile::lightBlock[old] )
 	{
 		if (!level->dimension->hasCeiling)
 		{
-			if (Tile::lightBlock[tile & 0xff] != 0)
+			if (Tile::lightBlock[tile] != 0)
 			{
 				if (y >= oldHeight)
 				{
@@ -1010,7 +1011,7 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data)
 	}
 	PIXEndNamedEvent();
 	data->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, _data);
-	if (_tile != 0)
+	if (_tile != 0 && Tile::tiles[_tile] != nullptr)
 	{
 		if (!level->isClientSide)
 		{
@@ -1101,6 +1102,15 @@ bool LevelChunk::setData(int x, int y, int z, int val, int mask, bool *maskedBit
 		}
 	}
 	return true;
+}
+
+void LevelChunk::getBlockData16(unsigned short *data)
+{
+	lowerBlocks->getData16(data, 0);
+	if(Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
+	{
+		upperBlocks->getData16(data, Level::COMPRESSED_CHUNK_SECTION_TILES);
+	}
 }
 
 int LevelChunk::getBrightness(LightLayer::variety layer, int x, int y, int z)
@@ -1328,7 +1338,7 @@ shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z)
 		if(level->m_bDisableAddNewTileEntities) return nullptr;
 
 		int t = getTile(x, y, z);
-		if (t <= 0 || !Tile::tiles[t]->isEntityTile()) return nullptr;
+		if (t <= 0 || Tile::tiles[t] == nullptr || !Tile::tiles[t]->isEntityTile()) return nullptr;
 
 		// 4J-PB changed from this in 1.7.3
 		//EntityTile *et = (EntityTile *) Tile::tiles[t];
@@ -1389,8 +1399,7 @@ void LevelChunk::setTileEntity(int x, int y, int z, shared_ptr<TileEntity> tileE
 	tileEntity->x = this->x * 16 + x;
 	tileEntity->y = y;
 	tileEntity->z = this->z * 16 + z;
-
-	if (getTile(x, y, z) == 0 || !Tile::tiles[getTile(x, y, z)]->isEntityTile())	// 4J - was !(Tile.tiles[getTile(x, y, z)] instanceof EntityTile))
+	if (getTile(x, y, z) == 0 || Tile::tiles[getTile(x, y, z)] == nullptr || !Tile::tiles[getTile(x, y, z)]->isEntityTile())
 	{
 		app.DebugPrintf("Attempted to place a tile entity where there was no entity tile!\n");
 		return;
@@ -1466,7 +1475,7 @@ void LevelChunk::load()
 				for (int i = 0; i < tileEntityTags->size(); i++)
 				{
 					CompoundTag *teTag = tileEntityTags->get(i);
-					shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag);
+					shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag, level);
 					if (te != nullptr)
 					{
 						addTileEntity(te);
@@ -2117,7 +2126,7 @@ int LevelChunk::getTopRainBlock(int x, int z)
 		while (y > 0 && h == -1)
 		{
 			int t = getTile(x, y, z);
-			Material *m = t == 0 ? Material::air : Tile::tiles[t]->material;
+			Material *m = (t == 0 || Tile::tiles[t] == nullptr) ? Material::air : Tile::tiles[t]->material;
 			if (!m->blocksMotion() && !m->isLiquid())
 			{
 				y--;
@@ -2398,6 +2407,45 @@ void LevelChunk::setBlockData(byteArray data)
 	if(data.length > Level::COMPRESSED_CHUNK_SECTION_TILES) upperBlocks->setData(data,Level::COMPRESSED_CHUNK_SECTION_TILES);
 }
 
+// Voxel - convert invalid block/item IDs to 0 to avoid crashes/corrupting worlds
+// for worlds made before the tile ID expansion, just perge anything over 255, to prevent corrupt data
+void LevelChunk::sanitizeBlocks()
+{
+	const bool bAllowExpandedTileIds = level->getOriginalSaveVersion() >= SAVE_FILE_VERSION_TILE_ID_EXPANSION;
+	for (int y = 0; y < Level::maxBuildHeight; y++)
+	{
+		CompressedTileStorage *blocks = y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperBlocks : lowerBlocks;
+		int yl = y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+		for (int x = 0; x < 16; x++)
+		{
+			for (int z = 0; z < 16; z++)
+			{
+				int tile = blocks->get(x, yl, z);
+				if (tile != 0)
+				{
+					bool bInvalid = false;
+					if (tile >= Tile::TILE_NUM_COUNT)
+					{
+						bInvalid = true;
+					}
+					else if (!bAllowExpandedTileIds && tile >= 256)
+					{
+						bInvalid = true;
+					}
+					else if (Tile::tiles[tile] == nullptr)
+					{
+						bInvalid = true;
+					}
+					if (bInvalid)
+					{
+						blocks->set(x, yl, z, 0);
+					}
+				}
+			}
+		}
+	}
+}
+
 // Sets data in passed in array of size 32768, from the block data in this chunk
 void LevelChunk::getBlockData(byteArray data)
 {
@@ -2441,7 +2489,7 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs, 
 	unsigned int tileCount = xs * ys * zs;
 	unsigned int halfTileCount = tileCount/2;
 
-	byteArray data = byteArray( tileCount + (3* halfTileCount) + biomes.length );
+	byteArray data = byteArray( (tileCount*2) + (3* halfTileCount) + biomes.length );
 	for( int x = 0; x < xs; x++ )
 	{
 		for( int z = 0; z < zs; z++ )
@@ -2450,12 +2498,12 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs, 
 			{
 				int slot = (y*xs*zs) + (z*xs) + x;
 
-				data[slot] = getTile(x,y,z);
+				((unsigned short *)data.data)[slot] = static_cast<unsigned short>(getTile(x,y,z));
 			}
 		}
 	}
 
-	int p = tileCount;
+	int p = tileCount*2;
 
 	// 4J Stu - Added this because some "min" functions don't let us use our constants :(
 	int compressedHeight = Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
@@ -2474,32 +2522,6 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs, 
 	memcpy(&data.data[p],biomes.data,biomes.length);
 
 	return data;
-
-	//byteArray rawBuffer = byteArray( Level::CHUNK_TILE_COUNT + (3* Level::HALF_CHUNK_TILE_COUNT) );
-	//for( int x = 0; x < 16; x++ )
-	//{
-	//	for( int z = 0; z < 16; z++ )
-	//	{
-	//		for( int y = 0; y < Level::maxBuildHeight; y++ )
-	//		{
-	//			int slot = y << 8 | z << 4 | x;
-
-	//			rawBuffer[slot] = lc->getTile(x,y,z);
-	//		}
-	//	}
-	//}
-	//
-	//unsigned int offset = Level::CHUNK_TILE_COUNT;
-	//// Don't bother reordering block data, block light or sky light as they don't seem to make much difference
-	//byteArray dataData = byteArray(rawBuffer.data+offset, Level::HALF_CHUNK_TILE_COUNT);
-	//lc->getDataData(dataData);
-	//offset += Level::HALF_CHUNK_TILE_COUNT;
-	//byteArray blockLightData = byteArray(rawBuffer.data + offset, Level::HALF_CHUNK_TILE_COUNT);
-	//offset += Level::HALF_CHUNK_TILE_COUNT;
-	//byteArray skyLightData = byteArray(rawBuffer.data + offset, Level::HALF_CHUNK_TILE_COUNT);
-	//lc->getBlockLightData(blockLightData);
-	//lc->getSkyLightData(skyLightData);
-	//return rawBuffer;
 }
 
 void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs, byteArray *data)
@@ -2514,7 +2536,7 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs, byteA
 	int upperSlotOffset = xs * zs * lowerYSpan;
 
 	int biomesLength = 16 * 16;
-	byteArray newBuffer = byteArray(tileCount + (3* halfTileCount) + biomesLength);
+	byteArray newBuffer = byteArray((tileCount*2) + (3* halfTileCount) + biomesLength);
 	for( int x = 0; x < xs; x++ )
 	{
 		for( int z = 0; z < zs; z++ )
@@ -2533,38 +2555,12 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs, byteA
 				int slot = (x*zs*ySpan) + (z*ySpan) + slotY;
 				int slot2 = (y*xs*zs) + (z*xs) + x;
 
-				newBuffer[slot + targetSlotOffset] = data->data[slot2];
+				((unsigned short *)newBuffer.data)[slot + targetSlotOffset] = ((unsigned short *)data->data)[slot2];
 			}
 		}
 	}
 	// Copy over block data, block light, skylight and biomes as-is
-	memcpy(newBuffer.data + tileCount, data->data + tileCount, 3*halfTileCount + biomesLength);
+	memcpy(newBuffer.data + (tileCount*2), data->data + (tileCount*2), 3*halfTileCount + biomesLength);
 	delete [] data->data;
 	data->data = newBuffer.data;
-
-	//int p = 0;
-	//setBlocksAndData(*data, x0, y0, z0, x1, y1, z1, p);
-
-	//// If it is a full chunk, we'll need to rearrange into the order the rest of the game expects
-	//if( xs == 16 && ys == 128 && zs == 16 && ( ( x & 15 ) == 0 ) && ( y == 0 ) && ( ( z & 15 ) == 0 ) )
-	//{
-	//	byteArray newBuffer = byteArray(81920);
-	//	for( int x = 0; x < 16; x++ )
-	//	{
-	//		for( int z = 0; z < 16; z++ )
-	//		{
-	//			for( int y = 0; y < 128; y++ )
-	//			{
-	//				int slot = x << 11 | z << 7 | y;
-	//				int slot2 = y << 8 | z << 4 | x;
-
-	//				newBuffer[slot] = buffer[slot2];
-	//			}
-	//		}
-	//	}
-	//	// Copy over block data, block light & skylight as-is
-	//	memcpy(newBuffer.data + 32768, buffer.data + 32768, 49152);
-	//	delete buffer.data;
-	//	buffer.data = newBuffer.data;
-	//}
 }

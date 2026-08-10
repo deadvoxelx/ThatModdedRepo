@@ -144,12 +144,12 @@ bool StructurePiece::edgesLiquid( Level* level, BoundingBox* chunkBB )
 		for ( int z = z0; z <= z1; z++ )
 		{
 			int tile = level->getTile( x, y0, z );
-			if ( tile > 0 && Tile::tiles[tile]->material->isLiquid() )
+			if ( tile > 0 && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->material->isLiquid() )
 			{
 				return true;
 			}
 			tile = level->getTile( x, y1, z );
-			if ( tile > 0 && Tile::tiles[tile]->material->isLiquid() )
+			if ( tile > 0 && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->material->isLiquid() )
 			{
 				return true;
 			}
@@ -161,12 +161,12 @@ bool StructurePiece::edgesLiquid( Level* level, BoundingBox* chunkBB )
 		for ( int y = y0; y <= y1; y++ )
 		{
 			int tile = level->getTile( x, y, z0 );
-			if ( tile > 0 && Tile::tiles[tile]->material->isLiquid() )
+			if ( tile > 0 && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->material->isLiquid() )
 			{
 				return true;
 			}
 			tile = level->getTile( x, y, z1 );
-			if ( tile > 0 && Tile::tiles[tile]->material->isLiquid() )
+			if ( tile > 0 && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->material->isLiquid() )
 			{
 				return true;
 			}
@@ -178,12 +178,12 @@ bool StructurePiece::edgesLiquid( Level* level, BoundingBox* chunkBB )
 		for ( int y = y0; y <= y1; y++ )
 		{
 			int tile = level->getTile( x0, y, z );
-			if ( tile > 0 && Tile::tiles[tile]->material->isLiquid() )
+			if ( tile > 0 && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->material->isLiquid() )
 			{
 				return true;
 			}
 			tile = level->getTile( x1, y, z );
-			if ( tile > 0 && Tile::tiles[tile]->material->isLiquid() )
+			if ( tile > 0 && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->material->isLiquid() )
 			{
 				return true;
 			}

@@ -18,6 +18,7 @@ shared_ptr<ItemInstance> SnowballItem::use(shared_ptr<ItemInstance> instance, Le
 		instance->count--;
 	}
 	level->playEntitySound((shared_ptr<Entity> ) player, eSoundType_RANDOM_BOW, 0.5f, 0.4f / (random->nextFloat() * 0.4f + 0.8f));
+	player->swing();
 	if (!level->isClientSide) level->addEntity(std::make_shared<Snowball>(level, player));
 	return instance;
 }

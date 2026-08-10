@@ -114,7 +114,7 @@ int ComparatorTile::getInputSignal(Level *level, int x, int y, int z, int data)
     int zz = z + Direction::STEP_Z[dir];
     int tile = level->getTile(xx, y, zz);
 
-    if (tile > 0)
+    if (tile > 0 && Tile::tiles[tile] != nullptr)
     {
         if (Tile::tiles[tile]->hasAnalogOutputSignal())
         {
@@ -126,7 +126,7 @@ int ComparatorTile::getInputSignal(Level *level, int x, int y, int z, int data)
             zz += Direction::STEP_Z[dir];
             tile = level->getTile(xx, y, zz);
 
-            if (tile > 0 && Tile::tiles[tile]->hasAnalogOutputSignal())
+            if (tile > 0 && Tile::tiles[tile] != nullptr && Tile::tiles[tile]->hasAnalogOutputSignal())
             {
                 result = Tile::tiles[tile]->getAnalogOutputSignal(level, xx, y, zz, Direction::DIRECTION_OPPOSITE[dir]);
             }

@@ -10,6 +10,7 @@ EntityTileRenderer::EntityTileRenderer()
 {
 	chest = std::make_shared<ChestTileEntity>();
 	trappedChest = std::make_shared<ChestTileEntity>(ChestTile::TYPE_TRAP);
+	treasureChest = std::make_shared<ChestTileEntity>(ChestTile::TYPE_TREASURE);
 	enderChest = std::make_shared<EnderChestTileEntity>();
 }
 
@@ -22,6 +23,10 @@ void EntityTileRenderer::render(Tile *tile, int data, float brightness, float al
 	else if (tile->id == Tile::chest_trap_Id)
 	{
 		TileEntityRenderDispatcher::instance->render(trappedChest, 0, 0, 0, 0, setColor, alpha, useCompiled);
+	}
+	else if (tile->id == Tile::treasureChest_Id)
+	{
+		TileEntityRenderDispatcher::instance->render(treasureChest, 0, 0, 0, 0, setColor, alpha, useCompiled);
 	}
 	else
 	{

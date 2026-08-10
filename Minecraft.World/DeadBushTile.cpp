@@ -26,7 +26,7 @@ bool DeadBushTile::mayPlace(Level *level, int x, int y, int z)
 bool DeadBushTile::canSurvive(Level *level, int x, int y, int z)
 {
 	int below = level->getTile(x, y - 1, z);
-	return below == Tile::sand_Id || below == Tile::endSand_Id || below == Tile::grass_Id || below == Tile::dirt_Id || below == Tile::clay_Id || below == Tile::netherSoil_Id;
+	return below == Tile::sand_Id || below == Tile::stainedSand_Id || below == Tile::endSand_Id || below == Tile::grass_Id || below == Tile::dirt_Id || below == Tile::clay_Id || below == Tile::netherSoil_Id;
 }
 
 int DeadBushTile::getResource(int data, Random *random, int playerBonusLevel)

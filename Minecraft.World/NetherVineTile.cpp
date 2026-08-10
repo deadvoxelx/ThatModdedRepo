@@ -128,6 +128,7 @@ bool NetherVineTile::isAcceptableNeighbor(int id)
 {
 	if (id == 0) return false;
 	Tile *tile = Tile::tiles[id];
+	if (tile == nullptr) return false;
 	if (tile->isCubeShaped() && tile->material->blocksMotion()) return true;
 	return false;
 }

@@ -325,15 +325,11 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 							   }
 							   if( mobType == eTYPE_ZEPHYR )
 							   {
-								   if( level->countInstanceOf(mobType, true) >= 6 ) continue;
+								   if( level->countInstanceOf(mobType, true) >= 9 ) continue;
 							   }
 							   if( mobType == eTYPE_AERWHALE )
 							   {
-								   if( level->countInstanceOf(mobType, true) >= 4 ) continue;
-							   }
-							   if( mobType == eTYPE_SWET )
-							   {
-								   if( level->countInstanceOf(mobType, true) >= 12 ) continue;
+								   if( level->countInstanceOf(mobType, true) >= 7 ) continue;
 							   }
 							   if( mobType == eTYPE_NUCLEAR_NUSKULL )
 							   {

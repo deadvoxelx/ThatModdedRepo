@@ -122,12 +122,12 @@ void NuclearNuskull::newServerAiStep()
 		{
 			if ((target == nullptr))
 			{
-				if (targetPosition != nullptr && (!level->isEmptyTile(targetPosition->x, targetPosition->y, targetPosition->z) || targetPosition->y))
+				if (targetPosition != nullptr && !level->isEmptyTile(targetPosition->x, targetPosition->y, targetPosition->z))
 				{
 					delete targetPosition;
 					targetPosition = nullptr;
 				}
-				if (targetPosition == nullptr || random->nextInt(256) == 0 || targetPosition->distSqr(static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)))
+				if (targetPosition == nullptr || random->nextInt(256) == 0 || targetPosition->distSqr(static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)) <= 4)
 				{
 					delete targetPosition;
 					targetPosition = new Pos(static_cast<int>(x) + random->nextInt(48) - random->nextInt(48), static_cast<int>(y) + random->nextInt(12) - random->nextInt(12), static_cast<int>(z) + random->nextInt(48) - random->nextInt(48));
@@ -135,8 +135,14 @@ void NuclearNuskull::newServerAiStep()
 			}
 			else
 			{
-				delete targetPosition;
-      			targetPosition = new Pos(target->x, target->y, target->z);
+				if (targetPosition == nullptr)
+				{
+					targetPosition = new Pos(static_cast<int>(target->x), static_cast<int>(target->y), static_cast<int>(target->z));
+				}
+				else
+				{
+					targetPosition->set(static_cast<int>(target->x), static_cast<int>(target->y), static_cast<int>(target->z));
+				}
 			}
 
 			double dx = (targetPosition->x + .3) - x;

@@ -150,7 +150,7 @@ void PistonMovingPiece::updateShape(LevelSource *level, int x, int y, int z, int
 
 AABB *PistonMovingPiece::getAABB(Level *level, int x, int y, int z, int tile, float progress, int facing)
 {
-	if (tile == 0 || tile == id)
+	if (tile == 0 || tile == id || Tile::tiles[tile] == nullptr)
 	{
 		return nullptr;
 	}

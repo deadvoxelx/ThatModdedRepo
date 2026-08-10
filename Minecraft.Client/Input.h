@@ -10,6 +10,7 @@ public:
     bool wasJumping;
     bool jumping;
     bool sneaking;
+	bool sneakToggle;
 	bool sprinting;
 
 	Input();

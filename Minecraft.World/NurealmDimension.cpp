@@ -27,7 +27,7 @@ float *NurealmDimension::getSunriseColor(float td, float a)
 
 Vec3 *NurealmDimension::getFogColor(float td, float a) const
 {
-	int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Nurealm_Fog_Colour );
+	int colour = 0x2d002a;
 	byte redComponent = ((colour>>16)&0xFF);
 	byte greenComponent = ((colour>>8)&0xFF);
 	byte blueComponent = ((colour)&0xFF);
@@ -62,7 +62,7 @@ bool NurealmDimension::isValidSpawn(int x, int z) const
 {
     int topTile = level->getTopTile(x, z);
 
-    if (topTile == 0) return false;
+    if (topTile == 0 || Tile::tiles[topTile] == nullptr) return false;
 
     return Tile::tiles[topTile]->material->blocksMotion();
 }
@@ -90,6 +90,11 @@ bool NurealmDimension::isFoggyAt(int x, int z)
 int NurealmDimension::getSpawnYPosition()
 {
 	return 64;
+}
+
+int NurealmDimension::getXZSize()
+{
+	return NUREALM_LEVEL_MAX_WIDTH;
 }
 
 void NurealmDimension::updateLightRamp()

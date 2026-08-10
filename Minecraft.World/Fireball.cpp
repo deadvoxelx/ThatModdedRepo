@@ -198,9 +198,9 @@ void Fireball::tick()
         to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
     }
     shared_ptr<Entity> hitEntity = nullptr;
-    vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
+    vector<shared_ptr<Entity> > objects = *level->getEntities(shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
     double nearest = 0;
-	for ( auto& e : *objects )
+	for ( auto& e : objects )
 	{
         if ( e == nullptr || !e->isPickable() || (e->is(owner) )) continue; //4J Stu - Never collide with the owner (Enderdragon) // && flightTime < 25)) continue;
 
@@ -310,7 +310,7 @@ void Fireball::readAdditionalSaveData(CompoundTag *tag)
     xTile = tag->getShort(L"xTile");
     yTile = tag->getShort(L"yTile");
     zTile = tag->getShort(L"zTile");
-    lastTile = tag->getByte(L"inTile") & 0xff;
+    lastTile = tag->getByte(L"inTile") & 0x1ff;
     inGround = tag->getByte(L"inGround") == 1;
 
 	// Load the stored direction and apply it to the fireball

@@ -447,6 +447,13 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 								run = random->nextInt(4);
 								material = (byte) Tile::sandStone_Id;
 							}
+
+							// place a few stained clay blocks beneath stained sand runs
+							if (run == 0 && material == Tile::stainedSand_Id)
+							{
+								run = random->nextInt(4);
+								material = (byte) Tile::clayHardened_Id;
+							}
 						}
 					}
 				}
@@ -576,7 +583,7 @@ doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 #else
 	sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
 	dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
-	pnr = perlinNoise1->getRegion(pnr, x, y, z, xSize, ySize, zSize, s / 80.0, hs / 160.0, s / 80.0);
+	pnr = perlinNoise1->getRegion(pnr, x, y, z, xSize, ySize, zSize, s / 160.0, hs / 160.0, s / 160.0);
 	ar = lperlinNoise1->getRegion(ar, x, y, z, xSize, ySize, zSize, s, hs, s);
 	br = lperlinNoise2->getRegion(br, x, y, z, xSize, ySize, zSize, s, hs, s);
 

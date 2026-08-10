@@ -24,6 +24,9 @@ static bool isEnchanterInput(int id)
 		case Item::blueBerry_Id:
 		case Item::dartGold_Id:
 		case Item::dartShooterGold_Id:
+		case Item::sunFish_Id:
+		case Item::moonFish_Id:
+		case Item::cloudFish_Id:
 		return true;
 
 	default:
@@ -146,12 +149,12 @@ void FurnaceTileEntity::load(CompoundTag *base)
 	{
 		CompoundTag *tag = inventoryList->get(i);
 		unsigned int slot = tag->getByte(L"Slot");
-		if (slot >= 0 && slot < items.length) items[slot] = ItemInstance::fromTag(tag);
+		if (slot >= 0 && slot < items.length) items[slot] = ItemInstance::fromTag(tag, level);
 	}
 
 	litTime = base->getShort(L"BurnTime");
 	tickCount = base->getShort(L"CookTime");
-	litDuration = getBurnDuration(items[SLOT_FUEL]);
+	litDuration = getFuelBurnDuration(items[SLOT_FUEL]);
 	if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
 	m_charcoalUsed = base->getBoolean(L"CharcoalUsed");
 }
@@ -213,7 +216,7 @@ void FurnaceTileEntity::tick()
 	{
 		if (litTime == 0 && canBurn())
 		{
-			litDuration = litTime = getBurnDuration(items[SLOT_FUEL]);
+			litDuration = litTime = getFuelBurnDuration(items[SLOT_FUEL]);
 			if (litTime > 0)
 			{
 				changed = true;
@@ -252,15 +255,19 @@ void FurnaceTileEntity::tick()
 			tickCount = 0;
 		}
 
-		if (wasLit != litTime > 0 && level->getTile(x, y, z) == Tile::furnace_Id )
+		if (wasLit != litTime > 0)
 		{
-			changed = true;
-			FurnaceTile::setLit(litTime > 0, level, x, y, z);
-		}
-		else if (wasLit != litTime > 0 && level->getTile(x, y, z) == Tile::nether_furnace_Id )
-		{
-			changed = true;
-			NetherFurnaceTile::setLit(litTime > 0, level, x, y, z);
+			int tileId = level->getTile(x, y, z);
+			if (tileId == Tile::furnace_Id || tileId == Tile::furnace_lit_Id)
+			{
+				changed = true;
+				FurnaceTile::setLit(litTime > 0, level, x, y, z);
+			}
+			else if (tileId == Tile::nether_furnace_Id || tileId == Tile::nether_furnace_lit_Id)
+			{
+				changed = true;
+				NetherFurnaceTile::setLit(litTime > 0, level, x, y, z);
+			}
 		}
 	}
 
@@ -311,7 +318,7 @@ int FurnaceTileEntity::getBurnDuration(shared_ptr<ItemInstance> itemInstance)
 
 	Item *item = itemInstance->getItem();
 
-	if (id < 256 && Tile::tiles[id] != nullptr)
+	if (id < 512 && Tile::tiles[id] != nullptr)
 	{
 		Tile *tile = Tile::tiles[id];
 
@@ -372,6 +379,18 @@ bool FurnaceTileEntity::isFuel(shared_ptr<ItemInstance> item)
 	return getBurnDuration(item) > 0;
 }
 
+int FurnaceTileEntity::getFuelBurnDuration(shared_ptr<ItemInstance> itemInstance)
+{
+	int duration = getBurnDuration(itemInstance);
+	if (duration <= 0) return 0;
+
+	bool isAmbrosium = itemInstance->getItem()->id == Item::ambrosiumShard->id || itemInstance->getItem()->id == Tile::ambrosiumBlock_Id;
+	bool isEnchanterBlock = level != nullptr && level->getTile(x, y, z) == Tile::enchanter_Id;
+	if (isEnchanterBlock != isAmbrosium) return 0;
+
+	return duration;
+}
+
 bool FurnaceTileEntity::stillValid(shared_ptr<Player> player)
 {
 	if (level->getTileEntity(x, y, z) != shared_from_this() ) return false;
@@ -395,7 +414,7 @@ void FurnaceTileEntity::stopOpen()
 bool FurnaceTileEntity::canPlaceItem(int slot, shared_ptr<ItemInstance> item)
 {
 	if (slot == SLOT_RESULT) return false;
-	if (slot == SLOT_FUEL) return isFuel(item);
+	if (slot == SLOT_FUEL) return getFuelBurnDuration(item) > 0;
 	return true;
 }
 

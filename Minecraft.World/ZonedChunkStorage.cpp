@@ -202,7 +202,7 @@ void ZonedChunkStorage::loadEntities(Level *level, LevelChunk *lc)
         }
 		else if (type == 1)
 		{
-            shared_ptr<TileEntity> te = TileEntity::loadStatic(tag);
+            shared_ptr<TileEntity> te = TileEntity::loadStatic(tag, level);
             if (te != nullptr) lc->addTileEntity(te);
         }
     }

@@ -16,16 +16,16 @@ AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 	gravititeOreFeature = new OreFeature(Tile::gravititeOre_Id, 0, 8, Tile::holystone_Id);
 	icestoneFeature = new OreFeature(Tile::icestone_Id, 0, 10, Tile::holystone_Id);
 	mossyHolystoneFeature = new OreFeature(Tile::holystone_Id, 1, 8, Tile::holystone_Id);
+	airFossilFeature = new OreFeature(Tile::fossilOre_Id, 2, 7, Tile::holystone_Id);
 
 	quicksoilShelfFeature = new QuicksoilShelfFeature();
 
 	holidayTreeFeature = new HolidayTreeFeature(Tile::skyrootLog_Id);
 
-	largeAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0/*AercloudTile::TYPE_DEFAULT*/, 6, 10, 2, 4, true);
-	largeFreeAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0/*AercloudTile::TYPE_DEFAULT*/, 6, 10, 2, 4, false);
-	smallAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0/*AercloudTile::TYPE_DEFAULT*/, 3, 6, 1, 2, false);
-	smallGoldAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 2/*AercloudTile::TYPE_GOLD*/, 2, 4, 1, 2, false);
-	smallBlueAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 1/*AercloudTile::TYPE_BLUE*/, 2, 4, 1, 2, false);
+	largeAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0, 32);
+	smallAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 0, 16);
+	smallGoldAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 1, 8);
+	smallBlueAerCloudFeature = new AerCloudFeature(Tile::aercloud_Id, 2, 4);
 
 	whiteFlowerFeature = new FlowerFeature(Tile::flower_Id, 1);
 	purpleFlowerFeature = new FlowerFeature(Tile::flower_Id, 2);
@@ -43,16 +43,31 @@ AetherBiomeDecorator::AetherBiomeDecorator(Biome *biome) : BiomeDecorator(biome)
 	cactusCount = 0;
 	waterlilyCount = 0;
 	hugeMushrooms = 0;
-	liquids = false;
+	liquids = true;
 }
 
 void AetherBiomeDecorator::decorate()
 {
-	PIXBeginNamedEvent(0, "Decorate Aether ores");
+	PIXBeginNamedEvent(0, "Decorate Ores");
 	decorateAetherOres();
 	PIXEndNamedEvent();
 
-	PIXBeginNamedEvent(0, "Decorate Aether forests");
+	PIXBeginNamedEvent(0,"Decorate Liquids");
+	if( liquids )
+	{
+		AetherSpringFeature *aetherSpringFeature = new AetherSpringFeature(Tile::water_Id);
+		for (int i = 0; i < 50; i++)
+		{
+			int x = xo + random->nextInt(16) + 8;
+			int y = random->nextInt(random->nextInt(Level::genDepth - 8) + 8);
+			int z = zo + random->nextInt(16) + 8;
+			aetherSpringFeature->place(level, random, x, y, z);
+		}
+		delete aetherSpringFeature;
+	}
+	PIXEndNamedEvent();
+
+	PIXBeginNamedEvent(0, "Decorate Foliage");
 	int forests = treeCount;
 	if (random->nextInt(10) == 0) forests += 1;
 
@@ -73,9 +88,7 @@ void AetherBiomeDecorator::decorate()
 		int z = zo + random->nextInt(16) + 8;
 		holidayTreeFeature->place(level, random, x, y, z);
 	}
-	PIXEndNamedEvent();
 
-	PIXBeginNamedEvent(0, "Decorate Aether flowers/grass");
 	for (int i = 0; i < flowerCount; i++)
 	{
 		int x = xo + random->nextInt(16) + 8;
@@ -115,7 +128,7 @@ void AetherBiomeDecorator::decorate()
 	}
 	PIXEndNamedEvent();
 
-	PIXBeginNamedEvent(0, "Decorate Aether quicksoil shelves");
+	PIXBeginNamedEvent(0, "Decorate Quicksoil");
 	for (int i = 0; i < 5; i++)
 	{
 		int x = xo + random->nextInt(16) + 8;
@@ -128,56 +141,45 @@ void AetherBiomeDecorator::decorate()
 	}
 	PIXEndNamedEvent();
 
-	PIXBeginNamedEvent(0, "Decorate Aether clouds");
-
-	if (random->nextInt(5) == 0)
-	{
-		int x = xo + random->nextInt(16) + 8;
-		int z = zo + random->nextInt(16) + 8;
-		int y = level->getHeightmap(x, z);
-		if (y > 0)
-		{
-			largeAerCloudFeature->place(level, random, x, y, z);
-		}
-	}
-
-	if (random->nextInt(15) == 0)
+	PIXBeginNamedEvent(0, "Decorate Aerclouds");
+	// Large aercloud
+	if (random->nextInt(10) == 0)
 	{
 		int x = xo + random->nextInt(16) + 8;
 		int z = zo + random->nextInt(16) + 8;
 		int y = 12 + random->nextInt(20);
 		if (y > 0)
 		{
-			largeFreeAerCloudFeature->place(level, random, x, y, z);
+			largeAerCloudFeature->place(level, random, x, y, z);
 		}
 	}
 
-	const int minCloudY = 64;
-
-	if (random->nextInt(15) == 0)
+	// Normal aercloud
+	if (random->nextInt(11) == 0)
 	{
 		int x = xo + random->nextInt(16) + 8;
 		int z = zo + random->nextInt(16) + 8;
-		int y = minCloudY + random->nextInt(Level::genDepth - 10 - minCloudY);
+		int y = 56 + random->nextInt(64);
 		smallAerCloudFeature->place(level, random, x, y, z);
 	}
 
-	if (random->nextInt(30) == 0)
+	// Gold aercloud
+	if (random->nextInt(22) == 0)
 	{
 		int x = xo + random->nextInt(16) + 8;
 		int z = zo + random->nextInt(16) + 8;
-		int y = minCloudY + random->nextInt(Level::genDepth - 10 - minCloudY);
+		int y = 56 + random->nextInt(32);
 		smallGoldAerCloudFeature->place(level, random, x, y, z);
 	}
 
-	if (random->nextInt(50) == 0)
+	// Blue aercloud
+	if (random->nextInt(40) == 0)
 	{
 		int x = xo + random->nextInt(16) + 8;
 		int z = zo + random->nextInt(16) + 8;
-		int y = minCloudY + random->nextInt(Level::genDepth - 10 - minCloudY);
+		int y = 56 + random->nextInt(96);
 		smallBlueAerCloudFeature->place(level, random, x, y, z);
 	}
-
 	PIXEndNamedEvent();
 }
 
@@ -185,9 +187,10 @@ void AetherBiomeDecorator::decorateAetherOres()
 {
 	level->setInstaTick(true);
 	decorateDepthSpan(16, ambrosiumOreFeature, 0, Level::genDepth);
-	decorateDepthSpan(10, zaniteOreFeature, 0, Level::genDepth / 2);
-	decorateDepthSpan(7, gravititeOreFeature, 0, Level::genDepth / 4);
+	decorateDepthSpan(12, zaniteOreFeature, 0, Level::genDepth / 2);
+	decorateDepthSpan(9, gravititeOreFeature, 0, Level::genDepth / 4);
 	decorateDepthSpan(16, icestoneFeature, 0, Level::genDepth);
 	decorateDepthSpan(12, mossyHolystoneFeature, 0, Level::genDepth);
+	decorateDepthSpan(10, airFossilFeature, 0, Level::genDepth / 2);
 	level->setInstaTick(false);
 }

@@ -4745,6 +4745,41 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_NUSA_DEMON, L"Nusa Demon");
 		m_stringTable->registerString(IDS_WORKSHOP, L"Emerald Workshop");
 		m_stringTable->registerString(IDS_FARLANDS, L"Farlands (Expect Lower Framerates)");
+		m_stringTable->registerString(IDS_ITEM_SHELL_FOSSIL, L"Shell Fossil");
+		m_stringTable->registerString(IDS_ITEM_FIRE_FOSSIL, L"Fire Fossil");
+		m_stringTable->registerString(IDS_ITEM_AIR_FOSSIL, L"Air Fossil");
+		m_stringTable->registerString(IDS_ITEM_RIB_FOSSIL, L"Otherworld Fossil");
+		m_stringTable->registerString(IDS_DESC_FOSSIL, L"One of the 4 different fossils");
+		m_stringTable->registerString(IDS_TILE_FOSSIL, L"Fossil");
+		m_stringTable->registerString(IDS_TILE_FOSSIL_ORE, L"Fossil Ore");
+		m_stringTable->registerString(IDS_TILE_STAINED_SAND, L"Stained Sand");
+		m_stringTable->registerString(IDS_ITEM_IRON_BUBBLE, L"Iron Bubble");
+		m_stringTable->registerString(IDS_ITEM_IRON_PENDANT, L"Iron Pendant");
+		m_stringTable->registerString(IDS_ITEM_IRON_RING, L"Iron Ring");
+		m_stringTable->registerString(IDS_ITEM_GOLD_PENDANT, L"Gold Pendant");
+		m_stringTable->registerString(IDS_ITEM_GOLD_RING, L"Gold Ring");
+		m_stringTable->registerString(IDS_ITEM_ZANITE_PENDANT, L"Zanite Pendant");
+		m_stringTable->registerString(IDS_ITEM_ZANITE_RING, L"Zanite Ring");
+		m_stringTable->registerString(IDS_ITEM_AGILITY_CAPE, L"Agility Cape");
+		m_stringTable->registerString(IDS_ITEM_INVISIBILITY_CAPE, L"Invisibility Cape");
+		m_stringTable->registerString(IDS_ITEM_SWET_CAPE, L"Swet Cape");
+		m_stringTable->registerString(IDS_ITEM_VALKYRIE_CAPE, L"Valkyrie Cape");
+		m_stringTable->registerString(IDS_ITEM_VALKYRIE_LANCE, L"Valkyrie Lance");
+		m_stringTable->registerString(IDS_ITEM_VALKYRIE_AXE, L"Valkyrie Axe");
+		m_stringTable->registerString(IDS_ITEM_VALKYRIE_PICKAXE, L"Valkyrie Pickaxe");
+		m_stringTable->registerString(IDS_ITEM_VALKYRIE_SHOVEL, L"Valkyrie Shovel");
+		m_stringTable->registerString(IDS_ITEM_VALKYRIE_HOE, L"Valkyrie Hoe");
+		m_stringTable->registerString(IDS_SUN_SPIRIT, L"Sun Spirit");
+		m_stringTable->registerString(IDS_TILE_BLACKROOT, L"Blackroot");
+		m_stringTable->registerString(IDS_ITEM_BLACKROOT, L"Blackroot Berry");
+		m_stringTable->registerString(IDS_ITEM_MAGMAROOT, L"Magmaroot Berry");
+		m_stringTable->registerString(IDS_TILE_LAVAREED, L"Lava Reed");
+		m_stringTable->registerString(IDS_ITEM_LAVAREED, L"Lava Reeds");
+		m_stringTable->registerString(IDS_ITEM_FLAX, L"Nether Flax");
+		m_stringTable->registerString(IDS_TILE_BONE_VINE, L"Bone Vine");
+		m_stringTable->registerString(IDS_TILE_VELOETT_VINE, L"Veloett Vine");
+		m_stringTable->registerString(IDS_TILE_VELOETT_FLOWER, L"Veloett Flower");
+		m_stringTable->registerString(IDS_TILE_ENDESERT_BUSH, L"Endesert Bush");
 
 	}
 	else
@@ -8813,6 +8848,8 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_NUSKULL);
 	case eTYPE_NUCLEAR_NUSKULL:
 		return app.GetString(IDS_NUCLEAR_NUSKULL);
+	case eTYPE_NUSA_DEMON:
+		return app.GetString(IDS_NUSA_DEMON);
 	};
 
 	return L"";

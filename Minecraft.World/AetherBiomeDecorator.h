@@ -15,13 +15,13 @@ protected:
 	Feature *gravititeOreFeature;
 	Feature *icestoneFeature;
 	Feature *mossyHolystoneFeature;
+	Feature *airFossilFeature;
 
 	Feature *quicksoilShelfFeature;
 
 	HolidayTreeFeature *holidayTreeFeature;
 
 	Feature *largeAerCloudFeature;
-	Feature *largeFreeAerCloudFeature;
 	Feature *smallAerCloudFeature;
 	Feature *smallGoldAerCloudFeature;
 	Feature *smallBlueAerCloudFeature;

@@ -27,6 +27,7 @@ private:
 	PerlinNoise *perlinNoise3;
 
 	PerlinNoise *carvingNoise;
+	PerlinNoise *terrainHeightNoise;
 public:
 	PerlinNoise *scaleNoise;
 	PerlinNoise *depthNoise;

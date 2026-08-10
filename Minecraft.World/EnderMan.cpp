@@ -14,11 +14,11 @@
 
 AttributeModifier *EnderMan::SPEED_MODIFIER_ATTACKING = (new AttributeModifier(eModifierId_MOB_ENDERMAN_ATTACKSPEED, 6.2f, AttributeModifier::OPERATION_ADDITION))->setSerialize(false);
 
-bool EnderMan::MAY_TAKE[256];
+bool EnderMan::MAY_TAKE[512];
 
 void EnderMan::staticCtor()
 {
-	ZeroMemory(MAY_TAKE, sizeof(bool) * 256);
+	ZeroMemory(MAY_TAKE, sizeof(bool) * 512);
 	MAY_TAKE[Tile::grass_Id] = true;
 	MAY_TAKE[Tile::dirt_Id] = true;
 	MAY_TAKE[Tile::sand_Id] = true;
@@ -180,7 +180,7 @@ void EnderMan::aiStep()
 					int zt = Mth::floor(z - 1 + random->nextDouble() * 2);
 					int t = level->getTile(xt, yt, zt);
 					int bt = level->getTile(xt, yt - 1, zt);
-					if (t == 0 && bt > 0 && Tile::tiles[bt]->isCubeShaped())
+					if (t == 0 && bt > 0 && Tile::tiles[bt] != nullptr && Tile::tiles[bt]->isCubeShaped())
 					{
 						level->setTileAndData(xt, yt, zt, getCarryingTile(), getCarryingData(), Tile::UPDATE_ALL);
 						setCarryingTile(0);
@@ -303,7 +303,7 @@ bool EnderMan::teleport(double xx, double yy, double zz)
 		while (!landed && yt > 0)
 		{
 			int t = level->getTile(xt, yt - 1, zt);
-			if (t == 0 || !(Tile::tiles[t]->material->blocksMotion()))
+			if (t == 0 || Tile::tiles[t] == nullptr || !(Tile::tiles[t]->material->blocksMotion()))
 			{
 				y--;
 				yt--;
@@ -385,7 +385,7 @@ void EnderMan::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 // 4J Brought forward from 1.2.3 to help fix Enderman behaviour
 void EnderMan::setCarryingTile(int carryingTile)
 {
-	entityData->set(DATA_CARRY_ITEM_ID, static_cast<byte>(carryingTile & 0xff));
+	entityData->set(DATA_CARRY_ITEM_ID, static_cast<byte>(carryingTile & 0x1ff));
 }
 
 int EnderMan::getCarryingTile()

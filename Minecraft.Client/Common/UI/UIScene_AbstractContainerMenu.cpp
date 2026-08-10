@@ -245,7 +245,7 @@ void UIScene_AbstractContainerMenu::render(S32 width, S32 height, C4JRender::eVi
 		unsigned int count = m_menu->getSize();
 		for(unsigned int i = 0; i < count; ++i)
 		{
-			if(m_menu->getSlot(i)->hasItem())
+			if(isSlotItemDrawable(i) && m_menu->getSlot(i)->hasItem())
 			{
 				++m_expectedCachedSlotCount;
 			}

@@ -102,6 +102,8 @@
 #include "SwetRenderer.h"
 #include "NuskullRenderer.h"
 #include "NusaDemonRenderer.h"
+#include "SunSpiritModel.h"
+#include "SunSpiritRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -132,6 +134,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_MOOBLOOM] = new MoobloomRenderer(new CowModel(), 0.7f);
 	renderers[eTYPE_SHEEPUFF] = new SheepuffRenderer(new SheepuffModel(), new SheepuffFurModel(), 0.7f);
 	renderers[eTYPE_FLYING_COW] = new FlyingCowRenderer(new FlyingCowModel(), 0.7f);
+	renderers[eTYPE_MOA] = new MoaRenderer();
 
 	renderers[eTYPE_HUSK] = new ZombieRenderer();
 	renderers[eTYPE_ZOMBICE] = new ZombieRenderer();
@@ -149,10 +152,11 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_NUSKULL] = new NuskullRenderer();
 	renderers[eTYPE_NUCLEAR_NUSKULL] = new NuskullRenderer();
 	renderers[eTYPE_NUSA_DEMON] = new NusaDemonRenderer();
+	renderers[eTYPE_SUN_SPIRIT] = new SunSpiritRenderer();
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
-	renderers[eTYPE_ZEPHYRBALL] = new FireballRenderer(2.0f);
+	renderers[eTYPE_ZEPHYRBALL] = new ItemSpriteRenderer(Item::snowBall);
 	renderers[eTYPE_DART] = new ArrowRenderer();
 	renderers[eTYPE_DARTENCHANTED] = new ArrowRenderer();
 	//

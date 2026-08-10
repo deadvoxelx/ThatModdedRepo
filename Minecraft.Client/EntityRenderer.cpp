@@ -210,7 +210,7 @@ void EntityRenderer::renderShadow(shared_ptr<Entity> e, double x, double y, doub
 			for (int zt = z0; zt <= z1; zt++)
 			{				
 				int t = level->getTile(xt, yt - 1, zt);
-				if (t > 0 && level->getRawBrightness(xt, yt, zt) > 3)
+				if (t > 0 && Tile::tiles[t] != nullptr && level->getRawBrightness(xt, yt, zt) > 3)
 				{
 					renderTileShadow(Tile::tiles[t], x, y + e->getShadowHeightOffs() + fYLocalPlayerShadowOffset, z, xt, yt , zt, pow, r, xo, yo + e->getShadowHeightOffs() + fYLocalPlayerShadowOffset, zo);
 				}			
@@ -232,6 +232,7 @@ Level *EntityRenderer::getLevel()
 void EntityRenderer::renderTileShadow(Tile *tt, double x, double y, double z, int xt, int yt, int zt, float pow, float r, double xo, double yo, double zo)
 {
 	Tesselator *t = Tesselator::getInstance();
+	if (tt == nullptr) return;
 	if (!tt->isCubeShaped()) return;
 
 	double a = ((pow - (y - (yt + yo)) / 2) * 0.5f) * getLevel()->getBrightness(xt, yt, zt);

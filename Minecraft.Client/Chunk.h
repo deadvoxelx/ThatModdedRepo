@@ -36,7 +36,7 @@ private:
 public:
 	static void CreateNewThreadStorage();
 	static void ReleaseThreadStorage();
-	static unsigned char *GetTileIdsStorage();
+	static unsigned short *GetTileIdsStorage();
 #endif
 	
 public:

@@ -9,7 +9,7 @@
 #include "net.minecraft.world.inventory.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.phys.h"
-#include "Facing.h" // needed for direction-dependent chest logic
+#include "Facing.h"
 #include "ChestPair.h"
 #include "ChestTileEntity.h"
 #include "ContainerOpenPacket.h"
@@ -413,7 +413,7 @@ void ChestTileEntity::load(CompoundTag *base)
 	{
 		CompoundTag *tag = inventoryList->get(i);
 		unsigned int slot = tag->getByte(L"Slot") & 0xff;
-		if (slot >= 0 && slot < items->length) (*items)[slot] = ItemInstance::fromTag(tag);
+		if (slot >= 0 && slot < items->length) (*items)[slot] = ItemInstance::fromTag(tag, level);
 	}
 	isBonusChest = base->getBoolean(L"bonus");
 }
@@ -685,11 +685,12 @@ void ChestTileEntity::startOpen()
 
 void ChestTileEntity::stopOpen()
 {
-	if (getTile() == nullptr || !( dynamic_cast<ChestTile *>( getTile() ) != nullptr)) return;
+	Tile *tile = getTile();
+	if (tile == nullptr || (dynamic_cast<ChestTile *>(tile) == nullptr && dynamic_cast<TreasureChestTile *>(tile) == nullptr)) return;
 	openCount--;
-	level->tileEvent(x, y, z, getTile()->id, ChestTile::EVENT_SET_OPEN_COUNT, openCount);
-	level->updateNeighborsAt(x, y, z, getTile()->id);
-	level->updateNeighborsAt(x, y - 1, z, getTile()->id);
+	level->tileEvent(x, y, z, tile->id, ChestTile::EVENT_SET_OPEN_COUNT, openCount);
+	level->updateNeighborsAt(x, y, z, tile->id);
+	level->updateNeighborsAt(x, y - 1, z, tile->id);
 }
 
 bool ChestTileEntity::canPlaceItem(int slot, shared_ptr<ItemInstance> item)
@@ -708,11 +709,20 @@ int ChestTileEntity::getType()
 {
 	if (type == -1)
 	{
-		if (level != nullptr && dynamic_cast<ChestTile *>( getTile() ) != nullptr)
+		Tile *tile = level != nullptr ? getTile() : nullptr;
+		if (tile != nullptr)
 		{
-			type = static_cast<ChestTile *>(getTile())->type;
+			if (dynamic_cast<ChestTile *>(tile) != nullptr)
+			{
+				type = static_cast<ChestTile *>(tile)->type;
+			}
+			else if (dynamic_cast<TreasureChestTile *>(tile) != nullptr)
+			{
+				type = static_cast<TreasureChestTile *>(tile)->type;
+			}
 		}
-		else
+
+		if (type == -1)
 		{
 			return ChestTile::TYPE_BASIC;
 		}

@@ -7,7 +7,6 @@ using namespace std;
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.item.h"
-#include "net.minecraft.world.h"
 #include "net.minecraft.stats.h"
 #include "TileItem.h"
 #include "facing.h"
@@ -19,7 +18,7 @@ using namespace std;
 
 TileItem::TileItem(int id) : Item(id) 
 {
-	this->tileId = id + 256;
+	this->tileId = id + 512;
 	itemIcon = nullptr;
 }
 

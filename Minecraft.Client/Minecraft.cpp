@@ -52,6 +52,7 @@
 #include "..\Minecraft.World\net.minecraft.world.level.chunk.h"
 #include "..\Minecraft.World\net.minecraft.world.level.dimension.h"
 #include "..\Minecraft.World\net.minecraft.world.item.h"
+#include "..\Minecraft.World\net.minecraft.world.inventory.h"
 #include "..\Minecraft.World\Minecraft.World.h"
 #include "Windows64\Windows64_Xuid.h"
 #include "ClientConnection.h"
@@ -1547,7 +1548,7 @@ void Minecraft::run_middle()
 						}
 
 						// Utility keys always work regardless of KBM active state
-						if(g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_PAUSE) && !ui.GetMenuDisplayed(i))
+						if(g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_PAUSE) && !ui.GetMenuDisplayed(i) && screen == nullptr)
 						{
 							localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_PAUSEMENU;
 							app.DebugPrintf("PAUSE PRESSED (keyboard) - ipad = %d\n",i);
@@ -1569,6 +1570,14 @@ void Minecraft::run_middle()
 						{
 							if (localplayers[i]->abilities.flying && !ui.GetMenuDisplayed(i))
 								localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_SNEAK_TOGGLE;
+						}
+
+						if (g_KBMInput.IsKBMActive() && g_KBMInput.IsMouseGrabbed() &&
+							localgameModes[i] != nullptr && localgameModes[i]->isInputAllowed(MINECRAFT_ACTION_SNEAK_TOGGLE) &&
+							g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_SNEAK_ALT))
+						{
+							if (localplayers[i]->input != nullptr)
+								localplayers[i]->input->sneakToggle = !localplayers[i]->input->sneakToggle;
 						}
 					}
 #endif
@@ -2542,7 +2551,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 				// 4J-PB - very special case for boat and empty bucket and glass bottle and more
 				bool bUseItem = gameMode->useItem(player, level, itemInstance, true);
 
-				switch (itemInstance->getItem()->id)
+				switch ((itemInstance->getItem() != nullptr) ? itemInstance->getItem()->id : -1)
 				{
 					// food
 				case Item::potatoBaked_Id:
@@ -2747,7 +2756,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 						 */
 						if (bUseItemOn && itemInstance!=nullptr)
 						{
-							switch (itemInstance->getItem()->id)
+							switch ((itemInstance->getItem() != nullptr) ? itemInstance->getItem()->id : -1)
 							{
 							case Tile::mushroom_brown_Id:
 							case Tile::mushroom_red_Id:
@@ -2892,7 +2901,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 							// special case for a cauldron of water and an empty bottle
 							if (itemInstance)
 							{
-								int iID=itemInstance->getItem()->id;
+								int iID=(itemInstance->getItem()!=nullptr)?itemInstance->getItem()->id:0;
 								int currentData = level->getData(x, y, z);
 								if ((iID==Item::glassBottle_Id) && (currentData > 0))
 								{
@@ -2924,7 +2933,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 						case Tile::jukebox_Id:
 							if (!bUseItemOn && itemInstance!=nullptr)
 							{
-								int iID=itemInstance->getItem()->id;
+								int iID=(itemInstance->getItem()!=nullptr)?itemInstance->getItem()->id:0;
 								if ( (iID>=Item::record_01_Id) && (iID<=Item::record_12_Id) )
 								{
 									*piUse=IDS_TOOLTIPS_PLAY;
@@ -2944,8 +2953,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 						case Tile::flowerPot_Id:
 							if ( !bUseItemOn && (itemInstance != nullptr) && (iData == 0) )
 							{
-								int iID = itemInstance->getItem()->id;
-								if (iID<256) // is it a tile?
+								int iID = (itemInstance->getItem() != nullptr) ? itemInstance->getItem()->id : 0;
+								if (iID<512) // is it a tile?
 								{
 									switch(iID)
 									{
@@ -3014,7 +3023,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 					{
 						heldItem = player->inventory->getSelected();
 					}
-					int heldItemId = heldItem != nullptr ? heldItem->getItem()->id : -1;
+					int heldItemId = (heldItem != nullptr && heldItem->getItem() != nullptr) ? heldItem->getItem()->id : -1;
 
 					switch(entityType)
 					{
@@ -4030,32 +4039,27 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 
 				if (itemSlot >= 0)
 				{
-					// Item is already in hotbar
 					if (itemSlot < 9)
 					{
 						inventory->selected = itemSlot;
 					}
-					// There are free slots in the hotbar
 					else if (firstEmpty >= 0 && firstEmpty < 9)
 					{
 						inventory->selected = firstEmpty;
-						// Use quick move the item
 						gameMode->handleInventoryMouseClick(
 							containerId,
-							itemSlot,
+							InventoryMenu::INV_SLOT_START + (itemSlot - 9),
 							AbstractContainerMenu::CLICK_QUICK_MOVE,
 							true,
 							player
 						);
 					}
-					// Swap with item in inventory
 					else {
 						int currentHotbarSlot = inventory->selected;
 						short changeUid = inventoryMenu->backup(inventory);
 
-						// Perform client side swap and sync with server using CLICK_SWAP to avoid ghost blocks
 						shared_ptr<ItemInstance> clicked = inventoryMenu->clicked(
-							itemSlot,
+							InventoryMenu::INV_SLOT_START + (itemSlot - 9),
 							currentHotbarSlot,
 							AbstractContainerMenu::CLICK_SWAP,
 							player
@@ -4063,7 +4067,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 
 						player->connection->send(make_shared<ContainerClickPacket>(
 							containerId, 
-							itemSlot, 
+							InventoryMenu::INV_SLOT_START + (itemSlot - 9), 
 							currentHotbarSlot, 
 							AbstractContainerMenu::CLICK_SWAP,
 							clicked, 
@@ -4078,9 +4082,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 					shared_ptr<ItemInstance> selectedItem = inventory->getSelected();
 					if (gameMode && selectedItem)
 					{
-						// Hotbar starts at slot 36
-						// Sync new item instance with the server in creative mode
-						gameMode->handleCreativeModeItemAdd(selectedItem, 36 + player->inventory->selected);
+						gameMode->handleCreativeModeItemAdd(selectedItem, InventoryMenu::USE_ROW_SLOT_START + player->inventory->selected);
 					}
 				}
 			}
@@ -4094,24 +4096,6 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 			setScreen(nullptr);
 		}
 	}
-
-	// monitor for keyboard input
-	// #ifndef _CONTENT_PACKAGE
-	// 	if(!(ui.GetMenuDisplayed(iPad)))
-	// 	{
-	// 		WCHAR wchInput;
-	// 		if(InputManager.InputDetected(iPad,&wchInput))
-	// 		{
-	// 			printf("Input Detected!\n");
-	//
-	// 			// see if we can react to this
-	// 			if(app.GetXuiAction(iPad)==eAppAction_Idle)
-	// 			{
-	// 				app.SetAction(iPad,eAppAction_DebugText,(LPVOID)wchInput);
-	// 			}
-	// 		}
-	// 	}
-	// #endif
 
 #if 0
 	// 4J - TODO - some replacement for input handling...

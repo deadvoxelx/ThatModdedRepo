@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TheOuterEndDimension.h"
 //#include "TheOuterEndLevelRandomLevelSource.h"
+#include "ChunkSource.h"
 #include "FixedBiomeSource.h"
 #include "net.minecraft.world.level.storage.h"
 #include "net.minecraft.world.level.levelgen.h"
@@ -67,7 +68,7 @@ bool TheOuterEndDimension::isValidSpawn(int x, int z) const
 {
     int topTile = level->getTopTile(x, z);
 
-    if (topTile == 0) return false;
+    if (topTile == 0 || Tile::tiles[topTile] == nullptr) return false;
 
     return Tile::tiles[topTile]->material->blocksMotion();
 }
@@ -97,12 +98,7 @@ int TheOuterEndDimension::getSpawnYPosition()
 	return 80;
 }
 
-/*void TheOuterEndDimension::updateLightRamp()
+int TheOuterEndDimension::getXZSize()
 {
-    float ambientLight = 0.10f;
-    for (int i = 0; i <= Level::MAX_BRIGHTNESS; i++)
-	{
-        float v = (1 - i / (float) (Level::MAX_BRIGHTNESS));
-        brightnessRamp[i] = ((1 - v) / (v * 3 + 1)) * (1 - ambientLight) + ambientLight;
-    }
-}*/
+	return OUTER_END_LEVEL_MAX_WIDTH;
+}

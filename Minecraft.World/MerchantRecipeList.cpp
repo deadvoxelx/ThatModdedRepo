@@ -8,7 +8,13 @@ MerchantRecipeList::MerchantRecipeList()
 
 MerchantRecipeList::MerchantRecipeList(CompoundTag *tag)
 {
-	load(tag);
+	load(tag, nullptr);
+}
+
+// Voxel - level-aware variant so pre-expansion saves' trade offers can be remapped on load
+MerchantRecipeList::MerchantRecipeList(CompoundTag *tag, Level *level)
+{
+	load(tag, level);
 }
 
 MerchantRecipeList::~MerchantRecipeList()
@@ -140,12 +146,18 @@ MerchantRecipeList *MerchantRecipeList::createFromStream(DataInputStream *stream
 
 void MerchantRecipeList::load(CompoundTag *tag)
 {
+	load(tag, nullptr);
+}
+
+// Voxel - level-aware load (legacy save item id remap)
+void MerchantRecipeList::load(CompoundTag *tag, Level *level)
+{
 	ListTag<CompoundTag> *list = (ListTag<CompoundTag> *) tag->getList(L"Recipes");
 
 	for (int i = 0; i < list->size(); i++)
 	{
 		CompoundTag *recipeTag = list->get(i);
-		m_recipes.push_back(new MerchantRecipe(recipeTag));
+		m_recipes.push_back(new MerchantRecipe(recipeTag, level));
 	}
 }
 

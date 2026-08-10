@@ -351,18 +351,21 @@ void ItemRenderer::renderGuiItem(Font *font, Textures *textures, shared_ptr<Item
 // 4J - this used to take x and y as ints, and no scale and alpha - but this interface is now implemented as a wrapper round this more fully featured one
 void ItemRenderer::renderGuiItem(Font *font, Textures *textures, shared_ptr<ItemInstance> item, float x, float y, float fScaleX,float fScaleY, float fAlpha, bool useCompiled)
 {
+	if (item == nullptr || item->getItem() == nullptr) return;
+
 	int itemId = item->id;
 	int itemAuxValue = item->getAuxValue();
 	Icon *itemIcon = item->getIcon();
 
-    if (item->getIconType() == Icon::TYPE_TERRAIN && TileRenderer::canRender(Tile::tiles[itemId]->getRenderShape()))
+	Tile *tile = (itemId >= 0 && itemId < Tile::TILE_NUM_COUNT) ? Tile::tiles[itemId] : nullptr;
+
+    if (item->getIconType() == Icon::TYPE_TERRAIN && tile != nullptr && TileRenderer::canRender(tile->getRenderShape()))
 	{
 		PIXBeginNamedEvent(0,"3D gui item render %d\n",itemId);
 		MemSect(31);
         textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
 		MemSect(0);
 
-        Tile *tile = Tile::tiles[itemId];
         glPushMatrix();
 		// 4J - original code left here for reference
 #if 0

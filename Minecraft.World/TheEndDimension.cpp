@@ -65,7 +65,7 @@ bool TheEndDimension::isValidSpawn(int x, int z) const
 {
     int topTile = level->getTopTile(x, z);
 
-    if (topTile == 0) return false;
+    if (topTile == 0 || Tile::tiles[topTile] == nullptr) return false;
 
     return Tile::tiles[topTile]->material->blocksMotion();
 }
@@ -93,4 +93,9 @@ bool TheEndDimension::isFoggyAt(int x, int z)
 int TheEndDimension::getSpawnYPosition()
 {
 	return 50;
+}
+
+int TheEndDimension::getXZSize()
+{
+	return END_LEVEL_MAX_WIDTH;
 }

@@ -30,3 +30,4 @@
 #include "AnvilMenu.h"
 #include "RepairContainer.h"
 #include "RepairResultSlot.h"
+#include "AetherSlot.h"

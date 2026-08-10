@@ -17,6 +17,8 @@ AetherLevelSource::AetherLevelSource(Level *level, int64_t seed)
 
 	this->level = level;
 
+	caveFeature = new LargeCaveFeature();
+
 	random = new Random(seed);
 	pprandom = new Random(seed);
 
@@ -30,10 +32,13 @@ AetherLevelSource::AetherLevelSource(Level *level, int64_t seed)
 	floatingIslandScale = new PerlinNoise(random, 10);
 	floatingIslandNoise = new PerlinNoise(random, 4);
 	carvingNoise = new PerlinNoise(random, 6);
+	terrainHeightNoise = new PerlinNoise(random, 8);
 }
 
 AetherLevelSource::~AetherLevelSource()
 {
+	delete caveFeature;
+
 	delete random;
 	delete pprandom;
 	delete lperlinNoise1;
@@ -46,6 +51,7 @@ AetherLevelSource::~AetherLevelSource()
 	delete floatingIslandScale;
 	delete floatingIslandNoise;
 	delete carvingNoise;
+	delete terrainHeightNoise;
 }
 
 void AetherLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
@@ -198,6 +204,8 @@ LevelChunk *AetherLevelSource::getChunk(int xOffs, int zOffs)
 	prepareHeights(xOffs, zOffs, blocks, biomes);
 	buildSurfaces(xOffs, zOffs, blocks, biomes);
 
+	caveFeature->apply(this, level, xOffs, zOffs, blocks);
+
 	LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
 	XPhysicalFree(tileData);
 
@@ -223,7 +231,7 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 	double s = 1 * 1368.824;
 	double hs = 1 * 684.412;
 
-	doubleArray pnr, ar, br, sr, dr, fis, inr, cnr;
+	doubleArray pnr, ar, br, sr, dr, fis, inr, cnr, hr;
 
 	sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
 	dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
@@ -237,6 +245,7 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 	fis = floatingIslandScale->getRegion(fis, x, y, z, xSize, 1, zSize, 1.0, 0.5, 1.0);
 	inr = floatingIslandNoise->getRegion(inr, x, z, xSize, zSize, 0.35, 0.35, 0.5);
 	cnr = carvingNoise->getRegion(cnr, x, y, z, xSize, ySize, zSize, s / 30.0, hs / 30.0, s / 30.0);
+	hr = terrainHeightNoise->getRegion(hr, x, z, xSize, zSize, 20.0, 20.0, 0.5);
 
 	// World bounds for edge fade (in noise column units)
 	float worldHalf = (float)m_XZSize;
@@ -281,10 +290,15 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 
 			if (depth > 2) depth = 2;
 			if (depth < -2) depth = -2;
-			double depthShift = depth * 1.5;
+			double depthShift = depth * 2.5;
 
 			if (scale < 0) scale = 0;
 			scale = (scale) + 0.5;
+
+			double height = hr[pp] * 0.04;
+			if (height > 10) height = 10;
+			if (height < -10) height = -10;
+			double surfaceFadeStart = ySize / 2.0 - 2.0 + height;
 
 			pp++;
 
@@ -312,15 +326,14 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 					val += (carve + 6.0) * 2.0;
 				}
 
-				int r = 2;
-				if (yy > ySize / 2 - r)
+				if (yy > surfaceFadeStart)
 				{
-					double slide = (yy - (ySize / 2 - r)) / 64.0f;
+					double slide = (yy - surfaceFadeStart) / 64.0f;
 					if (slide < 0) slide = 0;
 					if (slide > 1) slide = 1;
 					val = val * (1 - slide) + -3000 * slide;
 				}
-				r = 8;
+				int r = 8;
 				if (yy < r)
 				{
 					double slide = (r - yy) / (r - 1.0f);
@@ -341,6 +354,7 @@ doubleArray AetherLevelSource::getHeights(doubleArray buffer, int x, int y, int 
 	delete [] fis.data;
 	delete [] inr.data;
 	delete [] cnr.data;
+	delete [] hr.data;
 
 	return buffer;
 }
@@ -435,12 +449,50 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Aether Dungeons");
-	if (pprandom->nextInt(96) == 0)
+	for (int ixc = -3; ixc <= 3; ixc++)
 	{
-		int x = xo + pprandom->nextInt(16) + 8;
-		int y = 48 + random->nextInt(24);
-		int z = zo + pprandom->nextInt(16) + 8;
-		GoldIsland(Tile::holystone_Id).place(level, pprandom, x, y, z);
+		for (int izc = -3; izc <= 3; izc++)
+		{
+			int xc = xt + ixc;
+			int zc = zt + izc;
+			Random islandRandom(((xc * xScale) + (zc * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
+			if (islandRandom.nextInt(512) == 0)
+			{
+				int x = xc * 16 + islandRandom.nextInt(16) + 8;
+				int y = 64 + islandRandom.nextInt(24);
+				int z = zc * 16 + islandRandom.nextInt(16) + 8;
+				bool blocked = false;
+				for (int oxc = -4; oxc <= 4 && !blocked; oxc++)
+				{
+					for (int ozc = -4; ozc <= 4; ozc++)
+					{
+						if (oxc == 0 && ozc == 0) continue;
+						int ox = xc + oxc;
+						int oz = zc + ozc;
+						Random otherRandom(((ox * xScale) + (oz * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
+						if (otherRandom.nextInt(512) != 0) continue;
+						int oX = ox * 16 + otherRandom.nextInt(16) + 8;
+						int oZ = oz * 16 + otherRandom.nextInt(16) + 8;
+						int dX = oX - x;
+						int dZ = oZ - z;
+						if (dX * dX + dZ * dZ < 54 * 54)
+						{
+							if (ox < xc || (ox == xc && oz < zc))
+							{
+								blocked = true;
+								break;
+							}
+						}
+					}
+				}
+				if (blocked) continue;
+				if (x - 27 <= xt * 16 + 15 && x + 27 >= xt * 16 && z - 27 <= zt * 16 + 15 && z + 27 >= zt * 16)
+				{
+					bool spawnBoss = (xt == (x >> 4) && zt == (z >> 4));
+					GoldIsland(Tile::holystone_Id).place(level, &islandRandom, x, y, z, spawnBoss);
+				}
+			}
+		}
 	}
 	PIXEndNamedEvent();
 

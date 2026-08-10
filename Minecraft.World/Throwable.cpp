@@ -174,12 +174,12 @@ void Throwable::tick()
 	if (!level->isClientSide)
 	{
 		shared_ptr<Entity> hitEntity = nullptr;
-		vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
+		vector<shared_ptr<Entity> > objects = *level->getEntities(shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
 		double nearest = 0;
 		shared_ptr<LivingEntity> owner = getOwner();
-		for (int i = 0; i < objects->size(); i++)
+		for (int i = 0; i < objects.size(); i++)
 		{
-			shared_ptr<Entity> e = objects->at(i);
+			shared_ptr<Entity> e = objects.at(i);
 			if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
 			float rr = 0.3f;
@@ -287,7 +287,7 @@ void Throwable::readAdditionalSaveData(CompoundTag *tag)
 	xTile = tag->getShort(L"xTile");
 	yTile = tag->getShort(L"yTile");
 	zTile = tag->getShort(L"zTile");
-	lastTile = tag->getByte(L"inTile") & 0xff;
+	lastTile = tag->getByte(L"inTile") & 0x1ff;
 	shakeTime = tag->getByte(L"shake") & 0xff;
 	inGround = tag->getByte(L"inGround") == 1;
 	ownerName = tag->getString(L"ownerName");

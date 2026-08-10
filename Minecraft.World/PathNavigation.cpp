@@ -345,7 +345,7 @@ bool PathNavigation::canWalkOn(int x, int y, int z, int sx, int sy, int sz, Vec3
 			double dirZ = zz + 0.5 - startPos->z;
 			if (dirX * goalDirX + dirZ * goalDirZ < 0) continue;
 			int tile = level->getTile(xx, y - 1, zz);
-			if (tile <= 0) return false;
+			if (tile <= 0 || Tile::tiles[tile] == nullptr) return false;
 			Material *m = Tile::tiles[tile]->material;
 			if (m == Material::water && !mob->isInWater()) return false;
 			if (m == Material::lava) return false;
@@ -369,7 +369,7 @@ bool PathNavigation::canWalkAbove(int startX, int startY, int startZ, int sx, in
 				double dirZ = zz + 0.5 - startPos->z;
 				if (dirX * goalDirX + dirZ * goalDirZ < 0) continue;
 				int tile = level->getTile(xx, yy, zz);
-				if (tile <= 0) continue;
+				if (tile <= 0 || Tile::tiles[tile] == nullptr) continue;
 				if (!Tile::tiles[tile]->isPathfindable(level, xx, yy, zz)) return false;
 			}
 		}

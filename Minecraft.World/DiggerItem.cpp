@@ -1,9 +1,10 @@
 #include "stdafx.h"
+#include "net.minecraft.world.item.h"
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.ai.attributes.h"
 #include "net.minecraft.world.entity.monster.h"
-#include "net.minecraft.world.item.h"
 #include "net.minecraft.world.level.tile.h"
+#include "net.minecraft.world.level.h"
 #include "DiggerItem.h"
 
 DiggerItem::DiggerItem(int id, float attackDamage, const Tier *tier, TileArray *tiles) : Item( id ), tier( tier )
@@ -31,8 +32,17 @@ bool DiggerItem::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Liv
 
 bool DiggerItem::mineBlock(shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, shared_ptr<LivingEntity> owner)
 {
-	// Don't damage tools if the tile can be destroyed in one hit.
-	if (Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0) itemInstance->hurtAndBreak(1, owner);
+	if (Tile::tiles[tile] != nullptr && Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0) itemInstance->hurtAndBreak(1, owner);
+	if (id == Item::holystonePickaxe_Id || id == Item::holystoneAxe_Id || id == Item::holystoneShovel_Id)
+	{
+		if (!level->isClientSide)
+		{
+			if (random->nextInt(10) == 0)
+			{
+				owner->spawnAtLocation(Item::ambrosiumShard->id, 1);
+			}
+		}
+	}
 	return true;
 }
 

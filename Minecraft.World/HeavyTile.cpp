@@ -81,6 +81,7 @@ bool HeavyTile::isFree(Level *level, int x, int y, int z)
 	int t = level->getTile(x, y, z);
 	if (t == 0) return true;
 	if (t == Tile::fire_Id) return true;
+	if (Tile::tiles[t] == nullptr) return false;
 	Material *material = Tile::tiles[t]->material;
 	if (material == Material::water) return true;
 	if (material == Material::lava) return true;

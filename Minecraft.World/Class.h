@@ -131,6 +131,7 @@ enum eINSTANCEOF
 
 								eTYPE_OCELOT		= eTYPE_TAMABLE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x1,
 								eTYPE_WOLF			= eTYPE_TAMABLE_ANIMAL                                   | 0x2,
+								eTYPE_MOA			= eTYPE_TAMABLE_ANIMAL                                   | 0x3,
 
 							eTYPE_HORSE				= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x1,
 							eTYPE_SHEEP				= eTYPE_ANIMAL | eTYPE_ANIMALS_SPAWN_LIMIT_CHECK | 0x2,
@@ -185,6 +186,7 @@ enum eINSTANCEOF
 						eTYPE_NUSKULL			= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x18,
 						eTYPE_NUCLEAR_NUSKULL	= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x19,
 						eTYPE_NUSA_DEMON		= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x20,
+						eTYPE_SUN_SPIRIT		= eTYPE_MONSTER	| eTYPE_VALID_IN_SPAWNER_FLAG | 0x21,
 
 
 				eTYPE_AMBIENT				= eTYPE_MOB | BIT_AMBIENT_MOB,
@@ -443,6 +445,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_MOOBLOOM				)->addParent( eTYPE_COW ) );
 		classes->push_back( SUBCLASS(eTYPE_FLYING_COW			)->addParent( eTYPE_COW ) );
 		classes->push_back( SUBCLASS(eTYPE_SHEEPUFF				)->addParent( eTYPE_ANIMAL)->addParent(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK ) );
+		classes->push_back( SUBCLASS(eTYPE_MOA					)->addParent( eTYPE_TAMABLE_ANIMAL ) );
 
 		classes->push_back( SUBCLASS(eTYPE_HUSK					)->addParent( eTYPE_ZOMBIE ) );
 		classes->push_back( SUBCLASS(eTYPE_ZOMBICE				)->addParent( eTYPE_ZOMBIE ) );
@@ -460,6 +463,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_NUSKULL				)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
 		classes->push_back( SUBCLASS(eTYPE_NUCLEAR_NUSKULL		)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
 		classes->push_back( SUBCLASS(eTYPE_NUSA_DEMON			)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
+		classes->push_back( SUBCLASS(eTYPE_SUN_SPIRIT			)->addParent( eTYPE_MONSTER )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG) );
 
 		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
 		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );

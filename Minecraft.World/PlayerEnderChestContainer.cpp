@@ -18,7 +18,7 @@ void PlayerEnderChestContainer::setActiveChest(shared_ptr<EnderChestTileEntity> 
 	this->activeChest = activeChest;
 }
 
-void PlayerEnderChestContainer::setItemsByTag(ListTag<CompoundTag> *enderItemsList)
+void PlayerEnderChestContainer::setItemsByTag(ListTag<CompoundTag> *enderItemsList, Level *level)
 {
 	for (int i = 0; i < getContainerSize(); i++)
 	{
@@ -28,7 +28,7 @@ void PlayerEnderChestContainer::setItemsByTag(ListTag<CompoundTag> *enderItemsLi
 	{
 		CompoundTag *tag = enderItemsList->get(i);
 		int slot = tag->getByte(L"Slot") & 0xff;
-		if (slot >= 0 && slot < getContainerSize()) setItem(slot, ItemInstance::fromTag(tag));
+		if (slot >= 0 && slot < getContainerSize()) setItem(slot, ItemInstance::fromTag(tag, level));
 	}
 }
 

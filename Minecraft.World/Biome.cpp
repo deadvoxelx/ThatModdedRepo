@@ -46,6 +46,7 @@ Biome *Biome::aether = nullptr;
 Biome *Biome::birchForest = nullptr;
 Biome *Biome::lavenderForest = nullptr;
 Biome *Biome::nulands = nullptr;
+Biome *Biome::redDesert = nullptr;
 
 
 void Biome::staticCtor()
@@ -87,6 +88,7 @@ void Biome::staticCtor()
 	Biome::birchForest = (new BirchForestBiome(25))->setColor(0xe57c1a)->setName(L"BirchForest")->setTemperatureAndDownfall(0.4f, 0.35f)->setDepthAndScale(0.1f, 1.0f)->setLeafFoliageWaterSkyColor(eMinecraftColour_Foliage_Birch, eMinecraftColour_Foliage_Birch, eMinecraftColour_Water_Forest,eMinecraftColour_Sky_Forest);
 	Biome::lavenderForest = (new LavenderBiome(26))->setColor(0xa878be)->setName(L"LavenderForest")->setTemperatureAndDownfall(0.2f, 0.42f)->setDepthAndScale(0.1f, 1.5f)->setLeafFoliageWaterSkyColor(eMinecraftColour_Foliage_PurpleSpruce, eMinecraftColour_Foliage_PurpleSpruce, eMinecraftColour_Water_Forest,eMinecraftColour_Sky_Forest);
 	Biome::nulands = (new NurealmBiome(27))->setColor(0x8080ff)->setName(L"Nulands")->setNoRain()->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Nulands, eMinecraftColour_Foliage_Nulands, eMinecraftColour_Water_Nulands, eMinecraftColour_Sky_Nulands);
+	Biome::redDesert = (new RedDesertBiome(28))->setColor(0xFA9418)->setName(L"RedDesert")->setNoRain()->setTemperatureAndDownfall(2, 0)->setDepthAndScale(0.1f, 1.0f)->setLeafFoliageWaterSkyColor(eMinecraftColour_Grass_Desert, eMinecraftColour_Foliage_Desert, eMinecraftColour_Water_Desert,eMinecraftColour_Sky_Desert);
 
 }
 

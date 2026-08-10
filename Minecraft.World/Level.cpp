@@ -948,7 +948,7 @@ bool Level::setTileAndData(int x, int y, int z, int tile, int data, int updateFl
 Material *Level::getMaterial(int x, int y, int z)
 {
 	int t = getTile(x, y, z);
-	if (t == 0) return Material::air;
+	if (t == 0 || Tile::tiles[t] == nullptr) return Material::air;
 	return Tile::tiles[t]->material;
 }
 
@@ -1028,7 +1028,7 @@ bool Level::removeTile(int x, int y, int z)
 bool Level::destroyTile(int x, int y, int z, bool dropResources)
 {
 	int tile = getTile(x, y, z);
-	if (tile > 0)
+	if (tile > 0 && Tile::tiles[tile] != nullptr)
 	{
 		int data = getData(x, y, z);
 		levelEvent(LevelEvent::PARTICLES_DESTROY_BLOCK, x, y, z, tile + (data << Tile::TILE_NUM_SHIFT));
@@ -1502,7 +1502,7 @@ HitResult *Level::clip(Vec3 *a, Vec3 *b, bool liquid, bool solidOnly)
 			// No collision
 
 		}
-		else if (t > 0 && tile->mayPick(data, liquid))
+		else if (t > 0 && tile != nullptr && tile->mayPick(data, liquid))
 		{
 			HitResult *r = tile->clip(this, xTile0, yTile0, zTile0, a, b);
 			if (r != nullptr) return r;
@@ -1604,7 +1604,7 @@ HitResult *Level::clip(Vec3 *a, Vec3 *b, bool liquid, bool solidOnly)
 			// No collision
 
 		}
-		else if (t > 0 && tile->mayPick(data, liquid))
+		else if (t > 0 && tile != nullptr && tile->mayPick(data, liquid))
 		{
 			HitResult *r = tile->clip(this, xTile0, yTile0, zTile0, a, b);
 			if (r != nullptr) return r;
@@ -2177,7 +2177,7 @@ int Level::getTopSolidBlock(int x, int z)
 	while (y > 0)
 	{
 		int t = levelChunk->getTile(x, y, z);
-		if (t == 0 || !(Tile::tiles[t]->material->blocksMotion()) || Tile::tiles[t]->material == Material::leaves)
+		if (t == 0 || Tile::tiles[t] == nullptr || !(Tile::tiles[t]->material->blocksMotion()) || Tile::tiles[t]->material == Material::leaves)
 		{
 			y--;
 		}
@@ -3375,7 +3375,7 @@ bool Level::shouldSnow(int x, int y, int z)
 		int current = getTile(x, y, z);
 		if (current == 0)
 		{
-			if (Tile::topSnow->mayPlace(this, x, y, z) && (below != 0 && below != Tile::ice_Id && Tile::tiles[below]->material->blocksMotion()))
+			if (Tile::topSnow->mayPlace(this, x, y, z) && (below != 0 && below != Tile::ice_Id && Tile::tiles[below] != nullptr && Tile::tiles[below]->material->blocksMotion()))
 			{
 				return true;
 			}
@@ -3916,6 +3916,7 @@ bool Level::mayPlace(int tileId, int x, int y, int z, bool ignoreEntities, int f
 	Tile *targetTile = Tile::tiles[targetType];
 
 	Tile *tile = Tile::tiles[tileId];
+	if (tile == nullptr) return false;
 
 	AABB *aabb = tile->getAABB(this, x, y, z);
 	if (ignoreEntities) aabb = nullptr;
@@ -3985,7 +3986,7 @@ Path *Level::findPath(shared_ptr<Entity> from, int xBest, int yBest, int zBest, 
 int Level::getDirectSignal(int x, int y, int z, int dir)
 {
 	int t = getTile(x, y, z);
-	if (t == 0) return Redstone::SIGNAL_NONE;
+	if (t == 0 || Tile::tiles[t] == nullptr) return Redstone::SIGNAL_NONE;
 	return Tile::tiles[t]->getDirectSignal(this, x, y, z, dir);
 }
 
@@ -4019,7 +4020,7 @@ int Level::getSignal(int x, int y, int z, int dir)
 		return getDirectSignalTo(x, y, z);
 	}
 	int t = getTile(x, y, z);
-	if (t == 0) return Redstone::SIGNAL_NONE;
+	if (t == 0 || Tile::tiles[t] == nullptr) return Redstone::SIGNAL_NONE;
 	return Tile::tiles[t]->getSignal(this, x, y, z, dir);
 }
 
@@ -4168,7 +4169,7 @@ shared_ptr<Player> Level::getPlayerByUUID(const wstring& name)
 // 4J Stu - Removed in 1.2.3 ?
 byteArray Level::getBlocksAndData(int x, int y, int z, int xs, int ys, int zs, bool includeLighting/* = true*/)
 {
-	byteArray result( xs * ys * zs * 5 / 2 );
+	byteArray result( xs * ys * zs * ( includeLighting ? 7 : 5 ) / 2 );
 	int xc0 = x >> 4;
 	int zc0 = z >> 4;
 	int xc1 = (x + xs - 1) >> 4;
@@ -4379,7 +4380,7 @@ ChunkSource *Level::getChunkSource()
 
 void Level::tileEvent(int x, int y, int z, int tile, int b0, int b1)
 {
-	if (tile > 0) Tile::tiles[tile]->triggerEvent(this, x, y, z, b0, b1);
+	if (tile > 0 && Tile::tiles[tile] != nullptr) Tile::tiles[tile]->triggerEvent(this, x, y, z, b0, b1);
 }
 
 

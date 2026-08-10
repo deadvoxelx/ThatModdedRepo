@@ -91,14 +91,15 @@ int Region::getTile(int x, int y, int z)
 	// AP - added a caching system for Chunk::rebuild to take advantage of
 	if( CachedTiles && xc == xcCached && zc == zcCached )
 	{
-		unsigned char* Tiles = CachedTiles;
+		unsigned short* Tiles = CachedTiles;
 		Tiles += y;
 		if(y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
 		{
 			Tiles += Level::COMPRESSED_CHUNK_SECTION_TILES - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 		}
 
-		return Tiles[ ( (x & 15) << 11 ) | ( (z & 15) << 7 ) ];
+		unsigned short tileId = Tiles[ ( (x & 15) << 11 ) | ( (z & 15) << 7 ) ];
+		return ( tileId == 0xffff ) ? 0 : tileId;
 	}
 #endif
 
@@ -117,16 +118,16 @@ int Region::getTile(int x, int y, int z)
 }
 
 // AP - added a caching system for Chunk::rebuild to take advantage of
-void Region::setCachedTiles(unsigned char *tiles, int xc, int zc)
+void Region::setCachedTiles(unsigned short *tiles, int xc, int zc)
 {
 	xcCached = xc;
 	zcCached = zc;
 	int size = 16 * 16 * Level::maxBuildHeight;
 	if( CachedTiles == nullptr )
 	{
-		CachedTiles = static_cast<unsigned char *>(malloc(size));
+		CachedTiles = static_cast<unsigned short *>(malloc(size * sizeof(unsigned short)));
 	}
-	memcpy(CachedTiles, tiles, size);
+	memcpy(CachedTiles, tiles, size * sizeof(unsigned short));
 }
 
 LevelChunk* Region::getLevelChunk(int x, int y, int z)
@@ -245,7 +246,7 @@ int Region::getData(int x, int y, int z)
 Material *Region::getMaterial(int x, int y, int z)
 {
 	int t = getTile(x, y, z);
-	if (t == 0) return Material::air;
+	if (t == 0 || Tile::tiles[t] == nullptr) return Material::air;
 	return Tile::tiles[t]->material;
 }
 
@@ -352,6 +353,6 @@ int Region::getMaxBuildHeight()
 int Region::getDirectSignal(int x, int y, int z, int dir)
 {
 	int t = getTile(x, y, z);
-	if (t == 0) return Redstone::SIGNAL_NONE;
+	if (t == 0 || Tile::tiles[t] == nullptr) return Redstone::SIGNAL_NONE;
 	return Tile::tiles[t]->getDirectSignal(this, x, y, z, dir);
 }

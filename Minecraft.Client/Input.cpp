@@ -18,6 +18,7 @@ Input::Input()
 	wasJumping = false;
 	jumping = false;
 	sneaking = false;
+	sneakToggle = false;
 	sprinting = false;
 
 	lReset = false;
@@ -95,12 +96,16 @@ void Input::tick(LocalPlayer *player)
 #ifdef _WINDOWS64
 	if (iPad == 0 && g_KBMInput.IsMouseGrabbed() && g_KBMInput.IsKBMActive())
 	{
-		// Left Shift = sneak (hold to crouch)
+		// Left Shift = sneak (hold to crouch); Caps Lock = sneak (toggle).
+		// The Caps Lock edge is detected per-frame in Minecraft::run_middle()
+		// and latched into sneakToggle - IsKeyPressed only survives a single
+		// render frame, but this tick only runs at 20Hz, so a fast press could
+		// otherwise be dropped between ticks.
 		if (pMinecraft->localgameModes[iPad]->isInputAllowed(MINECRAFT_ACTION_SNEAK_TOGGLE))
 		{
 			if (!player->abilities.flying)
 			{
-				sneaking = g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SNEAK);
+				sneaking = g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SNEAK) || sneakToggle;
 			}
 		}
 

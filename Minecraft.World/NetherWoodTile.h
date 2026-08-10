@@ -8,11 +8,10 @@ class NetherWoodTile : public Tile
 private:
 	Icon *iconTop;
 
-	// 4J Stu - I don't know why this is protected in Java
-	//protected:
 public:
 	NetherWoodTile(int id);
 public:
 	virtual Icon *getTexture(int face, int data);
+	virtual void playerWillDestroy(Level *level, int x, int y, int z, int data, shared_ptr<Player> player);
 	void registerIcons(IconRegister *iconRegister);
 };

@@ -150,7 +150,7 @@ void ItemFrame::readAdditionalSaveData(CompoundTag *tag)
 	CompoundTag *itemTag = tag->getCompound(L"Item");
 	if (itemTag != nullptr && !itemTag->isEmpty()) 
 	{
-		setItem(ItemInstance::fromTag(itemTag), false);
+		setItem(ItemInstance::fromTag(itemTag, level), false);
 		setRotation(tag->getByte(L"ItemRotation"), false);
 
 		if (tag->contains(L"ItemDropChance")) dropChance = tag->getFloat(L"ItemDropChance");

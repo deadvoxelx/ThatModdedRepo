@@ -12,7 +12,7 @@ public:
 private:
 	static AttributeModifier *SPEED_MODIFIER_ATTACKING;
 
-	static bool MAY_TAKE[256];
+	static bool MAY_TAKE[512];
 
 	static const int DATA_CARRY_ITEM_ID = 16;
 	static const int DATA_CARRY_ITEM_DATA = 17;

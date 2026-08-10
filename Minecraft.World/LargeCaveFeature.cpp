@@ -2,6 +2,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.biome.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "LargeCaveFeature.h"
 
 void LargeCaveFeature::addRoom(int64_t seed, int xOffs, int zOffs, byteArray blocks, double xRoom, double yRoom, double zRoom)
@@ -131,6 +132,7 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs, byteArray b
 				double zd = ((zz + zOffs * 16 + 0.5) - zCave) / rad;
 				int p = (xx * 16 + zz) * Level::genDepth + y1;
 				bool hasGrass = false;
+				bool hasAetherGrass = false;
 				if (xd * xd + zd * zd < 1)
 				{
 					for (int yy = y1 - 1; yy >= y0; yy--)
@@ -140,9 +142,10 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs, byteArray b
 						{
 							int block = blocks[p];
 							if (block == Tile::grass_Id) hasGrass = true;
-							if (block == Tile::stone_Id || block == Tile::dirt_Id || block == Tile::grass_Id)
+							if (block == Tile::aetherGrass_Id) hasAetherGrass = true;
+							if (block == Tile::stone_Id || block == Tile::dirt_Id || block == Tile::grass_Id || block == Tile::holystone_Id || block == Tile::aetherDirt_Id || block == Tile::aetherGrass_Id)
 							{
-								if (yy < 10)
+								if (yy < 10 && level->dimension->id == 0)
 								{
 									blocks[p] = static_cast<byte>(Tile::lava_Id);
 								}
@@ -150,6 +153,7 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs, byteArray b
 								{
 									blocks[p] = static_cast<byte>(0);
 									if (hasGrass && blocks[p - 1] == Tile::dirt_Id) blocks[p - 1] = (byte) level->getBiome(xx + xOffs * 16, zz + zOffs * 16)->topMaterial;
+									if (hasAetherGrass && blocks[p - 1] == Tile::aetherDirt_Id) blocks[p - 1] = static_cast<byte>(Tile::aetherGrass_Id);
 								}
 							}
 						}

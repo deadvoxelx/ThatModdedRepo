@@ -57,6 +57,8 @@ protected:
 	virtual UIControl *getSection(ESceneSection eSection) { return nullptr; }
 	virtual int GetBaseSlotCount() { return 0; }
 
+	virtual bool isSlotItemDrawable(unsigned int slotIndex) { return true; }
+
 public:
 	virtual void tick();
 

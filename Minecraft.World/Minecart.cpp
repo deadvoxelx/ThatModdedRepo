@@ -415,7 +415,7 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed, double sl
 		powerTrack = (data & BaseRailTile::RAIL_DATA_BIT) != 0;
 		haltTrack = !powerTrack;
 	}
-	if (static_cast<BaseRailTile *>(Tile::tiles[tile])->isUsesDataBit())
+	if (Tile::tiles[tile] != nullptr && static_cast<BaseRailTile *>(Tile::tiles[tile])->isUsesDataBit())
 	{
 		data &= BaseRailTile::RAIL_DIRECTION_MASK;
 	}
@@ -648,7 +648,7 @@ Vec3 *Minecart::getPosOffs(double x, double y, double z, double offs)
 	{
 		int data = level->getData(xt, yt, zt);
 
-		if (static_cast<BaseRailTile *>(Tile::tiles[tile])->isUsesDataBit())
+		if (Tile::tiles[tile] != nullptr && static_cast<BaseRailTile *>(Tile::tiles[tile])->isUsesDataBit())
 		{
 			data &= BaseRailTile::RAIL_DIRECTION_MASK;
 		}
@@ -703,7 +703,7 @@ Vec3 *Minecart::getPos(double x, double y, double z)
 		int data = level->getData(xt, yt, zt);
 		y = yt;
 
-		if (static_cast<BaseRailTile *>(Tile::tiles[tile])->isUsesDataBit())
+		if (Tile::tiles[tile] != nullptr && static_cast<BaseRailTile *>(Tile::tiles[tile])->isUsesDataBit())
 		{
 			data &= BaseRailTile::RAIL_DIRECTION_MASK;
 		}

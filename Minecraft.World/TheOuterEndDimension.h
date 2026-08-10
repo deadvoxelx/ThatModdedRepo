@@ -17,7 +17,5 @@ public:
 	virtual Pos *getSpawnPos();
 	virtual int getSpawnYPosition();
 	virtual bool isFoggyAt(int x, int z);
-
-//protected:
-//	virtual void updateLightRamp();
+	virtual int getXZSize();
 };

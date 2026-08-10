@@ -7,9 +7,11 @@
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.level.h"
+#include "LevelStorage.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.world.item.enchantment.h"
+#include "FileHeader.h"
 #include "Item.h"
 #include "ItemInstance.h"
 #include "HtmlString.h"
@@ -79,9 +81,28 @@ ItemInstance::ItemInstance(int id, int count, int damage)
 
 shared_ptr<ItemInstance> ItemInstance::fromTag(CompoundTag *itemTag)
 {
+	return fromTag(itemTag, nullptr);
+}
+
+shared_ptr<ItemInstance> ItemInstance::fromTag(CompoundTag *itemTag, Level *level)
+{
 	shared_ptr<ItemInstance> itemInstance = shared_ptr<ItemInstance>(new ItemInstance());
-	itemInstance->load(itemTag);
+	itemInstance->load(itemTag, level);
 	return itemInstance->getItem() != nullptr ? itemInstance : nullptr;
+}
+
+int ItemInstance::remapLegacySaveItemId(int id, Level *level)
+{	// Voxel - convert items from older saves to the new IDs
+	// Dont shift block-item IDs since those are fine
+	// I mean... they *should* be
+	if (level != nullptr
+		&& ( (id >= 256 && id < 512) || (id >= 2256 && id < 2268) )
+		&& level->getLevelStorage() != nullptr && level->getLevelStorage()->getSaveFile() != nullptr
+		&& level->getOriginalSaveVersion() < SAVE_FILE_VERSION_TILE_ID_EXPANSION)
+	{
+		id += 256;
+	}
+	return id;
 }
 
 ItemInstance::~ItemInstance()
@@ -105,6 +126,7 @@ shared_ptr<ItemInstance> ItemInstance::remove(int count)
 
 Item *ItemInstance::getItem() const
 {
+	if (id < 0 || id >= Item::ITEM_NUM_COUNT) return nullptr;
 	return Item::items[id];
 }
 
@@ -154,8 +176,22 @@ CompoundTag *ItemInstance::save(CompoundTag *compoundTag)
 
 void ItemInstance::load(CompoundTag *compoundTag)
 {
+	load(compoundTag, nullptr);
+}
+
+void ItemInstance::load(CompoundTag *compoundTag, Level *level)
+{
 	popTime = 0;
 	id = compoundTag->getShort(L"id");
+
+	id = remapLegacySaveItemId(id, level);	// Voxel - convert items from older saves to the new IDs
+
+	if (id < 0 || id >= Item::ITEM_NUM_COUNT || Item::items[id] == nullptr)
+	{
+		id = 0;	// Voxel - convert invalid blocks or items to air
+		// This is good for the longevity of this project
+		// This is also necessary for future mod support if i ever get that in somehow
+	}
 	count = compoundTag->getByte(L"Count");
 	auxValue = compoundTag->getShort(L"Damage");
 	if (auxValue < 0)
@@ -181,7 +217,8 @@ bool ItemInstance::isStackable()
 
 bool ItemInstance::isDamageableItem()
 {
-	return Item::items[id]->getMaxDamage() > 0;
+	Item *item = getItem();
+	return item != nullptr && item->getMaxDamage() > 0;
 }
 
 /**
@@ -193,7 +230,8 @@ bool ItemInstance::isDamageableItem()
 
 bool ItemInstance::isStackedByData()
 {
-	return Item::items[id]->isStackedByData();
+	Item *item = getItem();
+	return item != nullptr && item->isStackedByData();
 }
 
 bool ItemInstance::isDamaged()
@@ -222,7 +260,8 @@ void ItemInstance::setAuxValue(int value)
 
 int ItemInstance::getMaxDamage()
 {
-	return Item::items[id]->getMaxDamage();
+	Item *item = getItem();
+	return item == nullptr ? 0 : item->getMaxDamage();
 }
 
 bool ItemInstance::hurt(int dmg, Random *random)
@@ -504,7 +543,13 @@ void ItemInstance::setTag(CompoundTag *tag)
 
 wstring ItemInstance::getHoverName()
 {
-	wstring title = getItem()->getHoverName(shared_from_this());
+	Item *item = getItem();
+	if (item == nullptr)
+	{
+		return wstring();
+	}
+
+	wstring title = item->getHoverName(shared_from_this());
 
 	if (tag != nullptr && tag->contains(L"display"))
 	{
@@ -553,8 +598,13 @@ bool ItemInstance::hasCustomHoverName()
 
 vector<HtmlString> *ItemInstance::getHoverText(shared_ptr<Player> player, bool advanced)
 {
+	Item *item = getItem();
+	if (item == nullptr)
+	{
+		return new vector<HtmlString>();
+	}
+
 	vector<HtmlString> *lines = new vector<HtmlString>();
-	Item *item = Item::items[id];
 	HtmlString title = HtmlString(getHoverName());
 
 	if (hasCustomHoverName())
@@ -677,8 +727,13 @@ vector<HtmlString> *ItemInstance::getHoverText(shared_ptr<Player> player, bool a
 // 4J Added
 vector<HtmlString> *ItemInstance::getHoverTextOnly(shared_ptr<Player> player, bool advanced)
 {
+	Item *item = getItem();
+	if (item == nullptr)
+	{
+		return new vector<HtmlString>();
+	}
+
 	vector<HtmlString> *lines = new vector<HtmlString>();
-	Item *item = Item::items[id];
 
 	item->appendHoverText(shared_from_this(), player, lines, advanced);
 
@@ -705,7 +760,8 @@ vector<HtmlString> *ItemInstance::getHoverTextOnly(shared_ptr<Player> player, bo
 
 bool ItemInstance::isFoil()
 {
-	return getItem()->isFoil(shared_from_this());
+	Item *item = getItem();
+	return item != nullptr && item->isFoil(shared_from_this());
 }
 
 const Rarity *ItemInstance::getRarity()

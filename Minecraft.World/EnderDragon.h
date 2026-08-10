@@ -128,8 +128,8 @@ private:
 
 	void checkCrystals();
 	void checkAttack();
-	void knockBack(vector<shared_ptr<Entity> > *entities);
-	void hurt(vector<shared_ptr<Entity> > *entities);
+	void knockBack(vector<shared_ptr<Entity> > entities);
+	void hurt(vector<shared_ptr<Entity> > entities);
 	void findNewTarget();
 	float rotWrap(double d);
 	bool checkWalls(AABB *bb);

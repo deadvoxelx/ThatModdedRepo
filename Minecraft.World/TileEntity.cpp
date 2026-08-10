@@ -99,12 +99,20 @@ void TileEntity::tick()
 
 shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag *tag)
 {
+	return loadStatic(tag, nullptr);
+}
+
+// Voxel - level-aware variant: set the level before load() so item-bearing tile entities can
+// remap pre-expansion item ids when the save is old enough.
+shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag *tag, Level *level)
+{
 	shared_ptr<TileEntity> entity = nullptr;
     auto it = idCreateMap.find(tag->getString(L"id"));
     if (it != idCreateMap.end())
         entity = shared_ptr<TileEntity>(it->second());
 	if (entity != nullptr)
 	{
+		if (level != nullptr) entity->level = level;
 		entity->load(tag);
 	}
 	else

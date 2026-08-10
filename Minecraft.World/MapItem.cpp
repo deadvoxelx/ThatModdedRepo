@@ -131,8 +131,8 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 			int xx = (xo / scale + x - w / 2) * scale;
 			int zz = (zo / scale + z - h / 2) * scale;
 
-			int count[256];
-			memset( count,0,sizeof(int)*256);
+			int count[512];
+			memset( count,0,sizeof(int)*512);
 
 			LevelChunk *lc = level->getChunkAt(xx, zz);
 			if(lc->isEmpty()) continue;
@@ -165,7 +165,7 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 								ok = true;
 								t = lc->getTile(xs + xso, yy - 1, zs + zso);
 								if (t == 0) ok = false;
-								else if (yy > 0 && t > 0 && Tile::tiles[t]->material->color == MaterialColor::none)
+								else if (yy > 0 && t > 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material->color == MaterialColor::none)
 								{
 									ok = false;
 								}
@@ -179,7 +179,7 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 
 							} while (yy > 0 && !ok);
 
-							if (yy > 0 && t != 0 && Tile::tiles[t]->material->isLiquid())
+							if (yy > 0 && t != 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material->isLiquid())
 							{
 								int y = yy - 1;
 								int below = 0;
@@ -187,7 +187,7 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 								{
 									below = lc->getTile(xs + xso, y--, zs + zso);
 									liquidDepth++;
-								} while (y > 0 && below != 0 && Tile::tiles[below]->material->isLiquid());
+								} while (y > 0 && below != 0 && Tile::tiles[below] != nullptr && Tile::tiles[below]->material->isLiquid());
 							}
 						}
 						hh += yy / static_cast<double>(scale * scale);
@@ -200,7 +200,7 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 
 			int best = 0;
 			int tBest = 0;
-			for (int j = 0; j < 256; j++)
+			for (int j = 0; j < 512; j++)
 			{
 				if (count[j] > best)
 				{
@@ -215,7 +215,7 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 			if (diff < -0.6) br = 0;
 
 			int col = 0;
-			if (tBest > 0)
+			if (tBest > 0 && Tile::tiles[tBest] != nullptr)
 			{
 				MaterialColor *mc = Tile::tiles[tBest]->material->color;
 				if (mc == MaterialColor::water)

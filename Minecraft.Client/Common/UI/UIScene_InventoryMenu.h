@@ -19,11 +19,13 @@ public:
 
 protected:
 	UIControl_SlotList m_slotListArmor;
+	UIControl_SlotList m_slotListAether;
 	UIControl_MinecraftPlayer m_playerPreview;
 	IggyName m_funcUpdateEffects, m_funcAddEffect;
 	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene_AbstractContainerMenu)
 			UI_BEGIN_MAP_CHILD_ELEMENTS( m_controlMainPanel )
 			UI_MAP_ELEMENT( m_slotListArmor, "armorList")
+			UI_MAP_ELEMENT( m_slotListAether, "aetherList")
 			UI_MAP_ELEMENT( m_playerPreview, "iggy_player")
 
 			UI_MAP_NAME( m_funcUpdateEffects, L"UpdateEffects")

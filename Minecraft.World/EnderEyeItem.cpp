@@ -210,7 +210,7 @@ shared_ptr<ItemInstance> EnderEyeItem::use(shared_ptr<ItemInstance> instance, Le
 			shared_ptr<EyeOfEnderSignal> eyeOfEnderSignal = std::make_shared<EyeOfEnderSignal>(level, player->x, player->y + 1.62 - player->heightOffset, player->z);
 			eyeOfEnderSignal->signalTo(level->getLevelData()->getXStronghold()<<4, player->y + 1.62 - player->heightOffset, level->getLevelData()->getZStronghold()<<4);
 			level->addEntity(eyeOfEnderSignal);
-
+			player->swing();
 			level->playEntitySound(player, eSoundType_RANDOM_BOW, 0.5f, 0.4f / (random->nextFloat() * 0.4f + 0.8f));
 			level->levelEvent(nullptr, LevelEvent::SOUND_LAUNCH, static_cast<int>(player->x), static_cast<int>(player->y), static_cast<int>(player->z), 0);
 			if (!player->abilities.instabuild)

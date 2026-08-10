@@ -26,6 +26,7 @@ void BiomeSource::_init()
 	playerSpawnBiomes.push_back(Biome::jungleHills);
 	playerSpawnBiomes.push_back(Biome::birchForest);
 	playerSpawnBiomes.push_back(Biome::lavenderForest);
+	playerSpawnBiomes.push_back(Biome::redDesert);
 }
 
 void BiomeSource::_init(int64_t seed, LevelType *generator)
@@ -594,11 +595,30 @@ bool BiomeSource::getIsMatch(float *frac)
 		true,	// birch forest
 		true,	// lavender forest
 		false,	// nulands
+		true,	// red desert
 	};
 
 
 	// Don't want more than 15% ocean
 	if( frac[0] > 0.15f )
+	{
+		return false;
+	}
+
+	// Don't want more than 10% birch forest
+	if( frac[25] > 0.1f )
+	{
+		return false;
+	}
+
+	// Don't want more than 10% lavender forest
+	if( frac[26] > 0.1f )
+	{
+		return false;
+	}
+
+	// Don't want more than 15% red desert
+	if( frac[28] > 0.15f )
 	{
 		return false;
 	}

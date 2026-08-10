@@ -108,7 +108,7 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::nusaLog, 1, 0),
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Item::stick, 4), //
+	addShapedRecipy(new ItemInstance(Item::stick, 8), //
 		L"ssctg",
 		L"#", //
 		L"#", //
@@ -116,12 +116,20 @@ Recipes::Recipes()
 		L'#', Tile::wood,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Item::stick, 4), //
+	addShapedRecipy(new ItemInstance(Item::stick, 8), //
 		L"ssctg",
 		L"#", //
 		L"#", //
 
 		L'#', Tile::netherPlanks,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Item::stick, 8), //
+		L"ssctg",
+		L"#", //
+		L"#", //
+
+		L'#', Tile::endactus,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Item::aphalafRod, 1), //
@@ -527,6 +535,63 @@ Recipes::Recipes()
 	pArmorRecipes->addRecipes(this);
 	//iCount=getRecipies()->size();
 
+	addShapedRecipy(new ItemInstance(Item::ironPendant, 1), //
+		L"ssscicig",
+		L"###", //
+		L"# #", //
+		L" I ", //
+
+		L'#', Item::string,
+		L'I', Item::ironIngot,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::ironRing, 1), //
+		L"ssscig",
+		L" I ", //
+		L"I I", //
+		L" I ", //
+
+		L'I', Item::ironIngot,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::goldPendant, 1), //
+		L"ssscicig",
+		L"###", //
+		L"# #", //
+		L" G ", //
+
+		L'#', Item::string,
+		L'G', Item::goldIngot,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::goldRing, 1), //
+		L"ssscig",
+		L" G ", //
+		L"G G", //
+		L" G ", //
+
+		L'G', Item::goldIngot,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::zanitePendant, 1), //
+		L"ssscicig",
+		L"###", //
+		L"# #", //
+		L" Z ", //
+
+		L'#', Item::string,
+		L'Z', Item::zaniteGemstone,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::zaniteRing, 1), //
+		L"ssscig",
+		L" Z ", //
+		L"Z Z", //
+		L" Z ", //
+
+		L'Z', Item::zaniteGemstone,
+		L'A');
+
 	pClothDyeRecipes->addRecipes(this);
 
 	addShapedRecipy(new ItemInstance(Tile::wool, 1), //
@@ -876,6 +941,13 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', Item::nethanium, L'X', Item::netherBread,
+		L'F');
+
+	addShapedRecipy(new ItemInstance(Item::netherFlax, 1), //
+		L"scig",
+		L"###", //
+
+		L'#', Item::lavaReeds,
 		L'F');
 
 	// Moved bow and arrow in from weapons to avoid stacking on the group name display
@@ -1265,6 +1337,13 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', Item::reeds,
+		L'D');
+
+	addShapedRecipy(new ItemInstance(Item::string, 3), //
+		L"scig",
+		L"#", //
+
+		L'#', Item::netherFlax,
 		L'D');
 
 	addShapelessRecipy(new ItemInstance(Item::book, 1),

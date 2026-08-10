@@ -1009,8 +1009,13 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 			{
 				// Get the info on this item.
 				shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
-				bool bValidFuel = FurnaceTileEntity::isFuel(item);
-				bool bValidIngredient = FurnaceRecipes::getInstance()->getResult(item->getItem()->id) != nullptr;
+				bool bValidFuel = false;
+				FurnaceMenu *furnaceMenu = dynamic_cast<FurnaceMenu *>(m_menu);
+				if (furnaceMenu != nullptr && item != nullptr)
+				{
+					bValidFuel = furnaceMenu->getFurnace()->getFuelBurnDuration(item) > 0;
+				}
+				bool bValidIngredient = (item != nullptr && item->getItem() != nullptr) && FurnaceRecipes::getInstance()->getResult(item->getItem()->id) != nullptr;
 
 				if(bValidIngredient)
 				{

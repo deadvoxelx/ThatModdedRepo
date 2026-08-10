@@ -111,7 +111,7 @@ int Camera::getBlockAt(Level *level, shared_ptr<LivingEntity> player, float alph
     Vec3 *p = Camera::getCameraPos(player, alpha);
     TilePos tp = TilePos(p);
     int t = level->getTile(tp.x, tp.y, tp.z);
-    if (t != 0 && Tile::tiles[t]->material->isLiquid())
+    if (t != 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material->isLiquid())
 	{
         float hh = LiquidTile::getHeight(level->getData(tp.x, tp.y, tp.z)) - 1 / 9.0f;
         float h = tp.y + 1 - hh;

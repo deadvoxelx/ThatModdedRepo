@@ -128,7 +128,7 @@ void ExperienceOrb::tick()
 	{
 		friction = 0.6f * 0.98f;
 		int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1, Mth::floor(z));
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			friction = Tile::tiles[t]->friction * 0.98f;
 		}

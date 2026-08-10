@@ -18,6 +18,7 @@ class BiomeDecorator
 	friend class BirchForestBiome;
 	friend class LavenderBiome;
 	friend class NurealmBiome;
+	friend class RedDesertBiome;
 
 protected:
 	Level *level;
@@ -54,6 +55,8 @@ protected:
 	Feature *waterlilyFeature;
 
 	Feature *herobrineFeature;
+	Feature *tentFeature;
+	Feature *fossilFeature;
 
 	int waterlilyCount;
 	int treeCount;

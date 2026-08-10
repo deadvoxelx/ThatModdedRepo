@@ -19,11 +19,11 @@ void JukeboxTile::Entity::load(CompoundTag *tag)
 
 	if (tag->contains(L"RecordItem"))
 	{
-		setRecord(ItemInstance::fromTag(tag->getCompound(L"RecordItem")));
+		setRecord(ItemInstance::fromTag(tag->getCompound(L"RecordItem"), level));
 	}
 	else if (tag->getInt(L"Record") > 0)
 	{
-		setRecord(std::make_shared<ItemInstance>(tag->getInt(L"Record"), 1, 0));
+		setRecord(std::make_shared<ItemInstance>(ItemInstance::remapLegacySaveItemId(tag->getInt(L"Record"), level), 1, 0));
 	}
 }
 

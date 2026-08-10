@@ -205,6 +205,10 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/nuclearNuskullLegacyOverlay",
 	L"mob/nusademon",
 	L"mob/nusademonoverlay",
+	L"mob/sun_spirit",
+	L"mob/frozen_sun_spirit",
+
+	L"item/chest_treasure",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
@@ -352,13 +356,15 @@ intArray Textures::loadTexturePixels(TEXTURE_NAME texId, const wstring& resource
 //    try {
         intArray res;
 		//wstring in = skin->getResource(resourceName);
-		if (false)// 4J - removed - was ( in == nullptr)
+		BufferedImage *bufImage = readImage(texId, resourceName); //in);
+		if (bufImage == nullptr)
 		{
+			// 4J - missing texture asset (e.g. a preloaded name with no png in the pack):
+			// fall back to the missing-texture placeholder rather than crashing.
 			res = loadTexturePixels(missingNo);
 		}
 		else
 		{
-			BufferedImage *bufImage = readImage(texId, resourceName); //in);
 			res = loadTexturePixels(bufImage);
 			delete bufImage;
 		}
@@ -587,6 +593,11 @@ void Textures::bind(int id)
 ResourceLocation *Textures::getTextureLocation(shared_ptr<Entity> entity)
 {
 	shared_ptr<ItemEntity> item = dynamic_pointer_cast<ItemEntity>(entity);
+	// 4J - guard against dropped items holding an unregistered item id (ItemInstance::getItem() returns nullptr)
+	if (item == nullptr || item->getItem() == nullptr || item->getItem()->getItem() == nullptr)
+	{
+		return getTextureLocation(Icon::TYPE_ITEM);
+	}
 	int iconType = item->getItem()->getIconType();
 	return getTextureLocation(iconType);
 }
@@ -663,14 +674,13 @@ int Textures::loadTexture(TEXTURE_NAME texId, const wstring& resourceName)
 	if (clamp) pathName = resourceName.substr(7);
 
 	//wstring in = skins->getSelected()->getResource(pathName);
-	if (false ) // 4J - removed was ( in == nullptr)
+	BufferedImage *bufImage = readImage(texId, pathName); //in);
+	if (bufImage == nullptr)
 	{
 		loadTexture(missingNo, id, blur, clamp);
 	}
 	else
 	{
-		// 4J Stu - Get resource above just returns the name for texture packs
-		BufferedImage *bufImage = readImage(texId, pathName); //in);
 		loadTexture(bufImage, id, blur, clamp);
 		delete bufImage;
 	}
@@ -713,6 +723,8 @@ void Textures::loadTexture(BufferedImage *img, int id)
 void Textures::loadTexture(BufferedImage *img, int id, bool blur, bool clamp)
 {
 //	printf("Textures::loadTexture BufferedImage with blur and clamp %d\n",id);
+	if (img == nullptr) img = missingNo;
+
 	int iMipLevels=1;
 	MemSect(33);
     glBindTexture(GL_TEXTURE_2D, id);

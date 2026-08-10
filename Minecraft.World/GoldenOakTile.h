@@ -15,6 +15,7 @@ public:
 	virtual Icon *getTexture(int face, int data);
 	void registerIcons(IconRegister *iconRegister);
 	virtual void playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data);
+	virtual void playerWillDestroy(Level *level, int x, int y, int z, int data, shared_ptr<Player> player);
 
 protected:
 	virtual shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);

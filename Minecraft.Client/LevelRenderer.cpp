@@ -2982,12 +2982,18 @@ shared_ptr<Particle> LevelRenderer::addParticleInternal(ePARTICLE_TYPE eParticle
 		if( ( eParticleType >= eParticleType_iconcrack_base ) &&  ( eParticleType <= eParticleType_iconcrack_last )  )
 		{
 			int id = PARTICLE_CRACK_ID(eParticleType), data = PARTICLE_CRACK_DATA(eParticleType);
-			particle = std::make_shared<BreakingItemParticle>(lev, x, y, z, xa, ya, za, Item::items[id], textures, data);
+			if (Item::items[id] != nullptr)
+			{
+				particle = std::make_shared<BreakingItemParticle>(lev, x, y, z, xa, ya, za, Item::items[id], textures, data);
+			}
 		}
 		else if( ( eParticleType >= eParticleType_tilecrack_base ) &&  ( eParticleType <= eParticleType_tilecrack_last )  )
 		{
 			int id = PARTICLE_CRACK_ID(eParticleType), data = PARTICLE_CRACK_DATA(eParticleType);
-			particle = dynamic_pointer_cast<Particle>(std::make_shared<TerrainParticle>(lev, x, y, z, xa, ya, za, Tile::tiles[id], 0, data, textures)->init(data) );
+			if (id > 0 && Tile::tiles[id] != nullptr)
+			{
+				particle = dynamic_pointer_cast<Particle>(std::make_shared<TerrainParticle>(lev, x, y, z, xa, ya, za, Tile::tiles[id], 0, data, textures)->init(data) );
+			}
 		}
 	}
 
@@ -3246,11 +3252,10 @@ void LevelRenderer::levelEvent(shared_ptr<Player> source, int type, int x, int y
 			}
 			level[playerIndex]->playLocalSound(x + 0.5, y + 0.5, z + 0.5, eSoundType_RANDOM_EXPLODE, 1, level[playerIndex]->random->nextFloat() * 0.1f + 0.9f);
 		}
-		break;
-	case LevelEvent::PARTICLES_DESTROY_BLOCK:
+		break;		case LevelEvent::PARTICLES_DESTROY_BLOCK:
 		{
 			int t = data & Tile::TILE_NUM_MASK;
-			if (t > 0)
+			if (t > 0 && Tile::tiles[t] != nullptr)
 			{
 				Tile *oldTile = Tile::tiles[t];
 				mc->soundEngine->play(oldTile->soundType->getBreakSound(), x + 0.5f, y + 0.5f, z + 0.5f, (oldTile->soundType->getVolume() + 1) / 2, oldTile->soundType->getPitch() * 0.8f);

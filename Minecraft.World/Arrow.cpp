@@ -8,6 +8,7 @@
 #include "net.minecraft.world.damagesource.h"
 #include "net.minecraft.world.item.enchantment.h"
 #include "net.minecraft.network.packet.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "..\Minecraft.Client\ServerPlayer.h"
 #include "..\Minecraft.Client\PlayerConnection.h"
 #include "com.mojang.nbt.h"
@@ -182,6 +183,23 @@ void Arrow::tick()
 {
 	Entity::tick();
 
+	if (!level->isClientSide)
+	{
+		if (!level->hasChunkAt(Mth::floor(x), Mth::floor(y), Mth::floor(z)))
+		{
+			remove();
+			return;
+		}
+
+		int minXZ = -(level->dimension->getXZSize() * 16) / 2;
+		int maxXZ = (level->dimension->getXZSize() * 16) / 2 - 1;
+		if ((x <= minXZ) || (x >= maxXZ) || (z <= minXZ) || (z >= maxXZ))
+		{
+			remove();
+			return;
+		}
+	}
+
 
 	if (xRotO == 0 && yRotO == 0) 
 	{
@@ -193,7 +211,7 @@ void Arrow::tick()
 
 	{
 		int t = level->getTile(xTile, yTile, zTile);
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			Tile::tiles[t]->updateShape(level, xTile, yTile, zTile);
 			AABB *aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
@@ -247,9 +265,9 @@ void Arrow::tick()
 		to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
 	}
 	shared_ptr<Entity> hitEntity = nullptr;
-	vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+	vector<shared_ptr<Entity> > objects = *level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
 	double nearest = 0;
-	for ( auto& e : *objects )
+	for ( auto& e : objects )
 	{
 		if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
@@ -397,7 +415,7 @@ void Arrow::tick()
 			shakeTime = 7;
 			setCritArrow(false);
 
-			if (lastTile != 0)
+			if (lastTile != 0 && Tile::tiles[lastTile] != nullptr)
 			{
 				Tile::tiles[lastTile]->entityInside(level, xTile, yTile, zTile, shared_from_this() );
 			}
@@ -477,7 +495,7 @@ void Arrow::readAdditionalSaveData(CompoundTag *tag)
 	yTile = tag->getShort(L"yTile");
 	zTile = tag->getShort(L"zTile");
 	lastTile = tag->getByte(L"inTile") & 0xff;
-	lastData = tag->getByte(L"inData") & 0xff;
+	lastData = tag->getByte(L"inData") & 0x1ff;
 	shakeTime = tag->getByte(L"shake") & 0xff;
 	inGround = tag->getByte(L"inGround") == 1;
 	if (tag->contains(L"damage"))

@@ -181,11 +181,11 @@ int EmptyLevelChunk::getBlocksAndData(byteArray data, int x0, int y0, int z0, in
 	int len;
 	if( includeLighting )
 	{
-		len = s + s / 2 * 3;
+		len = s * 2 + s / 2 * 3;
 	}
 	else
 	{
-		len = s + s / 2;
+		len = s * 2 + s / 2;
 	}
 
 
@@ -202,11 +202,11 @@ int EmptyLevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, in
 	int s = xs * ys * zs;
 	if( includeLighting )
 	{
-		return s + s / 2 * 3;
+		return s * 2 + s / 2 * 3;
 	}
 	else
 	{
-		return s + s / 2;
+		return s * 2 + s / 2;
 	}
 }
 

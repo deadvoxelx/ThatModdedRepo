@@ -18,10 +18,21 @@ NurealmBiome::NurealmBiome(int id) : Biome(id)
 	enemies.push_back(new MobSpawnerData(eTYPE_NUCLEAR_NUSKULL, 1, 1, 2));
 	enemies.push_back(new MobSpawnerData(eTYPE_NUSA_DEMON, 6, 1, 1));
 
+	delete decorator;
 	decorator = new NurealmBiomeDecorator(this);
+}
+
+Feature *NurealmBiome::getTreeFeature(Random *random)
+{
+	return new NusaTreeFeature(false);
 }
 
 Feature *NurealmBiome::getGrassFeature(Random *random)
 {
 	return new TallGrassFeature(Tile::nusaShrub_Id, 0);
+}
+
+int NurealmBiome::getSkyColor(float temp)
+{
+	return 0x2d002a;
 }

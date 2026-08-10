@@ -21,6 +21,7 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::goldOre_Id, new ItemInstance(Item::goldIngot), 1);
 	addFurnaceRecipy(Tile::diamondOre_Id, new ItemInstance(Item::diamond), 1);
 	addFurnaceRecipy(Tile::sand_Id, new ItemInstance(Tile::glass, 1, 0), .1f);
+	addFurnaceRecipy(Tile::stainedSand_Id, new ItemInstance(Tile::glass, 1, 0), .1f);
 	addFurnaceRecipy(Tile::soulsand_Id, new ItemInstance(Tile::glass, 1, 1), .1f);
 	addFurnaceRecipy(Tile::endSand_Id, new ItemInstance(Tile::glass), .1f);
 	addFurnaceRecipy(Item::porkChop_raw_Id, new ItemInstance(Item::porkChop_cooked), .35f);
@@ -46,6 +47,7 @@ FurnaceRecipes::FurnaceRecipes()
 	addFurnaceRecipy(Tile::stoneBrick_Id, new ItemInstance(Tile::stoneBrick, 1, 2), 1);
 	addFurnaceRecipy(Tile::ambrosiumOre_Id, new ItemInstance(Item::ambrosiumShard), 1);
 	addFurnaceRecipy(Tile::zaniteOre_Id, new ItemInstance(Item::zaniteGemstone), 1);
+	addFurnaceRecipy(Item::blackrootBerry_Id, new ItemInstance(Item::magmarootBerry), .35f);
 	
 	// special silk touch related recipes:
 	addFurnaceRecipy(Tile::coalOre_Id, new ItemInstance(Item::coal), .1f);
@@ -56,11 +58,14 @@ FurnaceRecipes::FurnaceRecipes()
 	//Enchanter recipes; only work in the Enchanter
 	addFurnaceRecipy(Tile::quicksoil_Id, new ItemInstance(Tile::glass, 1, 2), .1f);
 	addFurnaceRecipy(Tile::gravititeOre_Id, new ItemInstance(Tile::enchantedGravitite), 1);
-	addFurnaceRecipy(Tile::aercloud_Id, new ItemInstance(Tile::aercloud, 1, 2), .1f);
+	addFurnaceRecipy(Tile::aercloud_Id, new ItemInstance(Tile::aercloud, 1, 1), .1f);
 	addFurnaceRecipy(Tile::holystone_Id, new ItemInstance(Item::healingStone), .35f);
 	addFurnaceRecipy(Item::blueBerry_Id, new ItemInstance(Item::blueBerryEnchanted), .35f);
 	addFurnaceRecipy(Item::dartGold_Id, new ItemInstance(Item::dartEnchanted), .15f);
 	addFurnaceRecipy(Item::dartShooterGold_Id, new ItemInstance(Item::dartShooterEnchanted), 1);
+	addFurnaceRecipy(Item::sunFish_Id, new ItemInstance(Item::sunFishCooked), .35);
+	addFurnaceRecipy(Item::moonFish_Id, new ItemInstance(Item::moonFishCooked), .35);
+	addFurnaceRecipy(Item::cloudFish_Id, new ItemInstance(Item::cloudFishCooked), .35);
 }
 
 void FurnaceRecipes::addFurnaceRecipy(int itemId, ItemInstance *result, float value)

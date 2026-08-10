@@ -2,6 +2,7 @@
 #include "com.mojang.nbt.h"
 #include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.level.h"
+#include "net.minecraft.world.level.dimension.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.player.h"
@@ -170,6 +171,23 @@ void Dart::tick()
 {
 	Entity::tick();
 
+	if (!level->isClientSide)
+	{
+		if (!level->hasChunkAt(Mth::floor(x), Mth::floor(y), Mth::floor(z)))
+		{
+			remove();
+			return;
+		}
+
+		int minXZ = -(level->dimension->getXZSize() * 16) / 2;
+		int maxXZ = (level->dimension->getXZSize() * 16) / 2 - 1;
+		if ((x <= minXZ) || (x >= maxXZ) || (z <= minXZ) || (z >= maxXZ))
+		{
+			remove();
+			return;
+		}
+	}
+
 
 	if (xRotO == 0 && yRotO == 0) 
 	{
@@ -181,7 +199,7 @@ void Dart::tick()
 
 	{
 		int t = level->getTile(xTile, yTile, zTile);
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			Tile::tiles[t]->updateShape(level, xTile, yTile, zTile);
 			AABB *aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
@@ -235,9 +253,9 @@ void Dart::tick()
 		to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
 	}
 	shared_ptr<Entity> hitEntity = nullptr;
-	vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+	vector<shared_ptr<Entity> > objects = *level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
 	double nearest = 0;
-	for ( auto& e : *objects )
+	for ( auto& e : objects )
 	{
 		if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
@@ -365,7 +383,7 @@ void Dart::tick()
 			shakeTime = 7;
 			setCritDart(false);
 
-			if (lastTile != 0)
+			if (lastTile != 0 && Tile::tiles[lastTile] != nullptr)
 			{
 				Tile::tiles[lastTile]->entityInside(level, xTile, yTile, zTile, shared_from_this() );
 			}
@@ -403,7 +421,6 @@ void Dart::tick()
 	yRot = yRotO + (yRot - yRotO) * 0.2f;
 
 	float inertia = 0.99f;
-	float gravity = 0.05f;
 
 	if (isInWater())
 	{
@@ -418,7 +435,6 @@ void Dart::tick()
 	xd *= inertia;
 	yd *= inertia;
 	zd *= inertia;
-	yd -= gravity;
 
 	setPos(x, y, z);
 
@@ -443,7 +459,7 @@ void Dart::readAdditionalSaveData(CompoundTag *tag)
 	xTile = tag->getShort(L"xTile");
 	yTile = tag->getShort(L"yTile");
 	zTile = tag->getShort(L"zTile");
-	lastTile = tag->getByte(L"inTile") & 0xff;
+	lastTile = tag->getByte(L"inTile") & 0x1ff;
 	lastData = tag->getByte(L"inData") & 0xff;
 	shakeTime = tag->getByte(L"shake") & 0xff;
 	inGround = tag->getByte(L"inGround") == 1;

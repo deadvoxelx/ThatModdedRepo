@@ -64,7 +64,7 @@ bool SurvivalMode::destroyBlock(int x, int y, int z, int face)
     bool changed = GameMode::destroyBlock(x, y, z, face);
 
     shared_ptr<ItemInstance> item = minecraft->player->getSelectedItem();
-    bool couldDestroy = minecraft->player->canDestroy(Tile::tiles[t]);
+    bool couldDestroy = t > 0 && Tile::tiles[t] != nullptr && minecraft->player->canDestroy(Tile::tiles[t]);
     if (item != NULL)
 	{
         item->mineBlock(t, x, y, z, minecraft->player);
@@ -73,7 +73,7 @@ bool SurvivalMode::destroyBlock(int x, int y, int z, int face)
             minecraft->player->removeSelectedItem();
         }
     }
-    if (changed && couldDestroy) 
+    if (changed && couldDestroy && t > 0 && Tile::tiles[t] != nullptr)
 	{
 		Tile::tiles[t]->playerDestroy(minecraft->level, minecraft->player, x, y, z, data);
 	}
@@ -86,8 +86,8 @@ void SurvivalMode::startDestroyBlock(int x, int y, int z, int face)
 	if (!minecraft->player->mayBuild(x, y, z)) return;
     minecraft->level->extinguishFire(minecraft->player, x, y, z, face);
     int t = minecraft->level->getTile(x, y, z);
-    if (t > 0 && destroyProgress == 0) Tile::tiles[t]->attack(minecraft->level, x, y, z, minecraft->player);
-    if (t > 0 && Tile::tiles[t]->getDestroyProgress(minecraft->player) >= 1)
+    if (t > 0 && Tile::tiles[t] != nullptr && destroyProgress == 0) Tile::tiles[t]->attack(minecraft->level, x, y, z, minecraft->player);
+    if (t > 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->getDestroyProgress(minecraft->player) >= 1)
 	{
         destroyBlock(x, y, z, face);
     }
@@ -110,7 +110,7 @@ void SurvivalMode::continueDestroyBlock(int x, int y, int z, int face)
 	{
         int t = minecraft->level->getTile(x, y, z);
 		if (!minecraft->player->mayBuild(x, y, z)) return;
-        if (t == 0) return;
+        if (t == 0 || Tile::tiles[t] == nullptr) return;
         Tile *tile = Tile::tiles[t];
 
         destroyProgress += tile->getDestroyProgress(minecraft->player);
@@ -192,7 +192,7 @@ void SurvivalMode::tick()
 bool SurvivalMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly, bool *pbUsedItem)
 {
 	int t = level->getTile(x, y, z);
-	if (t > 0)
+	if (t > 0 && Tile::tiles[t] != nullptr)
 	{
 		if (Tile::tiles[t]->use(level, x, y, z, player)) return true;
 	}

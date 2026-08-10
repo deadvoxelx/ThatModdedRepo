@@ -11,6 +11,7 @@ const wstring ChatScreen::allowedChars = SharedConstants::acceptableLetters;
 vector<wstring> ChatScreen::s_chatHistory;
 int ChatScreen::s_historyIndex = -1;
 wstring ChatScreen::s_historyDraft;
+int ChatScreen::s_chatIndex = 0;
 
 bool ChatScreen::isAllowedChatChar(wchar_t c)
 {
@@ -22,6 +23,15 @@ ChatScreen::ChatScreen()
 	frame = 0;
 	cursorIndex = 0;
 	s_historyIndex = -1;
+}
+
+ChatScreen::ChatScreen(const wstring &initialMessage)
+{
+	frame = 0;
+	message = initialMessage;
+	cursorIndex = static_cast<int>(message.length());
+	s_historyIndex = -1;
+	ChatScreen::s_chatIndex = 0;
 }
 
 void ChatScreen::init()
@@ -142,18 +152,18 @@ void ChatScreen::render(int xm, int ym, float a)
 {
     fill(2, height - 14, width - 2, height - 2, 0x80000000);
     const wstring prefix = L"> ";
-    int x = 4;
-    drawString(font, prefix, x, height - 12, 0xe0e0e0);
-    x += font->width(prefix);
-    wstring beforeCursor = message.substr(0, cursorIndex);
-    wstring afterCursor = message.substr(cursorIndex);
-    drawStringLiteral(font, beforeCursor, x, height - 12, 0xe0e0e0);
-    x += font->widthLiteral(beforeCursor);
-    if (frame / 6 % 2 == 0)
-        drawString(font, L"_", x, height - 12, 0xe0e0e0);
-    x += font->width(L"_");
-    drawStringLiteral(font, afterCursor, x, height - 12, 0xe0e0e0);
-    Screen::render(xm, ym, a);
+	int x = 4;
+	drawString(font, prefix, x, height - 12, 0xe0e0e0);
+	x += font->width(prefix);
+	wstring beforeCursor = message.substr(0, cursorIndex);
+	wstring afterCursor = message.substr(cursorIndex);
+	drawString(font, beforeCursor, x, height - 12, 0xe0e0e0);
+	x += font->widthLiteral(beforeCursor);
+	if (frame / 6 % 2 == 0)
+		drawString(font, L"_", x, height - 12, 0xe0e0e0);
+	x += font->width(L"_");
+	drawString(font, afterCursor, x, height - 12, 0xe0e0e0);
+	Screen::render(xm, ym, a);
 }
 
 void ChatScreen::mouseClicked(int x, int y, int buttonNum)

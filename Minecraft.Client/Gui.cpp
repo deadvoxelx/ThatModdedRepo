@@ -1242,6 +1242,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
 		// Disable the depth test so the text shows on top of the paperdoll
         glDisable(GL_DEPTH_TEST);
+        float debugScale = 1.0f;
 #ifdef _WINDOWS64
 		float scaleWidth = (g_rScreenWidth / 1920.0f);
 		float scaleHeight = (g_rScreenHeight / 1080.0f);
@@ -1253,6 +1254,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
         {
 			scale = scale - 0.33f; // tame overscaling on 1440p
 		}
+		debugScale = scale;
 			
 		glScalef(scale, scale, 1);
 #endif
@@ -1264,13 +1266,15 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
             yPos += 10;
         }
 
+		// Coordinates
 		const int primaryPad = ProfileManager.GetPrimaryPad();
 		if (app.GetGameSettings(primaryPad, eGameSetting_DisplayHUD) == 1)
 		{
 			WCHAR posString[44]; // Allows upto 7 digit positions (+-9_999_999)
 			swprintf(posString, 44, L"%.3f / %.3f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
 			lines.push_back(L"XYZ: " + std::wstring(posString));
-			drawString(font, posString, 296, 220, 0x44ff00);
+			const float centerX = ((vpW / 2.0f - debugLeft) / fontScale + debugLeft) / debugScale;
+			drawCenteredString(font, posString, Mth::floor(centerX + 0.5f), 221, 0x44ff00);
 		}
 
 #ifdef _WINDOWS64
@@ -1292,41 +1296,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
     glDisable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
 }
-
-// Moved to the xui base scene
-// void Gui::renderBossHealth(void)
-// {
-// 	if (EnderDragonRenderer::bossInstance == NULL) return;
-//
-// 	shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
-// 	EnderDragonRenderer::bossInstance = NULL;
-//
-// 	Minecraft *pMinecraft=Minecraft::GetInstance();
-//
-// 	Font *font = pMinecraft->font;
-//
-// 	ScreenSizeCalculator ssc(pMinecraft->options, pMinecraft->width_phys, pMinecraft->height_phys);
-// 	int screenWidth = ssc.getWidth();
-//
-// 	int w = 182;
-// 	int xLeft = screenWidth / 2 - w / 2;
-//
-// 	int progress = (int) (boss->getSynchedHealth() / (float) boss->getMaxHealth() * (float) (w + 1));
-//
-// 	int yo = 12;
-// 	blit(xLeft, yo, 0, 74, w, 5);
-// 	blit(xLeft, yo, 0, 74, w, 5);
-// 	if (progress > 0)
-// 	{
-// 		blit(xLeft, yo, 0, 79, progress, 5);
-// 	}
-//
-// 	wstring msg = L"Boss health - NON LOCALISED";
-// 	font->drawShadow(msg, screenWidth / 2 - font->width(msg) / 2, yo - 10, 0xff00ff);
-// 	glColor4f(1, 1, 1, 1);
-// 	glBindTexture(GL_TEXTURE_2D, pMinecraft->textures->loadTexture(TN_GUI_ICONS) );//"/gui/icons.png"));
-//
-// }
 
 void Gui::renderPumpkin(int w, int h)
 {
@@ -1359,25 +1328,6 @@ void Gui::renderVignette(float br, int w, int h)
     if (br < 0) br = 0;
     if (br > 1) br = 1;
     tbr += (br - tbr) * 0.01f;
-
-#if 0  // 4J - removed - TODO put back when we have blend functions implemented
-    glDisable(GL_DEPTH_TEST);
-    glDepthMask(false);
-    glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
-    glColor4f(tbr, tbr, tbr, 1);
-    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(TN__BLUR__MISC_VIGNETTE));//L"%blur%/misc/vignette.png"));
-    Tesselator *t = Tesselator::getInstance();
-    t->begin();
-    t->vertexUV((float)(0), (float)( h), (float)( -90), (float)( 0), (float)( 1));
-    t->vertexUV((float)(w), (float)( h), (float)( -90), (float)( 1), (float)( 1));
-    t->vertexUV((float)(w), (float)( 0), (float)( -90), (float)( 1), (float)( 0));
-    t->vertexUV((float)(0), (float)( 0), (float)( -90), (float)( 0), (float)( 0));
-    t->end();
-    glDepthMask(true);
-    glEnable(GL_DEPTH_TEST);
-    glColor4f(1, 1, 1, 1);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#endif
 }
 
 void Gui::renderTp(float br, int w, int h)
@@ -1484,31 +1434,6 @@ void Gui::clearMessages(int iPad)
 void Gui::addMessage(const wstring& _string,int iPad,bool bIsDeathMessage)
 {
 	wstring string = _string;	// 4J - Take copy of input as it is const
-	//int iScale=1;
-
-	//if((minecraft->player->m_iScreenSection==C4JRender::VIEWPORT_TYPE_SPLIT_TOP) ||
-	//	(minecraft->player->m_iScreenSection==C4JRender::VIEWPORT_TYPE_SPLIT_BOTTOM))
-	//{
-	//	iScale=2;
-	//}
-
- //   while (minecraft->font->width(string) > (m_iMaxMessageWidth*iScale))
-	//{
- //       unsigned int i = 1;
- //       while (i < string.length() && minecraft->font->width(string.substr(0, i + 1)) <= (m_iMaxMessageWidth*iScale))
-	//	{
- //           i++;
- //       }
-	//	int iLast=string.find_last_of(L" ",i);
-
-	//	// if a space was found, include the space on this line
-	//	if(iLast!=i)
-	//	{
-	//		iLast++;
-	//	}
-	//	addMessage(string.substr(0, iLast), iPad);
-	//	string = string.substr(iLast);
- //   }
 
 	int maximumChars;
 

@@ -481,6 +481,14 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 
 	netherBridgeFeature->postProcess(level, pprandom, xt, zt);
 
+	if (pprandom->nextInt(3) == 0)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = 16 + pprandom->nextInt(72);
+		int z = zo + pprandom->nextInt(16) + 8;
+		NetherrackSpikeFeature(Tile::netherRack_Id).place(level, pprandom, x, y, z);
+	}
+
 	for (int i = 0; i < 8; i++)
 	{
 		int x = xo + pprandom->nextInt(16) + 8;
@@ -527,6 +535,30 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		HellPortalFeature().place(level, pprandom, x, y, z);
 	}
 
+	for (int i = 0; i < 24; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = pprandom->nextInt(Level::genDepth - 8) + 4;
+		int z = zo + pprandom->nextInt(16) + 8;
+		BlackrootFeature().place(level, pprandom, x, y, z);
+	}
+
+	for (int i = 0; i < 16; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = 30 + pprandom->nextInt(4);
+		int z = zo + pprandom->nextInt(16) + 8;
+		ReedsFeature().place(level, random, x, y, z);
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		int x = xo + pprandom->nextInt(16) + 8;
+		int y = 36 + pprandom->nextInt(86);
+		int z = zo + pprandom->nextInt(16) + 8;
+		BoneVineFeature().place(level, random, x, y, z);
+	}
+	
 	for (int i = 0; i < 96; i++)
 	{
 		int x = xo + pprandom->nextInt(16) + 8;
@@ -571,7 +603,7 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	}
 
 	OreFeature netherDiamondFeature(Tile::netherDiamond_Id, 0, 4, Tile::netherRack_Id);
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
 		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
@@ -607,12 +639,21 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	}
 
 	OreFeature nethaniumFeature(Tile::nethaniumOre_Id, 0, 8, Tile::netherRack_Id);
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 13; i++)
 	{
 		int x = xo + pprandom->nextInt(16);
 		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
 		int z = zo + pprandom->nextInt(16);
 		nethaniumFeature.place(level, pprandom, x, y, z);
+	}
+
+	OreFeature netherFossilFeature(Tile::fossilOre_Id, 1, 7, Tile::netherRack_Id);
+	for (int i = 0; i < 11; i++)
+	{
+		int x = xo + pprandom->nextInt(16);
+		int y = pprandom->nextInt(Level::genDepth - 20) + 10;
+		int z = zo + pprandom->nextInt(16);
+		netherFossilFeature.place(level, pprandom, x, y, z);
 	}
 
 	for (int i = 0; i < 19; i++)

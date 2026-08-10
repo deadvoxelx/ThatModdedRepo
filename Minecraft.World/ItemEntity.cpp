@@ -114,7 +114,7 @@ void ItemEntity::tick()
 	{
 		friction = 0.6f * 0.98f;
 		int t = level->getTile( Mth::floor(x),  Mth::floor(bb->y0) - 1,  Mth::floor(z) );
-		if (t > 0)
+		if (t > 0 && Tile::tiles[t] != nullptr)
 		{
 			friction = Tile::tiles[t]->friction * 0.98f;
 		}
@@ -261,7 +261,7 @@ void ItemEntity::readAdditionalSaveData(CompoundTag *tag)
 	health = tag->getShort(L"Health") & 0xff;
 	age = tag->getShort(L"Age");
 	CompoundTag *itemTag = tag->getCompound(L"Item");
-	setItem(ItemInstance::fromTag(itemTag));
+	setItem(ItemInstance::fromTag(itemTag, level));
 	if (getItem() == nullptr) remove();
 }
 

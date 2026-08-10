@@ -39,6 +39,8 @@ enum ESaveVersions
 	// This is the version at which we added inhabited time to chunk (1.6.4)
 	SAVE_FILE_VERSION_CHUNK_INHABITED_TIME,
 
+	// Voxel - tile ID expansion
+	SAVE_FILE_VERSION_TILE_ID_EXPANSION,
 
 	// 4J Stu - If you add a new version here, the save conversion tool will also need updated to be able to read this new format
 

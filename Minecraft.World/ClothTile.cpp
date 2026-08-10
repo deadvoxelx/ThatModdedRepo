@@ -9,6 +9,7 @@ ClothTile::ClothTile() :  Tile(35, Material::cloth)
 
 Icon *ClothTile::getTexture(int face, int data)
 {
+    if ( data < 0 || data > 15 ) data = 0;
     return icons[data];
 }
 
