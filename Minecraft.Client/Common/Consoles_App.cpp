@@ -4770,6 +4770,16 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_VALKYRIE_SHOVEL, L"Valkyrie Shovel");
 		m_stringTable->registerString(IDS_ITEM_VALKYRIE_HOE, L"Valkyrie Hoe");
 		m_stringTable->registerString(IDS_SUN_SPIRIT, L"Sun Spirit");
+		m_stringTable->registerString(IDS_TILE_BLACKROOT, L"Blackroot");
+		m_stringTable->registerString(IDS_ITEM_BLACKROOT, L"Blackroot Berry");
+		m_stringTable->registerString(IDS_ITEM_MAGMAROOT, L"Magmaroot Berry");
+		m_stringTable->registerString(IDS_TILE_LAVAREED, L"Lava Reed");
+		m_stringTable->registerString(IDS_ITEM_LAVAREED, L"Lava Reeds");
+		m_stringTable->registerString(IDS_ITEM_FLAX, L"Nether Flax");
+		m_stringTable->registerString(IDS_TILE_BONE_VINE, L"Bone Vine");
+		m_stringTable->registerString(IDS_TILE_VELOETT_VINE, L"Veloett Vine");
+		m_stringTable->registerString(IDS_TILE_VELOETT_FLOWER, L"Veloett Flower");
+		m_stringTable->registerString(IDS_TILE_ENDESERT_BUSH, L"Endesert Bush");
 
 	}
 	else
