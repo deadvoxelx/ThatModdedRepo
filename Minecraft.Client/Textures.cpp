@@ -190,6 +190,7 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/dart",
 	L"mob/dartPoison",
 	L"mob/dartEnchanted",
+	L"mob/dartNethanium",
 	L"mob/cockatrice",
 	L"mob/moaBlue",
 	L"mob/moaWhite",
