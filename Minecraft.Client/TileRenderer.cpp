@@ -858,11 +858,16 @@ bool TileRenderer::tesselateCauldronInWorld(CauldronTile *tt, int x, int y, int 
 			waterLevel = 3;
 		}
 
+		// Voxel - tint cauldron water the same as regular water
+		int waterCol = Tile::water->getColor(level, x, y, z);
+		float wr = ((waterCol >> 16) & 0xff) / 255.0f;
+		float wg = ((waterCol >> 8) & 0xff) / 255.0f;
+		float wb = (waterCol & 0xff) / 255.0f;
+		t->color(br * wr, br * wg, br * wb);
+
 		renderFaceUp(tt, x, y - 1.0f + (6.0f + waterLevel * 3.0f) / 16.0f, z, liquidTex);
 	}
-
 	return true;
-
 }
 
 bool TileRenderer::tesselateFlowerPotInWorld(FlowerPotTile *tt, int x, int y, int z)
