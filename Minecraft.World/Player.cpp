@@ -2440,7 +2440,14 @@ shared_ptr<ItemInstance> Player::getCarriedItem()
 
 void Player::setEquippedSlot(int slot, shared_ptr<ItemInstance> item)
 {
-	inventory->armor[slot] = item;
+	if (slot == 0)
+	{
+		inventory->items[inventory->selected] = item;
+	}
+	else if (slot > 0 && slot <= 4)
+	{
+		inventory->armor[slot - 1] = item;
+	}
 }
 
 bool Player::isInvisibleTo(shared_ptr<Player> player)
