@@ -1015,8 +1015,6 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 		else if (lastDimension == 3)
 		{
 			// Coming from the Aether; we want to keep coordinate scaling in line with the Overworld
-			xt == scale;
-			zt == scale;
 		}
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		if (entity->isAlive())
@@ -1027,8 +1025,6 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 	//
 	else if (entity->dimension == 2)
 	{
-		xt == scale;
-		zt == scale;
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		if (entity->isAlive())
 		{
@@ -1037,8 +1033,6 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 	}
 	else if (entity->dimension == 3)
 	{
-		xt == scale;
-		zt == scale;
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		if (entity->isAlive())
 		{
@@ -1047,8 +1041,6 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 	}
 	else if (entity->dimension == 4)
 	{
-		xt == scale;
-		zt == scale;
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		if (entity->isAlive())
 		{
@@ -1097,7 +1089,7 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		newLevel->tick(entity, false);
 		newLevel->cache->autoCreate = true;
-		if (lastDimension != 1 && lastDimension != 2 && lastDimension != 4)
+		if (lastDimension != 1 && lastDimension != 2 && lastDimension != 4 && !entity->fellFromAether)
 		{
 			newLevel->getPortalForcer()->force(newLevel, entity, lastDimension);
 		}
