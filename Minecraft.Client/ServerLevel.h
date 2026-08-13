@@ -135,6 +135,8 @@ private:
 	// 4J - added for implementation of finite limit to number of item entities, tnt and falling block entities
 public:
 
+	static const int MAX_INSTATICK_TICK_DEPTH = 32;
+
 	static const int MAX_HANGING_ENTITIES = 400;
 	static const int MAX_ITEM_ENTITIES = 200;
 	static const int MAX_ARROW_ENTITIES = 200;
