@@ -89,6 +89,7 @@ public:
 	// 4J - added, making instaTick flag use TLS so we can set it in the chunk rebuilding thread without upsetting the main game thread
 	static DWORD tlsIdx;
 	static DWORD tlsIdxLightCache;
+	static DWORD tlsIdxInstaTickDepth;
 	static void enableLightingCache();
 	static void destroyLightingCache();
 	static bool getCacheTestEnabled();
