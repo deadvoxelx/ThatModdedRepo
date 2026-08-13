@@ -528,12 +528,16 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 		e = std::make_shared<Dart>(level, x, y, z);
 		break;
 
-	/*case AddEntityPacket::DARTPOISON:
+	case AddEntityPacket::DARTPOISON:
 		e = std::make_shared<DartPoison>(level, x, y, z);
-		break;*/
+		break;
 
 	case AddEntityPacket::DARTENCHANTED:
 		e = std::make_shared<DartEnchanted>(level, x, y, z);
+		break;
+
+	case AddEntityPacket::DARTNETHANIUM:
+		e = std::make_shared<DartNethanium>(level, x, y, z);
 		break;
 
 	case AddEntityPacket::SNOWBALL:
@@ -723,7 +727,7 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 				}
 			}
 
-			/*if (packet->type == AddEntityPacket::DARTPOISON)
+			if (packet->type == AddEntityPacket::DARTPOISON)
 			{
 				shared_ptr<Entity> owner = getEntity(packet->data);
 
@@ -744,9 +748,9 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 
 				if ( owner != nullptr && owner->instanceof(eTYPE_LIVINGENTITY) )
 				{
-					dynamic_pointer_cast<Arrow>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
+					dynamic_pointer_cast<DartPoison>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
 				}
-			}*/
+			}
 
 			if (packet->type == AddEntityPacket::DARTENCHANTED)
 			{
