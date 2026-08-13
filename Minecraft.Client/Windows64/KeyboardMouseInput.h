@@ -31,6 +31,7 @@ public:
 	static const int KEY_CHAT_ALT = VK_OEM_2;
 	static const int KEY_ZOOM = 'V';
 	static const int KEY_FULLBRIGHT = 'F';
+	static const int KEY_HIDE_COORDS = 'H';
 	static const int KEY_DASH = VK_TAB;
 	static const int KEY_CONFIRM = VK_RETURN;
 	static const int KEY_CANCEL = VK_ESCAPE;
