@@ -17,13 +17,12 @@ const int ArmorItem::healthPerSlot[] = {
 };
 
 const wstring ArmorItem::LEATHER_OVERLAYS[] = {
-		L"helmetCloth_overlay", L"chestplateCloth_overlay", L"leggingsCloth_overlay", L"bootsCloth_overlay"
-	};
+	L"helmetCloth_overlay", L"chestplateCloth_overlay", L"leggingsCloth_overlay", L"bootsCloth_overlay"
+};
 
 const wstring ArmorItem::TEXTURE_EMPTY_SLOTS[] = {
-		L"slot_empty_helmet", L"slot_empty_chestplate", L"slot_empty_leggings", L"slot_empty_boots"
-	};
-
+	L"slot_empty_helmet", L"slot_empty_chestplate", L"slot_empty_leggings", L"slot_empty_boots"
+};
 
 shared_ptr<ItemInstance> ArmorItem::ArmorDispenseItemBehavior::execute(BlockSource *source, shared_ptr<ItemInstance> dispensed, eOUTCOME &outcome)
 {
@@ -39,11 +38,10 @@ shared_ptr<ItemInstance> ArmorItem::ArmorDispenseItemBehavior::execute(BlockSour
 	if (entities->size() > 0)
 	{
 		shared_ptr<LivingEntity> target = dynamic_pointer_cast<LivingEntity>( entities->at(0) );
-		int offset = target->instanceof(eTYPE_PLAYER) ? 1 : 0;
 		int slot = Mob::getEquipmentSlotForItem(dispensed);
 		shared_ptr<ItemInstance> equip = dispensed->copy();
 		equip->count = 1;
-		target->setEquippedSlot(slot - offset, equip);
+		target->setEquippedSlot(slot, equip);
 		if (target->instanceof(eTYPE_MOB)) dynamic_pointer_cast<Mob>(target)->setDropChance(slot, 2);
 		dispensed->count--;
 
