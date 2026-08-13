@@ -47,7 +47,7 @@ Moa::Moa(Level *level) : TamableAnimal( level )
 
 	targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 	targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-	targetSelector.addGoal(3, new HurtByTargetGoal(this, true));
+	targetSelector.addGoal(3, new HurtByTargetGoal(this, false));
 	targetSelector.addGoal(4, new NonTameRandomTargetGoal(this, typeid(Swet), 120, false));
 
 	setTame(false);
@@ -186,7 +186,8 @@ void Moa::tick()
 
 void Moa::travel(float xa, float ya)
 {
-	if (rider.lock() == nullptr)
+	shared_ptr<Entity> currentRider = rider.lock();
+	if (currentRider == nullptr)
 	{
 		footSize = .5f;
 		flyingSpeed = .02f;
@@ -194,12 +195,20 @@ void Moa::travel(float xa, float ya)
 		return;
 	}
 
-	yRotO = yRot = rider.lock()->yRot;
-	xRot = rider.lock()->xRot * 0.5f;
+	shared_ptr<LivingEntity> livingRider = dynamic_pointer_cast<LivingEntity>(currentRider);
+	if (livingRider == nullptr)
+	{
+		footSize = .5f;
+		flyingSpeed = .02f;
+		TamableAnimal::travel(xa, ya);
+		return;
+	}
+
+	yRotO = yRot = currentRider->yRot;
+	xRot = currentRider->xRot * 0.5f;
 	setRot(yRot, xRot);
 	yHeadRot = yBodyRot = yRot;
 
-	shared_ptr<LivingEntity> livingRider = dynamic_pointer_cast<LivingEntity>(rider.lock());
 	xa = livingRider->xxa * .5f;
 	ya = livingRider->yya;
 
