@@ -30,6 +30,10 @@
 #include "..\Minecraft.World\Biome.h"
 #include <Common/UI/UI.h>
 
+#ifdef _WINDOWS64
+#include "Windows64\KeyboardMouseInput.h"
+#endif
+
 ResourceLocation Gui::PUMPKIN_BLUR_LOCATION = ResourceLocation(TN__BLUR__MISC_PUMPKINBLUR);
 
 #define RENDER_HUD 0
@@ -52,6 +56,8 @@ Gui::Gui(Minecraft *minecraft)
 	progress = 0.0f;
 	tbr = 1.0f;
 	fAlphaIncrementPerCent=255.0f/100.0f;
+
+	showCoords = true;
 
 	this->minecraft = minecraft;
 
@@ -1268,7 +1274,13 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
 		// Coordinates
 		const int primaryPad = ProfileManager.GetPrimaryPad();
-		if (app.GetGameSettings(primaryPad, eGameSetting_DisplayHUD) == 1)
+#ifdef _WINDOWS64
+		if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_HIDE_COORDS))
+		{
+			showCoords = !showCoords;
+		}
+#endif
+		if (showCoords && app.GetGameSettings(primaryPad, eGameSetting_DisplayHUD) == 1)
 		{
 			WCHAR posString[44]; // Allows upto 7 digit positions (+-9_999_999)
 			swprintf(posString, 44, L"%.3f / %.3f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
