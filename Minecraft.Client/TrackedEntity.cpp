@@ -75,7 +75,7 @@ void TrackedEntity::tick(EntityTracker *tracker, vector<shared_ptr<Player> > *pl
 		shared_ptr<ItemFrame> frame = dynamic_pointer_cast<ItemFrame> (e);
 		shared_ptr<ItemInstance> item = frame->getItem();
 
-		if (item != nullptr && item->getItem()->id == Item::map_Id && !e->removed)
+		if (item != nullptr && item->getItem() != nullptr && item->getItem()->id == Item::map_Id && !e->removed)
 		{
 			shared_ptr<MapItemSavedData> data = Item::map->getSavedData(item, e->level);
 			for (auto& it : *players)
@@ -142,7 +142,7 @@ void TrackedEntity::tick(EntityTracker *tracker, vector<shared_ptr<Player> > *pl
 			// skip first tick since position is sent in addEntity packet
 			// FallingTile depends on this because it removes its source block in the first tick()
 
-			if (tickCount > 0 || e->instanceof(eTYPE_ARROW) || e->instanceof(eTYPE_DART) /*|| e->instanceof(eTYPE_DARTPOISON)*/ || e->instanceof(eTYPE_DARTENCHANTED) || e->instanceof(eTYPE_PLAYER)) // 4J: Modifed, see above
+			if (tickCount > 0 || e->instanceof(eTYPE_ARROW) || e->instanceof(eTYPE_DART) || e->instanceof(eTYPE_DARTPOISON) || e->instanceof(eTYPE_DARTENCHANTED) || e->instanceof(eTYPE_PLAYER)) // 4J: Modifed, see above
 			{
 				if (xa < -128 || xa >= 128 || ya < -128 || ya >= 128 || za < -128 || za >= 128 || wasRiding
 					// 4J Stu - I fixed the initialisation of teleportDelay in the ctor, but we managed this far without out
@@ -501,7 +501,12 @@ TrackedEntity::eVisibility TrackedEntity::isVisible(EntityTracker *tracker, shar
 	// this is to ensure that the mount is already in the client's game when the rider is added.
 	if (canBeSeenBy && bVisible && e->riding != nullptr)
 	{
-		return tracker->getTracker(e->riding)->isVisible(tracker, sp, true);
+		shared_ptr<TrackedEntity> mountTracker = tracker->getTracker(e->riding);
+		if (mountTracker != nullptr)
+		{
+			return mountTracker->isVisible(tracker, sp, true);
+		}
+		return eVisibility_NotVisible;
 	}
 	else if (canBeSeenBy && bVisible)	return eVisibility_SeenAndVisible;
 	else if (bVisible)					return eVisibility_IsVisible;
@@ -510,7 +515,7 @@ TrackedEntity::eVisibility TrackedEntity::isVisible(EntityTracker *tracker, shar
 
 void TrackedEntity::updatePlayer(EntityTracker *tracker, shared_ptr<ServerPlayer> sp)
 {
-	if (sp == e) return;
+	if (sp == nullptr || sp == e) return;
 
 	eVisibility visibility = this->isVisible(tracker, sp);
 
@@ -691,15 +696,20 @@ shared_ptr<Packet> TrackedEntity::getAddEntityPacket()
 		shared_ptr<Entity> owner = (dynamic_pointer_cast<Dart>(e))->owner;
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::DART, owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp, yp, zp);
 	}
-	/*else if (e->instanceof(eTYPE_DARTPOISON))
+	else if (e->instanceof(eTYPE_DARTPOISON))
 	{
 		shared_ptr<Entity> owner = (dynamic_pointer_cast<DartPoison>(e))->owner;
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::DARTPOISON, owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp, yp, zp);
-	}*/
+	}
 	else if (e->instanceof(eTYPE_DARTENCHANTED))
 	{
 		shared_ptr<Entity> owner = (dynamic_pointer_cast<DartEnchanted>(e))->owner;
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::DARTENCHANTED, owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp, yp, zp);
+	}
+	else if (e->instanceof(eTYPE_DARTNETHANIUM))
+	{
+		shared_ptr<Entity> owner = (dynamic_pointer_cast<DartNethanium>(e))->owner;
+		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::DARTNETHANIUM, owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp, yp, zp);
 	}
 	else if (e->instanceof(eTYPE_SNOWBALL))
 	{
