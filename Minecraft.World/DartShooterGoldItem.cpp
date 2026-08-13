@@ -66,3 +66,8 @@ int DartShooterGoldItem::getEnchantmentValue()
 {
 	return 1;
 }
+
+bool DartShooterGoldItem::isEnchantable(shared_ptr<ItemInstance> itemInstance)
+{
+	return getMaxStackSize() == 1;
+}
