@@ -37,7 +37,7 @@ Cockatrice::Cockatrice(Level *level) : Monster( level )
 
 	getNavigation()->setAvoidWater(true);
 	goalSelector.addGoal(0, new FloatGoal(this));
-	goalSelector.addGoal(2, new RangedAttackGoal(this, this, 1.0, SharedConstants::TICKS_PER_SECOND * 2, SharedConstants::TICKS_PER_SECOND * 4, 15));
+	goalSelector.addGoal(2, new RangedAttackGoal(this, this, 1.0, SharedConstants::TICKS_PER_SECOND * 2, SharedConstants::TICKS_PER_SECOND * 3, 15));
 	goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0));
 	goalSelector.addGoal(7, new LookAtPlayerGoal(this, typeid(Player), 6));
 	goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -55,7 +55,7 @@ void Cockatrice::registerAttributes()
 {
 	Monster::registerAttributes();
 
-	getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(16);
+	getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(24);
 	getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->setBaseValue(0.25f);
 }
 
@@ -92,7 +92,7 @@ void Cockatrice::causeFallDamage(float distance)
 
 void Cockatrice::performRangedAttack(shared_ptr<LivingEntity> target, float power)
 {
-	shared_ptr<Dart> dart = shared_ptr<Dart>( new Dart(level, dynamic_pointer_cast<LivingEntity>(shared_from_this()), target, 1.60f, 14 - (level->difficulty * 4)) );
+	shared_ptr<DartPoison> dart = shared_ptr<DartPoison>( new DartPoison(level, dynamic_pointer_cast<LivingEntity>(shared_from_this()), target, 1.60f, 14 - (level->difficulty * 4)) );
 
 	dart->setBaseDamage(power * 2.0f + (random->nextGaussian() * 0.25f + (level->difficulty * 0.11f)));
 
@@ -111,5 +111,8 @@ void Cockatrice::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 	for (int i = 0; i < count; i++)
 	{
 		spawnAtLocation(Item::feather_Id, 1);
+		spawnAtLocation(Item::dartPoison_Id, 1);
 	}
+
+	if (random->nextInt(10) == 0) spawnAtLocation(Item::dartShooterPoison_Id, 1);
 }
