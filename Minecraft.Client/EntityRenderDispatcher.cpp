@@ -159,6 +159,8 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_ZEPHYRBALL] = new ItemSpriteRenderer(Item::snowBall);
 	renderers[eTYPE_DART] = new ArrowRenderer();
 	renderers[eTYPE_DARTENCHANTED] = new ArrowRenderer();
+	renderers[eTYPE_DARTPOISON] = new ArrowRenderer();
+	renderers[eTYPE_DARTNETHANIUM] = new ArrowRenderer();
 	//
 	renderers[eTYPE_SNOWMAN] = new SnowManRenderer();
 	renderers[eTYPE_SKELETON] = new SkeletonRenderer();

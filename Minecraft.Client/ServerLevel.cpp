@@ -523,6 +523,8 @@ void ServerLevel::tickTiles()
 			}
 		}
 
+		// Voxel - Nurealm has continuous lightning
+		// Comment added to make this easier to find
 		if (random->nextInt(20000) == 0 && dimension->id == 4)
 		{
 			randValue = randValue * 3 + addend;
@@ -594,17 +596,24 @@ void ServerLevel::addToTickNextTick(int x, int y, int z, int tileId, int tickDel
 	{
 		if(Tile::tiles[tileId]->canInstantlyTick())
 		{
-			r = 8;
-			if (hasChunksAt(td.x - r, td.y - r, td.z - r, td.x + r, td.y + r, td.z + r))
+			int tickDepth = (int)(size_t)TlsGetValue(Level::tlsIdxInstaTickDepth) + 1;
+			if (tickDepth <= MAX_INSTATICK_TICK_DEPTH)
 			{
-				int id = getTile(td.x, td.y, td.z);
-				if (id == td.tileId && id > 0)
+				TlsSetValue(Level::tlsIdxInstaTickDepth, (void *)(size_t)tickDepth);
+				r = 8;
+				if (hasChunksAt(td.x - r, td.y - r, td.z - r, td.x + r, td.y + r, td.z + r))
 				{
-					Tile::tiles[id]->tick(this, td.x, td.y, td.z, random);
+					int id = getTile(td.x, td.y, td.z);
+					if (id == td.tileId && id > 0)
+					{
+						Tile::tiles[id]->tick(this, td.x, td.y, td.z, random);
+					}
 				}
+				TlsSetValue(Level::tlsIdxInstaTickDepth, (void *)(size_t)(tickDepth - 1));
+				MemSect(0);
+				return;
 			}
-			MemSect(0);
-			return;
+			tickDelay = 1;
 		}
 		else
 		{

@@ -137,6 +137,20 @@ bool CauldronTile::use(Level *level, int x, int y, int z, shared_ptr<Player> pla
 		}
 		return true;
 	}
+	else if (item->id == Item::skyrootBucket_water_Id)
+	{
+		if (fillLevel < 3)
+		{
+			if (!player->abilities.instabuild)
+			{
+				player->inventory->setItem(player->inventory->selected, std::make_shared<ItemInstance>(Item::skyrootBucket_empty));
+			}
+
+			level->setData(x, y, z, 3, Tile::UPDATE_CLIENTS);
+			level->updateNeighbourForOutputSignal(x, y, z, id);
+		}
+		return true;
+	}
 	else if (item->id == Item::glassBottle_Id)
 	{
 		if (fillLevel > 0)

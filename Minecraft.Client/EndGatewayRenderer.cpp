@@ -5,17 +5,17 @@
 #include "TileEntityRenderDispatcher.h"
 #include "Camera.h"
 #include "..\Minecraft.World\FloatBuffer.h"
-#include "TheEndPortalRenderer.h"
+#include "EndGatewayRenderer.h"
 
-ResourceLocation TheEndPortalRenderer::END_SKY_LOCATION = ResourceLocation(TN_MISC_TUNNEL);
-ResourceLocation TheEndPortalRenderer::END_PORTAL_LOCATION = ResourceLocation(TN_MISC_PARTICLEFIELD);
-int TheEndPortalRenderer::RANDOM_SEED = 31100;
-Random TheEndPortalRenderer::RANDOM = Random(RANDOM_SEED);
+ResourceLocation EndGatewayRenderer::END_SKY_LOCATION = ResourceLocation(TN_MISC_TUNNEL);
+ResourceLocation EndGatewayRenderer::END_PORTAL_LOCATION = ResourceLocation(TN_MISC_PARTICLEFIELD);
+int EndGatewayRenderer::RANDOM_SEED = 31100;
+Random EndGatewayRenderer::RANDOM = Random(RANDOM_SEED);
 
-void TheEndPortalRenderer::render(shared_ptr<TileEntity> _table, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
+void EndGatewayRenderer::render(shared_ptr<TileEntity> _table, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
 	// 4J Convert as we aren't using a templated class
-	shared_ptr<TheEndPortalTileEntity> table = dynamic_pointer_cast<TheEndPortalTileEntity>(_table);
+	shared_ptr<EndGatewayTileEntity> table = dynamic_pointer_cast<EndGatewayTileEntity>(_table);
 	float xx = static_cast<float>(tileEntityRenderDispatcher->xPlayer);
 	float yy = static_cast<float>(tileEntityRenderDispatcher->yPlayer);
 	float zz = static_cast<float>(tileEntityRenderDispatcher->zPlayer);
@@ -60,7 +60,6 @@ void TheEndPortalRenderer::render(shared_ptr<TileEntity> _table, double x, doubl
 
 			glTranslatef(xx, s, zz);
 		}
-		// 4J - note that the glTexGeni/glEnable calls don't actually do anything in our opengl wrapper version, everything is currently just inferred from the glTexGen calls.
 
 		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
@@ -76,7 +75,6 @@ void TheEndPortalRenderer::render(shared_ptr<TileEntity> _table, double x, doubl
 		glEnable(GL_TEXTURE_GEN_T);
 		glEnable(GL_TEXTURE_GEN_R);
 		glEnable(GL_TEXTURE_GEN_Q);
-
 
 		glPopMatrix();
 		glMatrixMode(GL_TEXTURE);
@@ -94,7 +92,7 @@ void TheEndPortalRenderer::render(shared_ptr<TileEntity> _table, double x, doubl
 		glTranslatef(Camera::xPlayerOffs * dist / ss1, Camera::zPlayerOffs * dist / ss1, -yy);
 
 		Tesselator *t = Tesselator::getInstance();
-		t->useProjectedTexture(true);				// 4J added - turns on both the generation of texture coordinates in the vertex shader & perspective divide of the texture coord in the pixel shader
+		t->useProjectedTexture(true);
 		t->begin();
 
 		float r = RANDOM.nextFloat() * 0.5f + 0.1f;
@@ -102,13 +100,65 @@ void TheEndPortalRenderer::render(shared_ptr<TileEntity> _table, double x, doubl
 		float b = RANDOM.nextFloat() * 0.5f + 0.5f;
 		if (i == 0) r = g = b = 1;
 		t->color(r * br, g * br, b * br, 1.0f);
-		t->vertex(x, y + hoff, z);
-		t->vertex(x, y + hoff, z + 1);
-		t->vertex(x + 1, y + hoff, z + 1);
-		t->vertex(x + 1, y + hoff, z);
+
+		// Down (y)
+		t->vertex(x, y, z);
+		t->vertex(x + 1, y, z);
+		t->vertex(x + 1, y, z + 1);
+		t->vertex(x, y, z + 1);
+		t->vertex(x, y, z + 1);
+		t->vertex(x + 1, y, z + 1);
+		t->vertex(x + 1, y, z);
+		t->vertex(x, y, z);
+		// Up (y + 1)
+		t->vertex(x, y + 1, z);
+		t->vertex(x, y + 1, z + 1);
+		t->vertex(x + 1, y + 1, z + 1);
+		t->vertex(x + 1, y + 1, z);
+		t->vertex(x + 1, y + 1, z);
+		t->vertex(x + 1, y + 1, z + 1);
+		t->vertex(x, y + 1, z + 1);
+		t->vertex(x, y + 1, z);
+		// North (z)
+		t->vertex(x + 1, y, z);
+		t->vertex(x + 1, y + 1, z);
+		t->vertex(x, y + 1, z);
+		t->vertex(x, y, z);
+		t->vertex(x, y, z);
+		t->vertex(x, y + 1, z);
+		t->vertex(x + 1, y + 1, z);
+		t->vertex(x + 1, y, z);
+		// South (z + 1)
+		t->vertex(x, y, z + 1);
+		t->vertex(x, y + 1, z + 1);
+		t->vertex(x + 1, y + 1, z + 1);
+		t->vertex(x + 1, y, z + 1);
+		t->vertex(x + 1, y, z + 1);
+		t->vertex(x + 1, y + 1, z + 1);
+		t->vertex(x, y + 1, z + 1);
+		t->vertex(x, y, z + 1);
+		// West (x)
+		t->vertex(x, y, z);
+		t->vertex(x, y + 1, z);
+		t->vertex(x, y + 1, z + 1);
+		t->vertex(x, y, z + 1);
+		t->vertex(x, y, z + 1);
+		t->vertex(x, y + 1, z + 1);
+		t->vertex(x, y + 1, z);
+		t->vertex(x, y, z);
+		// East (x + 1)
+		t->vertex(x + 1, y, z + 1);
+		t->vertex(x + 1, y + 1, z + 1);
+		t->vertex(x + 1, y + 1, z);
+		t->vertex(x + 1, y, z);
+		t->vertex(x + 1, y, z);
+		t->vertex(x + 1, y + 1, z);
+		t->vertex(x + 1, y + 1, z + 1);
+		t->vertex(x + 1, y, z + 1);
+
 		t->end();
 
-		t->useProjectedTexture(false);			// 4J added
+		t->useProjectedTexture(false);
 		glPopMatrix();
 		glMatrixMode(GL_MODELVIEW);
 	}
@@ -121,12 +171,12 @@ void TheEndPortalRenderer::render(shared_ptr<TileEntity> _table, double x, doubl
 	glEnable(GL_LIGHTING);
 }
 
-TheEndPortalRenderer::TheEndPortalRenderer()
+EndGatewayRenderer::EndGatewayRenderer()
 {
 	lb = MemoryTracker::createFloatBuffer(16);
 }
 
-FloatBuffer *TheEndPortalRenderer::getBuffer(float a, float b, float c, float d)
+FloatBuffer *EndGatewayRenderer::getBuffer(float a, float b, float c, float d)
 {
 	lb->clear();
 	lb->put(a)->put(b)->put(c)->put(d);

@@ -13,6 +13,8 @@
 #include "..\Minecraft.World\OldChunkStorage.h"
 #include "..\Minecraft.World\Tile.h"
 
+static DWORD s_tlsIdxCreateDepth = TlsAlloc();
+
 ServerChunkCache::ServerChunkCache(ServerLevel *level, ChunkStorage *storage, ChunkSource *source)
 {
 	XZSIZE = source->m_XZSize; // 4J Added
@@ -118,6 +120,12 @@ LevelChunk *ServerChunkCache::create(int x, int z, bool asyncPostProcess)	// 4J 
 	if( ( iz < 0 ) || ( iz >= XZSIZE ) ) return emptyChunk;
 	int idx = ix * XZSIZE + iz;
 
+	if ( (int)(size_t)TlsGetValue(s_tlsIdxCreateDepth) > 0 )
+	{
+		return emptyChunk;
+	}
+	TlsSetValue(s_tlsIdxCreateDepth, (void *)(size_t)1);
+
 	LevelChunk *chunk = cache[idx];
 	LevelChunk *lastChunk = chunk;
 
@@ -210,6 +218,7 @@ LevelChunk *ServerChunkCache::create(int x, int z, bool asyncPostProcess)	// 4J 
 			// Something else must have updated the cache. Return that chunk and discard this one
 			chunk->unload(true);
 			delete chunk;
+			TlsSetValue(s_tlsIdxCreateDepth, (void *)(size_t)0);
 			return cache[idx];
 		}
     }
@@ -217,6 +226,7 @@ LevelChunk *ServerChunkCache::create(int x, int z, bool asyncPostProcess)	// 4J 
 #ifdef __PS3__
 	Sleep(1);
 #endif // __PS3__
+	TlsSetValue(s_tlsIdxCreateDepth, (void *)(size_t)0);
     return chunk;
 
 }
@@ -494,7 +504,7 @@ void ServerChunkCache::flagPostProcessComplete(short flag, int x, int z)
 
 		// This would be a good time to fix up any lighting for this chunk since all the geometry that could affect it should now be in place
 		PIXBeginNamedEvent(0,"Recheck gaps");
-		if( lc->level->dimension->id != 1 /*&& lc->level->dimension->id != 2*/ )
+		if( lc->level->dimension->id != 1 )
 		{
 			lc->recheckGaps(true);
 		}
@@ -711,7 +721,6 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 		ZeroMemory(&threadData[0], sizeof(SaveThreadData));
 		ZeroMemory(&threadData[1], sizeof(SaveThreadData));
 		ZeroMemory(&threadData[2], sizeof(SaveThreadData));
-		//ZeroMemory(&threadData[3], sizeof(SaveThreadData));
 
 		for(unsigned int i = 0; i < 3; ++i)
 		{

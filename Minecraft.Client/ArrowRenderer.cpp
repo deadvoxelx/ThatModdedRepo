@@ -5,13 +5,16 @@
 
 ResourceLocation ArrowRenderer::ARROW_LOCATION = ResourceLocation(TN_ITEM_ARROWS);
 ResourceLocation ArrowRenderer::DART_LOCATION = ResourceLocation(TN_MOB_DART);
+ResourceLocation ArrowRenderer::DART_POISON_LOCATION = ResourceLocation(TN_MOB_DARTPOISON);
 ResourceLocation ArrowRenderer::DART_ENCHANTED_LOCATION = ResourceLocation(TN_MOB_DARTENCHANTED);
+ResourceLocation ArrowRenderer::DART_NETHANIUM_LOCATION = ResourceLocation(TN_MOB_DARTNETHANIUM);
 
 void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, double z, float rot, float a)
-{
-	shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(_entity);
+{    shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(_entity);
     shared_ptr<Dart> dart = dynamic_pointer_cast<Dart>(_entity);
+    shared_ptr<DartPoison> dartP = dynamic_pointer_cast<DartPoison>(_entity);
     shared_ptr<DartEnchanted> dartE = dynamic_pointer_cast<DartEnchanted>(_entity);
+    shared_ptr<DartNethanium> dartN = dynamic_pointer_cast<DartNethanium>(_entity);
 
     if (shared_ptr<Entity>(arrow))
 	{
@@ -21,7 +24,15 @@ void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, doubl
 	{
         bindTexture(_entity);
     }
+    if (shared_ptr<Entity>(dartP))
+	{
+        bindTexture(_entity);
+    }
     if (shared_ptr<Entity>(dartE))
+	{
+        bindTexture(_entity);
+    }
+    if (shared_ptr<Entity>(dartN))
 	{
         bindTexture(_entity);
     }
@@ -59,7 +70,9 @@ void ArrowRenderer::render(shared_ptr<Entity> _entity, double x, double y, doubl
     float shake = 0.0f;
 	if (arrow != nullptr) shake = arrow->shakeTime - a;
 	else if (dart != nullptr) shake = static_cast<float>(dart->shakeTime) - a;
+	else if (dartP != nullptr) shake = static_cast<float>(dartP->shakeTime) - a;
 	else if (dartE != nullptr) shake = static_cast<float>(dartE->shakeTime) - a;
+	else if (dartN != nullptr) shake = static_cast<float>(dartN->shakeTime) - a;
 
     if (shake>0)
     {
@@ -109,7 +122,9 @@ ResourceLocation *ArrowRenderer::getTextureLocation(shared_ptr<Entity> entity)
 {
     shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(entity);
     shared_ptr<Dart> dart = dynamic_pointer_cast<Dart>(entity);
+    shared_ptr<DartPoison> dartP = dynamic_pointer_cast<DartPoison>(entity);
     shared_ptr<DartEnchanted> dartE = dynamic_pointer_cast<DartEnchanted>(entity);
+    shared_ptr<DartNethanium> dartN = dynamic_pointer_cast<DartNethanium>(entity);
 
     if (entity->instanceof(eTYPE_ARROW))
 	{
@@ -119,8 +134,16 @@ ResourceLocation *ArrowRenderer::getTextureLocation(shared_ptr<Entity> entity)
 	{
         return &DART_LOCATION;
     }
+    if (entity->instanceof(eTYPE_DARTPOISON))
+	{
+        return &DART_POISON_LOCATION;
+    }
     if (entity->instanceof(eTYPE_DARTENCHANTED))
 	{
         return &DART_ENCHANTED_LOCATION;
+    }
+    if (entity->instanceof(eTYPE_DARTNETHANIUM))
+	{
+        return &DART_NETHANIUM_LOCATION;
     }
 }

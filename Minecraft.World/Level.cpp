@@ -43,6 +43,7 @@
 
 DWORD Level::tlsIdx = TlsAlloc();
 DWORD Level::tlsIdxLightCache = TlsAlloc();
+DWORD Level::tlsIdxInstaTickDepth = TlsAlloc();
 
 // 4J : WESTY : Added for time played stats.
 #include "net.minecraft.stats.h"

@@ -735,6 +735,17 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::gravititeHoe_Id)
 		ITEM(Item::vampireBlade_Id)
 
+		ITEM(Item::agilityCape_Id)			// 0
+		ITEM(Item::invisibilityCape_Id)		// 1
+		ITEM(Item::swetCape_Id)				// 2
+		ITEM(Item::valkyrieCape_Id)			// 3
+		ITEM(Item::valkyrieLance_Id)		// 4
+		ITEM(Item::valkyrieAxe_Id)			// 5
+		ITEM(Item::valkyriePickaxe_Id)		// 6
+		ITEM(Item::valkyrieShovel_Id)		// 7
+		ITEM(Item::valkyrieHoe_Id)			// 8
+		ITEM(Item::cloudParachute_Id)		// 9
+
 		ITEM(Item::ironPendant_Id)			// 0
 		ITEM(Item::ironRing_Id)				// 1
 		ITEM(Item::goldPendant_Id)			// 2
@@ -746,24 +757,16 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::healingStone_Id)			// 8
 		ITEM(Item::lifeShard_Id)			// 9
 
-		ITEM(Item::agilityCape_Id)			// 0
-		ITEM(Item::invisibilityCape_Id)		// 1
-		ITEM(Item::swetCape_Id)				// 2
-		ITEM(Item::valkyrieCape_Id)			// 3
-		ITEM(Item::cloudParachute_Id)		// 4
-		ITEM(Item::dartShooterGold_Id)		// 5
-		ITEM(Item::dartShooterEnchanted_Id)	// 6
-		ITEM(Item::dartGold_Id)				// 7
-		ITEM(Item::dartPoison_Id)			// 8
-		ITEM(Item::dartEnchanted_Id)		// 9
-
 		ITEM(Item::bow_Id)					// 0
 		ITEM(Item::arrow_Id)				// 1
-		ITEM(Item::valkyrieLance_Id)		// 2
-		ITEM(Item::valkyrieAxe_Id)			// 3
-		ITEM(Item::valkyriePickaxe_Id)		// 4
-		ITEM(Item::valkyrieShovel_Id)		// 5
-		ITEM(Item::valkyrieHoe_Id)			// 6
+		ITEM(Item::dartShooterGold_Id)		// 2
+		ITEM(Item::dartShooterPoison_Id)	// 3
+		ITEM(Item::dartShooterEnchanted_Id)	// 4
+		ITEM(Item::dartShooterNethanium_Id)	// 5
+		ITEM(Item::dartGold_Id)				// 6
+		ITEM(Item::dartPoison_Id)			// 7
+		ITEM(Item::dartEnchanted_Id)		// 8
+		ITEM(Item::dartNethanium_Id)		// 9
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{

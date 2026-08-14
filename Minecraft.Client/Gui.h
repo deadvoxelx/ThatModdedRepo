@@ -31,6 +31,9 @@ private:
 	// 4J Added
 	float lastTickA;
 	float fAlphaIncrementPerCent;
+
+	bool showCoords;
+
 public:
 	static float currentGuiBlendFactor;		// 4J added
 	static float currentGuiScaleFactor;		// 4J added

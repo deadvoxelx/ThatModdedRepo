@@ -12,10 +12,10 @@ HellBiome::HellBiome(int id) : Biome(id)
 	waterFriendlies.clear();
 	ambientFriendlies.clear();
 
-	enemies.push_back(new MobSpawnerData(eTYPE_GHAST, 40, 4, 4));
+	enemies.push_back(new MobSpawnerData(eTYPE_GHAST, 40, 1, 1));
 	enemies.push_back(new MobSpawnerData(eTYPE_PIGZOMBIE, 100, 4, 4));
 	enemies.push_back(new MobSpawnerData(eTYPE_LAVASLIME, 5, 1, 4));
-	enemies.push_back(new MobSpawnerData(eTYPE_CAVESPIDER, 5, 1, 3));
-	enemies.push_back(new MobSpawnerData(eTYPE_SKELETON, 3, 2, 4));
-	enemies.push_back(new MobSpawnerData(eTYPE_ENDERMAN, 1, 4, 4));
+	enemies.push_back(new MobSpawnerData(eTYPE_CAVESPIDER, 3, 1, 2));
+	enemies.push_back(new MobSpawnerData(eTYPE_SKELETON, 3, 1, 3));
+	enemies.push_back(new MobSpawnerData(eTYPE_ENDERMAN, 2, 4, 4));
 }

@@ -348,5 +348,5 @@ void LiquidTileDynamic::onPlace(Level *level, int x, int y, int z)
 
 bool LiquidTileDynamic::canInstantlyTick()
 {
-	return true;
+	return false;
 }

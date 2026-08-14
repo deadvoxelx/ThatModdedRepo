@@ -156,6 +156,8 @@ protected:
 public:
 	int dimension;
 
+	bool fellFromAether;
+
 protected:
 	int portalEntranceDir;
 

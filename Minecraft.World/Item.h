@@ -22,8 +22,9 @@ class FishingRodItem;
 class EnchantedBookItem;
 class EmptyMapItem;
 class DartShooterGoldItem;
-//class DartShooterPoisonItem;
+class DartShooterPoisonItem;
 class DartShooterEnchantedItem;
+class DartShooterNethaniumItem;
 class HealingStoneItem;
 class CloudParachuteItem;
 
@@ -494,7 +495,7 @@ public:
 	static Item *gravititeLeggings;
 	static Item *gravititeBoots;
 	static DartShooterGoldItem *dartShooterGold;
-	//static DartShooterPoisonItem *dartShooterPoison;
+	static DartShooterPoisonItem *dartShooterPoison;
 	static DartShooterEnchantedItem *dartShooterEnchanted;
 	static Item *dartGold;
 	static Item *dartPoison;
@@ -564,6 +565,8 @@ public:
 	static Item *magmarootBerry;
 	static Item *lavaReeds;
 	static Item *netherFlax;
+	static DartShooterNethaniumItem *dartShooterNethanium;
+	static Item *dartNethanium;
 
 
 	static const int shovel_iron_Id			= 512;
@@ -807,7 +810,7 @@ public:
 	static const int gravititeLeggings_Id = 729;
 	static const int gravititeBoots_Id = 730;
 	static const int dartShooterGold_Id = 731;
-	//static const int dartShooterPoison_Id = 732;
+	static const int dartShooterPoison_Id = 732;
 	static const int dartShooterEnchanted_Id = 733;
 	static const int dartGold_Id = 734;
 	static const int dartPoison_Id = 735;
@@ -877,6 +880,8 @@ public:
 	static const int magmarootBerry_Id = 799;
 	static const int lavaReeds_Id = 800;
 	static const int netherFlax_Id = 801;
+	static const int dartShooterNethanium_Id = 802;
+	static const int dartNethanium_Id = 803;
 
 public:
 	const int id;

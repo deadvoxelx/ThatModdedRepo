@@ -267,7 +267,7 @@ doubleArray AetherFarlandsLevelSource::getHeights(doubleArray buffer, int x, int
 			float edgeDist = sqrt(xd * xd + zd * zd);
 			float fadeStart = worldHalf * 0.85f;
 			float edgeFade;
-			if (edgeDist < fadeStart)
+			if (edgeDist < fadeStart || worldHalf <= fadeStart)
 				edgeFade = 80.0f;
 			else
 				edgeFade = 80.0f - ((edgeDist - fadeStart) / (worldHalf - fadeStart)) * 180.0f;

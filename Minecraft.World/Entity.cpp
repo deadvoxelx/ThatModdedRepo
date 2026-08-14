@@ -355,6 +355,7 @@ void Entity::_init(bool useSmallId, Level *level)
 	m_ignoreVerticalCollisions = false;
 	m_uiAnimOverrideBitmask = 0L;
 	m_ignorePortal = false;
+	fellFromAether = false;
 }
 
 Entity::Entity(Level *level, bool useSmallId)	// 4J - added useSmallId parameter
@@ -519,9 +520,6 @@ void Entity::tick()
 
 void Entity::baseTick()
 {
-	// 4J Stu - Not needed
-	//util.Timer.push("entityBaseTick");
-
 	if (riding != nullptr && riding->removed)
 	{
 		riding = nullptr;
@@ -547,7 +545,10 @@ void Entity::baseTick()
 				{
 					changingDimensionDelay = 10;
 					yd *= 0.6;
+					fellFromAether = true;
+					moveTo(x, 192, z, yRot, xRot);
 					changeDimension(0);
+					fellFromAether = false;
 					moveTo(x, 192, z, yRot, xRot);
 					fallDistance = 0;
 				}
@@ -555,6 +556,7 @@ void Entity::baseTick()
 
 			else if (isInsidePortal)
 			{
+				isInsidePortal = false;
 				if (server->isNetherEnabled())
 				{
 					if (riding == nullptr)
@@ -578,12 +580,12 @@ void Entity::baseTick()
 							changeDimension(targetDimension);
 						}
 					}
-					isInsidePortal = false;
 				}
 			}
 
 			else if (isInsideAetherPortal)
 			{
+				isInsideAetherPortal = false;
 				if (riding == nullptr)
 				{
 					if (portalTime++ >= waitTime)
@@ -604,11 +606,11 @@ void Entity::baseTick()
 						changeDimension(targetDimension);
 					}
 				}
-				isInsideAetherPortal = false;
 			}
 
 			else if (isInsideGateway)
 			{
+				isInsideGateway = false;
 				if (riding == nullptr)
 				{
 					changingDimensionDelay = 0;
@@ -626,11 +628,11 @@ void Entity::baseTick()
 					changeDimension(targetDimension);
 					fallDistance = 0;
 				}
-				isInsideGateway = false;
 			}
 
 			else if (isInsideNusaPortal)
 			{
+				isInsideNusaPortal = false;
 				if (riding == nullptr)
 				{
 					changingDimensionDelay = 0;
@@ -664,7 +666,6 @@ void Entity::baseTick()
 					}
 					fallDistance = 0;
 				}
-				isInsideNusaPortal = false;
 			}
 
 			else
@@ -2177,6 +2178,8 @@ void Entity::changeDimension(int i)
 	{
 		newLevel = server->getLevel(0);
 	}
+
+	if (server == nullptr || oldLevel == nullptr || newLevel == nullptr) return;
 
 	// 4J: Restrictions on what can go through
 	{

@@ -1,6 +1,9 @@
 #pragma once
 #include "Model.h"
 
+class Cockatrice;
+class Moa;
+
 class MoaModel : public Model
 {
 public:

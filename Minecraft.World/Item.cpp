@@ -312,7 +312,7 @@ Item *Item::gravititeChestplate = NULL;
 Item *Item::gravititeLeggings = NULL;
 Item *Item::gravititeBoots = NULL;
 DartShooterGoldItem *Item::dartShooterGold = NULL;
-//DartShooterPoisonItem *Item::dartShooterPoison = NULL;
+DartShooterPoisonItem *Item::dartShooterPoison = NULL;
 DartShooterEnchantedItem *Item::dartShooterEnchanted = NULL;
 Item *Item::dartGold = NULL;
 Item *Item::dartPoison = NULL;
@@ -382,6 +382,8 @@ Item *Item::blackrootBerry = NULL;
 Item *Item::magmarootBerry = NULL;
 Item *Item::lavaReeds = NULL;
 Item *Item::netherFlax = NULL;
+DartShooterNethaniumItem *Item::dartShooterNethanium = NULL;
+Item *Item::dartNethanium = NULL;
 
 void Item::staticCtor()
 {
@@ -676,7 +678,7 @@ void Item::staticCtor()
 	Item::zaniteGemstone = (new Item(199))															->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_zanite)->setIconName(L"zaniteGemstone")->setDescriptionId(IDS_ITEM_ZANITE_GEMSTONE)->setUseDescriptionId(IDS_ITEM_ZANITE_GEMSTONE);
 	Item::aechorPetal = (new Item(200))																->setIconName(L"aechorPetal")->setDescriptionId(IDS_ITEM_AECHORPETAL)->setUseDescriptionId(IDS_ITEM_AECHORPETAL);
 	Item::dartShooterGold = (DartShooterGoldItem *)(new DartShooterGoldItem(219))					->setIconName(L"dartShooterGold")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
-	//Item::dartShooterPoison = (DartShooterPoisonItem *)(new DartShooterPoisonItem(220))			->setIconName(L"dartShooterPoison")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
+	Item::dartShooterPoison = (DartShooterPoisonItem *)(new DartShooterPoisonItem(220))				->setIconName(L"dartShooterPoison")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
 	Item::dartShooterEnchanted = (DartShooterEnchantedItem *)(new DartShooterEnchantedItem(221))	->setIconName(L"dartShooterEnchanted")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
 	Item::dartGold = (new Item(222))																->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartGold")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
 	Item::dartPoison = (new Item(223))																->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartPoison")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
@@ -736,6 +738,8 @@ void Item::staticCtor()
 	Item::magmarootBerry = (new FoodItem(287, 6, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"magmarootBerry")->setDescriptionId(IDS_ITEM_MAGMAROOT)->setUseDescriptionId(IDS_ITEM_MAGMAROOT);
 	Item::lavaReeds = ( new TilePlanterItem(288, Tile::lavaReed) )									->setIconName(L"lavaReeds")->setDescriptionId(IDS_ITEM_LAVAREED)->setUseDescriptionId(IDS_ITEM_LAVAREED);
 	Item::netherFlax = (new FoodItem(289, 8, FoodConstants::FOOD_SATURATION_GOOD, false))			->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"flax")->setDescriptionId(IDS_ITEM_FLAX)->setUseDescriptionId(IDS_ITEM_FLAX);
+	Item::dartShooterNethanium = (DartShooterNethaniumItem *)(new DartShooterNethaniumItem(290))	->setIconName(L"dartShooterNethanium")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
+	Item::dartNethanium = (new Item(291))															->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartNethanium")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
 
 }
 

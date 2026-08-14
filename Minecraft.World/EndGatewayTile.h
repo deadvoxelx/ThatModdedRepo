@@ -21,6 +21,7 @@ public:
     virtual void onPlace(Level *level, int x, int y, int z) override;
     virtual int cloneTileId(Level *level, int x, int y, int z) override;
     virtual void registerIcons(IconRegister *iconRegister) override;
+    virtual int getRenderShape() override;
 
     virtual int getColor() const;
 	virtual int getColor(int auxData);

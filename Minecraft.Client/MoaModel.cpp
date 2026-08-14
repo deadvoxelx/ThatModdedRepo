@@ -1,7 +1,8 @@
 #include "stdafx.h"
-#include "..\Minecraft.World\Mth.h"
 #include "MoaModel.h"
 #include "ModelPart.h"
+#include "..\Minecraft.World\Mth.h"
+#include "..\Minecraft.World\Moa.h"
 
 void MoaModel::_init(float g)
 {
@@ -95,12 +96,15 @@ void MoaModel::render(shared_ptr<Entity> entity, float time, float r, float bob,
 
 void MoaModel::setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, shared_ptr<Entity> entity, unsigned int uiBitmaskOverrideAnim)
 {
+    shared_ptr<Moa> moa = dynamic_pointer_cast<Moa>(entity);
+
     head->xRot = xRot / (float) (180 / PI);
     head->yRot = yRot / (float) (180 / PI);
-    jaw->xRot = head->xRot;
-    jaw->yRot = head->yRot;
     neck->xRot = 0.0f;
     neck->yRot = head->yRot;
+    jaw->xRot = head->xRot;
+    jaw->xRot += 0.35f;
+    jaw->yRot = head->yRot;
     body->xRot = 1.570796f;
     leg->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
     leg2->xRot = (Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
@@ -112,4 +116,35 @@ void MoaModel::setupAnim(float time, float r, float bob, float yRot, float xRot,
     feather3->yRot = 0.375f;
     wing->zRot = bob;
 	wing2->zRot = -bob;
+
+    if (moa != nullptr && moa->isSitting())
+	{
+        head->setPos(0.0f, 16.0f, -4.0f);
+        jaw->setPos(0.0f, 16.0f, -4.0f);
+        body->setPos(0.0f, 24.0f, 0.0f);
+        leg->setPos(-2.0f, 24.0f, 1.0f);
+        leg2->setPos(2.0f, 24.0f, 1.0f);
+        neck->setPos(0.0f, 22.0f, -4.0f);
+        feather1->setPos(0.0f, 25.0f, 1.0f);
+        feather2->setPos(0.0f, 25.0f, 1.0f);
+        feather3->setPos(0.0f, 25.0f, 1.0f);
+        jaw->xRot = 0.0f;
+        head->xRot = 0.0f;
+        wing->y = 20.0f;
+        wing2->y = 20.0f;
+    }
+	else
+	{
+        head->setPos(0.0f, 8.0f, -4.0f);
+        jaw->setPos(0.0f, 8.0f, -4.0f);
+        body->setPos(0.0f, 16.0f, 0.0f);
+        leg->setPos(-2.0f, 16.0f, 1.0f);
+        leg2->setPos(2.0f, 16.0f, 1.0f);
+        neck->setPos(0.0f, 14.0f, -4.0f);
+        feather1->setPos(0.0f, 17.0f, 1.0f);
+        feather2->setPos(0.0f, 17.0f, 1.0f);
+        feather3->setPos(0.0f, 17.0f, 1.0f);
+        wing->y = 12.0f;
+        wing2->y = 12.0f;
+    }
 }

@@ -54,9 +54,9 @@ float MoaRenderer::getBob(shared_ptr<LivingEntity> _mob, float a)
 
 	if (mob != nullptr)
 	{
-		float flap = mob->oFlap+(mob->flap-mob->oFlap)*a;
-		float flapSpeed = mob->oFlapSpeed+(mob->flapSpeed-mob->oFlapSpeed)*a;
-		return (Mth::sin(flap)+1)*flapSpeed;
+		if (mob->onGround) return 0.0f;
+		float t = (mob->tickCount + a) * 2.0f;
+		return (Mth::sin(t) + 1.0f) * 0.75f;
 	}
 
 	if (moa != nullptr)

@@ -5,6 +5,10 @@
 #include "net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.damagesource.h"
 #include "WeighedRandom.h"
+#include "DartShooterGoldItem.h"
+#include "DartShooterPoisonItem.h"
+#include "DartShooterEnchantedItem.h"
+#include "DartShooterNethaniumItem.h"
 #include "EnchantmentHelper.h"
 
 Random EnchantmentHelper::random;
@@ -437,6 +441,11 @@ unordered_map<int, EnchantmentInstance *> *EnchantmentHelper::getAvailableEnchan
 
 	bool isBook = itemInstance->id == Item::book_Id;
 
+	bool isDartShooter = dynamic_cast<DartShooterGoldItem *>(item) != nullptr ||
+	                     dynamic_cast<DartShooterPoisonItem *>(item) != nullptr ||
+	                     dynamic_cast<DartShooterEnchantedItem *>(item) != nullptr ||
+	                     dynamic_cast<DartShooterNethaniumItem *>(item) != nullptr;
+
 	//for (Enchantment e : Enchantment.enchantments)
 	for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 	{
@@ -447,9 +456,16 @@ unordered_map<int, EnchantmentInstance *> *EnchantmentHelper::getAvailableEnchan
 		}
 
 		// Only picks "normal" enchantments, no specialcases
-		if (!e->category->canEnchant(item) && !isBook)
+		if (!isBook)
 		{
-			continue;
+			if (isDartShooter)
+			{
+				if (e->id != Enchantment::arrowInfinite->id) continue;
+			}
+			else if (!e->category->canEnchant(item))
+			{
+				continue;
+			}
 		}
 
 		for (int level = e->getMinLevel(); level <= e->getMaxLevel(); level++)

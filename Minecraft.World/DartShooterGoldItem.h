@@ -18,4 +18,5 @@ public:
 	virtual int getUseDuration(shared_ptr<ItemInstance> itemInstance);
 	virtual shared_ptr<ItemInstance> use(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player);
 	virtual int getEnchantmentValue();
+	virtual bool isEnchantable(shared_ptr<ItemInstance> itemInstance);
 };

@@ -25,9 +25,11 @@ SunSpirit::SunSpirit(Level *level) : Monster( level )
 
 	setSize(2.5f, 2.8f);
 
+	fireImmune = true;
+
 	getNavigation()->setAvoidWater(true);
 	goalSelector.addGoal(0, new FloatGoal(this));
-	goalSelector.addGoal(7, new LookAtPlayerGoal(this, typeid(Player), 32));
+	goalSelector.addGoal(7, new LookAtPlayerGoal(this, typeid(Player), 8));
 	goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 }
 

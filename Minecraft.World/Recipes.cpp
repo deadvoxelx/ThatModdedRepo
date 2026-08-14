@@ -971,7 +971,23 @@ Recipes::Recipes()
 		L'X', Item::goldenAmber,
 		L'T');
 
-	addShapedRecipy(new ItemInstance(Item::arrow, 4), //
+	addShapedRecipy(new ItemInstance((Item *)Item::dartShooterPoison, 1), //
+		L"scicig",
+		L"#X",
+
+		L'#', Item::skyrootBucket_poison,
+		L'X', Item::dartShooterGold,
+		L'T');
+
+	addShapedRecipy(new ItemInstance((Item *)Item::dartShooterNethanium, 1), //
+		L"scicig",
+		L"X#",
+
+		L'X', Item::dartShooterGold,
+		L'#', Item::nethanium,
+		L'T');
+
+	addShapedRecipy(new ItemInstance(Item::arrow, 6), //
 		L"ssscicicig",
 		L"X", //
 		L"#", //
@@ -982,7 +998,7 @@ Recipes::Recipes()
 		L'#', Item::stick,
 		L'T');
 
-	addShapedRecipy(new ItemInstance(Item::dartGold, 4), //
+	addShapedRecipy(new ItemInstance(Item::dartGold, 6), //
 		L"ssscicicig",
 		L"X", //
 		L"#", //
@@ -1001,6 +1017,16 @@ Recipes::Recipes()
 
 		L'X', Item::dartGold,
 		L'#', Item::skyrootBucket_poison,
+		L'T');
+
+	addShapedRecipy(new ItemInstance(Item::dartNethanium, 8), //
+		L"ssscicig",
+		L"XXX", //
+		L"X#X", //
+		L"XXX", //
+
+		L'X', Item::dartGold,
+		L'#', Item::nethanium,
 		L'T');
 
 	pWeaponRecipies->addRecipes(this);

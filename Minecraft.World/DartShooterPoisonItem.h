@@ -5,13 +5,13 @@
 class Player;
 class Level;
 
-class DartShooterEnchantedItem : public Item
+class DartShooterPoisonItem : public Item
 {
 public:
 	static const int MAX_DRAW_DURATION = 0;
 
 public:
-	DartShooterEnchantedItem(int id);
+	DartShooterPoisonItem(int id);
 
 	virtual void releaseUsing(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player, int durationLeft);
 	virtual shared_ptr<ItemInstance> useTimeDepleted(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player);
