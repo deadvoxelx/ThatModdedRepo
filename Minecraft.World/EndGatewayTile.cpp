@@ -46,6 +46,11 @@ int EndGatewayTile::getResourceCount(Random *random)
 	return 0;
 }
 
+int EndGatewayTile::getRenderShape()
+{
+	return SHAPE_INVISIBLE;
+}
+
 void EndGatewayTile::entityInside(Level* level, int x, int y, int z, shared_ptr<Entity> entity)
 {
     if (entity->GetType() == eTYPE_EXPERIENCEORB) return;
