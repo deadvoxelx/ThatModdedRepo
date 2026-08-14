@@ -11,6 +11,7 @@
 #include "ChestRenderer.h"
 #include "EnchantTableRenderer.h"
 #include "TheEndPortalRenderer.h"
+#include "EndGatewayRenderer.h"
 #include "SkullTileRenderer.h"
 #include "EnderChestRenderer.h"
 #include "BeaconRenderer.h"
@@ -44,6 +45,7 @@ TileEntityRenderDispatcher::TileEntityRenderDispatcher()
 	renderers[eTYPE_ENDERCHESTTILEENTITY] = new EnderChestRenderer();
 	renderers[eTYPE_ENCHANTMENTTABLEENTITY] = new EnchantTableRenderer();
 	renderers[eTYPE_THEENDPORTALTILEENTITY] = new TheEndPortalRenderer();
+	renderers[eTYPE_ENDGATEWAYTILEENTITY] = new EndGatewayRenderer();
 	renderers[eTYPE_SKULLTILEENTITY] = new SkullTileRenderer();
 	renderers[eTYPE_FURNACETILEENTITY] = nullptr;
 	renderers[eTYPE_BEACONTILEENTITY] = new BeaconRenderer();
