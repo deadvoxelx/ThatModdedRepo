@@ -996,6 +996,8 @@ set(_MINECRAFT_CLIENT_COMMON_NET_MINECRAFT_CLIENT_RENDERER_TILEENTITY
   "${CMAKE_CURRENT_SOURCE_DIR}/SkullTileRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/TheEndPortalRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/TheEndPortalRenderer.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/EndGatewayRenderer.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/EndGatewayRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/TileEntityRenderDispatcher.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/TileEntityRenderDispatcher.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/TileEntityRenderer.cpp"
