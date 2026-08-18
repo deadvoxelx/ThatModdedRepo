@@ -293,16 +293,8 @@ void UIScene::loadMovie()
 	moviePath.append(L"Vita.swf");
 	m_loadedResolution = eSceneResolution_Vita;
 #elif defined _WINDOWS64
-	if(ui.getScreenHeight() > 720.0f)
-	{
-		moviePath.append(L"1080.swf");
-		m_loadedResolution = eSceneResolution_1080;
-	}
-	else
-	{
-		moviePath.append(L"720.swf");
-		m_loadedResolution = eSceneResolution_720;
-	}
+	moviePath.append(L"1080.swf");
+	m_loadedResolution = eSceneResolution_1080;
 #else
 	moviePath.append(L"1080.swf");
 	m_loadedResolution = eSceneResolution_1080;
