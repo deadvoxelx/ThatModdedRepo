@@ -4,6 +4,7 @@
 #include "net.minecraft.world.level.biome.h"
 #include "net.minecraft.world.level.newbiome.layer.h"
 #include "System.h"
+#include "ChunkSource.h"
 #include "BiomeSource.h"
 #include "..\Minecraft.Client\Minecraft.h"
 #include "..\Minecraft.Client\ProgressRenderer.h"
@@ -29,11 +30,11 @@ void BiomeSource::_init()
 	playerSpawnBiomes.push_back(Biome::redDesert);
 }
 
-void BiomeSource::_init(int64_t seed, LevelType *generator)
+void BiomeSource::_init(int64_t seed, LevelType *generator, int worldSizeChunks)
 {
 	_init();
 
-	LayerArray layers = Layer::getDefaultLayers(seed, generator);
+	LayerArray layers = Layer::getDefaultLayers(seed, generator, worldSizeChunks);
 	layer = layers[0];
 	zoomedLayer = layers[1];
 
@@ -46,15 +47,15 @@ BiomeSource::BiomeSource()
 }
 
 // 4J added
-BiomeSource::BiomeSource(int64_t seed, LevelType *generator)
+BiomeSource::BiomeSource(int64_t seed, LevelType *generator, int worldSizeChunks)
 {
-	_init(seed, generator);
+	_init(seed, generator, worldSizeChunks);
 }
 
 // 4J - removal of separate temperature & downfall layers brought forward from 1.2.3
 BiomeSource::BiomeSource(Level *level)
 {
-	_init(level->getSeed(), level->getLevelData()->getGenerator());
+	_init(level->getSeed(), level->getLevelData()->getGenerator(), level->getLevelData()->getXZSize());
 }
 
 BiomeSource::~BiomeSource()
@@ -459,12 +460,16 @@ int64_t BiomeSource::findSeed(LevelType *generator, int worldSizeChunks)
 			do
 			{
 				int64_t seed = pr->nextLong();
-				BiomeSource *biomeSource = new BiomeSource(seed,generator);
+				BiomeSource *biomeSource = new BiomeSource(seed,generator,worldSizeChunks);
 
 				biomeSource->getRawBiomeIndices(indices, biomeOffset, biomeOffset, biomeWidth, biomeWidth);
 				getFracs(indices, toCompare);
 
-				matchFound = getIsMatch( toCompare );
+#ifdef _LARGE_WORLDS
+				matchFound = getIsMatch( toCompare, worldSizeChunks <= LEVEL_WIDTH_LARGE );
+#else
+				matchFound = getIsMatch( toCompare, true );
+#endif
 
 				if( matchFound ) bestSeed = seed;
 
@@ -560,10 +565,8 @@ void BiomeSource::getFracs(intArray indices, float *fracs)
 	}
 }
 
-
-
 // 4J added - determine if this particular set of fractional amounts of biome types matches are requirements
-bool BiomeSource::getIsMatch(float *frac)
+bool BiomeSource::getIsMatch(float *frac, bool requireOcean)
 {
 	// A true for a particular biome type here marks it as one that *has* to be present
 	static const bool critical[Biome::BIOME_COUNT] = {
@@ -658,7 +661,13 @@ bool BiomeSource::getIsMatch(float *frac)
 			// If a critical biome is missing, just give up
 			if( critical[i] )
 			{
-				return false;
+				if (i == 0 && !requireOcean)
+				{
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 	}
