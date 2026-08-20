@@ -54,6 +54,9 @@ Chunk::Chunk(Level *level, LevelRenderer::rteMap &globalRenderableTileEntities, 
 	clipChunk->visible = false;
 	bb = nullptr;
 	id = 0;
+#ifdef _LARGE_WORLDS
+	listBase = -1;
+#endif
 
 	this->level = level;
 	//this->globalRenderableTileEntities = globalRenderableTileEntities;
@@ -126,6 +129,9 @@ void Chunk::setPos(int x, int y, int z)
 //	int idx = levelRenderer->getGlobalIndexForChunk(x, y, z, level);
 
 	// If we're the first thing to be referencing this, mark it up as dirty to get rebuilt
+#ifdef _LARGE_WORLDS
+	levelRenderer->setGlobalChunkFlag(x, y, z, level, LevelRenderer::CHUNK_FLAG_DIRTY );
+#else
 	if( refCount == 1 )
 	{
 //		printf("Setting %d %d %d dirty [%d]\n",x,y,z, idx);
@@ -134,12 +140,13 @@ void Chunk::setPos(int x, int y, int z)
 		// Instead, just set the flag to say this is dirty, and then pass a special value of 1 through to the lock free stack which lets that thread know that at least
 		// one chunk other than the ones in the stack itself have been made dirty.
 		levelRenderer->setGlobalChunkFlag(x, y, z, level, LevelRenderer::CHUNK_FLAG_DIRTY );
-#ifdef _XBOX
-		PIXSetMarker(0,"Non-stack event pushed");
-#else
-		PIXSetMarkerDeprecated(0,"Non-stack event pushed");
-#endif
 	}
+#endif
+#ifdef _XBOX
+	PIXSetMarker(0,"Non-stack event pushed");
+#else
+	PIXSetMarkerDeprecated(0,"Non-stack event pushed");
+#endif
 
 	LeaveCriticalSection(&levelRenderer->m_csDirtyChunks);
 
@@ -151,10 +158,12 @@ void Chunk::translateToPos()
 	glTranslatef(static_cast<float>(xRenderOffs), static_cast<float>(yRenderOffs), static_cast<float>(zRenderOffs));
 }
 
-
 Chunk::Chunk()
 {
 	bb = nullptr;
+#ifdef _LARGE_WORLDS
+	listBase = -1;
+#endif
 }
 
 void Chunk::makeCopyForRebuild(Chunk *source)
@@ -172,6 +181,9 @@ void Chunk::makeCopyForRebuild(Chunk *source)
 	this->xm = source->xm;
 	this->ym = source->ym;
 	this->zm = source->zm;
+#ifdef _LARGE_WORLDS
+	this->listBase = source->listBase;
+#endif
 	this->bb = source->bb;
 	this->clipChunk = nullptr;
 	this->id = source->id;
@@ -214,8 +226,12 @@ void Chunk::rebuild()
 
 	int r = 1;
 
+#ifdef _LARGE_WORLDS
+	int lists = this->listBase;
+#else
 	int lists = levelRenderer->getGlobalIndexForChunk(this->x,this->y,this->z,level) * 2;
 	lists += levelRenderer->chunkLists;
+#endif
 
 	PIXEndNamedEvent();
 
@@ -402,8 +418,7 @@ void Chunk::rebuild()
 						}
 
 						Tile *tile = Tile::tiles[tileId];
-						// 4J-style safety: tileIds can hold bogus/unregistered ids (reserve-gap ids, or the 65535
-						// "hidden tile" sentinel written by the section B optimisation) - skip them, don't crash.
+						// Voxel - ignore invalid blocks
 						if (tile == nullptr) continue;
 						if (currentLayer == 0 && tile->isEntityTile())
 						{
@@ -960,7 +975,17 @@ void Chunk::reset()
 		EnterCriticalSection(&levelRenderer->m_csDirtyChunks);
 		unsigned char refCount = levelRenderer->decGlobalChunkRefCount(x, y, z, level);
 		assigned = false;
-//		printf("\t\t [dec] refcount %d at %d, %d, %d\n",refCount,x,y,z);
+#ifdef _LARGE_WORLDS
+		if (this->listBase >= 0)
+		{
+			RenderManager.CBuffClear(this->listBase);
+			RenderManager.CBuffClear(this->listBase + 1);
+		}
+		if( refCount == 0 )
+		{
+			levelRenderer->setGlobalChunkFlags(x, y, z, level, 0);
+		}
+#else
 		if( refCount == 0 )
 		{
 			int lists = levelRenderer->getGlobalIndexForChunk(x, y, z, level) * 2;
@@ -975,6 +1000,7 @@ void Chunk::reset()
 				levelRenderer->setGlobalChunkFlags(x, y, z, level, 0);
 			}
 		}
+#endif
 		LeaveCriticalSection(&levelRenderer->m_csDirtyChunks);
 	}
 
@@ -991,8 +1017,12 @@ int Chunk::getList(int layer)
 {
 	if (!clipChunk->visible) return -1;
 
+#ifdef _LARGE_WORLDS
+	int lists = this->listBase;
+#else
 	int lists = levelRenderer->getGlobalIndexForChunk(x, y, z,level) * 2;
 	lists += levelRenderer->chunkLists;
+#endif
 
 	bool empty =  levelRenderer->getGlobalChunkFlag(x, y, z, level, LevelRenderer::CHUNK_FLAG_EMPTY0, layer);
 	if (!empty) return lists + layer;
