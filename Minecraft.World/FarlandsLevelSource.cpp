@@ -539,8 +539,19 @@ doubleArray FarlandsLevelSource::getHeights(doubleArray buffer, int x, int y, in
 		}
 	}
 
-	//double s = 1 * 684.412;
-	double s = 1 * 1.79414499328E8;
+	//double s = 1 * 1.79414499328E8;	//this was 88x88
+	double s;
+#ifdef _LARGE_WORLDS
+	// Voxel - the base formula for figuring these values out - 1.5788475940864E10 / width in blocks
+	// thisll produce massive numbers; shift over the decimal til its behind the first number
+	// the "E#" is how many times you moved that decimal to the left
+	if (m_XZSize >= LEVEL_WIDTH_HUGE) s = 1 * 1.23347468E7;				// 1280x1280
+	else if (m_XZSize >= LEVEL_WIDTH_LARGE) s = 1 * 2.05579114E7;		// 768x768
+	else if (m_XZSize >= LEVEL_WIDTH_MEDIUM) s = 1 * 3.08368671E7;		// 512x512
+	else s = 1 * 6.16737341E7;						// Classic and Small - 256x256
+#else
+	s = 1 * 6.16737341E7;	// 256x256
+#endif
 	double hs = 1 * 684.412;
 	//double hs = 1 * 1.79414499328E8;
 
