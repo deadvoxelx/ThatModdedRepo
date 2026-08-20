@@ -1175,7 +1175,6 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 		param->findSeed = true;	// 4J - java code sets the seed to was (new Random())->nextLong() here - we used to at this point find a suitable seed, but now just set a flag so this is performed in Minecraft::Server::initServer.
 	}
 
-
 	param->seed = seedValue;
 	param->saveData = nullptr;
 	param->texturePackId = pClass->m_MoreOptionsParams.dwTexturePack;
@@ -1245,6 +1244,11 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 		param->xzSize = LEVEL_WIDTH_LARGE;
 		param->hellScale = HELL_LEVEL_SCALE_LARGE; // hellsize = ceil(5*64/8) = 40
 		break;
+	case 4:
+		// Huge
+		param->xzSize = LEVEL_WIDTH_HUGE;
+		param->hellScale = HELL_LEVEL_SCALE_HUGE; // hellsize = ceil(31*64/8) = 248
+		break;
 	};
 #else
 	param->xzSize = LEVEL_MAX_WIDTH;
@@ -1271,7 +1275,6 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 
 	ui.NavigateToScene(pClass->m_iPad,eUIScene_FullscreenProgress, loadingParams);
 }
-
 
 int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int iPad)
 {
@@ -1379,7 +1382,6 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 	}
 	return 0;
 }
-
 
 int UIScene_CreateWorldMenu::ConfirmCreateReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
