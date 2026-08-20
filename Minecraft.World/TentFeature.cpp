@@ -14,36 +14,34 @@ TentFeature::TentFeature(int blockId) : Feature(blockId)
 
 bool TentFeature::place(Level *level, Random *random, int x, int y, int z)
 {
-  while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) y--;
+	while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) y--;
 
-  int r = 16 * 3; //This extra stuff up here prevents it from generating too close to the world border
+	int r = 16 * 3; //This extra stuff up here prevents it from generating too close to the world border
 
-  int xc = Mth::floor(x * 1.0);
-  int yc = Mth::floor(y * 1.0);
-  int zc = Mth::floor(z * 1.0);
+	int xc = Mth::floor(x * 1.0);
+	int yc = Mth::floor(y * 1.0);
+	int zc = Mth::floor(z * 1.0);
 
-  int XZSIZE = level->dimension->getXZSize() * 16;
-  int XZOFFSET = (XZSIZE / 2) - 16;
+	int XZSIZE = level->dimension->getXZSize() * 16;
+	int XZOFFSET = (XZSIZE / 2) - 16;
 
-  if( (xc - r) < -XZOFFSET )
-  {
-	return false;
-  }
-  else if ( (xc + r) >= XZOFFSET )
-  {
-	return false;
-  }
-  if( (zc - r) < -XZOFFSET )
-  {
-	return false;
-  }
-  else if ( (zc + r) >= XZOFFSET )
-  {
-	return false;
-  } //End extra stuff
+	if( (xc - r) < -XZOFFSET )
+	{
+		return false;
+	}
+	else if ( (xc + r) >= XZOFFSET )
+	{
+		return false;
+	}
+	if( (zc - r) < -XZOFFSET )
+	{
+		return false;
+	}
+	else if ( (zc + r) >= XZOFFSET )
+	{
+		return false;
+	} //End extra stuff
 
-  if (random->nextInt(7) == 0)
-  {
 	for (int groundx = -3; groundx <= 3; groundx++)
 	{
 		for (int groundz = -3; groundz <= 3; groundz++)
@@ -134,6 +132,5 @@ bool TentFeature::place(Level *level, Random *random, int x, int y, int z)
 			return true;
 		}
 	}
-  }
-  return false;
+	return false;
 }
