@@ -17,6 +17,8 @@ AetherFarlandsLevelSource::AetherFarlandsLevelSource(Level *level, int64_t seed)
 
 	this->level = level;
 
+	caveFeature = new LargeCaveFeature();
+
 	random = new Random(seed);
 	pprandom = new Random(seed);
 
@@ -30,10 +32,13 @@ AetherFarlandsLevelSource::AetherFarlandsLevelSource(Level *level, int64_t seed)
 	floatingIslandScale = new PerlinNoise(random, 10);
 	floatingIslandNoise = new PerlinNoise(random, 4);
 	carvingNoise = new PerlinNoise(random, 6);
+	terrainHeightNoise = new PerlinNoise(random, 8);
 }
 
 AetherFarlandsLevelSource::~AetherFarlandsLevelSource()
 {
+	delete caveFeature;
+
 	delete random;
 	delete pprandom;
 	delete lperlinNoise1;
@@ -46,6 +51,7 @@ AetherFarlandsLevelSource::~AetherFarlandsLevelSource()
 	delete floatingIslandScale;
 	delete floatingIslandNoise;
 	delete carvingNoise;
+	delete terrainHeightNoise;
 }
 
 void AetherFarlandsLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
@@ -198,6 +204,8 @@ LevelChunk *AetherFarlandsLevelSource::getChunk(int xOffs, int zOffs)
 	prepareHeights(xOffs, zOffs, blocks, biomes);
 	buildSurfaces(xOffs, zOffs, blocks, biomes);
 
+	caveFeature->apply(this, level, xOffs, zOffs, blocks);
+
 	LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
 	XPhysicalFree(tileData);
 
@@ -220,10 +228,21 @@ doubleArray AetherFarlandsLevelSource::getHeights(doubleArray buffer, int x, int
 		buffer = doubleArray(xSize * ySize * zSize);
 	}
 
-	double s = 1 * 1.79414499328E8;
+	double s;
+#ifdef _LARGE_WORLDS
+	// Voxel - the base formula for figuring these values out - 1.5788475940864E10 / width in blocks
+	// thisll produce massive numbers; shift over the decimal til its behind the first number
+	// the "E#" is how many times you moved that decimal to the left
+	if (m_XZSize >= LEVEL_WIDTH_HUGE) s = 1 * 1.23347468E7;				// 1280x1280
+	else if (m_XZSize >= LEVEL_WIDTH_LARGE) s = 1 * 2.05579114E7;		// 768x768
+	else if (m_XZSize >= LEVEL_WIDTH_MEDIUM) s = 1 * 3.08368671E7;		// 512x512
+	else s = 1 * 6.16737341E7;						// Classic and Small - 256x256
+#else
+	s = 1 * 6.16737341E7;	// 256x256
+#endif
 	double hs = 1 * 684.412;
 
-	doubleArray pnr, ar, br, sr, dr, fis, inr, cnr;
+	doubleArray pnr, ar, br, sr, dr, fis, inr, cnr, hr;
 
 	sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
 	dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
@@ -237,6 +256,7 @@ doubleArray AetherFarlandsLevelSource::getHeights(doubleArray buffer, int x, int
 	fis = floatingIslandScale->getRegion(fis, x, y, z, xSize, 1, zSize, 1.0, 0.5, 1.0);
 	inr = floatingIslandNoise->getRegion(inr, x, z, xSize, zSize, 0.35, 0.35, 0.5);
 	cnr = carvingNoise->getRegion(cnr, x, y, z, xSize, ySize, zSize, s / 30.0, hs / 30.0, s / 30.0);
+	hr = terrainHeightNoise->getRegion(hr, x, z, xSize, zSize, 20.0, 20.0, 0.5);
 
 	// World bounds for edge fade (in noise column units)
 	float worldHalf = (float)m_XZSize;
@@ -281,10 +301,15 @@ doubleArray AetherFarlandsLevelSource::getHeights(doubleArray buffer, int x, int
 
 			if (depth > 2) depth = 2;
 			if (depth < -2) depth = -2;
-			double depthShift = depth * 1.5;
+			double depthShift = depth * 2.5;
 
 			if (scale < 0) scale = 0;
 			scale = (scale) + 0.5;
+
+			double height = hr[pp] * 0.04;
+			if (height > 10) height = 10;
+			if (height < -10) height = -10;
+			double surfaceFadeStart = ySize / 2.0 - 2.0 + height;
 
 			pp++;
 
@@ -312,15 +337,14 @@ doubleArray AetherFarlandsLevelSource::getHeights(doubleArray buffer, int x, int
 					val += (carve + 6.0) * 2.0;
 				}
 
-				int r = 2;
-				if (yy > ySize / 2 - r)
+				if (yy > surfaceFadeStart)
 				{
-					double slide = (yy - (ySize / 2 - r)) / 64.0f;
+					double slide = (yy - surfaceFadeStart) / 64.0f;
 					if (slide < 0) slide = 0;
 					if (slide > 1) slide = 1;
 					val = val * (1 - slide) + -3000 * slide;
 				}
-				r = 8;
+				int r = 8;
 				if (yy < r)
 				{
 					double slide = (r - yy) / (r - 1.0f);
@@ -341,6 +365,7 @@ doubleArray AetherFarlandsLevelSource::getHeights(doubleArray buffer, int x, int
 	delete [] fis.data;
 	delete [] inr.data;
 	delete [] cnr.data;
+	delete [] hr.data;
 
 	return buffer;
 }
@@ -435,6 +460,11 @@ void AetherFarlandsLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Aether Dungeons");
+#ifdef _LARGE_WORLDS
+	int islandRarity = (m_XZSize >= LEVEL_WIDTH_HUGE) ? 768 * 3 : 768;
+#else
+	int islandRarity = 768;
+#endif
 	for (int ixc = -3; ixc <= 3; ixc++)
 	{
 		for (int izc = -3; izc <= 3; izc++)
@@ -442,7 +472,7 @@ void AetherFarlandsLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 			int xc = xt + ixc;
 			int zc = zt + izc;
 			Random islandRandom(((xc * xScale) + (zc * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
-			if (islandRandom.nextInt(512) == 0)
+			if (islandRandom.nextInt(islandRarity) == 0)
 			{
 				int x = xc * 16 + islandRandom.nextInt(16) + 8;
 				int y = 64 + islandRandom.nextInt(24);
@@ -456,7 +486,7 @@ void AetherFarlandsLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 						int ox = xc + oxc;
 						int oz = zc + ozc;
 						Random otherRandom(((ox * xScale) + (oz * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
-						if (otherRandom.nextInt(512) != 0) continue;
+						if (otherRandom.nextInt(islandRarity) != 0) continue;
 						int oX = ox * 16 + otherRandom.nextInt(16) + 8;
 						int oZ = oz * 16 + otherRandom.nextInt(16) + 8;
 						int dX = oX - x;
