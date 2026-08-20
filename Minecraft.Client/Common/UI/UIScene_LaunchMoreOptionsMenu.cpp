@@ -6,12 +6,13 @@
 #define GAME_CREATE_ONLINE_TIMER_TIME 100
 
 #ifdef _LARGE_WORLDS
-int m_iWorldSizeTitleA[4] = 
+int m_iWorldSizeTitleA[5] = 
 {
 	IDS_WORLD_SIZE_TITLE_CLASSIC,
 	IDS_WORLD_SIZE_TITLE_SMALL,
 	IDS_WORLD_SIZE_TITLE_MEDIUM,
 	IDS_WORLD_SIZE_TITLE_LARGE,
+	IDS_WORLD_SIZE_TITLE_HUGE,
 };
 #endif
 
@@ -110,7 +111,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(int iPad, void *ini
 
 #ifdef _LARGE_WORLDS
 	m_labelWorldSize.init(app.GetString(IDS_WORLD_SIZE));
-	m_sliderWorldSize.init(app.GetString(m_iWorldSizeTitleA[m_params->worldSize]),eControl_WorldSize,0,3,m_params->worldSize);
+	m_sliderWorldSize.init(app.GetString(m_iWorldSizeTitleA[m_params->worldSize]),eControl_WorldSize,0,4,m_params->worldSize);
 
 	m_checkboxes[eLaunchCheckbox_DisableSaving].init( app.GetString(IDS_DISABLE_SAVING), eLaunchCheckbox_DisableSaving, m_params->bDisableSaving );
 	
@@ -118,7 +119,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(int iPad, void *ini
 	{
 		m_labelWorldResize.init(app.GetString(IDS_INCREASE_WORLD_SIZE));
 		int min= static_cast<int>(m_params->currentWorldSize)-1;
-		int max=3;
+		int max=4;
 		int curr = static_cast<int>(m_params->newWorldSize)-1;
 		m_sliderWorldResize.init(app.GetString(m_iWorldSizeTitleA[curr]),eControl_WorldResize,min,max,curr);
 		m_checkboxes[eLaunchCheckbox_WorldResizeType].init(app.GetString(IDS_INCREASE_WORLD_SIZE_OVERWRITE_EDGES),eLaunchCheckbox_WorldResizeType,m_params->newWorldSizeOverwriteEdges);
@@ -364,7 +365,6 @@ bool UIScene_LaunchMoreOptionsMenu::handleMouseClick(F32 x, F32 y){
 	{
 		return false;
 	}
-
 }
 #endif
 
@@ -584,27 +584,6 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId, F64 childId
 
 void UIScene_LaunchMoreOptionsMenu::handleTimerComplete(int id)
 {
-	/*switch(id)  //4J-JEV: Moved this over to the tick.
-	{
-	case GAME_CREATE_ONLINE_TIMER_ID:
-		{
-			bool bMultiplayerAllowed 
-				=	ProfileManager.IsSignedInLive(m_params->iPad) 
-				&&	ProfileManager.AllowedToPlayMultiplayer(m_params->iPad);
-
-			if (bMultiplayerAllowed != m_bMultiplayerAllowed)
-			{
-				m_checkboxes[    eLaunchCheckbox_Online].SetEnable(bMultiplayerAllowed);
-				m_checkboxes[eLaunchCheckbox_InviteOnly].SetEnable(bMultiplayerAllowed);
-				m_checkboxes[  eLaunchCheckbox_AllowFoF].SetEnable(bMultiplayerAllowed);
-
-				m_checkboxes[eLaunchCheckbox_Online].setChecked(bMultiplayerAllowed);
-
-				m_bMultiplayerAllowed = bMultiplayerAllowed;
-			}
-		}
-		break;
-	};*/
 }
 
 int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(LPVOID lpParam,bool bRes)
@@ -698,7 +677,6 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId)
 		break;
 	}
 }
-
 
 void UIScene_LaunchMoreOptionsMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
