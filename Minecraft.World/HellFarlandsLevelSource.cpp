@@ -353,7 +353,18 @@ doubleArray HellFarlandsLevelSource::getHeights(doubleArray buffer, int x, int y
 		buffer = doubleArray(xSize * ySize * zSize);
 	}
 
-	double s = 1 * 1.79414499328E8;
+	double s;
+#ifdef _LARGE_WORLDS
+	// Voxel - the base formula for figuring these values out - 1.5788475940864E10 / width in blocks
+	// thisll produce massive numbers; shift over the decimal til its behind the first number
+	// the "E#" is how many times you moved that decimal to the left
+	// for the Nether they need to be heavily decreased; Medium and Large use the same box size
+	if (m_XZSize >= LEVEL_WIDTH_HUGE) s = 1 * 2.05579114E7;				// 768x768
+	else if (m_XZSize >= LEVEL_WIDTH_MEDIUM) s = 1 * 6.16737341E7;		// 256x256
+	else s = 1 * 1.23347468E8;						// Classic and Small - 128x128
+#else
+	s = 1 * 1.23347468E8;	// 128x128
+#endif
 	double hs = 1 * 684.412 * 3;
 
 	doubleArray pnr, ar, br, sr, dr, fi, fis;	// 4J - used to be declared with class level scope but moved here for thread safety
