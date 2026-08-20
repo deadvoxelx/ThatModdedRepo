@@ -6,14 +6,15 @@ class TilePos;
 
 // The maximum number of chunks that we can store
 #ifdef _LARGE_WORLDS
-// 4J Stu - Our default map (at zoom level 3) is 1024x1024 blocks (or 64 chunks)
-#define LEVEL_MAX_WIDTH (5*64)		//320
+#define LEVEL_MAX_WIDTH (31*64)		//1984	//31744
 
-#define LEVEL_WIDTH_CLASSIC 54
-#define LEVEL_WIDTH_SMALL 64
-#define LEVEL_WIDTH_MEDIUM (3*64)	//192
-#define LEVEL_WIDTH_LARGE (5*64)	//320
-
+#define LEVEL_WIDTH_CLASSIC 54				//864
+#define LEVEL_WIDTH_SMALL 64				//1024
+#define LEVEL_WIDTH_MEDIUM (3*64)	//192	//3072
+#define LEVEL_WIDTH_LARGE (5*64)	//320	//5120		//(7*64 = 448; 7168)
+#define LEVEL_WIDTH_HUGE (31*64)	//1984	//31744		//(9*64 = 576; 9216)
+														//(15*64 = 960; 15360)
+														//(31*64 = 1984; 31744)
 #else
 #define LEVEL_MAX_WIDTH 54
 #endif
@@ -27,10 +28,11 @@ class TilePos;
 #ifdef _LARGE_WORLDS
 #define HELL_LEVEL_MAX_SCALE 8
 
-#define HELL_LEVEL_SCALE_CLASSIC 3
-#define HELL_LEVEL_SCALE_SMALL 3
-#define HELL_LEVEL_SCALE_MEDIUM 6
-#define HELL_LEVEL_SCALE_LARGE 8
+#define HELL_LEVEL_SCALE_CLASSIC 3	//18	//288
+#define HELL_LEVEL_SCALE_SMALL 3	//22	//352
+#define HELL_LEVEL_SCALE_MEDIUM 6	//32	//512
+#define HELL_LEVEL_SCALE_LARGE 8	//40	//640
+#define HELL_LEVEL_SCALE_HUGE 8		//248	//3968
 
 #else
 #define HELL_LEVEL_MAX_SCALE 3
@@ -52,8 +54,6 @@ class TilePos;
 
 #define NUREALM_LEVEL_MAX_WIDTH 54
 #define NUREALM_LEVEL_MIN_WIDTH 54
-
-//#define END_LEVEL_MAX_WIDTH (LEVEL_MAX_WIDTH / END_LEVEL_SCALE)
 
 class ChunkSource
 {
