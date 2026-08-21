@@ -69,23 +69,7 @@ int GrassTile::getColor(LevelSource *level, int x, int y, int z, int data)
 {
 	//return level->getBiomeSource()->getBiome(x, z)->getGrassColor(level, x, y, z);
 
-	int totalRed = 0;
-	int totalGreen = 0;
-	int totalBlue = 0;
-
-	for (int oz = -1; oz <= 1; oz++)
-	{
-		for (int ox = -1; ox <= 1; ox++)
-		{
-			int grassColor = level->getBiome(x + ox, z + oz)->getGrassColor();
-
-			totalRed += (grassColor & 0xff0000) >> 16;
-			totalGreen += (grassColor & 0xff00) >> 8;
-			totalBlue += (grassColor & 0xff);
-		}
-	}
-
-	return (((totalRed / 9) & 0xFF) << 16) | (((totalGreen / 9) & 0xFF) << 8) | (((totalBlue / 9) & 0xFF));
+	return Biome::blendGrassColor(level, x, z, Biome::BIOME_COLOR_BLEND_RADIUS);
 }
 
 void GrassTile::tick(Level *level, int x, int y, int z, Random *random)
