@@ -309,22 +309,7 @@ int LeafTile::getColor(LevelSource *level, int x, int y, int z, int data)
 		return FoliageColor::getPurpleSpruceColor();
 	}
 
-	int totalRed = 0;
-	int totalGreen = 0;
-	int totalBlue = 0;
-
-	for (int oz = -1; oz <= 1; oz++)
-	{
-		for (int ox = -1; ox <= 1; ox++)
-		{
-			int foliageColor = level->getBiome(x + ox, z + oz)->getFolageColor();
-
-			totalRed += (foliageColor & 0xff0000) >> 16;
-			totalGreen += (foliageColor & 0xff00) >> 8;
-			totalBlue += (foliageColor & 0xff);
-		}
-	}
-	return (((totalRed / 9) & 0xFF) << 16) | (((totalGreen / 9) & 0xFF) << 8) | (((totalBlue / 9) & 0xFF));
+	return Biome::blendFoliageColor(level, x, z, Biome::BIOME_COLOR_BLEND_RADIUS);
 }
 
 void LeafTile::animateTick(Level *level, int x, int y, int z, Random *random)
