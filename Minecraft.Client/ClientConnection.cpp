@@ -777,6 +777,31 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 				}
 			}
 
+			if (packet->type == AddEntityPacket::DARTNETHANIUM)
+			{
+				shared_ptr<Entity> owner = getEntity(packet->data);
+
+				if( owner == nullptr )
+				{
+					for( int i = 0; i < XUSER_MAX_COUNT; i++ )
+					{
+						if( minecraft->localplayers[i] )
+						{
+							if( minecraft->localplayers[i]->entityId == packet->data )
+							{
+								owner = minecraft->localplayers[i];
+								break;
+							}
+						}
+					}
+				}
+
+				if ( owner != nullptr && owner->instanceof(eTYPE_LIVINGENTITY) )
+				{
+					dynamic_pointer_cast<DartEnchanted>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
+				}
+			}
+
 			e->lerpMotion(packet->xa / 8000.0, packet->ya / 8000.0, packet->za / 8000.0);
 		}
 
