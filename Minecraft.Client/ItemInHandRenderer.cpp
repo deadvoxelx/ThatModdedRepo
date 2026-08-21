@@ -824,7 +824,7 @@ void ItemInHandRenderer::renderWater(float a)
     Tesselator *t = Tesselator::getInstance();
 
     float br = minecraft->player->getBrightness(a);
-    glColor4f(br, br, br, 0.5f);
+    glColor4f(br, br, br, 0.3f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -952,4 +952,3 @@ void ItemInHandRenderer::itemUsed()
 {
 	height = 0;
 }
-
