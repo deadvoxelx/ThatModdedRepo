@@ -806,8 +806,8 @@ HRESULT InitDevice()
 	UINT width = rc.right - rc.left;
 	UINT height = rc.bottom - rc.top;
 //app.DebugPrintf("width: %d, height: %d\n", width, height);
-	width = g_rScreenWidth;
-	height = g_rScreenHeight;
+	g_rScreenWidth = static_cast<int>(width);
+	g_rScreenHeight = static_cast<int>(height);
 //app.DebugPrintf("width: %d, height: %d\n", width, height);
 
 	UINT createDeviceFlags = 0;
