@@ -56,6 +56,7 @@ public:
 	static Biome *redDesert;
 
 	static const int BIOME_COUNT = 29; // 4J Stu added
+	static const int BIOME_COLOR_BLEND_RADIUS = 5;
 
 public:
 	wstring m_name;
@@ -158,4 +159,8 @@ public:
 	virtual int getGrassColor();
 	virtual int getFolageColor();
 	virtual int getWaterColor(); // 4J Added
+
+	static int blendGrassColor(LevelSource *level, int x, int z, int radius);
+	static int blendFoliageColor(LevelSource *level, int x, int z, int radius);
+	static int blendWaterColor(LevelSource *level, int x, int z, int radius);
 };
