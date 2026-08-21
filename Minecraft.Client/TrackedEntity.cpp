@@ -142,7 +142,7 @@ void TrackedEntity::tick(EntityTracker *tracker, vector<shared_ptr<Player> > *pl
 			// skip first tick since position is sent in addEntity packet
 			// FallingTile depends on this because it removes its source block in the first tick()
 
-			if (tickCount > 0 || e->instanceof(eTYPE_ARROW) || e->instanceof(eTYPE_DART) || e->instanceof(eTYPE_DARTPOISON) || e->instanceof(eTYPE_DARTENCHANTED) || e->instanceof(eTYPE_PLAYER)) // 4J: Modifed, see above
+			if (tickCount > 0 || e->instanceof(eTYPE_ARROW) || e->instanceof(eTYPE_DART) || e->instanceof(eTYPE_DARTPOISON) || e->instanceof(eTYPE_DARTENCHANTED) || e->instanceof(eTYPE_DARTNETHANIUM) || e->instanceof(eTYPE_PLAYER)) // 4J: Modifed, see above
 			{
 				if (xa < -128 || xa >= 128 || ya < -128 || ya >= 128 || za < -128 || za >= 128 || wasRiding
 					// 4J Stu - I fixed the initialisation of teleportDelay in the ctor, but we managed this far without out
@@ -435,7 +435,7 @@ void TrackedEntity::removePlayer(shared_ptr<ServerPlayer> sp)
 }
 
 // 4J-JEV: Added for code reuse.
-TrackedEntity::eVisibility TrackedEntity::isVisible(EntityTracker *tracker, shared_ptr<ServerPlayer> sp, bool forRider)
+TrackedEntity::eVisibility TrackedEntity::isVisible(EntityTracker *tracker, shared_ptr<ServerPlayer> sp, bool forRider, int chainDepth)
 {
 	// 4J Stu - We call update players when the entity has moved more than a certain amount at the start of it's tick
 	// Before this call we set xpu, ypu and zpu to the entities new position, but xp,yp and zp are the old position until later in the tick.
@@ -504,7 +504,11 @@ TrackedEntity::eVisibility TrackedEntity::isVisible(EntityTracker *tracker, shar
 		shared_ptr<TrackedEntity> mountTracker = tracker->getTracker(e->riding);
 		if (mountTracker != nullptr)
 		{
-			return mountTracker->isVisible(tracker, sp, true);
+			if (chainDepth >= TRACKED_ENTITY_MAX_RIDING_CHAIN_DEPTH)
+			{
+				return eVisibility_NotVisible;
+			}
+			return mountTracker->isVisible(tracker, sp, true, chainDepth + 1);
 		}
 		return eVisibility_NotVisible;
 	}
