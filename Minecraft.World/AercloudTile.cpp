@@ -9,11 +9,12 @@
 const unsigned int AercloudTile::CLOUD_NAMES[CLOUD_NAMES_LENGTH] =
 {
 	IDS_TILE_AERCLOUD,
-	IDS_TILE_AERCLOUD_BLUE,
 	IDS_TILE_AERCLOUD_GOLD,
+	IDS_TILE_AERCLOUD_BLUE,
 };
 
-const wstring AercloudTile::TEXTURE_NAMES[] = {
+const wstring AercloudTile::TEXTURE_NAMES[] =
+{
 	L"aercloud", L"aercloud", L"aercloud"
 };
 
