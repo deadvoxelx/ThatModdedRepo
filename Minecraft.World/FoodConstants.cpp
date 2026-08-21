@@ -35,4 +35,5 @@ const float FoodConstants::EXHAUSTION_DAMAGE = .1f;
 const float FoodConstants::EXHAUSTION_WALK = .010f;
 const float FoodConstants::EXHAUSTION_SPRINT = FoodConstants::EXHAUSTION_WALK * 10;
 const float FoodConstants::EXHAUSTION_SWIM = .015f;
+const float FoodConstants::EXHAUSTION_SPRINT_SWIM = FoodConstants::EXHAUSTION_SWIM * 10;
 const float FoodConstants::EXHAUSTION_DASH = 1.0f;
