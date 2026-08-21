@@ -43,23 +43,7 @@ int LiquidTile::getColor(LevelSource *level, int x, int y, int z, int d)
 {
 	if (material == Material::water)
 	{
-		int totalRed = 0;
-		int totalGreen = 0;
-		int totalBlue = 0;
-
-		for (int oz = -1; oz <= 1; oz++)
-		{
-			for (int ox = -1; ox <= 1; ox++)
-			{
-				int waterColor = level->getBiome(x + ox, z + oz)->getWaterColor();
-
-				totalRed += (waterColor & 0xff0000) >> 16;
-				totalGreen += (waterColor & 0xff00) >> 8;
-				totalBlue += (waterColor & 0xff);
-			}
-		}
-
-		return (((totalRed / 9) & 0xFF) << 16) | (((totalGreen / 9) & 0xFF) << 8) | (((totalBlue / 9) & 0xFF));
+		return Biome::blendWaterColor(level, x, z, Biome::BIOME_COLOR_BLEND_RADIUS);
 	}
 	return 0xffffff;
 }
