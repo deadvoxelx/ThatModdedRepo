@@ -317,17 +317,10 @@ void Player::tick()
 		clearFire();
 	}
 
-	if ((isSneaking()) && (!isSleeping()))
-	{
-		setSize(0.6f, 1.489f);
-	}
-	else if ((!isSneaking()) && (!isSleeping()))
-	{
-		setSize(0.6f, 1.8f);
-	}
-
+	//if (!g_KBMInput.IsActionDown(KBM_ACTION_DASH)) dashTimer = 5;
+	//if (g_KBMInput.IsActionDown(KBM_ACTION_DASH) && (dashTimer > 0) && (getFoodData()->getFoodLevel() >= 6) && !isSneaking() && !isSwimming())
 	if (!g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_DASH)) dashTimer = 5;
-	if (g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_DASH) && (dashTimer > 0) && (getFoodData()->getFoodLevel() >= 6))
+	if (g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_DASH) && (dashTimer > 0) && (getFoodData()->getFoodLevel() >= 6) && !isSneaking() && !isSwimming())
 	{
 		--dashTimer;
 		Vec3* viewVector = getViewVector(1.0f);
@@ -854,6 +847,7 @@ void Player::rideTick()
 void Player::resetPos()
 {
 	heightOffset = 1.62f;
+	setSize(0.6f, 1.8f);
 	LivingEntity::resetPos();
 	setHealth(getMaxHealth());
 	deathTime = 0;
@@ -863,29 +857,21 @@ void Player::serverAiStep()
 {
 	LivingEntity::serverAiStep();
 	updateSwingTime();
+	updateSize();
 }
 
 void Player::aiStep()
 {
 	if (jumpTriggerTime > 0) jumpTriggerTime--;
 
-	/*if (level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION))
-	{
-		bool health_OK = getHealth() < getMaxHealth();
-		if ((tickCount % 12 == 0) && health_OK)
-		{
-			FoodData* fd = getFoodData();
-			if ((level->difficulty == Difficulty::PEACEFUL)) {
-				heal(1);
-			}
-		}
-	}*/
 	if (level->difficulty == Difficulty::PEACEFUL && getHealth() < getMaxHealth() && level->getGameRules()->getBoolean(GameRules::RULE_NATURAL_REGENERATION))
 	{
 		if (tickCount % 20 * 12 == 0) heal(1);
 	}
 	inventory->tick();
 	oBob = bob;
+
+	updateSize();
 
 	LivingEntity::aiStep();
 
@@ -1666,7 +1652,7 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z, bool bTes
 		ride(nullptr);
 	}
 
-	setSize(0.2f, 0.2f);
+	updateSize();
 	heightOffset = .2f;
 	if (level->hasChunkAt(x, y, z))
 	{
@@ -1735,7 +1721,7 @@ void Player::setBedOffset(int bedDirection)
 
 void Player::stopSleepInBed(bool forcefulWakeUp, bool updateLevelList, bool saveRespawnPoint)
 {
-	setSize(0.6f, 1.8f);
+	updateSize();
 	setDefaultHeadHeight();
 
 	Pos *pos = bedPosition;
@@ -1941,6 +1927,40 @@ float Player::getSpeed()
 	return static_cast<float>(getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->getValue());
 }
 
+bool Player::isSwimming()
+{
+	return isInWater() && isSprinting() && !abilities.flying && riding == nullptr && !isSleeping();
+}
+
+bool Player::shouldUseSwimmingPose()
+{
+	if (isSwimming())
+	{
+		return true;
+	}
+	return false;
+}
+
+void Player::updateSize()
+{
+	if (shouldUseSwimmingPose())
+	{
+		setSize(0.6f, 0.85f);
+	}
+	else if (isSneaking())
+	{
+		setSize(0.6f, 1.4f);
+	}
+	else if (isSleeping())
+	{
+		setSize(0.2f, 0.2f);
+	}
+	else
+	{
+		setSize(0.6f, 1.8f);
+	}
+}
+
 void Player::checkMovementStatistiscs(double dx, double dy, double dz)
 {
 	if (riding != nullptr)
@@ -1952,8 +1972,8 @@ void Player::checkMovementStatistiscs(double dx, double dy, double dz)
 		int distance = static_cast<int>(Math::round(sqrt(dx * dx + dy * dy + dz * dz) * 100.0f));
 		if (distance > 0)
 		{
-			//awardStat(Stats::diveOneCm, distance);
-			causeFoodExhaustion(FoodConstants::EXHAUSTION_SWIM * distance * .01f);
+			const float swimExhaustion = isSwimming() ? FoodConstants::EXHAUSTION_SPRINT_SWIM : FoodConstants::EXHAUSTION_SWIM;
+			causeFoodExhaustion(swimExhaustion * distance * .01f);
 		}
 	}
 	else if (isInWater())
