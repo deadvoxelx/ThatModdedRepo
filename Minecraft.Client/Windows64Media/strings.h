@@ -2587,3 +2587,4 @@
 #define IDS_TILE_VELOETT_VINE								   2581
 #define IDS_TILE_VELOETT_FLOWER								   2582
 #define IDS_TILE_ENDESERT_BUSH								   2583
+#define IDS_WORLD_SIZE_TITLE_HUGE				               2584
