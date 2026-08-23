@@ -15,6 +15,7 @@ class BiomeSource
 private:
 	shared_ptr<Layer> layer;
 	shared_ptr<Layer> zoomedLayer;
+
 public:
 	static const int CACHE_DIAMETER = 256;
 
@@ -25,15 +26,17 @@ private:
 
 protected:
 	void _init();
-	void _init(int64_t seed, LevelType *generator);
+	void _init(int64_t seed, LevelType *generator, int worldSizeChunks = 320);
     BiomeSource();
 
 public:
-	BiomeSource(int64_t seed, LevelType *generator);
+	BiomeSource(int64_t seed, LevelType *generator, int worldSizeChunks = 320);
     BiomeSource(Level *level);
+
 private:
-	static bool getIsMatch(float *frac);					// 4J added
-	static void getFracs(intArray indices, float *fracs);	// 4J added
+	static bool getIsMatch(float *frac, bool requireOcean);
+	static void getFracs(intArray indices, float *fracs);
+
 public:
 #ifdef __PSVITA__
 	static int64_t findSeed(LevelType *generator, bool* pServerRunning, int worldSizeChunks = 54);	// MGH - added pRunning, so we can early out of this on Vita as it can take up to 60 secs							// 4J added

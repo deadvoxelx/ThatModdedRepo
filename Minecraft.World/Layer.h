@@ -21,7 +21,7 @@ private:
 	int64_t seedMixup;
 
 public:
-	static LayerArray getDefaultLayers(int64_t seed, LevelType *levelType);
+	static LayerArray getDefaultLayers(int64_t seed, LevelType *levelType, int worldSizeChunks = 320);
 
 	Layer(int64_t seedMixup);
 

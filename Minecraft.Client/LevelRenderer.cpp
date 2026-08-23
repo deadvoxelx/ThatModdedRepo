@@ -44,6 +44,7 @@
 #include "..\Minecraft.World\IntBuffer.h"
 #include "..\Minecraft.World\JavaMath.h"
 #include "..\Minecraft.World\net.minecraft.world.level.h"
+#include "..\Minecraft.World\net.minecraft.world.level.storage.h"
 #include "..\Minecraft.World\net.minecraft.world.level.dimension.h"
 #include "..\Minecraft.World\net.minecraft.world.level.tile.h"
 #include "..\Minecraft.World\net.minecraft.world.phys.h"
@@ -86,32 +87,62 @@ C4JThread *LevelRenderer::rebuildThreads[MAX_CHUNK_REBUILD_THREADS];
 C4JThread::EventArray *LevelRenderer::s_rebuildCompleteEvents;
 C4JThread::Event *LevelRenderer::s_activationEventA[MAX_CHUNK_REBUILD_THREADS];
 
-// This defines the maximum size of renderable level, must be big enough to cope with actual size of level + view distance at each side
-// so that we can render the "infinite" sea at the edges. Currently defined as:
-const int overworldSize = LEVEL_MAX_WIDTH + LevelRenderer::PLAYER_VIEW_DISTANCE + LevelRenderer::PLAYER_VIEW_DISTANCE;
-const int netherSize = HELL_LEVEL_MAX_WIDTH + 2; // 4J Stu - The plus 2 is really just to make our total chunk count a multiple of 8 for the flags, we will never see these in the nether
-const int endSize = END_LEVEL_MAX_WIDTH;
-const int outerEndSize = OUTER_END_LEVEL_MAX_WIDTH;
-const int aetherSize = LEVEL_MAX_WIDTH + LevelRenderer::PLAYER_VIEW_DISTANCE + LevelRenderer::PLAYER_VIEW_DISTANCE;
-const int nurealmSize = NUREALM_LEVEL_MAX_WIDTH;
-const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[6] = 
-{	// Voxel - made this easier to read/write
-	overworldSize,
-	netherSize,
-	endSize,
-	outerEndSize,
-	aetherSize,
-	nurealmSize
+const int maxOverworldSize = LEVEL_MAX_WIDTH + LevelRenderer::PLAYER_VIEW_DISTANCE + LevelRenderer::PLAYER_VIEW_DISTANCE;
+const int maxNetherSize = HELL_LEVEL_MAX_WIDTH + 2; // 4J Stu - The plus 2 is really just to make our total chunk count a multiple of 8 for the flags, we will never see these in the nether
+const int maxEndSize = END_LEVEL_MAX_WIDTH;
+const int maxOuterEndSize = OUTER_END_LEVEL_MAX_WIDTH;
+const int maxAetherSize = LEVEL_MAX_WIDTH + LevelRenderer::PLAYER_VIEW_DISTANCE + LevelRenderer::PLAYER_VIEW_DISTANCE;
+const int maxNurealmSize = NUREALM_LEVEL_MAX_WIDTH;
+//const int maxPaleoscapeSize = PALEOSCAPE_LEVEL_MAX_WIDTH;
+int LevelRenderer::MAX_LEVEL_RENDER_SIZE[6] = 
+{	// Voxel - made this easier to read/edit
+	maxOverworldSize,
+	maxNetherSize,
+	maxEndSize,
+	maxOuterEndSize,
+	maxAetherSize,
+	maxNurealmSize
+	//maxPaleoscapeSize
 };
-const int LevelRenderer::DIMENSION_OFFSETS[6] = 
-{	// Voxel - made this easier to read/write
-	0,
-	(overworldSize * overworldSize * CHUNK_Y_COUNT),
-	(overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ),
-	(overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ) + ( endSize * endSize * CHUNK_Y_COUNT ),
-	(overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ) + ( endSize * endSize * CHUNK_Y_COUNT ) + ( outerEndSize * outerEndSize * CHUNK_Y_COUNT ),
-	(overworldSize * overworldSize * CHUNK_Y_COUNT) + ( netherSize * netherSize * CHUNK_Y_COUNT ) + ( endSize * endSize * CHUNK_Y_COUNT ) + ( outerEndSize * outerEndSize * CHUNK_Y_COUNT ) + ( aetherSize * aetherSize * CHUNK_Y_COUNT )
+int LevelRenderer::DIMENSION_OFFSETS[6] = 
+{	// Voxel - made this easier to read/edit
+	0
+	,(maxOverworldSize * maxOverworldSize * CHUNK_Y_COUNT)
+	,(maxOverworldSize * maxOverworldSize * CHUNK_Y_COUNT) + ( maxNetherSize * maxNetherSize * CHUNK_Y_COUNT )
+	,(maxOverworldSize * maxOverworldSize * CHUNK_Y_COUNT) + ( maxNetherSize * maxNetherSize * CHUNK_Y_COUNT ) + ( maxEndSize * maxEndSize * CHUNK_Y_COUNT )
+	,(maxOverworldSize * maxOverworldSize * CHUNK_Y_COUNT) + ( maxNetherSize * maxNetherSize * CHUNK_Y_COUNT ) + ( maxEndSize * maxEndSize * CHUNK_Y_COUNT ) + ( maxOuterEndSize * maxOuterEndSize * CHUNK_Y_COUNT )
+	,(maxOverworldSize * maxOverworldSize * CHUNK_Y_COUNT) + ( maxNetherSize * maxNetherSize * CHUNK_Y_COUNT ) + ( maxEndSize * maxEndSize * CHUNK_Y_COUNT ) + ( maxOuterEndSize * maxOuterEndSize * CHUNK_Y_COUNT ) + ( maxAetherSize * maxAetherSize * CHUNK_Y_COUNT )
+	//,(maxOverworldSize * maxOverworldSize * CHUNK_Y_COUNT) + ( maxNetherSize * maxNetherSize * CHUNK_Y_COUNT ) + ( maxEndSize * maxEndSize * CHUNK_Y_COUNT ) + ( maxOuterEndSize * maxOuterEndSize * CHUNK_Y_COUNT ) + ( maxAetherSize * maxAetherSize * CHUNK_Y_COUNT ) + ( maxNurealmSize * maxNurealmSize * CHUNK_Y_COUNT )
 };
+
+// Voxel - The game computes the max level rendering sizes for every dimension on startup, which heavily loads the command buffer
+// I changed it to be per-loaded world so the 31k by 31k world would actually work
+void LevelRenderer::configureForWorld(int xzSize, int hellScale)
+{
+	int dim0 = xzSize + LevelRenderer::PLAYER_VIEW_DISTANCE + LevelRenderer::PLAYER_VIEW_DISTANCE;
+	int dimN1 = ((xzSize + hellScale - 1) / hellScale) + 2;	// ceil(xzSize / hellScale) + 2, matching the nether's actual size
+	int dim1 = END_LEVEL_MAX_WIDTH;
+	int dim2 = OUTER_END_LEVEL_MAX_WIDTH;
+	int dim3 = dim0;
+	int dim4 = NUREALM_LEVEL_MAX_WIDTH;
+	//int dim5 = PALEO_LEVEL_MAX_WIDTH;
+
+	MAX_LEVEL_RENDER_SIZE[0] = dim0;
+	MAX_LEVEL_RENDER_SIZE[1] = dimN1;
+	MAX_LEVEL_RENDER_SIZE[2] = dim1;
+	MAX_LEVEL_RENDER_SIZE[3] = dim2;
+	MAX_LEVEL_RENDER_SIZE[4] = dim3;
+	MAX_LEVEL_RENDER_SIZE[5] = dim4;
+	//MAX_LEVEL_RENDER_SIZE[6] = dim5;
+
+	DIMENSION_OFFSETS[0] = 0;
+	DIMENSION_OFFSETS[1] = dim0 * dim0 * CHUNK_Y_COUNT;
+	DIMENSION_OFFSETS[2] = DIMENSION_OFFSETS[1] + (dimN1 * dimN1 * CHUNK_Y_COUNT);
+	DIMENSION_OFFSETS[3] = DIMENSION_OFFSETS[2] + (dim1 * dim1 * CHUNK_Y_COUNT);
+	DIMENSION_OFFSETS[4] = DIMENSION_OFFSETS[3] + (dim2 * dim2 * CHUNK_Y_COUNT);
+	DIMENSION_OFFSETS[5] = DIMENSION_OFFSETS[4] + (dim3 * dim3 * CHUNK_Y_COUNT);
+	//DIMENSION_OFFSETS[6] = DIMENSION_OFFSETS[5] + (dim4 * dim4 * CHUNK_Y_COUNT);
+}
 #else
 // This defines the maximum size of renderable level, must be big enough to cope with actual size of level + view distance at each side
 // so that we can render the "infinite" sea at the edges. Currently defined as:
@@ -126,12 +157,13 @@ const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[6] = { 80, 44, 44, 80, 80, 80 };
 
 const int LevelRenderer::DIMENSION_OFFSETS[6] = 
 {	// Voxel - made this easier to read/edit
-	0,
-	(80 * 80 * CHUNK_Y_COUNT),
-	(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ),
-	(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) + ( 44 * 44 * CHUNK_Y_COUNT ),
-	(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) + ( 44 * 44 * CHUNK_Y_COUNT ) + (80 * 80 * CHUNK_Y_COUNT),
-	(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) + ( 44 * 44 * CHUNK_Y_COUNT ) + (80 * 80 * CHUNK_Y_COUNT) + (80 * 80 * CHUNK_Y_COUNT)
+	0
+	,(80 * 80 * CHUNK_Y_COUNT)
+	,(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT )
+	,(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) + ( 44 * 44 * CHUNK_Y_COUNT )
+	,(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) + ( 44 * 44 * CHUNK_Y_COUNT ) + (80 * 80 * CHUNK_Y_COUNT)
+	,(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) + ( 44 * 44 * CHUNK_Y_COUNT ) + (80 * 80 * CHUNK_Y_COUNT) + (80 * 80 * CHUNK_Y_COUNT)
+	//,(80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) + ( 44 * 44 * CHUNK_Y_COUNT ) + (80 * 80 * CHUNK_Y_COUNT) + (80 * 80 * CHUNK_Y_COUNT) + (80 * 80 * CHUNK_Y_COUNT)
 };
 #endif
 
@@ -148,7 +180,11 @@ LevelRenderer::LevelRenderer(Minecraft *mc, Textures *textures)
 		zOld[i] = -9999;
 	}
 	xChunks= yChunks= zChunks = 0;
+#ifdef _LARGE_WORLDS
+	for (int i = 0; i < 4; i++) chunkLists[i] = 0;
+#else
 	chunkLists = 0;
+#endif
 
 	ticks = 0;
 	starList= skyList= darkList = 0;
@@ -185,9 +221,15 @@ LevelRenderer::LevelRenderer(Minecraft *mc, Textures *textures)
 	this->mc = mc;
 	this->textures = textures;
 
+#ifdef _LARGE_WORLDS
+	globalChunkFlags = nullptr;
+	m_allocatedGlobalChunkCount = 0;
+#else
 	chunkLists = MemoryTracker::genLists(getGlobalChunkCount()*2);		// *2 here is because there is one renderlist per chunk here for each of the opaque & transparent layers
 	globalChunkFlags = new unsigned char[getGlobalChunkCount()];
 	memset(globalChunkFlags, 0, getGlobalChunkCount());
+	m_allocatedGlobalChunkCount = getGlobalChunkCount();
+#endif
 
 	starList = MemoryTracker::genLists(4);
 
@@ -374,6 +416,10 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel *level)
 	tileRenderer[playerIndex] = new TileRenderer(level);
 	if (level != nullptr)
 	{
+#ifdef _LARGE_WORLDS
+		configureForWorld(level->getLevelData()->getXZSize(), level->getLevelData()->getHellScale());
+		ensureChunkStorageAllocated();
+#endif
 		// If we're the only player referencing this level, add a new listener for it
 		int refCount = 0;
 		for( int i = 0; i < 4; i++ )
@@ -400,6 +446,13 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel *level)
 			delete chunks[playerIndex].data;
 			chunks[playerIndex].data = nullptr;
 			chunks[playerIndex].length = 0;
+#ifdef _LARGE_WORLDS
+			if (chunkLists[playerIndex] != 0)
+			{
+				MemoryTracker::releaseLists(chunkLists[playerIndex]);
+				chunkLists[playerIndex] = 0;
+			}
+#endif
 			//			delete sortedChunks[playerIndex];	// 4J - removed - not sorting our chunks anymore
 			//			sortedChunks[playerIndex] = nullptr;	// 4J - removed - not sorting our chunks anymore
 		}
@@ -474,10 +527,20 @@ void LevelRenderer::allChanged(int playerIndex)
 			delete chunks[playerIndex][i].chunk;
 		}
 		delete chunks[playerIndex].data;
+#ifdef _LARGE_WORLDS
+		if (chunkLists[playerIndex] != 0)
+		{
+			MemoryTracker::releaseLists(chunkLists[playerIndex]);
+			chunkLists[playerIndex] = 0;
+		}
+#endif
 		//		delete sortedChunks[playerIndex];	// 4J - removed - not sorting our chunks anymore
 	}
 
 	chunks[playerIndex] = ClipChunkArray(xChunks * yChunks * zChunks);
+#ifdef _LARGE_WORLDS
+	chunkLists[playerIndex] = MemoryTracker::genLists((xChunks * yChunks * zChunks) * 2);
+#endif
 	//	sortedChunks[playerIndex] = new vector<Chunk *>(xChunks * yChunks * zChunks);		// 4J - removed - not sorting our chunks anymore
 	int id = 0;
 	int count = 0;
@@ -498,10 +561,14 @@ void LevelRenderer::allChanged(int playerIndex)
 		{
 			for (int z = 0; z < zChunks; z++)
 			{
-				chunks[playerIndex][(z * yChunks + y) * xChunks + x].chunk = new Chunk(level[playerIndex], renderableTileEntities, m_csRenderableTileEntities, x * CHUNK_XZSIZE, y * CHUNK_SIZE, z * CHUNK_XZSIZE, &chunks[playerIndex][(z * yChunks + y) * xChunks + x]);
-				chunks[playerIndex][(z * yChunks + y) * xChunks + x].visible = true;
-				chunks[playerIndex][(z * yChunks + y) * xChunks + x].chunk->id = count++;
-				//				sortedChunks[playerIndex]->at((z * yChunks + y) * xChunks + x) = chunks[playerIndex]->at((z * yChunks + y) * xChunks + x);	// 4J - removed - not sorting our chunks anymore
+				int idx = (z * yChunks + y) * xChunks + x;
+				chunks[playerIndex][idx].chunk = new Chunk(level[playerIndex], renderableTileEntities, m_csRenderableTileEntities, x * CHUNK_XZSIZE, y * CHUNK_SIZE, z * CHUNK_XZSIZE, &chunks[playerIndex][idx]);
+				chunks[playerIndex][idx].visible = true;
+				chunks[playerIndex][idx].chunk->id = count++;
+#ifdef _LARGE_WORLDS
+				chunks[playerIndex][idx].listBase = chunkLists[playerIndex] + idx * 2;
+				chunks[playerIndex][idx].chunk->listBase = chunks[playerIndex][idx].listBase;
+#endif
 
 				id += 3;
 			}
@@ -515,7 +582,6 @@ void LevelRenderer::allChanged(int playerIndex)
 		if (player != nullptr)
 		{
 			this->resortChunks(Mth::floor(player->x), Mth::floor(player->y), Mth::floor(player->z));
-			//			sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(), DistanceChunkSorter(player));	// 4J - removed - not sorting our chunks anymore
 		}
 	}
 
@@ -768,7 +834,6 @@ int LevelRenderer::render(shared_ptr<LivingEntity> player, int layer, double alp
 	int count = renderChunks(0, static_cast<int>(chunks[playerIndex].length), layer, alpha);
 
 	return count;
-
 }
 
 #ifdef __PSVITA__
@@ -849,9 +914,12 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 		if( pClipChunk->globalIdx == -1 ) continue;												// Not sure if we should ever encounter this... TODO check
 		if( ( globalChunkFlags[pClipChunk->globalIdx] & emptyFlag ) == emptyFlag ) continue;	// Check that this particular layer isn't empty
 
-		// List can be calculated directly from the chunk's global idex
+#ifdef _LARGE_WORLDS
+		int list = pClipChunk->listBase + layer;
+#else
 		int list = pClipChunk->globalIdx * 2 + layer;
 		list += chunkLists;
+#endif
 
 		if(RenderManager.CBuffCall(list, first))
 		{
@@ -951,7 +1019,6 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 #endif
 
 	return count;
-
 }
 
 void LevelRenderer::renderSameAsLast(int layer, double alpha)
@@ -1887,7 +1954,6 @@ void LevelRenderer::renderAdvancedClouds(float alpha)
 	}
 	RenderManager.StateSetEnableViewportClipPlanes(false);
 }
-
 
 bool LevelRenderer::updateDirtyChunks()
 {
@@ -3058,7 +3124,47 @@ void LevelRenderer::skyColorChanged()
 
 void LevelRenderer::clear()
 {
-	MemoryTracker::releaseLists(chunkLists);
+#ifdef _LARGE_WORLDS
+	for (int i = 0; i < 4; i++)
+	{
+		if (chunkLists[i] != 0)
+		{
+			MemoryTracker::releaseLists(chunkLists[i]);
+			chunkLists[i] = 0;
+		}
+	}
+#else
+	if (chunkLists != 0)
+	{
+		MemoryTracker::releaseLists(chunkLists);
+		chunkLists = 0;
+	}
+#endif
+	if (globalChunkFlags != nullptr)
+	{
+		delete[] globalChunkFlags;
+		globalChunkFlags = nullptr;
+	}
+	m_allocatedGlobalChunkCount = 0;
+}
+
+void LevelRenderer::ensureChunkStorageAllocated()
+{
+	int count = getGlobalChunkCount();
+	if (m_allocatedGlobalChunkCount == count)
+	{
+		return;
+	}
+
+	if (globalChunkFlags != nullptr)
+	{
+		delete[] globalChunkFlags;
+		globalChunkFlags = nullptr;
+	}
+
+	globalChunkFlags = new unsigned char[count];
+	memset(globalChunkFlags, 0, count);
+	m_allocatedGlobalChunkCount = count;
 }
 
 void LevelRenderer::globalLevelEvent(int type, int sourceX, int sourceY, int sourceZ, int data)
@@ -3451,7 +3557,9 @@ bool LevelRenderer::isGlobalIndexInSameDimension( int idx, Level *level)
 {
 	int dim = getDimensionIndexFromId(level->dimension->id);
 	int idxDim = 0;
+	//if( idx >= DIMENSION_OFFSETS[6] ) idxDim = 6;
 	if( idx >= DIMENSION_OFFSETS[5] ) idxDim = 5;
+	//else if( idx >= DIMENSION_OFFSETS[5] ) idxDim = 5;
 	else if( idx >= DIMENSION_OFFSETS[4] ) idxDim = 4;
 	else if( idx >= DIMENSION_OFFSETS[3] ) idxDim = 3;
 	else if( idx >= DIMENSION_OFFSETS[2] ) idxDim = 2;
@@ -3461,12 +3569,13 @@ bool LevelRenderer::isGlobalIndexInSameDimension( int idx, Level *level)
 
 int LevelRenderer::getGlobalChunkCount()
 {
-	return  ( MAX_LEVEL_RENDER_SIZE[0] * MAX_LEVEL_RENDER_SIZE[0] * CHUNK_Y_COUNT ) +
-		( MAX_LEVEL_RENDER_SIZE[1] * MAX_LEVEL_RENDER_SIZE[1] * CHUNK_Y_COUNT ) +
-		( MAX_LEVEL_RENDER_SIZE[2] * MAX_LEVEL_RENDER_SIZE[2] * CHUNK_Y_COUNT ) +
-		( MAX_LEVEL_RENDER_SIZE[3] * MAX_LEVEL_RENDER_SIZE[3] * CHUNK_Y_COUNT ) +
-		( MAX_LEVEL_RENDER_SIZE[4] * MAX_LEVEL_RENDER_SIZE[4] * CHUNK_Y_COUNT ) +
-		( MAX_LEVEL_RENDER_SIZE[5] * MAX_LEVEL_RENDER_SIZE[5] * CHUNK_Y_COUNT );
+	return  ( MAX_LEVEL_RENDER_SIZE[0] * MAX_LEVEL_RENDER_SIZE[0] * CHUNK_Y_COUNT )
+		+ ( MAX_LEVEL_RENDER_SIZE[1] * MAX_LEVEL_RENDER_SIZE[1] * CHUNK_Y_COUNT )
+		+ ( MAX_LEVEL_RENDER_SIZE[2] * MAX_LEVEL_RENDER_SIZE[2] * CHUNK_Y_COUNT )
+		+ ( MAX_LEVEL_RENDER_SIZE[3] * MAX_LEVEL_RENDER_SIZE[3] * CHUNK_Y_COUNT )
+		+ ( MAX_LEVEL_RENDER_SIZE[4] * MAX_LEVEL_RENDER_SIZE[4] * CHUNK_Y_COUNT )
+		+ ( MAX_LEVEL_RENDER_SIZE[5] * MAX_LEVEL_RENDER_SIZE[5] * CHUNK_Y_COUNT );
+		//+ ( MAX_LEVEL_RENDER_SIZE[6] * MAX_LEVEL_RENDER_SIZE[6] * CHUNK_Y_COUNT );
 }
 
 int LevelRenderer::getGlobalChunkCountForOverworld()
@@ -3582,7 +3691,6 @@ unsigned char LevelRenderer::incGlobalChunkRefCount(int x, int y, int z, Level *
 	{
 		return 0;
 	}
-
 }
 
 unsigned char LevelRenderer::decGlobalChunkRefCount(int x, int y, int z, Level *level)
@@ -3646,7 +3754,6 @@ LevelRenderer::DestroyedTileManager::~DestroyedTileManager()
 		delete m_destroyedTiles[i];
 	}
 }
-
 
 // For game to let this manager know that a tile is about to be destroyed (must be called before it actually is)
 void LevelRenderer::DestroyedTileManager::destroyingTileAt( Level *level, int x, int y, int z )

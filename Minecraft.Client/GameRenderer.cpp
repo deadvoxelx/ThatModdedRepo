@@ -43,7 +43,6 @@
 #include "Camera.h"
 #include "..\Minecraft.World\SoundTypes.h"
 #include "HumanoidModel.h"
-#include "..\Minecraft.World\Item.h"
 #include "..\Minecraft.World\compression.h"
 #include "PS3\PS3Extras\ShutdownManager.h"
 #include "BossMobGuiInfo.h"
@@ -55,6 +54,8 @@
 
 bool GameRenderer::anaglyph3d = false;
 int GameRenderer::anaglyphPass = 0;
+
+static const float WATER_OPACITY = 0.7f;
 
 #ifdef MULTITHREAD_ENABLE
 C4JThread*		GameRenderer::m_updateThread;
@@ -1213,8 +1214,15 @@ void GameRenderer::render(float a, bool bFirst)
 	ScreenSizeCalculator ssc(mc->options, mc->width, mc->height);
 	const int screenWidth = ssc.getWidth();
 	const int screenHeight = ssc.getHeight();
+#ifdef _WINDOWS64
+	extern int g_rScreenWidth;
+	extern int g_rScreenHeight;
+	const int xMouse = Mouse::getX() * screenWidth / g_rScreenWidth;
+	const int yMouse = screenHeight - Mouse::getY() * screenHeight / g_rScreenHeight - 1;
+#else
 	const int xMouse = Mouse::getX() * screenWidth / mc->width;
 	const int yMouse = screenHeight - Mouse::getY() * screenHeight / mc->height - 1;
+#endif
 
     const int maxFps = getFpsCap(mc->options->framerateLimit);
 
@@ -1587,7 +1595,9 @@ void GameRenderer::renderLevel(float a, int64_t until)
 			if (visibleWaterChunks > 0)
 			{
 				PIXBeginNamedEvent(0,"Fancy second pass - actual rendering");
+				glColor4f(1, 1, 1, WATER_OPACITY);
 				levelRenderer->render(cameraEntity, 1, a, updateChunks);	// 4J - chanaged, used to be renderSameAsLast but we don't support that anymore
+				glColor4f(1, 1, 1, 1);
 				PIXEndNamedEvent();
 			}
 
@@ -2045,7 +2055,7 @@ void GameRenderer::setupClearColor(float a)
 	{
 		float clearness = EnchantmentHelper::getOxygenBonus(player) * 0.2f;
 
-		unsigned int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Under_Water_Clear_Colour );
+		unsigned int colour = Biome::blendWaterColor(level, Mth::floor(player->x), Mth::floor(player->z), Biome::BIOME_COLOR_BLEND_RADIUS);
 		byte redComponent = ((colour>>16)&0xFF);
 		byte greenComponent = ((colour>>8)&0xFF);
 		byte blueComponent = ((colour)&0xFF);
@@ -2211,19 +2221,12 @@ void GameRenderer::setupFog(int i, float alpha)
 	else if (t > 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == Material::water)
 	{
 		glFogi(GL_FOG_MODE, GL_EXP);
-		if (player->hasEffect(MobEffect::waterBreathing))
-		{
-			glFogf(GL_FOG_DENSITY, 0.05f); // was 0.06
-		}
-		else
-		{
-			glFogf(GL_FOG_DENSITY, 0.1f - (EnchantmentHelper::getOxygenBonus(player) * 0.03f)); // was 0.06
-		}
+		glFogf(GL_FOG_DENSITY, 0.03f); // was 0.06
 	}
 	else if (t > 0 && Tile::tiles[t] != nullptr && Tile::tiles[t]->material == Material::lava)
 	{
 		glFogi(GL_FOG_MODE, GL_EXP);
-		glFogf(GL_FOG_DENSITY, 0.05f); // was 0.06
+		glFogf(GL_FOG_DENSITY, 0.06f);
 	}
 	else
 	{

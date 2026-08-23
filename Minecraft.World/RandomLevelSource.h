@@ -17,6 +17,11 @@ public:
 	static const double SNOW_CUTOFF;
 	static const double SNOW_SCALE;
 	static const bool FLOATING_ISLANDS = TRUE;
+
+	static const double RAISED_PATCH_SCALE;
+	static const double RAISED_PATCH_THRESHOLD;
+	static const int RAISED_PATCH_HEIGHT;
+
 	static const int CHUNK_HEIGHT = 8;
 	static const int CHUNK_WIDTH = 4;
 
@@ -39,12 +44,15 @@ private:
 
 public:
 	PerlinNoise *forestNoise;
+	PerlinNoise *ledgeNoise;
 
 private:
 	Level *level;
 	const bool generateStructures;
 
 	floatArray pows;
+
+	void ledge(int xOffs, int zOffs, byteArray blocks);
 
 public:
 	RandomLevelSource(Level *level, __int64 seed, bool generateStructures);
@@ -57,8 +65,6 @@ public:
 #endif
 	float getHeightFalloff(int xxx, int zzz, int* pEMin);
 	void prepareHeights(int xOffs, int zOffs, byteArray blocks);
-
-public:
 	void buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes);
 
 private:

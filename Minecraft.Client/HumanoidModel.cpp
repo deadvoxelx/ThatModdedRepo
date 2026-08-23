@@ -115,6 +115,7 @@ void HumanoidModel::_init(float g, float yOffset, int texWidth, int texHeight)
 	holdingLeftHand=0;
 	holdingRightHand=0;
 	sneaking=false;
+	swimming=false;
 	idle=false;
 	bowAndArrow=false;
 
@@ -258,7 +259,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot, float 
 				leg1->xRot = -HALF_PI * 0.4f;
 			}
 		}
-		else if(idle && !sneaking )
+		else if(idle && !sneaking && !swimming )
 		{
 			leg0->xRot = -HALF_PI;
 			leg1->xRot = -HALF_PI;
@@ -340,10 +341,39 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot, float 
 			arm0->xRot = - Mth::abs(Mth::cos(eating_t / 4.0f * PI) * 0.1f) * (eating_swing > 0.2 ? 1.0f : 0.0f) * 2.0f;		// This factor is the chomping bit (conditional factor is so that he doesn't eat whilst the food is being pulled away at the end)
 			arm0->yRot -= iss * 0.5f;																			// This factor and the following to the general arm movement through the life of the swing
 			arm0->xRot -= iss * 1.2f;
-
 		}
 
-		if (sneaking)
+		if (swimming)
+		{
+			body->xRot = HALF_PI;
+
+			leg0->xRot = HALF_PI + ( Mth::cos(time * 0.6662f) * 1.4f) * r;
+			leg1->xRot = HALF_PI + ( Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
+
+			head->yRot = ( Mth::cos(time * 0.6662f) * 0.7f) * r;
+
+			arm0->xRot = -HALF_PI + (Mth::cos(time * 0.6662f) * 2.0f) * r * 0.5f;
+			arm1->xRot = -HALF_PI + (Mth::cos(time * 0.6662f + PI) * 2.0f) * r * 0.5f;
+			arm0->zRot = 0.0f;
+			arm1->zRot = 0.0f;
+
+			leg0->y = 0.0f;
+			leg1->y = 0.0f;
+			leg0->z = 12.0f;
+			leg1->z = 12.0f;
+			body->y = 0.0f;
+			arm0->y = 0.0f;
+			arm1->y = 0.0f;
+			arm0->z = 0.0f;
+			arm1->z = 0.0f;
+			arm0->x = -5.0f;
+			arm1->x = 5.0f;
+			head->y = 0.0f;
+			hair->y = 0.0f;
+			ear->y = 1.0f;
+			cloak->y = 0.0f;
+		}
+		else if (sneaking)
 		{
 			if(uiBitmaskOverrideAnim&(1<<eAnim_SmallModel))
 			{

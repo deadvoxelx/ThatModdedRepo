@@ -8,6 +8,7 @@ using namespace std;
 class EntityTracker;
 
 #define TRACKED_ENTITY_MINIMUM_VIEW_DISTANCE 4
+#define TRACKED_ENTITY_MAX_RIDING_CHAIN_DEPTH 16
 
 class TrackedEntity
 {
@@ -58,7 +59,7 @@ private:
 		eVisibility_SeenAndVisible = 2,
 	};
 
-	eVisibility isVisible(EntityTracker *tracker, shared_ptr<ServerPlayer> sp, bool forRider = false); // 4J Added forRider
+	eVisibility isVisible(EntityTracker *tracker, shared_ptr<ServerPlayer> sp, bool forRider = false, int chainDepth = 0); // 4J Added forRider
 	
 public:
     void updatePlayer(EntityTracker *tracker, shared_ptr<ServerPlayer> sp);

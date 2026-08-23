@@ -279,6 +279,52 @@ void Biome::decorate(Level *level, Random *random, int xo, int zo)
 	decorator->decorate(level, random, xo, zo);
 }
 
+typedef int (*BiomeColorGetter)(Biome *biome);
+
+static int getGrassColorForBiome(Biome *biome) { return biome->getGrassColor(); }
+static int getFoliageColorForBiome(Biome *biome) { return biome->getFolageColor(); }
+static int getWaterColorForBiome(Biome *biome) { return biome->getWaterColor(); }
+
+static int blendBiomeColor(LevelSource *level, int x, int z, int radius, BiomeColorGetter getter)
+{
+	int totalRed = 0;
+	int totalGreen = 0;
+	int totalBlue = 0;
+	int totalWeight = 0;
+
+	for (int oz = -radius; oz <= radius; oz++)
+	{
+		int wz = radius + 1 - (oz < 0 ? -oz : oz);
+		for (int ox = -radius; ox <= radius; ox++)
+		{
+			int wx = radius + 1 - (ox < 0 ? -ox : ox);
+			int weight = wz * wx;
+			int color = getter(level->getBiome(x + ox, z + oz));
+
+			totalRed += ((color & 0xff0000) >> 16) * weight;
+			totalGreen += ((color & 0xff00) >> 8) * weight;
+			totalBlue += (color & 0xff) * weight;
+			totalWeight += weight;
+		}
+	}
+	return (((totalRed / totalWeight) & 0xFF) << 16) | (((totalGreen / totalWeight) & 0xFF) << 8) | ((totalBlue / totalWeight) & 0xFF);
+}
+
+int Biome::blendGrassColor(LevelSource *level, int x, int z, int radius)
+{
+	return blendBiomeColor(level, x, z, radius, &getGrassColorForBiome);
+}
+
+int Biome::blendFoliageColor(LevelSource *level, int x, int z, int radius)
+{
+	return blendBiomeColor(level, x, z, radius, &getFoliageColorForBiome);
+}
+
+int Biome::blendWaterColor(LevelSource *level, int x, int z, int radius)
+{
+	return blendBiomeColor(level, x, z, radius, &getWaterColorForBiome);
+}
+
 int Biome::getGrassColor()
 {
 	//double temp = Mth::clamp(getTemperature(), 0.0f, 1.0f);

@@ -19,12 +19,14 @@ static PerlinNoise_DataIn g_perlinNoise1_SPU __attribute__((__aligned__(16)));
 static PerlinNoise_DataIn g_scaleNoise_SPU __attribute__((__aligned__(16)));
 static PerlinNoise_DataIn g_depthNoise_SPU __attribute__((__aligned__(16)));
 //#define DISABLE_SPU_CODE
-
 #endif
-
 
 const double RandomLevelSource::SNOW_SCALE = 0.3;
 const double RandomLevelSource::SNOW_CUTOFF = 0.5;
+
+const double RandomLevelSource::RAISED_PATCH_SCALE = 0.04;
+const double RandomLevelSource::RAISED_PATCH_THRESHOLD = 0.8;
+const int RandomLevelSource::RAISED_PATCH_HEIGHT = 8;
 
 RandomLevelSource::RandomLevelSource(Level *level, __int64 seed, bool generateStructures) : generateStructures( generateStructures )
 {
@@ -63,6 +65,7 @@ RandomLevelSource::RandomLevelSource(Level *level, __int64 seed, bool generateSt
 	}
 
 	forestNoise = new PerlinNoise(random, 8);
+	ledgeNoise = new PerlinNoise(random, 2);
 }
 
 RandomLevelSource::~RandomLevelSource()
@@ -92,19 +95,14 @@ RandomLevelSource::~RandomLevelSource()
 	}
 
 	delete forestNoise;
+	delete ledgeNoise;
 
 	if( pows.data != NULL ) delete [] pows.data;
 }
 
-
 int g_numPrepareHeightCalls = 0;
 LARGE_INTEGER g_totalPrepareHeightsTime = {0,0};
 LARGE_INTEGER g_averagePrepareHeightsTime = {0, 0};
-
-
-
-
-
 
 #ifdef _LARGE_WORLDS
 
@@ -153,7 +151,6 @@ int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize, flo
 	return closest;
 }
 
-
 float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin)
 {
 	///////////////////////////////////////////////////////////////////
@@ -196,7 +193,6 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin)
 }
 
 #else
-
 
 // MGH  - go back to using the simpler version for PS3/vita/360, as it was causing a lot of slow down on the tuturial generation
 float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin)
@@ -278,6 +274,17 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)
 				double s2a = (buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 1)] - s2) * yStep;
 				double s3a = (buffer[((xc + 1) * zSize + (zc + 1)) * ySize + (yc + 1)] - s3) * yStep;
 
+				// Voxel - swap these for some wack generation
+				/*double s0 = buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)];
+				double s1 = buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)];
+				double s2 = buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)];
+				double s3 = buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)];
+
+				double s0a = (buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)] - s0) * yStep;
+				double s1a = (buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)] - s1) * yStep;
+				double s2a = (buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)] - s2) * yStep;
+				double s3a = (buffer[((xc + 1) * zSize + (zc + 0)) * ySize + (yc + 0)] - s3) * yStep;*/
+
 				for (int y = 0; y < CHUNK_HEIGHT; y++)
 				{
 					double xStep = 1 / (double) CHUNK_WIDTH;
@@ -356,10 +363,52 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)
 
 	delete [] buffer.data;
 	delete [] biomes.data;
-
-
 }
 
+// Voxel - Classic 0.30-esque raised terrain
+// why? it adds some extra spice to the worldgen
+void RandomLevelSource::ledge(int xOffs, int zOffs, byteArray blocks)
+{
+	for (int x = 0; x < 16; x++)
+	{
+		for (int z = 0; z < 16; z++)
+		{
+			double wx = (xOffs * 16 + x) * RAISED_PATCH_SCALE;
+			double wz = (zOffs * 16 + z) * RAISED_PATCH_SCALE;
+			if (ledgeNoise->getValue(wx, 0.0, wz) <= RAISED_PATCH_THRESHOLD)
+			{
+				continue;
+			}
+
+			int base = (x * 16 + z) * Level::genDepth;
+
+			int top = -1;
+			for (int y = Level::genDepthMinusOne; y >= 0; y--)
+			{
+				byte tile = blocks[base + y];
+				if (tile != 0 && tile != Tile::calmWater_Id)
+				{
+					top = y;
+					break;
+				}
+			}
+
+			if (top < 0 || top < level->seaLevel || top + RAISED_PATCH_HEIGHT > Level::genDepthMinusOne)
+			{
+				continue;
+			}
+
+			for (int y = Level::genDepthMinusOne; y >= RAISED_PATCH_HEIGHT; y--)
+			{
+				blocks[base + y] = blocks[base + y - RAISED_PATCH_HEIGHT];
+			}
+			for (int y = 0; y < RAISED_PATCH_HEIGHT; y++)
+			{
+				blocks[base + y] = 0;
+			}
+		}
+	}
+}
 
 void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)
 {
@@ -462,7 +511,6 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 	}
 
 	delete [] depthBuffer.data;
-
 }
 
 LevelChunk *RandomLevelSource::create(int x, int z)
@@ -479,14 +527,11 @@ LevelChunk *RandomLevelSource::getChunk(int xOffs, int zOffs)
 	byte *tileData = (byte *)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096, PAGE_READWRITE);
 	XMemSet128(tileData,0,blocksSize);
 	byteArray blocks = byteArray(tileData,blocksSize);
-	//    byteArray blocks = byteArray(16 * level->depth * 16);
-
-	// LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);		// 4J - moved to below
 
 	prepareHeights(xOffs, zOffs, blocks);
-
-	// 4J - Some changes made here to how biomes, temperatures and downfalls are passed around for thread safety
+	ledge(xOffs, zOffs, blocks);
 	BiomeArray biomes;
+
 	level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16, 16, true);
 
 	buildSurfaces(xOffs, zOffs, blocks, biomes);
@@ -528,7 +573,6 @@ void RandomLevelSource::lightChunk(LevelChunk *lc)
 {
 	lc->recalcHeightmap();
 }
-
 
 doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y, int z, int xSize, int ySize, int zSize, BiomeArray& biomes)
 {
@@ -755,7 +799,6 @@ void RandomLevelSource::calcWaterDepths(ChunkSource *parent, int xt, int zt)
 			}
 		}
 	}
-
 }
 
 // 4J - changed this to used pprandom rather than random, so that we can run it concurrently with getChunk

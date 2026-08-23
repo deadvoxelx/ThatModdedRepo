@@ -245,6 +245,15 @@ void PlayerRenderer::render(shared_ptr<Entity> _mob, double x, double y, double 
 
     armorParts1->sneaking = armorParts2->sneaking = humanoidModel->sneaking = mob->isSneaking();
 
+    if (mob->instanceof(eTYPE_PLAYER))
+    {
+        armorParts1->swimming = armorParts2->swimming = humanoidModel->swimming = dynamic_pointer_cast<Player>(mob)->isSwimming();
+    }
+    else
+    {
+        armorParts1->swimming = armorParts2->swimming = humanoidModel->swimming = false;
+    }
+
     double yp = y - mob->heightOffset;
     if (mob->isSneaking() && !mob->instanceof(eTYPE_LOCALPLAYER))
 	{
@@ -297,6 +306,7 @@ void PlayerRenderer::render(shared_ptr<Entity> _mob, double x, double y, double 
 	}
 	armorParts1->bowAndArrow = armorParts2->bowAndArrow = humanoidModel->bowAndArrow = false;
     armorParts1->sneaking = armorParts2->sneaking = humanoidModel->sneaking = false;
+    armorParts1->swimming = armorParts2->swimming = humanoidModel->swimming = false;
     armorParts1->holdingRightHand = armorParts2->holdingRightHand = humanoidModel->holdingRightHand = 0;
 
 }
@@ -323,7 +333,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 			glPushMatrix();
 			humanoidModel->head->translateTo(1 / 16.0f);
 
-			if(headGear->getItem()->id < 256)
+			if(headGear->getItem() != nullptr && headGear->getItem()->id < 256)
 			{
 				if (TileRenderer::canRender(Tile::tiles[headGear->id]->getRenderShape()))
 				{
@@ -335,7 +345,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 
 				entityRenderDispatcher->itemInHandRenderer->renderItem(mob, headGear, 0);
 			}
-			else if (headGear->getItem()->id == Item::skull_Id)
+			else if (headGear->getItem() != nullptr && headGear->getItem()->id == Item::skull_Id)
 			{
 				float s = 17 / 16.0f;
 				glScalef(s, -s, -s);
@@ -438,7 +448,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 			anim = item->getUseAnimation();
 		}
 
-        if (item->id < 256 && TileRenderer::canRender(Tile::tiles[item->id]->getRenderShape()))
+        if (item->id >= 0 && item->id < 256 && TileRenderer::canRender(Tile::tiles[item->id]->getRenderShape()))
 		{
             float s = 8 / 16.0f;
             glTranslatef(-0 / 16.0f, 3 / 16.0f, -5 / 16.0f);
@@ -456,7 +466,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 			glRotatef(-100, 1, 0, 0);
 			glRotatef(45, 0, 1, 0);
 		}
-		else if (Item::items[item->id]->isHandEquipped())
+		else if (item->getItem() != nullptr && Item::items[item->id]->isHandEquipped())
 		{
 			float s = 10 / 16.0f;
 			if (Item::items[item->id]->isMirroredArt())
@@ -489,7 +499,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
             glRotatef(20, 0, 0, 1);
         }
 
-		if (item->getItem()->hasMultipleSpriteLayers())
+		if (item->getItem() != nullptr && item->getItem()->hasMultipleSpriteLayers())
 		{
 			for (int layer = 0; layer <= 1; layer++)
 			{
@@ -504,7 +514,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 		}
 		else
 		{
-			int col = item->getItem()->getColor(item, 0);
+			int col = item->getItem() != nullptr ? item->getItem()->getColor(item, 0) : 0xFFFFFF;
             float red = ((col >> 16) & 0xff) / 255.0f;
             float g = ((col >> 8) & 0xff) / 255.0f;
             float b = ((col) & 0xff) / 255.0f;

@@ -449,6 +449,11 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Aether Dungeons");
+#ifdef _LARGE_WORLDS
+	int islandRarity = (m_XZSize >= LEVEL_WIDTH_HUGE) ? 768 * 3 : 768;
+#else
+	int islandRarity = 768;
+#endif
 	for (int ixc = -3; ixc <= 3; ixc++)
 	{
 		for (int izc = -3; izc <= 3; izc++)
@@ -456,7 +461,7 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 			int xc = xt + ixc;
 			int zc = zt + izc;
 			Random islandRandom(((xc * xScale) + (zc * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
-			if (islandRandom.nextInt(512) == 0)
+			if (islandRandom.nextInt(islandRarity) == 0)
 			{
 				int x = xc * 16 + islandRandom.nextInt(16) + 8;
 				int y = 64 + islandRandom.nextInt(24);
@@ -470,7 +475,7 @@ void AetherLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 						int ox = xc + oxc;
 						int oz = zc + ozc;
 						Random otherRandom(((ox * xScale) + (oz * zScale)) ^ level->getSeed() ^ 0x5DEECE66DLL);
-						if (otherRandom.nextInt(512) != 0) continue;
+						if (otherRandom.nextInt(islandRarity) != 0) continue;
 						int oX = ox * 16 + otherRandom.nextInt(16) + 8;
 						int oZ = oz * 16 + otherRandom.nextInt(16) + 8;
 						int dX = oX - x;

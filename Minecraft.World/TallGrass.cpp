@@ -62,7 +62,7 @@ int TallGrass::getColor(LevelSource *level, int x, int y, int z, int data)
 	//int d = data;
 	//if (d == DEAD_SHRUB) return 0xffffff;
 
-	return level->getBiome(x, z)->getGrassColor();
+	return Biome::blendGrassColor(level, x, z, Biome::BIOME_COLOR_BLEND_RADIUS);
 }
 
 int TallGrass::getResource(int data, Random *random, int playerBonusLevel)

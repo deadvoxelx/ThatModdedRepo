@@ -2,6 +2,7 @@
 #include "net.minecraft.world.level.newbiome.layer.h"
 #include "net.minecraft.world.level.h"
 #include "BiomeOverrideLayer.h"
+#include "ChunkSource.h"
 
 #ifdef __PSVITA__
 // AP - this is used to perform fast 64bit divides of known values
@@ -16,7 +17,7 @@ libdivide::divider<long long> fast_d7(7);
 libdivide::divider<long long> fast_d10(10);
 #endif
 
-LayerArray Layer::getDefaultLayers(int64_t seed, LevelType *levelType)
+LayerArray Layer::getDefaultLayers(int64_t seed, LevelType *levelType, int worldSizeChunks)
 {
 	// 4J - Some changes moved here from 1.2.3. Temperature & downfall layers are no longer created & returned, and a debug layer is isn't.
 	// For reference with regard to future merging, things NOT brought forward from the 1.2.3 version are new layer types that we
@@ -38,6 +39,20 @@ LayerArray Layer::getDefaultLayers(int64_t seed, LevelType *levelType)
 	{
 		zoomLevel = 6;
 	}
+
+#ifdef _LARGE_WORLDS
+	// Voxel - cheap way of doing this but-
+	// this makes terrain and structures and stuff generate beyond the large world boundaries
+	// without having to do anything crazy...
+	{
+		int islandScale = LEVEL_WIDTH_LARGE;
+		while (islandScale < worldSizeChunks)
+		{
+			islandScale <<= 1;
+			zoomLevel++;
+		}
+	}
+#endif
 
 	shared_ptr<Layer> riverLayer = islandLayer;
 	riverLayer = ZoomLayer::zoom(1000, riverLayer, 0);

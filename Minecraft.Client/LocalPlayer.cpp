@@ -282,6 +282,11 @@ void LocalPlayer::aiStep()
 		setSprinting(false);
 	}	
 
+	if (shouldUseSwimmingPose())
+	{
+		if (ySlideOffset < 2.2f) ySlideOffset = 2.2f;
+	}
+
 	// 4J Stu - Fix for #52705 - Customer Encountered: Player can fly in bed while being in Creative mode.
 	if (!isSleeping() && (abilities.mayfly || isAllowedToFly() ))
 	{

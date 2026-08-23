@@ -146,7 +146,11 @@ private:
 	ClipChunkArray chunks[4];			// 4J - now one per player
 	int lastPlayerCount[4];				// 4J - added
 	int xChunks, yChunks, zChunks;
+#ifdef _LARGE_WORLDS
+	int chunkLists[4];
+#else
 	int chunkLists;
+#endif
 	Minecraft *mc;
 	TileRenderer *tileRenderer[4];		// 4J - now one per player
 	int ticks;
@@ -216,8 +220,14 @@ public:
 	// 4J - added for new render list handling
 	// This defines the maximum size of renderable level, must be big enough to cope with actual size of level + view distance at each side
 	// so that we can render the "infinite" sea at the edges
+#ifdef _LARGE_WORLDS
+	static int			MAX_LEVEL_RENDER_SIZE[6];
+	static int			DIMENSION_OFFSETS[6];
+	static void			configureForWorld(int xzSize, int hellScale);
+#else
 	static const int	MAX_LEVEL_RENDER_SIZE[6];
 	static const int    DIMENSION_OFFSETS[6];
+#endif
 	// This is the TOTAL area of columns of chunks to be allocated for render round the players. So for one player, it would be a region of
 	// sqrt(PLAYER_RENDER_AREA) x sqrt(PLAYER_RENDER_AREA)
 #ifdef _LARGE_WORLDS
@@ -250,6 +260,8 @@ public:
 
 	// Actual storage for flags
 	unsigned char		*globalChunkFlags;
+	int					m_allocatedGlobalChunkCount;
+	void				ensureChunkStorageAllocated();
 
 	// The flag definitions
 	static const int    CHUNK_FLAG_COMPILED		= 0x01;

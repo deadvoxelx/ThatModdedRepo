@@ -9,6 +9,7 @@
 #include "..\..\..\Minecraft.World\LevelSettings.h"
 #include "..\..\..\Minecraft.World\StringHelpers.h"
 #include "..\..\..\Minecraft.World\ConsoleSaveFileOriginal.h"
+#include "..\..\..\Minecraft.World\ChunkSource.h"
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
 #include "Common\Network\Sony\SonyHttp.h"
 #endif
@@ -808,7 +809,9 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 #if defined _XBOX_ONE || defined __ORBIS__
 	app.SetGameHostOption(eGameHostOption_DisableSaving, m_MoreOptionsParams.bDisableSaving?1:0);
 	StorageManager.SetSaveDisabled(m_MoreOptionsParams.bDisableSaving);
+#endif
 
+#if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
 	int newWorldSize = 0;
 	int newHellScale = 0;
 	switch(m_MoreOptionsParams.newWorldSize)
@@ -832,6 +835,10 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 	case e_worldSize_Large:		
 		newWorldSize = LEVEL_WIDTH_LARGE;	
 		newHellScale = HELL_LEVEL_SCALE_LARGE;
+		break;
+	case e_worldSize_Huge:
+		newWorldSize = LEVEL_WIDTH_HUGE;
+		newHellScale = HELL_LEVEL_SCALE_HUGE;
 		break;
 	default:
 		assert(0);
@@ -1476,7 +1483,10 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 	app.SetGameHostOption(eGameHostOption_DoDaylightCycle, pClass->m_MoreOptionsParams.bDoDaylightCycle);
 
 #ifdef _LARGE_WORLDS
-	app.SetGameHostOption(eGameHostOption_WorldSize, pClass->m_MoreOptionsParams.worldSize+1 );  // 0 is GAME_HOST_OPTION_WORLDSIZE_UNKNOWN
+	if (pClass->m_MoreOptionsParams.newWorldSize != e_worldSize_Unknown)
+		app.SetGameHostOption(eGameHostOption_WorldSize, pClass->m_MoreOptionsParams.newWorldSize);
+	else
+		app.SetGameHostOption(eGameHostOption_WorldSize, pClass->m_MoreOptionsParams.worldSize+1 );  // 0 is GAME_HOST_OPTION_WORLDSIZE_UNKNOWN
 #endif
 	app.SetResetNether((pClass->m_MoreOptionsParams.bResetNether==TRUE)?true:false);
 	app.ClearTerrainFeaturePosition();

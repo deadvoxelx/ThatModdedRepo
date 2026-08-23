@@ -190,7 +190,7 @@ int VineTile::getColor(LevelSource *level, int x, int y, int z, int data)
 
 int VineTile::getColor(LevelSource *level, int x, int y, int z)
 {
-	return level->getBiome(x, z)->getFolageColor();
+	return Biome::blendFoliageColor(level, x, z, Biome::BIOME_COLOR_BLEND_RADIUS);
 }
 
 void VineTile::neighborChanged(Level *level, int x, int y, int z, int type)

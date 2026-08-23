@@ -149,10 +149,10 @@ bool Dimension::isNaturalDimension()
 
 float *Dimension::getSunriseColor(float td, float a)
 {
-	unsigned int clr1 = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Sky_Dawn_Dark ); // 0xB23333
+	unsigned int clr1 = 0xd75a01; // 0xB23333 Red
 	double r1 = ( (clr1>>16)&0xFF )/255.0f, g1 = ( (clr1>>8)&0xFF )/255.0, b1 = ( clr1&0xFF )/255.0;
 
-	unsigned int clr2 = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Sky_Dawn_Bright ); // 0xFFE533
+	unsigned int clr2 = 0xd75a01; // 0xFFE533 Yellow for some stupid reason
 	double r2 = ( (clr2>>16)&0xFF )/255.0f, g2 = ( (clr2>>8)&0xFF )/255.0, b2 = ( clr2&0xFF )/255.0;
 
 	float span = 0.4f;

@@ -14,6 +14,9 @@ class ClipChunk
 public:
 	Chunk *chunk;
 	int globalIdx;
+#ifdef _LARGE_WORLDS
+	int listBase;
+#endif
 	bool visible;
 	float aabb[6];
 	int xm, ym, zm;
@@ -47,6 +50,9 @@ public:
     int xRenderOffs, yRenderOffs, zRenderOffs;
  
 	int xm, ym, zm;
+#ifdef _LARGE_WORLDS
+	int listBase;
+#endif
 	shared_ptr<AABB> bb;
 	ClipChunk *clipChunk;
 

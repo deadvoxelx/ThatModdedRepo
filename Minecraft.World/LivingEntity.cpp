@@ -14,7 +14,6 @@
 #include "net.minecraft.world.entity.animal.h"
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.item.h"
-#include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.chunk.h"
 #include "net.minecraft.world.level.material.h"
 #include "net.minecraft.world.damagesource.h"
@@ -36,6 +35,9 @@
 const double LivingEntity::MIN_MOVEMENT_DISTANCE = 0.005;
 
 AttributeModifier *LivingEntity::SPEED_MODIFIER_SPRINTING = (new AttributeModifier(eModifierId_MOB_SPRINTING, 0.3f, AttributeModifier::OPERATION_MULTIPLY_TOTAL))->setSerialize(false);
+
+static const float SPRINT_SWIM_SPEED = 0.045f;
+static const float SWIM_LOOK_SPEED = 0.04f;
 
 void LivingEntity::_init()
 {
@@ -1012,6 +1014,8 @@ bool LivingEntity::onLadder()
 	case Tile::vine_Id:
 	case Tile::netherVine_Id:
 	case Tile::veloettVine_Id:
+	case Tile::nusaVine_Id:
+	case Tile::boneVine_Id:
 		return true;
 	case Tile::trapdoor_Id: // hexagonny - add climbable (opened) trapdoors
 	{
@@ -1023,6 +1027,8 @@ bool LivingEntity::onLadder()
 			case Tile::vine_Id:
 			case Tile::netherVine_Id:
 			case Tile::veloettVine_Id:
+			case Tile::nusaVine_Id:
+			case Tile::boneVine_Id:
 				return false; // Opened trapdoor should only be climbable when it's only at the top.
 			default:
 				return level->getTile(xt, yt - 1, zt) == Tile::ladder_Id;
@@ -1040,6 +1046,8 @@ bool LivingEntity::onLadder()
 			case Tile::vine_Id:
 			case Tile::netherVine_Id:
 			case Tile::veloettVine_Id:
+			case Tile::nusaVine_Id:
+			case Tile::boneVine_Id:
 				return false; // Opened trapdoor should only be climbable when it's only at the top.
 			default:
 				return level->getTile(xt, yt - 1, zt) == Tile::ladder_Id;
@@ -1467,13 +1475,27 @@ void LivingEntity::travel(float xa, float ya)
 	if (isInWater() && !(thisPlayer && thisPlayer->abilities.flying) )
 	{
 		double yo = y;
-		moveRelative(xa, ya, useNewAi() ? 0.04f : 0.02f);
+		float swimSpeed = useNewAi() ? 0.04f : 0.02f;
+		if (isSprinting())
+		{
+			swimSpeed = SPRINT_SWIM_SPEED;
+		}
+		moveRelative(xa, ya, swimSpeed);
 		move(xd, yd, zd);
 
 		xd *= 0.80f;
 		yd *= 0.80f;
 		zd *= 0.80f;
-		yd -= 0.02;
+
+		if (thisPlayer != nullptr && isSprinting() && ya > 0.0f)
+		{
+			float dir = -Mth::sin(thisPlayer->xRot * Mth::RAD_TO_GRAD);
+			yd += dir * SWIM_LOOK_SPEED;
+		}
+		else
+		{
+			yd -= 0.02f;
+		}
 
 		if (horizontalCollision && isFree(xd, yd + 0.6f - y + yo, zd))
 		{

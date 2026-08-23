@@ -1762,6 +1762,13 @@ void Entity::ride(shared_ptr<Entity> e)
 		riding = nullptr;
 		return;
 	}
+
+	if (e.get() == this) return;
+	if (e->riding == shared_from_this())
+	{
+		e->ride(nullptr);
+	}
+
 	if (riding != nullptr)
 	{
 		riding->rider = weak_ptr<Entity>();
