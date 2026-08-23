@@ -60,8 +60,11 @@ void RemotePlayer::tick()
 	if (!hasStartedUsingItem && isUsingItemFlag() && inventory->items[inventory->selected] != nullptr)
 	{
 		shared_ptr<ItemInstance> item = inventory->items[inventory->selected];
-		startUsingItem(inventory->items[inventory->selected], Item::items[item->id]->getUseDuration(item));
-		hasStartedUsingItem = true;
+		if (item->getItem() != nullptr)
+		{
+			startUsingItem(inventory->items[inventory->selected], item->getItem()->getUseDuration(item));
+			hasStartedUsingItem = true;
+		}
 	}
 	else if (hasStartedUsingItem && !isUsingItemFlag())
 	{
@@ -106,7 +109,6 @@ void RemotePlayer::aiStep()
     if (onGround || getHealth() <= 0) tTilt = 0;
     bob += (tBob - bob) * 0.4f;
     tilt += (tTilt - tilt) * 0.8f;
-
 }
 
 // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer Encountered: TU7: Content: Art: Aura of enchanted item is not displayed for other players in online game
@@ -128,9 +130,13 @@ void RemotePlayer::animateRespawn()
 
 float RemotePlayer::getHeadHeight()
 {
+    if (isSwimming())
+	{
+        return 0.62f;
+	}
     if (isSneaking())
 	{
-        return 1.509f;
+        return 1.42f;
 	}
 	return 1.82f;
 }
