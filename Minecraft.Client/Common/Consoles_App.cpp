@@ -4780,6 +4780,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_VELOETT_VINE, L"Veloett Vine");
 		m_stringTable->registerString(IDS_TILE_VELOETT_FLOWER, L"Veloett Flower");
 		m_stringTable->registerString(IDS_TILE_ENDESERT_BUSH, L"Endesert Bush");
+		m_stringTable->registerString(IDS_WORLD_SIZE_TITLE_HUGE, L"Huge");
 
 	}
 	else
