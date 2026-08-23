@@ -231,9 +231,13 @@ void ServerPlayer::setDefaultHeadHeight()
 
 float ServerPlayer::getHeadHeight()
 {
+	if (isSwimming())
+	{
+		return 0.42f;
+	}
 	if (isSneaking())
 	{
-		return 1.30f;
+		return 1.22f;
 	}
 	return 1.62f;
 }
@@ -243,6 +247,7 @@ void ServerPlayer::tick()
 	gameMode->tick();
 
 	if (invulnerableTime > 0) invulnerableTime--;
+	getHeadHeight();
 	containerMenu->broadcastChanges();
 
 	// 4J-JEV, hook for Durango event 'EnteredNewBiome'.
