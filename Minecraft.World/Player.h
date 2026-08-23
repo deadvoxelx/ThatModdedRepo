@@ -188,6 +188,8 @@ public:
 
 protected:
 	virtual void serverAiStep();
+	void updateSize();
+	bool shouldUseSwimmingPose();
 
 public:
 	virtual void aiStep();
@@ -335,6 +337,7 @@ protected:
 public:
 	virtual void travel(float xa, float ya);
 	virtual float getSpeed();
+	bool isSwimming();
 	virtual void checkMovementStatistiscs(double dx, double dy, double dz);
 
 private:
