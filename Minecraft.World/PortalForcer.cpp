@@ -102,6 +102,7 @@ bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimens
 		double xd = (x + 0.5) - e->x;
 		for (int z = zc - r; z <= zc + r; z++)
 		{
+			if (!level->hasChunk(x >> 4, z >> 4)) continue;
 			double zd = (z + 0.5) - e->z;
 			for (int y = level->getHeight() - 1; y >= 0; y--)
 			{
@@ -205,6 +206,7 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 			double xd = (x + 0.5) - e->x;
 			for (int z = zc - r; z <= zc + r; z++)
 			{
+				if (!level->hasChunk(x >> 4, z >> 4)) continue;
 				double zd = (z + 0.5) - e->z;
 
 				for (int y = level->getHeight() - 1; y >= 0; y--)
@@ -275,6 +277,7 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 			double xd = (x + 0.5) - e->x;
 			for (int z = zc - r; z <= zc + r; z++)
 			{
+				if (!level->hasChunk(x >> 4, z >> 4)) continue;
 				double zd = (z + 0.5) - e->z;
 
 				for (int y = level->getHeight() - 1; y >= 0; y--)
@@ -395,7 +398,6 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 		}
 	}
 
-	// For Aether portals with no solid ground: extend glowstone platform on both sides
 	if (isAether && closest < 0)
 	{
 		for (int ext = 1; ext <= 2; ext++)

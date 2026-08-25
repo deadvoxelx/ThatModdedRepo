@@ -703,6 +703,8 @@ void LevelChunk::lightGaps(int x, int z)
 }
 void LevelChunk::recheckGaps(bool bForce)
 {
+	if( level->dimension->hasCeiling ) return;
+
 	// 4J added - otherwise we can end up doing a very broken kind of lighting since for an empty chunk, the heightmap is all zero, but it
 	// still has an x and z of 0 which means that the level->getHeightmap references in here find a real chunk near the origin, and then attempt
 	// to light massive gaps between the height of 0 and whatever heights are in those.

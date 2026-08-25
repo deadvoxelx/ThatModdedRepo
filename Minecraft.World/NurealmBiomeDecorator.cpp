@@ -16,7 +16,7 @@ NurealmBiomeDecorator::NurealmBiomeDecorator(Biome *biome) : BiomeDecorator(biom
 	nusaTowerFeature = new NusaTowerFeature(Tile::nustone_Id);
 	nusaShrubFeature = new NusaShrubFeature();
 	treeCount = 1;
-	grassCount = 3;
+	grassCount = 4;
 }
 
 void NurealmBiomeDecorator::decorate()
@@ -66,12 +66,16 @@ void NurealmBiomeDecorator::decorate()
 		nusaVineFeature.place(level, random, x, y, z);
 	}
 
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < grassCount; i++)
 	{
 		int x = xo + random->nextInt(16) + 8;
 		int y = random->nextInt(Level::genDepth);
 		int z = zo + random->nextInt(16) + 8;
-		nusaShrubFeature->place(level, random, x, y, z);
+		MemSect(50);
+		Feature *grassFeature = biome->getGrassFeature(random);
+		MemSect(0);
+		grassFeature->place(level, random, x, y, z);
+		delete grassFeature;
 	}
 	PIXEndNamedEvent();
 }

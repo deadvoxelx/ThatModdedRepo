@@ -17,6 +17,7 @@ public:
 	MultiTextureTileItem(int id, Tile *parentTile,int *nameExtensions, int iLength, int anyValueName = -1); // 4J Added anyValueName
 
 	virtual Icon *getIcon(int itemAuxValue);
+	virtual int getColor(shared_ptr<ItemInstance> item, int spriteLayer);
 	virtual int getLevelDataForAuxValue(int auxValue);
 	virtual unsigned int getDescriptionId(int iData = -1);
 	virtual unsigned int getDescriptionId(shared_ptr<ItemInstance> instance);

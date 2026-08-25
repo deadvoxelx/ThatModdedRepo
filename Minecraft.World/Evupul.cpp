@@ -201,6 +201,7 @@ bool Evupul::mobInteract(shared_ptr<Player> player)
 {
 	if (!level->isClientSide && (getEvupulType() == TYPE_DEFAULT || getEvupulType() == TYPE_GOLD))
 	{
+		setPersistenceRequired();
 		player->ride( rider.lock() == player ? nullptr : shared_from_this() );
 		return true;
 	}

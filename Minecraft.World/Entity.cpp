@@ -2210,25 +2210,18 @@ void Entity::changeDimension(int i)
 	level->removeEntity(shared_from_this());
 	removed = false;
 
+	bool hadForcedLoading = forcedLoading;
+	forcedLoading = true;
 	server->getPlayers()->repositionAcrossDimension(shared_from_this(), lastDimension, oldLevel, newLevel);
-	shared_ptr<Entity> newEntity = EntityIO::newEntity(EntityIO::getEncodeId(shared_from_this()), newLevel);
+	forcedLoading = hadForcedLoading;
 
-	if (newEntity != nullptr)
+	if (lastDimension == 1 && i == 1)
 	{
-		newEntity->restoreFrom(shared_from_this(), true);
-
-		if (lastDimension == 1 && i == 1)
-		{
-			Pos *spawnPos = newLevel->getSharedSpawnPos();
-			spawnPos->y = level->getTopSolidBlock(spawnPos->x, spawnPos->z);
-			newEntity->moveTo(spawnPos->x, spawnPos->y, spawnPos->z, newEntity->yRot, newEntity->xRot);
-			delete spawnPos;
-		}
-
-		newLevel->addEntity(newEntity);
+		Pos *spawnPos = newLevel->getSharedSpawnPos();
+		spawnPos->y = newLevel->getTopSolidBlock(spawnPos->x, spawnPos->z);
+		moveTo(spawnPos->x, spawnPos->y, spawnPos->z, yRot, xRot);
+		delete spawnPos;
 	}
-
-	removed = true;
 
 	oldLevel->resetEmptyTime();
 	newLevel->resetEmptyTime();

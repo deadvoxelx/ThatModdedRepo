@@ -53,6 +53,23 @@ shared_ptr<ItemInstance> LeafTile::getSilkTouchItemInstance(int data)
 	return shared_ptr<ItemInstance>(new ItemInstance(Tile::leaves, 1, data));
 }
 
+void LeafTile::playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data)
+{
+	if (!level->isClientSide && player->getSelectedItem() != nullptr && player->getSelectedItem()->id == Item::shears->id)
+	{
+		player->awardStat(
+			GenericStats::blocksMined(id),
+			GenericStats::param_blocksMined(id,data,1)
+			);
+
+		popResource(level, x, y, z, std::make_shared<ItemInstance>(Tile::leaves, 1, data));
+	}
+	else
+	{
+		Tile::playerDestroy(level, player, x, y, z, data);
+	}
+}
+
 void LeafTile::spawnResources(Level *level, int x, int y, int z, int data, float odds, int playerBonusLevel)
 {
 	int d = data;

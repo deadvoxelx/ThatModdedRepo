@@ -1089,7 +1089,7 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		newLevel->tick(entity, false);
 		newLevel->cache->autoCreate = true;
-		if (lastDimension != 1 && lastDimension != 2 && lastDimension != 4 && !entity->fellFromAether)
+		if (lastDimension != 1 && lastDimension != 2 && lastDimension != 4 && entity->dimension != 4 && !entity->fellFromAether)
 		{
 			newLevel->getPortalForcer()->force(newLevel, entity, lastDimension);
 		}
