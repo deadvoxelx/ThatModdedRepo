@@ -62,6 +62,8 @@ int NusaCoreTile::getTickDelay(Level *level)
 
 bool NusaCoreTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly)
 {
+	if (level->isClientSide) return true;
+
 	if (level->dimension->id == 4)
 	{
 		this->setLightEmission(0.5f);
