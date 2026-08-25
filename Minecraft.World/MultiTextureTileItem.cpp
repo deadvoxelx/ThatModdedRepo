@@ -28,6 +28,11 @@ Icon *MultiTextureTileItem::getIcon(int itemAuxValue)
 	return parentTile->getTexture(2, itemAuxValue);
 }
 
+int MultiTextureTileItem::getColor(shared_ptr<ItemInstance> item, int spriteLayer)
+{
+	return parentTile->getColor(item->getAuxValue());
+}
+
 int MultiTextureTileItem::getLevelDataForAuxValue(int auxValue) 
 {
 		return auxValue;
