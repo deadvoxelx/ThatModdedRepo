@@ -1286,7 +1286,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			swprintf(posString, 44, L"%.3f / %.3f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
 			lines.push_back(L"XYZ: " + std::wstring(posString));
 			const float centerX = ((vpW / 2.0f - debugLeft) / fontScale + debugLeft) / debugScale;
-			const float coordY = (221.0f - debugTop) / debugScale + debugTop;
+			const float coordY = (201.0f - debugTop) / debugScale + debugTop;
 			drawCenteredString(font, posString, Mth::floor(centerX + 0.5f), Mth::floor(coordY + 0.5f), 0x44ff00);
 		}
 
