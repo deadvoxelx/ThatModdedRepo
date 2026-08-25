@@ -13,6 +13,8 @@ NetherrackTile::NetherrackTile(int id) : Tile(id, Material::netherrack)
 
 bool NetherrackTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly)
 {
+	if (level->isClientSide) return true;
+
 	// Base
 	int bTile = level->getTile(x, y - 1, z);
 	int xTile = level->getTile(x + 1, y - 1, z);
