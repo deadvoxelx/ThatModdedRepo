@@ -20,9 +20,10 @@ private:
 
 	static const int DATA_TYPE_ID = 14;
 
-	// 4J - rider-controlled movement/jump state (mirrors EntityHorse)
 	float playerJumpPendingScale;
 	bool isEntityJumping;
+	bool moaAirJumpPending;
+	bool moaAirJumpUsed;
 
 public:
 	float flapM;
