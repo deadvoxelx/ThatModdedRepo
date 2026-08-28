@@ -83,6 +83,8 @@ public:
 	bool IsKeyPressed(int vkCode) const;
 	bool IsKeyReleased(int vkCode) const;
 
+	void ConsumeKey(int vkCode);
+
 	int GetPressedKey() const;
 
 	void ConsumeMouseButtons();
