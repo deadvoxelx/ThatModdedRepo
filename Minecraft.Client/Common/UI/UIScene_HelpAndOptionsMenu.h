@@ -2,7 +2,7 @@
 
 #include "UIScene.h"
 
-#define BUTTON_HAO_HOWTOPLAY			0
+#define BUTTON_HAO_WIKI					0
 #define BUTTON_HAO_SETTINGS				1
 #define BUTTON_HAO_AUDIO				2
 #define BUTTON_HAO_GRAPHICS				3
@@ -17,7 +17,7 @@ class UIScene_HelpAndOptionsMenu : public UIScene
 private:
 	UIControl_Button m_buttons[BUTTONS_HAO_MAX];
 	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
-		UI_MAP_ELEMENT( m_buttons[BUTTON_HAO_HOWTOPLAY], "Button1")
+		UI_MAP_ELEMENT( m_buttons[BUTTON_HAO_WIKI], "Button1")
 		UI_MAP_ELEMENT( m_buttons[BUTTON_HAO_SETTINGS], "Button2")
 		UI_MAP_ELEMENT( m_buttons[BUTTON_HAO_AUDIO], "Button3")
 		UI_MAP_ELEMENT( m_buttons[BUTTON_HAO_GRAPHICS], "Button4")
