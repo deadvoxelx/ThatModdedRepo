@@ -201,6 +201,9 @@ private:
 public:
 	LevelStorageSource *getLevelSource();
 	void setScreen(Screen *screen);
+	void tickScreen();
+	void renderScreen();
+
 private:
 	void checkGlError(const wstring& string);
 
