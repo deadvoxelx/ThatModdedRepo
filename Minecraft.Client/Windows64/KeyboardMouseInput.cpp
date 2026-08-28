@@ -117,6 +117,15 @@ void KeyboardMouseInput::ConsumeMouseButtons()
 	memset(m_mouseBtnReleased, 0, sizeof(m_mouseBtnReleased));
 }
 
+void KeyboardMouseInput::ConsumeKey(int vkCode)
+{
+	if (vkCode < 0 || vkCode >= MAX_KEYS) return;
+	m_keyPressed[vkCode] = false;
+	m_keyPressedAccum[vkCode] = false;
+	m_keyReleased[vkCode] = false;
+	m_keyReleasedAccum[vkCode] = false;
+}
+
 void KeyboardMouseInput::Tick()
 {
 	memcpy(m_keyDownPrev, m_keyDown, sizeof(m_keyDown));
