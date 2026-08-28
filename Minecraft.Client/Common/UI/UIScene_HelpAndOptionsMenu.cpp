@@ -46,6 +46,12 @@ UIScene_HelpAndOptionsMenu::UIScene_HelpAndOptionsMenu(int iPad, void *initData,
 
 UIScene_HelpAndOptionsMenu::~UIScene_HelpAndOptionsMenu()
 {
+	// Note: We intentionally do NOT hide the shared Panorama/Logo/MenuBackground components
+	// here. Scenes are destroyed lazily (deferred to the next UILayer::tick), whereas the
+	// underlying scene regains focus and re-shows its components synchronously during the
+	// navigation-back call. Hiding them in this destructor would override that re-show and
+	// leave the components hidden (e.g. panorama/logo disappearing from the main menu).
+	// The closeAllScenes() path hides them when a world loads, so they can't linger over the game.
 }
 
 wstring UIScene_HelpAndOptionsMenu::getMoviePath()
