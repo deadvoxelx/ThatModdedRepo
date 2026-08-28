@@ -241,6 +241,10 @@ public:
 	void			SetGameSettings(int iPad,eGameSetting eVal,unsigned char ucVal);
 	unsigned char	GetGameSettings(int iPad,eGameSetting eVal);
 	unsigned char	GetGameSettings(eGameSetting eVal); // for the primary pad
+
+	void			SetKeybind(int index, unsigned char ucVal);
+	unsigned char	GetKeybind(int index);
+	bool			HasSavedKeybinds();
 	void			SetPlayerSkin(int iPad,const wstring &name);
 	void			SetPlayerSkin(int iPad,DWORD dwSkinId);
 	void			SetPlayerCape(int iPad,const wstring &name);
