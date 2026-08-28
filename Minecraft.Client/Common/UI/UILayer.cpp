@@ -651,6 +651,10 @@ void UILayer::closeAllScenes()
 		it->handleDestroy(); // For anything that might require the pointer be valid
 	}
 
+	showComponent(0, eUIComponent_Panorama, false);
+	showComponent(0, eUIComponent_Logo, false);
+	showComponent(0, eUIComponent_MenuBackground, false);
+
 	updateFocusState();
 
 	// If this layer has focus, pass it on
