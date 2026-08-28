@@ -6,13 +6,15 @@
 #include "..\..\MinecraftServer.h"
 #include "UI.h"
 #include "UIScene_MainMenu.h"
+#include "UIBitmapFont.h"
+#include "..\..\Minecraft.h"
+#include "..\..\OptionsScreen.h"
+#include "..\..\MultiplayerLocalPlayer.h"
+#include <windows.h>
+#include <shellapi.h>
 #ifdef __ORBIS__
 #include <error_dialog.h>
 #endif
-
-// Voxel - for opening links; works on Windows, not sure abt other platforms though
-#include <windows.h>
-#include <shellapi.h>
 
 Random *UIScene_MainMenu::random = new Random();
 
@@ -1508,7 +1510,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 	UINT uiIDA[1];
 	uiIDA[0]=IDS_OK;
 
-	ShellExecute(0, 0, "https://lce-hub.github.io/piston/", 0, 0 , SW_SHOW );
+	ShellExecute(0, 0, "emerald://workshop", 0, 0, SW_SHOW );
 }
 
 void UIScene_MainMenu::tick()
@@ -1702,7 +1704,12 @@ void UIScene_MainMenu::RunHelpAndOptions(int iPad)
 #ifdef _XBOX_ONE
 			ui.ShowPlayerDisplayname(true);
 #endif
+//#ifdef _WINDOWS64
+			//ui.CloseAllPlayersScenes();
+			//Minecraft::GetInstance()->setScreen(new OptionsScreen(nullptr, Minecraft::GetInstance()->options));
+//#else
 			proceedToScene(iPad, eUIScene_HelpAndOptionsMenu);
+//#endif
 		}
 #if TO_BE_IMPLEMENTED
 		else
