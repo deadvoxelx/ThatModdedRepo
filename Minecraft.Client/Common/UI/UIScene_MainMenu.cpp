@@ -120,6 +120,7 @@ void UIScene_MainMenu::updateComponents()
 void UIScene_MainMenu::handleGainFocus(bool navBack)
 {
 	UIScene::handleGainFocus(navBack);
+	SetFocusToElement(eControl_PlayGame);
 	ui.ShowPlayerDisplayname(false);
 	m_bIgnorePress=false;
 	
