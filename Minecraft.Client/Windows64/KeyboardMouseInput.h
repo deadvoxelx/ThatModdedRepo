@@ -4,6 +4,29 @@
 
 #include <windows.h>
 
+enum KBM_ACTION
+{
+	KBM_ACTION_ATTACK = 0,
+	KBM_ACTION_USE,
+	KBM_ACTION_PICK_ITEM,
+	KBM_ACTION_FORWARD,
+	KBM_ACTION_BACK,
+	KBM_ACTION_LEFT,
+	KBM_ACTION_RIGHT,
+	KBM_ACTION_JUMP,
+	KBM_ACTION_SNEAK,
+	KBM_ACTION_SNEAK_ALT,
+	KBM_ACTION_SPRINT,
+	KBM_ACTION_DASH,
+	KBM_ACTION_INVENTORY,
+	KBM_ACTION_DROP,
+	KBM_ACTION_CHAT,
+	KBM_ACTION_COORDS,
+	KBM_ACTION_FULLBRIGHT,
+	KBM_ACTION_ZOOM,
+	KBM_ACTION_COUNT
+};
+
 class KeyboardMouseInput
 {
 public:
@@ -22,7 +45,6 @@ public:
 	static const int KEY_SNEAK = VK_LSHIFT;
 	static const int KEY_SNEAK_ALT = VK_CAPITAL;
 	static const int KEY_SPRINT = VK_LCONTROL;
-	static const int KEY_SPRINT_ALT = 'Q';
 	static const int KEY_INVENTORY = 'E';
 	static const int KEY_DROP = 'B';
 	static const int KEY_CRAFTING = 'C';
@@ -44,7 +66,6 @@ public:
 	static const int KEY_DEBUG_CONSOLE = VK_F6;
 	static const int KEY_HOST_SETTINGS = VK_OEM_3;
 	static const int KEY_FULLSCREEN = VK_F11;
-	
 
 	void Init();
 	void Tick();
@@ -63,6 +84,13 @@ public:
 	bool IsKeyReleased(int vkCode) const;
 
 	int GetPressedKey() const;
+
+	void ConsumeMouseButtons();
+	void SetKeyBinding(int action, int key);
+	int GetKeyBinding(int action) const;
+	bool IsActionDown(int action) const;
+	bool IsActionPressed(int action) const;
+	bool IsActionReleased(int action) const;
 
 	bool IsMouseButtonDown(int button) const;
 	bool IsMouseButtonPressed(int button) const;
@@ -112,6 +140,8 @@ public:
 	float GetLookY(float sensitivity) const;
 
 private:
+	int m_keyBindings[KBM_ACTION_COUNT];
+
 	bool m_keyDown[MAX_KEYS];
 	bool m_keyDownPrev[MAX_KEYS];
 
