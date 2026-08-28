@@ -859,15 +859,15 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS *pSettings,con
 {
 	SetGameSettings(iPad,eGameSetting_MusicVolume,DEFAULT_VOLUME_LEVEL);
 	SetGameSettings(iPad,eGameSetting_SoundFXVolume,DEFAULT_VOLUME_LEVEL);
-	SetGameSettings(iPad,eGameSetting_RenderDistance,10);
+	SetGameSettings(iPad,eGameSetting_RenderDistance,16);
 	SetGameSettings(iPad,eGameSetting_Gamma,50);
 	SetGameSettings(iPad,eGameSetting_FOV,0);
 
 	// 4J-PB - Don't reset the difficult level if we're in-game
 	if(Minecraft::GetInstance()->level==nullptr)
 	{
-		app.DebugPrintf("SetDefaultOptions - Difficulty = 1\n");
-		SetGameSettings(iPad,eGameSetting_Difficulty,1);
+		app.DebugPrintf("SetDefaultOptions - Difficulty = 2\n");
+		SetGameSettings(iPad,eGameSetting_Difficulty,2);
 	}
 	SetGameSettings(iPad,eGameSetting_Sensitivity_InGame,100);
 	SetGameSettings(iPad,eGameSetting_ViewBob,1);
@@ -2468,6 +2468,28 @@ unsigned char CMinecraftApp::GetGameSettings(int iPad,eGameSetting eVal)
 
 	}
 	return 0;
+}
+
+void CMinecraftApp::SetKeybind(int index, unsigned char ucVal)
+{
+	if (index < 0 || index >= KEYBINDS_STORAGE_COUNT)
+		return;
+	int iPad = ProfileManager.GetPrimaryPad();
+	GameSettingsA[iPad]->ucKeybinds[index] = ucVal;
+	GameSettingsA[iPad]->ucKeybindsMagic = KEYBINDS_STORAGE_MAGIC;
+	GameSettingsA[iPad]->bSettingsChanged = true;
+}
+
+unsigned char CMinecraftApp::GetKeybind(int index)
+{
+	if (index < 0 || index >= KEYBINDS_STORAGE_COUNT)
+		return 0;
+	return GameSettingsA[ProfileManager.GetPrimaryPad()]->ucKeybinds[index];
+}
+
+bool CMinecraftApp::HasSavedKeybinds()
+{
+	return GameSettingsA[ProfileManager.GetPrimaryPad()]->ucKeybindsMagic == KEYBINDS_STORAGE_MAGIC;
 }
 
 void CMinecraftApp::CheckGameSettingsChanged(bool bOverride5MinuteTimer, int iPad)
@@ -4781,6 +4803,15 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_TILE_VELOETT_FLOWER, L"Veloett Flower");
 		m_stringTable->registerString(IDS_TILE_ENDESERT_BUSH, L"Endesert Bush");
 		m_stringTable->registerString(IDS_WORLD_SIZE_TITLE_HUGE, L"Huge");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_PENDANT, L"Gravitite Pendant");
+		m_stringTable->registerString(IDS_ITEM_GRAVITITE_RING, L"Gravitite Ring");
+		m_stringTable->registerString(IDS_ITEM_NETHANIUM_PENDANT, L"Nethanium Pendant");
+		m_stringTable->registerString(IDS_ITEM_NETHANIUM_RING, L"Nethanium Ring");
+		m_stringTable->registerString(IDS_ITEM_ENDORIUM_PENDANT, L"Endorium Pendant");
+		m_stringTable->registerString(IDS_ITEM_ENDORIUM_RING, L"Endorium Ring");
+		m_stringTable->registerString(IDS_ITEM_APHALAF_GEM, L"Aphalaf Gem");
+		m_stringTable->registerString(IDS_ITEM_NUSA_AMULET, L"Nusa Amulet");
+		m_stringTable->registerString(IDS_WIKI, L"Hellish Wiki");
 
 	}
 	else
