@@ -95,14 +95,12 @@ void UIScene_Intro::handleAnimationEnd()
 	if(!m_bIgnoreNavigate)
 	{
 		m_bIgnoreNavigate = true;
-		ui.NavigateToScene(0,eUIScene_SaveMessage);
+		ui.NavigateToScene(0,eUIScene_MainMenu);
 	}
 }
 
 void UIScene_Intro::handleGainFocus(bool navBack)
 {
-	// Only relevant on xbox one - if we didn't navigate to the main menu at animation end due to the timer or quadrant sign-in being up, then we'll need to
-	// do it now in case the user has cancelled or joining a game failed
 	if( m_bAnimationEnded )
 	{
 		ui.NavigateToScene(0,eUIScene_MainMenu);
