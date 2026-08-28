@@ -8,6 +8,9 @@
 #include "..\Minecraft.World\SoundTypes.h"
 #ifdef _WINDOWS64
 #include "Windows64\KeyboardMouseInput.h"
+
+extern int g_rScreenWidth;
+extern int g_rScreenHeight;
 #endif
 
 Screen::Screen()	// 4J added
@@ -139,14 +142,14 @@ void Screen::updateEvents()
 	{
 		if (g_KBMInput.IsMouseButtonPressed(btn))
 		{
-			int xm = Mouse::getX() * width / minecraft->width;
-			int ym = height - Mouse::getY() * height / minecraft->height - 1;
+			int xm = Mouse::getX() * width / g_rScreenWidth;
+			int ym = height - Mouse::getY() * height / g_rScreenHeight - 1;
 			mouseClicked(xm, ym, btn);
 		}
 		if (g_KBMInput.IsMouseButtonReleased(btn))
 		{
-			int xm = Mouse::getX() * width / minecraft->width;
-			int ym = height - Mouse::getY() * height / minecraft->height - 1;
+			int xm = Mouse::getX() * width / g_rScreenWidth;
+			int ym = height - Mouse::getY() * height / g_rScreenHeight - 1;
 			mouseReleased(xm, ym, btn);
 		}
 	}
@@ -300,28 +303,26 @@ void Screen::renderBackground(int vo)
 	}
 	else
 	{
-		renderDirtBackground(vo);
+		fillGradient(0, 0, width, height, 0xc0101010, 0xd0101010);
 	}
 }
 
 void Screen::renderDirtBackground(int vo)
 {
-	// 4J Unused
-#if 0
-    glDisable(GL_LIGHTING);
-    glDisable(GL_FOG);
-    Tesselator *t = Tesselator::getInstance();
-    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(L"/gui/background.png"));
-    glColor4f(1, 1, 1, 1);
-    float s = 32;
-    t->begin();
-    t->color(0x404040);
-    t->vertexUV(static_cast<float>(0), static_cast<float>(height), static_cast<float>(0), static_cast<float>(0), static_cast<float>(height / s + vo));
-    t->vertexUV(static_cast<float>(width), static_cast<float>(height), static_cast<float>(0), static_cast<float>(width / s), static_cast<float>(height / s + vo));
-    t->vertexUV(static_cast<float>(width), static_cast<float>(0), static_cast<float>(0), static_cast<float>(width / s), static_cast<float>(0 + vo));
-    t->vertexUV(static_cast<float>(0), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0 + vo));
-    t->end();
-#endif
+	glDisable(GL_LIGHTING);
+	glDisable(GL_FOG);
+	Tesselator *t = Tesselator::getInstance();
+	minecraft->textures->bindTexture(L"gui/background.png");
+	glEnable(GL_TEXTURE_2D);
+	glColor4f(1, 1, 1, 1);
+	float s = 32;
+	t->begin();
+	t->color(0x404040);
+	t->vertexUV(static_cast<float>(0), static_cast<float>(height), static_cast<float>(0), static_cast<float>(0), static_cast<float>(height / s + vo));
+	t->vertexUV(static_cast<float>(width), static_cast<float>(height), static_cast<float>(0), static_cast<float>(width / s), static_cast<float>(height / s + vo));
+	t->vertexUV(static_cast<float>(width), static_cast<float>(0), static_cast<float>(0), static_cast<float>(width / s), static_cast<float>(0 + vo));
+	t->vertexUV(static_cast<float>(0), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0 + vo));
+	t->end();
 }
 
 bool Screen::isPauseScreen()
