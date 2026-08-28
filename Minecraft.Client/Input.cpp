@@ -97,25 +97,19 @@ void Input::tick(LocalPlayer *player)
 	if (iPad == 0 && g_KBMInput.IsMouseGrabbed() && g_KBMInput.IsKBMActive())
 	{
 		// Left Shift = sneak (hold to crouch); Caps Lock = sneak (toggle).
-		// The Caps Lock edge is detected per-frame in Minecraft::run_middle()
-		// and latched into sneakToggle - IsKeyPressed only survives a single
-		// render frame, but this tick only runs at 20Hz, so a fast press could
-		// otherwise be dropped between ticks.
-		if (pMinecraft->localgameModes[iPad]->isInputAllowed(MINECRAFT_ACTION_SNEAK_TOGGLE))
 		{
 			if (!player->abilities.flying)
 			{
-				sneaking = g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SNEAK) || sneakToggle;
+				sneaking = g_KBMInput.IsActionDown(KBM_ACTION_SNEAK) || sneakToggle;
 			}
 		}
 
-		// Ctrl/Q + forward = sprint (hold to sprint, including while flying)
+		// Ctrl + forward = sprint (hold to sprint, including while flying)
 		{
-			bool ctrlHeld = g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SPRINT);
-			bool qHeld = g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SPRINT_ALT);
+			bool ctrlHeld = g_KBMInput.IsActionDown(KBM_ACTION_SPRINT);
 			bool movingForward = (kbYA > 0.0f);
 
-			if ((ctrlHeld || qHeld) && movingForward)
+			if (ctrlHeld && movingForward)
 			{
 				sprinting = true;
 			}
@@ -194,7 +188,7 @@ void Input::tick(LocalPlayer *player)
 	unsigned int jump = InputManager.GetValue(iPad, MINECRAFT_ACTION_JUMP);
 	bool kbJump = false;
 #ifdef _WINDOWS64
-	kbJump = (iPad == 0) && g_KBMInput.IsMouseGrabbed() && g_KBMInput.IsKBMActive() && g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_JUMP);
+	kbJump = (iPad == 0) && g_KBMInput.IsMouseGrabbed() && g_KBMInput.IsKBMActive() && g_KBMInput.IsActionDown(KBM_ACTION_JUMP);
 #endif
 	if( (jump > 0 || kbJump) && pMinecraft->localgameModes[iPad]->isInputAllowed(MINECRAFT_ACTION_JUMP) )
 		jumping = true;
