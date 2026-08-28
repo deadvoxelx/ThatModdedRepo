@@ -317,10 +317,8 @@ void Player::tick()
 		clearFire();
 	}
 
-	//if (!g_KBMInput.IsActionDown(KBM_ACTION_DASH)) dashTimer = 5;
-	//if (g_KBMInput.IsActionDown(KBM_ACTION_DASH) && (dashTimer > 0) && (getFoodData()->getFoodLevel() >= 6) && !isSneaking() && !isSwimming())
-	if (!g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_DASH)) dashTimer = 5;
-	if (g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_DASH) && (dashTimer > 0) && (getFoodData()->getFoodLevel() >= 6) && !isSneaking() && !isSwimming())
+	if (!g_KBMInput.IsActionDown(KBM_ACTION_DASH)) dashTimer = 5;
+	if (g_KBMInput.IsActionDown(KBM_ACTION_DASH) && (dashTimer > 0) && (getFoodData()->getFoodLevel() >= 6) && !isSneaking() && !isSwimming())
 	{
 		--dashTimer;
 		Vec3* viewVector = getViewVector(1.0f);
