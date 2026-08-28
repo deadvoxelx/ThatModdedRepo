@@ -471,6 +471,8 @@ set(_MINECRAFT_CLIENT_COMMON_NET_MINECRAFT_CLIENT_GUI
   "${CMAKE_CURRENT_SOURCE_DIR}/CreateWorldScreen.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/DeathScreen.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/DeathScreen.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/DirtBackgroundScreen.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/DirtBackgroundScreen.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/EditBox.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/EditBox.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/ErrorScreen.cpp"
