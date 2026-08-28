@@ -13,8 +13,66 @@
 #include "..\Minecraft.World\FileOutputStream.h"
 #include "..\Minecraft.World\DataOutputStream.h"
 #include "..\Minecraft.World\StringHelpers.h"
+#ifdef _WINDOWS64
+#include "Windows64\KeyboardMouseInput.h"
+#endif
 
-// 4J - the Option sub-class used to be an java enumerated type, trying to emulate that functionality here
+#ifdef _WINDOWS64
+static wstring getKeyName(int vk)
+{
+	if (vk >= 'A' && vk <= 'Z')
+		return wstring(1, static_cast<wchar_t>(vk));
+	if (vk >= '0' && vk <= '9')
+		return wstring(1, static_cast<wchar_t>(vk));
+	if (vk >= VK_F1 && vk <= VK_F12)
+		return L"F" + std::to_wstring(vk - VK_F1 + 1);
+
+	switch (vk)
+	{
+	case VK_SPACE: return L"Space";
+	case VK_LSHIFT: return L"Left Shift";
+	case VK_RSHIFT: return L"Right Shift";
+	case VK_LCONTROL: return L"Left Ctrl";
+	case VK_RCONTROL: return L"Right Ctrl";
+	case VK_LMENU: return L"Left Alt";
+	case VK_RMENU: return L"Right Alt";
+	case VK_TAB: return L"Tab";
+	case VK_RETURN: return L"Enter";
+	case VK_ESCAPE: return L"Esc";
+	case VK_BACK: return L"Backspace";
+	case VK_UP: return L"Up";
+	case VK_DOWN: return L"Down";
+	case VK_LEFT: return L"Left";
+	case VK_RIGHT: return L"Right";
+	case VK_CAPITAL: return L"Caps Lock";
+	case VK_HOME: return L"Home";
+	case VK_END: return L"End";
+	case VK_PRIOR: return L"Page Up";
+	case VK_NEXT: return L"Page Down";
+	case VK_DELETE: return L"Delete";
+	case VK_INSERT: return L"Insert";
+	case VK_OEM_2: return L"/";
+	case VK_OEM_3: return L"`";
+	case VK_OEM_MINUS: return L"-";
+	case VK_OEM_PLUS: return L"=";
+	case VK_OEM_4: return L"[";
+	case VK_OEM_6: return L"]";
+	case VK_OEM_1: return L";";
+	case VK_OEM_7: return L"'";
+	case VK_OEM_COMMA: return L",";
+	case VK_OEM_PERIOD: return L".";
+	case VK_OEM_5: return L"\\";
+	default: break;
+	}
+
+	wchar_t name[64] = { 0 };
+	UINT scancode = MapVirtualKey(static_cast<UINT>(vk), MAPVK_VK_TO_VSC);
+	if (scancode != 0 && GetKeyNameTextW(static_cast<LONG>(scancode << 16), name, 64) > 0)
+		return name;
+	return L"Key " + std::to_wstring(vk);
+}
+#endif
+
 const Options::Option Options::Option::options[17] =
 {
 	Options::Option(L"options.music", true, false),
@@ -54,7 +112,6 @@ const Options::Option *Options::Option::GAMMA = &Options::Option::options[14];
 const Options::Option *Options::Option::RENDER_CLOUDS = &Options::Option::options[15];
 const Options::Option *Options::Option::PARTICLES = &Options::Option::options[16];
 
-
 const Options::Option *Options::Option::getItem(int id)
 {
 	return &options[id];
@@ -86,26 +143,26 @@ wstring Options::Option::getCaptionId() const
 
 const wstring Options::RENDER_DISTANCE_NAMES[] =
 {
-        L"options.renderDistance.far", L"options.renderDistance.normal", L"options.renderDistance.short", L"options.renderDistance.tiny"
+    L"options.renderDistance.far", L"options.renderDistance.normal", L"options.renderDistance.short", L"options.renderDistance.tiny"
 };
 const wstring Options::DIFFICULTY_NAMES[] =
 {
-        L"options.difficulty.peaceful", L"options.difficulty.easy", L"options.difficulty.normal", L"options.difficulty.hard"
+    L"options.difficulty.peaceful", L"options.difficulty.easy", L"options.difficulty.normal", L"options.difficulty.hard"
 };
 const wstring Options::GUI_SCALE[] =
 {
-        L"options.guiScale.auto", L"options.guiScale.small", L"options.guiScale.normal", L"options.guiScale.large"
+    L"options.guiScale.auto", L"options.guiScale.small", L"options.guiScale.normal", L"options.guiScale.large"
 };
 const wstring Options::FRAMERATE_LIMITS[] =
 {
-        L"performance.max", L"performance.balanced", L"performance.powersaver"
+    L"performance.max", L"performance.balanced", L"performance.powersaver"
 };
 
-const wstring Options::PARTICLES[] = {
+const wstring Options::PARTICLES[] =
+{
 	L"options.particles.all", L"options.particles.decreased", L"options.particles.minimal"
 };
 
-// 4J added
 void Options::init()
 {
     music = 1;
@@ -122,35 +179,43 @@ void Options::init()
 	renderClouds = true;
     skin = L"Default";
 
-    keyUp = new KeyMapping(L"key.forward", Keyboard::KEY_W);
-    keyLeft = new KeyMapping(L"key.left", Keyboard::KEY_A);
-    keyDown = new KeyMapping(L"key.back", Keyboard::KEY_S);
-    keyRight = new KeyMapping(L"key.right", Keyboard::KEY_D);
-    keyJump = new KeyMapping(L"key.jump", Keyboard::KEY_SPACE);
-    keyBuild = new KeyMapping(L"key.inventory", Keyboard::KEY_E);
-    keyDrop = new KeyMapping(L"key.drop", Keyboard::KEY_Q);
-    keyChat = new KeyMapping(L"key.chat", Keyboard::KEY_T);
-    keySneak = new KeyMapping(L"key.sneak", Keyboard::KEY_LSHIFT);
-	keyAttack = new KeyMapping(L"key.attack", -100 + 0);
-    keyUse = new KeyMapping(L"key.use", -100 + 1);
-    keyPlayerList = new KeyMapping(L"key.playerlist", Keyboard::KEY_TAB);
-    keyPickItem = new KeyMapping(L"key.pickItem", -100 + 2);
-    keyToggleFog = new KeyMapping(L"key.fog", Keyboard::KEY_F);
+	keyAttack = new KeyMapping(L"Attack/Mine", KeyboardMouseInput::MOUSE_LEFT);
+    keyUse = new KeyMapping(L"Use/Place", KeyboardMouseInput::MOUSE_RIGHT);
+    keyPickItem = new KeyMapping(L"Pick Item", KeyboardMouseInput::MOUSE_MIDDLE);
+    keyUp = new KeyMapping(L"Move Forward", KeyboardMouseInput::KEY_FORWARD);
+    keyLeft = new KeyMapping(L"Move Left", KeyboardMouseInput::KEY_LEFT);
+    keyDown = new KeyMapping(L"Move Back", KeyboardMouseInput::KEY_BACKWARD);
+    keyRight = new KeyMapping(L"Move Right", KeyboardMouseInput::KEY_RIGHT);
+    keyJump = new KeyMapping(L"Jump", KeyboardMouseInput::KEY_JUMP);
+	keySneak = new KeyMapping(L"Sneak", KeyboardMouseInput::KEY_SNEAK);
+	keySneakToggle = new KeyMapping(L"Toggle Sneak", KeyboardMouseInput::KEY_SNEAK_ALT);
+	keySprint = new KeyMapping(L"Sprint", KeyboardMouseInput::KEY_SPRINT);
+	keyDash = new KeyMapping(L"Dash", KeyboardMouseInput::KEY_DASH);
+    keyInventory = new KeyMapping(L"Open Inventory", KeyboardMouseInput::KEY_INVENTORY);
+    keyDrop = new KeyMapping(L"Drop", KeyboardMouseInput::KEY_DROP);
+	keyChat = new KeyMapping(L"Chat", KeyboardMouseInput::KEY_CHAT);
+	keyToggleCoords = new KeyMapping(L"Toggle Coordinates", KeyboardMouseInput::KEY_HIDE_COORDS);
+	keyFullbright = new KeyMapping(L"Fullbright", KeyboardMouseInput::KEY_FULLBRIGHT);
+    keyZoom = new KeyMapping(L"Zoom", KeyboardMouseInput::KEY_ZOOM);
 
 	keyMappings[0] = keyAttack;
 	keyMappings[1] = keyUse;
-    keyMappings[2] = keyUp;
-	keyMappings[3] = keyLeft;
-	keyMappings[4] = keyDown;
-	keyMappings[5] = keyRight;
-	keyMappings[6] = keyJump;
-	keyMappings[7] = keySneak;
-	keyMappings[8] = keyDrop;
-	keyMappings[9] = keyBuild;
-	keyMappings[10] = keyChat;
-	keyMappings[11] = keyPlayerList;
-	keyMappings[12] = keyPickItem;
-	keyMappings[13] = keyToggleFog;
+	keyMappings[2] = keyPickItem;
+	keyMappings[3] = keyUp;
+	keyMappings[4] = keyLeft;
+	keyMappings[5] = keyDown;
+	keyMappings[6] = keyRight;
+	keyMappings[7] = keyJump;
+	keyMappings[8] = keySneak;
+	keyMappings[9] = keySneakToggle;
+	keyMappings[10] = keySprint;
+	keyMappings[11] = keyDash;
+	keyMappings[12] = keyInventory;
+	keyMappings[13] = keyDrop;
+	keyMappings[14] = keyChat;
+	keyMappings[15] = keyToggleCoords;
+	keyMappings[16] = keyFullbright;
+	keyMappings[17] = keyZoom;
 
 	minecraft = nullptr;
 	//optionsFile = nullptr;
@@ -171,7 +236,49 @@ void Options::init()
 	fov = 0;
 	gamma = 0;
 	advancedTooltips = false;
+
+	setKeybinds();
 }
+
+#ifdef _WINDOWS64
+void Options::setKeybinds()
+{
+	g_KBMInput.SetKeyBinding(KBM_ACTION_ATTACK, keyMappings[0]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_USE, keyMappings[1]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_PICK_ITEM, keyMappings[2]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_FORWARD, keyMappings[3]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_LEFT, keyMappings[4]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_BACK, keyMappings[5]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_RIGHT, keyMappings[6]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_JUMP, keyMappings[7]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_SNEAK, keyMappings[8]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_SNEAK_ALT, keyMappings[9]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_SPRINT, keyMappings[10]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_DASH, keyMappings[11]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_INVENTORY, keyMappings[12]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_DROP, keyMappings[13]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_CHAT, keyMappings[14]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_COORDS, keyMappings[15]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_FULLBRIGHT, keyMappings[16]->key);
+	g_KBMInput.SetKeyBinding(KBM_ACTION_ZOOM, keyMappings[17]->key);
+}
+
+void Options::loadKeybinds()
+{
+	if (!app.HasSavedKeybinds())
+		return;
+	for (int i = 0; i < keyMappings_length; i++)
+		keyMappings[i]->key = app.GetKeybind(i);
+	setKeybinds();
+}
+
+void Options::saveKeybinds()
+{
+	for (int i = 0; i < keyMappings_length; i++)
+		app.SetKeybind(i, static_cast<unsigned char>(keyMappings[i]->key));
+	app.CheckGameSettingsChanged(true);
+}
+#endif
 
 Options::Options(Minecraft *minecraft, File workingDirectory)
 {
@@ -194,17 +301,23 @@ wstring Options::getKeyDescription(int i)
 wstring Options::getKeyMessage(int i)
 {
 	int key = keyMappings[i]->key;
-	if (key < 0) {
-		return I18n::get(L"key.mouseButton", key + 101);
-	} else {
-		return Keyboard::getKeyName(keyMappings[i]->key);
+	if (key >= 0 && key < KeyboardMouseInput::MAX_MOUSE_BUTTONS)
+	{
+		static const wchar_t* MOUSE_NAMES[] = { L"Mouse Left", L"Mouse Right", L"Mouse Middle" };
+		return MOUSE_NAMES[key];
 	}
+#ifdef _WINDOWS64
+	return getKeyName(key);
+#else
+	return Keyboard::getKeyName(key);
+#endif
 }
 
 void Options::setKey(int i, int key)
 {
     keyMappings[i]->key = key;
-    save();
+    setKeybinds();
+    saveKeybinds();
 }
 
 void Options::set(const Options::Option *item, float fVal)
@@ -252,14 +365,12 @@ void Options::toggle(const Options::Option *option, int dir)
     if (option == Option::GUI_SCALE) guiScale = (guiScale + dir) & 3;
 	if (option == Option::PARTICLES) particles = (particles + dir) % 3;
 
-	// 4J-PB - changing
-	//if (option == Option::VIEW_BOBBING) bobView = !bobView;
 	if (option == Option::VIEW_BOBBING) ((dir==0)?bobView=false: bobView=true);
 	if (option == Option::RENDER_CLOUDS) renderClouds = !renderClouds;
     if (option == Option::ADVANCED_OPENGL)
 	{
         advancedOpengl = !advancedOpengl;
-        minecraft->levelRenderer->allChanged();
+        if (minecraft->player != nullptr) minecraft->levelRenderer->allChanged();
     }
     if (option ==  Option::ANAGLYPH)
 	{
@@ -268,8 +379,6 @@ void Options::toggle(const Options::Option *option, int dir)
     }
     if (option ==  Option::FRAMERATE_LIMIT) framerateLimit = (framerateLimit + dir + 3) % 3;
 
-	// 4J-PB - Change for Xbox
-	//if (option ==  Option::DIFFICULTY) difficulty = (difficulty + dir) & 3;
 	if (option ==  Option::DIFFICULTY) difficulty = (dir) & 3;
 
 	app.DebugPrintf("Option::DIFFICULTY = %d",difficulty);
@@ -277,17 +386,13 @@ void Options::toggle(const Options::Option *option, int dir)
     if (option ==  Option::GRAPHICS)
 	{
         fancyGraphics = !fancyGraphics;
-        minecraft->levelRenderer->allChanged();
+        if (minecraft->player != nullptr) minecraft->levelRenderer->allChanged();
     }
     if (option == Option::AMBIENT_OCCLUSION)
 	{
         ambientOcclusion = !ambientOcclusion;
-        minecraft->levelRenderer->allChanged();
+        if (minecraft->player != nullptr) minecraft->levelRenderer->allChanged();
     }
-
-	// 4J-PB - don't do the file save on the xbox
-    // save();
-
 }
 
 float Options::getProgressValue(const Options::Option *item)
@@ -315,7 +420,14 @@ bool Options::getBooleanValue(const Options::Option *item)
 
 wstring Options::getMessage(const Options::Option *item)
 {
-	// 4J TODO, should these wstrings append rather than add?
+	if (item == Option::MUSIC)
+	{
+		return wstring(app.GetString(IDS_SLIDER_MUSIC)) + L": " + std::to_wstring(static_cast<int>(getProgressValue(item) * 100.0f)) + L"%";
+	}
+	if (item == Option::SOUND)
+	{
+		return wstring(app.GetString(IDS_SLIDER_SOUND)) + L": " + std::to_wstring(static_cast<int>(getProgressValue(item) * 100.0f)) + L"%";
+	}
 
     Language *language = Language::getInstance();
     wstring caption = language->getElement(item->getCaptionId()) + L": ";
@@ -455,25 +567,17 @@ void Options::load()
 				if (cmds[0] == L"advancedTooltips") advancedTooltips = cmds[1]==L"false";
 				if (cmds[0] == L"skin") skin = cmds[1];
 				if (cmds[0] == L"lastServer") lastMpIp = cmds[1];
-
-                for (int i = 0; i < keyMappings_length; i++)
-				{
-                    if (cmds[0] == (L"key_" + keyMappings[i]->name))
-					{
-                        keyMappings[i]->key = _fromString<int>(cmds[1]);
-                    }
-                }
 //            } catch (Exception e) {
 //                System.out.println("Skipping bad option: " + line);
 //            }
         }
 		//KeyMapping.resetMapping(); // 4J Not implemented
         br->close();
+		setKeybinds();
 //    } catch (Exception e) {
 //        System.out.println("Failed to load options");
 //        e.printStackTrace();
 //    }
-
 }
 
 float Options::readFloat(wstring string)
@@ -514,17 +618,11 @@ void Options::save()
 		dos.writeChars(L"skin:" + skin);
         dos.writeChars(L"lastServer:" + lastMpIp);
 
-        for (int i = 0; i < keyMappings_length; i++)
-		{
-            dos.writeChars(L"key_" + keyMappings[i]->name + L":" + std::to_wstring(keyMappings[i]->key));
-        }
-
         dos.close();
 //    } catch (Exception e) {
 //        System.out.println("Failed to save options");
 //        e.printStackTrace();
 //    }
-
 }
 
 bool Options::isCloudsOn()
