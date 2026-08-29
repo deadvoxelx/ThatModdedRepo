@@ -175,6 +175,7 @@ void Options::init()
     advancedOpengl = false;
     framerateLimit = 0;
     fancyGraphics = true;
+    classicTextures = false;
     ambientOcclusion = true;
 	renderClouds = true;
     skin = L"Default";
@@ -562,6 +563,7 @@ void Options::load()
                 if (cmds[0] == L"fpsLimit") framerateLimit = _fromString<int>(cmds[1]);
                 if (cmds[0] == L"difficulty") difficulty = _fromString<int>(cmds[1]);
                 if (cmds[0] == L"fancyGraphics") fancyGraphics = cmds[1]==L"true";
+                if (cmds[0] == L"classicTextures") classicTextures = cmds[1]==L"true";
                 if (cmds[0] == L"ao") ambientOcclusion = cmds[1]==L"true";
 				if (cmds[0] == L"clouds") renderClouds = cmds[1]==L"true";
 				if (cmds[0] == L"advancedTooltips") advancedTooltips = cmds[1]==L"false";
@@ -612,6 +614,7 @@ void Options::save()
         dos.writeChars(L"fpsLimit:" + std::to_wstring(framerateLimit));
         dos.writeChars(L"difficulty:" + std::to_wstring(difficulty));
         dos.writeChars(L"fancyGraphics:" + wstring(fancyGraphics ? L"true" : L"false"));
+        dos.writeChars(L"classicTextures:" + wstring(classicTextures ? L"true" : L"false"));
         dos.writeChars(ambientOcclusion ? L"ao:true" : L"ao:false");
 		dos.writeChars(renderClouds ? L"clouds:true" : L"clouds:false");
 		dos.writeChars(advancedTooltips ? L"advancedTooltips:true" : L"advancedTooltips:false");
