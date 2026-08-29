@@ -2,11 +2,13 @@
 #include "Screen.h"
 using namespace std;
 class Options;
+class Minecraft;
 
 class ControlsScreen : public Screen
 {
 private:
 	Screen *lastScreen;
+	Minecraft *minecraft;
 
 protected:
 	wstring title;
