@@ -67,6 +67,7 @@ public:
     bool advancedOpengl;
     int framerateLimit;
     bool fancyGraphics;
+    bool classicTextures;	// Classic Textures graphics option (uses terrainClassic.png)
     bool ambientOcclusion;
 	bool renderClouds;
     wstring skin;
