@@ -2,6 +2,7 @@
 #include "ControlsScreen.h"
 #include "Options.h"
 #include "SmallButton.h"
+#include "Minecraft.h"
 #include "..\Minecraft.World\net.minecraft.locale.h"
 #ifdef _WINDOWS64
 #include "Windows64\KeyboardMouseInput.h"
@@ -17,6 +18,7 @@ ControlsScreen::ControlsScreen(Screen *lastScreen, Options *options)
 
 	this->lastScreen = lastScreen;
     this->options = options;
+    this->minecraft = Minecraft::GetInstance();
 }
 
 int ControlsScreen::getLeftScreenPosition()
@@ -47,7 +49,7 @@ void ControlsScreen::buttonClicked(Button *button)
 	{
         //minecraft->setScreen(lastScreen);
         ui.PlayUISFX(eSFX_Back);
-        ui.NavigateToScene(ProfileManager.GetPrimaryPad(), eUIScene_HelpAndOptionsMenu);
+         minecraft->setScreen(lastScreen);
     }
 	else
 	{
