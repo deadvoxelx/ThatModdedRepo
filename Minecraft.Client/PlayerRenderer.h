@@ -11,6 +11,9 @@ class PlayerRenderer : public LivingEntityRenderer
 public:
 	// 4J: Made public for use in skull renderer
 	static ResourceLocation DEFAULT_LOCATION;
+	static ResourceLocation AGILITY_CAPE_LOCATION;
+	static ResourceLocation SWET_CAPE_LOCATION;
+	static ResourceLocation VALKYRIE_CAPE_LOCATION;
 
 private:
 	HumanoidModel *humanoidModel;

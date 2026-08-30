@@ -1,5 +1,8 @@
 #pragma once
 
+#define KEYBINDS_STORAGE_COUNT 18
+#define KEYBINDS_STORAGE_MAGIC 0x5A
+
 typedef struct  
 {
 	wchar_t *wchFilename;
@@ -103,6 +106,9 @@ typedef struct
 
 			// 29/Oct/2014 - Language selector.
 			unsigned char ucLocale;
+
+			unsigned char ucKeybinds[KEYBINDS_STORAGE_COUNT];
+			unsigned char ucKeybindsMagic;
 
 			// 4J Stu - See comment for GAME_SETTINGS_PROFILE_DATA_BYTES below
 			// was 192

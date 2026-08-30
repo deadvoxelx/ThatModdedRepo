@@ -67,30 +67,36 @@ public:
     bool advancedOpengl;
     int framerateLimit;
     bool fancyGraphics;
+    bool classicTextures;	// Classic Textures graphics option (uses terrainClassic.png)
     bool ambientOcclusion;
 	bool renderClouds;
     wstring skin;
 
+    KeyMapping *keyAttack;
+    KeyMapping *keyUse;
+    KeyMapping *keyPickItem;
     KeyMapping *keyUp;
     KeyMapping *keyLeft;
     KeyMapping *keyDown;
     KeyMapping *keyRight;
     KeyMapping *keyJump;
-    KeyMapping *keyBuild;
+    KeyMapping *keySneak;
+    KeyMapping *keySneakToggle;
+    KeyMapping *keySprint;
+    KeyMapping *keyDash;
+    KeyMapping *keyInventory;
     KeyMapping *keyDrop;
     KeyMapping *keyChat;
-    KeyMapping *keySneak;
-	KeyMapping *keyAttack;
-    KeyMapping *keyUse;
-    KeyMapping *keyPlayerList;
-    KeyMapping *keyPickItem;
-    KeyMapping *keyToggleFog;
+    KeyMapping *keyToggleCoords;
+    KeyMapping *keyFullbright;
+    KeyMapping *keyZoom;
 
-	static const int keyMappings_length = 14;
+	static const int keyMappings_length = 18;
     KeyMapping *keyMappings[keyMappings_length];
 
 protected:
 	Minecraft *minecraft;
+
 private:
 	File optionsFile;
 
@@ -112,7 +118,10 @@ public:
 	float gamma;
 	bool advancedTooltips;
 
-	void init();	// 4J added
+	void init();
+	void setKeybinds();
+	void loadKeybinds();
+	void saveKeybinds();
     Options(Minecraft *minecraft, File workingDirectory);
     Options();
     wstring getKeyDescription(int i);
@@ -124,10 +133,11 @@ public:
     bool getBooleanValue(const Options::Option *item);
     wstring getMessage(const Options::Option *item);
     void load();
+
 private:
 	float readFloat(wstring string);
+
 public:
 	void save();
-
 	bool isCloudsOn();
 };

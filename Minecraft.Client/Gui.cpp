@@ -29,7 +29,6 @@
 #include "..\Minecraft.World\LevelChunk.h"
 #include "..\Minecraft.World\Biome.h"
 #include <Common/UI/UI.h>
-
 #ifdef _WINDOWS64
 #include "Windows64\KeyboardMouseInput.h"
 #endif
@@ -724,7 +723,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 				float screenAspect = (float)g_rScreenWidth / (float)g_rScreenHeight;
 				float targetAspect = 16.0f / 9.0f;
 				
-				// apply correction if window is not already at a 16:9 aspect ratio
 				float correction = 1.0f;
 
 				if (fabs(screenAspect - targetAspect) > 0.01f) {
@@ -1093,13 +1091,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
         vector<wstring> lines;
 
-        // Only show version/branch for player 0 to avoid cluttering each splitscreen viewport
-        //if (iPad == 0)
-        //{
-        //    lines.push_back(ClientConstants::VERSION_STRING);
-        //    lines.push_back(ClientConstants::BRANCH_STRING);
-        //}
-
         if (minecraft->options->renderDebug && minecraft->player != nullptr && minecraft->level != nullptr)
         {
 			glTranslatef((float)0, (float)0, 50.0f);
@@ -1133,6 +1124,9 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			case 4:
                 dimension = L"minecraft:nurealm";
                 break;
+			//case 5:
+            //    dimension = L"minecraft:paleoscape";
+            //    break;
             }
             lines.push_back(dimension);
 
@@ -1275,7 +1269,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 		// Coordinates
 		const int primaryPad = ProfileManager.GetPrimaryPad();
 #ifdef _WINDOWS64
-		if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_HIDE_COORDS))
+		if (g_KBMInput.IsActionPressed(KBM_ACTION_COORDS))
 		{
 			showCoords = !showCoords;
 		}

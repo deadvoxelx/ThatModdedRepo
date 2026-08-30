@@ -58,6 +58,25 @@ void KeyboardMouseInput::Init()
 	m_charBufferHead = 0;
 	m_charBufferTail = 0;
 
+	m_keyBindings[KBM_ACTION_ATTACK] = MOUSE_LEFT;
+	m_keyBindings[KBM_ACTION_USE] = MOUSE_RIGHT;
+	m_keyBindings[KBM_ACTION_PICK_ITEM] = MOUSE_MIDDLE;
+	m_keyBindings[KBM_ACTION_FORWARD] = KEY_FORWARD;
+	m_keyBindings[KBM_ACTION_BACK] = KEY_BACKWARD;
+	m_keyBindings[KBM_ACTION_LEFT] = KEY_LEFT;
+	m_keyBindings[KBM_ACTION_RIGHT] = KEY_RIGHT;
+	m_keyBindings[KBM_ACTION_JUMP] = KEY_JUMP;
+	m_keyBindings[KBM_ACTION_SNEAK] = KEY_SNEAK;
+	m_keyBindings[KBM_ACTION_SNEAK_ALT] = KEY_SNEAK_ALT;
+	m_keyBindings[KBM_ACTION_SPRINT] = KEY_SPRINT;
+	m_keyBindings[KBM_ACTION_DASH] = KEY_DASH;
+	m_keyBindings[KBM_ACTION_INVENTORY] = KEY_INVENTORY;
+	m_keyBindings[KBM_ACTION_DROP] = KEY_DROP;
+	m_keyBindings[KBM_ACTION_CHAT] = KEY_CHAT;
+	m_keyBindings[KBM_ACTION_COORDS] = KEY_HIDE_COORDS;
+	m_keyBindings[KBM_ACTION_FULLBRIGHT] = KEY_FULLBRIGHT;
+	m_keyBindings[KBM_ACTION_ZOOM] = KEY_ZOOM;
+
 	RAWINPUTDEVICE rid;
 	rid.usUsagePage = 0x01; // HID_USAGE_PAGE_GENERIC
 	rid.usUsage = 0x02;     // HID_USAGE_GENERIC_MOUSE
@@ -86,6 +105,25 @@ void KeyboardMouseInput::ClearAllState()
 	m_mouseDeltaAccumY = 0;
 	m_mouseWheelAccum = 0;
 	m_mouseWheelConsumed = false;
+}
+
+void KeyboardMouseInput::ConsumeMouseButtons()
+{
+	memset(m_mouseButtonDown, 0, sizeof(m_mouseButtonDown));
+	memset(m_mouseButtonDownPrev, 0, sizeof(m_mouseButtonDownPrev));
+	memset(m_mouseBtnPressedAccum, 0, sizeof(m_mouseBtnPressedAccum));
+	memset(m_mouseBtnReleasedAccum, 0, sizeof(m_mouseBtnReleasedAccum));
+	memset(m_mouseBtnPressed, 0, sizeof(m_mouseBtnPressed));
+	memset(m_mouseBtnReleased, 0, sizeof(m_mouseBtnReleased));
+}
+
+void KeyboardMouseInput::ConsumeKey(int vkCode)
+{
+	if (vkCode < 0 || vkCode >= MAX_KEYS) return;
+	m_keyPressed[vkCode] = false;
+	m_keyPressedAccum[vkCode] = false;
+	m_keyReleased[vkCode] = false;
+	m_keyReleasedAccum[vkCode] = false;
 }
 
 void KeyboardMouseInput::Tick()
@@ -241,6 +279,34 @@ int KeyboardMouseInput::GetPressedKey() const
 	return 0;
 }
 
+void KeyboardMouseInput::SetKeyBinding(int action, int key)
+{
+	if (action >= 0 && action < KBM_ACTION_COUNT)
+		m_keyBindings[action] = key;
+}
+
+int KeyboardMouseInput::GetKeyBinding(int action) const
+{
+	if (action >= 0 && action < KBM_ACTION_COUNT)
+		return m_keyBindings[action];
+	return 0;
+}
+
+bool KeyboardMouseInput::IsActionDown(int action) const
+{
+	return IsKeyDown(GetKeyBinding(action));
+}
+
+bool KeyboardMouseInput::IsActionPressed(int action) const
+{
+	return IsKeyPressed(GetKeyBinding(action));
+}
+
+bool KeyboardMouseInput::IsActionReleased(int action) const
+{
+	return IsKeyReleased(GetKeyBinding(action));
+}
+
 bool KeyboardMouseInput::IsMouseButtonDown(int button) const
 {
 	if (button >= 0 && button < MAX_MOUSE_BUTTONS)
@@ -367,16 +433,16 @@ void KeyboardMouseInput::SetWindowFocused(bool focused)
 float KeyboardMouseInput::GetMoveX() const
 {
 	float x = 0.0f;
-	if (m_keyDown[KEY_LEFT])  x += 1.0f;
-	if (m_keyDown[KEY_RIGHT]) x -= 1.0f;
+	if (IsKeyDown(GetKeyBinding(KBM_ACTION_LEFT)))  x += 1.0f;
+	if (IsKeyDown(GetKeyBinding(KBM_ACTION_RIGHT))) x -= 1.0f;
 	return x;
 }
 
 float KeyboardMouseInput::GetMoveY() const
 {
 	float y = 0.0f;
-	if (m_keyDown[KEY_FORWARD])  y += 1.0f;
-	if (m_keyDown[KEY_BACKWARD]) y -= 1.0f;
+	if (IsKeyDown(GetKeyBinding(KBM_ACTION_FORWARD)))  y += 1.0f;
+	if (IsKeyDown(GetKeyBinding(KBM_ACTION_BACK))) y -= 1.0f;
 	return y;
 }
 

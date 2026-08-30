@@ -98,6 +98,9 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey)
     if (eventKey == Keyboard::KEY_ESCAPE)
 	{
         minecraft->setScreen(nullptr);
+#ifdef _WINDOWS64
+        g_KBMInput.ConsumeKey(VK_ESCAPE);
+#endif
         return;
     }
     if (eventKey == Keyboard::KEY_RETURN)

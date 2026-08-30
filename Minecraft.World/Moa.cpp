@@ -33,6 +33,11 @@ Moa::Moa(Level *level) : TamableAnimal( level )
 	flappingM = 1;
 	oFlapSpeedM = oFlapM = 0.0f;
 
+	playerJumpPendingScale = 0;
+	isEntityJumping = false;
+	moaAirJumpPending = false;
+	moaAirJumpUsed = false;
+
 	setSize(1.2f, 2.0f);
 
 	getNavigation()->setAvoidWater(true);
@@ -234,6 +239,14 @@ void Moa::travel(float xa, float ya)
 		}
 		playerJumpPendingScale = 0;
 	}
+	else if (moaAirJumpPending)
+	{
+		yd = MOA_JUMP_STRENGTH;
+		moaAirJumpPending = false;
+		moaAirJumpUsed = true;
+		isEntityJumping = true;
+		hasImpulse = true;
+	}
 
 	footSize = 1;
 	flyingSpeed = getSpeed() * .1f;
@@ -247,6 +260,7 @@ void Moa::travel(float xa, float ya)
 	{
 		playerJumpPendingScale = 0;
 		isEntityJumping = false;
+		moaAirJumpUsed = false;
 	}
 	walkAnimSpeedO = walkAnimSpeed;
 	double dx = x - xo;
@@ -263,7 +277,14 @@ void Moa::travel(float xa, float ya)
 
 void Moa::onPlayerJump(int jumpAmount)
 {
-	playerJumpPendingScale = 1.0f;
+	if (onGround)
+	{
+		playerJumpPendingScale = 1.0f;
+	}
+	else if (!moaAirJumpUsed)
+	{
+		moaAirJumpPending = true;
+	}
 }
 
 bool Moa::hurt(DamageSource *source, float dmg) 

@@ -49,6 +49,7 @@
 #include "Network\WinsockNetLayer.h"
 #include "Windows64_Xuid.h"
 #include "Common/UI/UI.h"
+//#include "CrashHandler.h"
 
 // Forward-declare the internal Renderer class and its global instance from 4J_Render_PC_d.lib.
 // C4JRender (RenderManager) is a stateless wrapper — all D3D state lives in InternalRenderManager.
@@ -1303,6 +1304,7 @@ static Minecraft* InitialiseMinecraftRuntime()
 		return nullptr;
 
 	app.InitGameSettings();
+	pMinecraft->options->loadKeybinds();
 	app.InitialiseTips();
 
 	return pMinecraft;
@@ -1315,6 +1317,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	//InstallCrashHandler();
 
 	// 4J-Win64: set CWD to exe dir so asset paths resolve correctly
 	{
@@ -1682,6 +1686,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			{
 				pMinecraft->tickAllConnections();		// Added to stop timing out when we are waiting after converting to an offline game
 			}
+
+			if (pMinecraft->screen != nullptr)
+			{
+				pMinecraft->tickScreen();
+				pMinecraft->renderScreen();
+			}
 		}
 
 		pMinecraft->soundEngine->playMusicTick();
@@ -1846,8 +1856,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			ToggleFullscreen();
 		}
 
-		// TAB opens game info menu. - Vvis :3 - Updated by detectiveren
-		if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_HOST_SETTINGS) && !ui.GetMenuDisplayed(0))
+		// Host options menu
+		if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_HOST_SETTINGS) && app.GetGameStarted() && !ui.GetMenuDisplayed(0))
 		{
 			if (Minecraft* pMinecraft = Minecraft::GetInstance())
 			{
@@ -1859,7 +1869,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 
 		// Open chat
-		if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_CHAT) && app.GetGameStarted() && !ui.GetMenuDisplayed(0) && pMinecraft->screen == NULL)
+		if (g_KBMInput.IsActionPressed(KBM_ACTION_CHAT) && app.GetGameStarted() && !ui.GetMenuDisplayed(0) && pMinecraft->screen == NULL)
 		{
 			g_KBMInput.ClearCharBuffer();
 			pMinecraft->setScreen(new ChatScreen());
@@ -1874,11 +1884,11 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			SetFocus(g_hWnd);
 		}
 
-		//zoom
+		// Zoom
 		if (!ui.GetMenuDisplayed(0) && pMinecraft->screen == NULL) {
 			Minecraft* mc = Minecraft::GetInstance();
 			if (mc && mc->gameRenderer) {
-				if (g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_ZOOM)) {
+				if (g_KBMInput.IsActionDown(KBM_ACTION_ZOOM)) {
 					mc->gameRenderer->zoomRegion(5.0, 0.0, 0.0);
 				} else {
 					mc->gameRenderer->unZoomRegion();

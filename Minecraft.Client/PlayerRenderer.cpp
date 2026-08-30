@@ -62,6 +62,9 @@ static unsigned int nametagColorForIndex(int index)
 }
 
 ResourceLocation PlayerRenderer::DEFAULT_LOCATION = ResourceLocation(TN_MOB_CHAR);
+ResourceLocation PlayerRenderer::AGILITY_CAPE_LOCATION = ResourceLocation(TN_ARMOR_AGILITY_CAPE);
+ResourceLocation PlayerRenderer::SWET_CAPE_LOCATION = ResourceLocation(TN_ARMOR_SWET_CAPE);
+ResourceLocation PlayerRenderer::VALKYRIE_CAPE_LOCATION = ResourceLocation(TN_ARMOR_VALKYRIE_CAPE);
 
 PlayerRenderer::PlayerRenderer() : LivingEntityRenderer( new HumanoidModel(0), 0.5f )
 {
@@ -333,7 +336,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 			glPushMatrix();
 			humanoidModel->head->translateTo(1 / 16.0f);
 
-			if(headGear->getItem() != nullptr && headGear->getItem()->id < 256)
+			if(headGear->getItem() != nullptr && headGear->getItem()->id < 512)
 			{
 				if (TileRenderer::canRender(Tile::tiles[headGear->id]->getRenderShape()))
 				{
@@ -388,7 +391,44 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 	/*boolean loaded = mob->getCloakTexture()->isLoaded();
     boolean b1 = !mob->isInvisible();
     boolean b2 = !mob->isCapeHidden();*/
-	if (bindTexture(mob->customTextureUrl2, L"") && !mob->isInvisible())
+	
+	bool agilityCapeEquipped = false;
+	bool swetCapeEquipped = false;
+	bool valkyrieCapeEquipped = false;
+	if (mob->inventory != nullptr)
+	{
+		for (unsigned int i = 0; i < mob->inventory->aether.length; i++)
+		{
+			if (mob->inventory->aether[i] != nullptr && (mob->inventory->aether[i]->id == Item::agilityCape_Id || mob->inventory->aether[i]->id == Item::swetCape_Id || mob->inventory->aether[i]->id == Item::valkyrieCape_Id))
+			{
+				valkyrieCapeEquipped = true;
+				break;
+			}
+		}
+	}
+
+	bool cloakBound = false;
+	if (agilityCapeEquipped)
+	{
+		bindTexture(&AGILITY_CAPE_LOCATION);
+		cloakBound = true;
+	}
+	else if (swetCapeEquipped)
+	{
+		bindTexture(&SWET_CAPE_LOCATION);
+		cloakBound = true;
+	}
+	else if (valkyrieCapeEquipped)
+	{
+		bindTexture(&VALKYRIE_CAPE_LOCATION);
+		cloakBound = true;
+	}
+	else
+	{
+		cloakBound = bindTexture(mob->customTextureUrl2, L"");
+	}
+
+	if (cloakBound && !mob->isInvisible())
 	{
         glPushMatrix();
         glTranslatef(0, 0, 2 / 16.0f);
@@ -448,7 +488,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 			anim = item->getUseAnimation();
 		}
 
-        if (item->id >= 0 && item->id < 256 && TileRenderer::canRender(Tile::tiles[item->id]->getRenderShape()))
+        if (item->id >= 0 && item->id < 512 && TileRenderer::canRender(Tile::tiles[item->id]->getRenderShape()))
 		{
             float s = 8 / 16.0f;
             glTranslatef(-0 / 16.0f, 3 / 16.0f, -5 / 16.0f);

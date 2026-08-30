@@ -25,6 +25,7 @@
 #include "DemoUser.h"
 #include "GuiParticles.h"
 #include "Screen.h"
+#include "OptionsScreen.h"
 #include "DeathScreen.h"
 #include "ErrorScreen.h"
 #include "TitleScreen.h"
@@ -336,6 +337,7 @@ void Minecraft::init()
 	levelSource = new McRegionLevelStorageSource(File(workingDirectory, L"saves"));
 	//        levelSource = new MemoryLevelStorageSource();
 	options = new Options(this, workingDirectory);
+	options->load();
 	skins = new TexturePackRepository(workingDirectory, this);
 	skins->addDebugPacks();
 	textures = new Textures(skins, options);
@@ -519,6 +521,10 @@ void Minecraft::setScreen(Screen *screen)
 	{
 		g_KBMInput.SetMouseGrabbed(false);
 	}
+	if (oldScreen != screen)
+	{
+		g_KBMInput.ConsumeMouseButtons();
+	}
 #endif
 
 	//4J Gordon: Do not force a stats save here
@@ -530,7 +536,9 @@ void Minecraft::setScreen(Screen *screen)
 
 	if (screen == nullptr && level == nullptr)
 	{
-		screen = new TitleScreen();
+		this->screen = nullptr;
+		ui.NavigateToHomeMenu();
+		return;
 	}
 	else if (player != nullptr && !ui.GetMenuDisplayed(player->GetXboxPad()) && player->getHealth() <= 0)
 	{
@@ -595,6 +603,51 @@ void Minecraft::setScreen(Screen *screen)
 	//InputManager.SetMenuDisplayed(XUSER_INDEX_ANY,false);
 	}
 	}*/
+}
+
+void Minecraft::tickScreen()
+{
+	if (screen == nullptr || dynamic_cast<TitleScreen *>(screen) != nullptr)
+	{
+		return;
+	}
+
+	screen->updateEvents();
+	if (screen != nullptr)
+	{
+		screen->particles->tick();
+		screen->tick();
+	}
+	OptionsScreen::checkPendingRestore();
+}
+
+void Minecraft::renderScreen()
+{
+	if (screen == nullptr || dynamic_cast<TitleScreen *>(screen) != nullptr)
+	{
+		return;
+	}
+
+	ScreenSizeCalculator ssc(options, width, height);
+	int screenWidth = ssc.getWidth();
+	int screenHeight = ssc.getHeight();
+#ifdef _WINDOWS64
+	extern int g_rScreenWidth;
+	extern int g_rScreenHeight;
+	int xMouse = Mouse::getX() * screenWidth / g_rScreenWidth;
+	int yMouse = screenHeight - Mouse::getY() * screenHeight / g_rScreenHeight - 1;
+#else
+	int xMouse = Mouse::getX() * screenWidth / width;
+	int yMouse = screenHeight - Mouse::getY() * screenHeight / height - 1;
+#endif
+
+	gameRenderer->setupGuiScreen();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	screen->render(xMouse, yMouse, 1.0f);
+	if (screen != nullptr && screen->particles != nullptr)
+	{
+		screen->particles->render(1.0f);
+	}
 }
 
 void Minecraft::checkGlError(const wstring& string)
@@ -1486,13 +1539,13 @@ void Minecraft::run_middle()
 					{
 						if (g_KBMInput.IsKBMActive())
 						{
-							if(g_KBMInput.IsMouseButtonPressed(KeyboardMouseInput::MOUSE_LEFT))
+							if(g_KBMInput.IsMouseButtonPressed(KeyboardMouseInput::MOUSE_LEFT) || g_KBMInput.IsActionPressed(KBM_ACTION_ATTACK))
 								localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_ACTION;
 
-							if(g_KBMInput.IsMouseButtonPressed(KeyboardMouseInput::MOUSE_RIGHT))
+							if(g_KBMInput.IsMouseButtonPressed(KeyboardMouseInput::MOUSE_RIGHT) || g_KBMInput.IsActionPressed(KBM_ACTION_USE))
 								localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_USE;
 
-							if (g_KBMInput.IsMouseButtonPressed(KeyboardMouseInput::MOUSE_MIDDLE))
+							if (g_KBMInput.IsMouseButtonPressed(KeyboardMouseInput::MOUSE_MIDDLE) || g_KBMInput.IsActionPressed(KBM_ACTION_PICK_ITEM))
 							{
 								localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_PICK_ITEM;
 							}
@@ -1510,7 +1563,7 @@ void Minecraft::run_middle()
 								ui.IsSceneInStack(i, eUIScene_HorseMenu);
 							bool isEditing = ui.GetTopScene(i) && ui.GetTopScene(i)->isDirectEditBlocking();
 
-							if(g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_INVENTORY))
+							if(g_KBMInput.IsActionPressed(KBM_ACTION_INVENTORY))
 							{
 								if(isClosableByEitherKey && !isEditing)
 								{
@@ -1522,7 +1575,7 @@ void Minecraft::run_middle()
 								}
 							}
 
-							if(g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_DROP))
+							if(g_KBMInput.IsActionPressed(KBM_ACTION_DROP))
 								localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_DROP;
 
 							if(g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_CRAFTING) || g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_CRAFTING_ALT))
@@ -1566,7 +1619,7 @@ void Minecraft::run_middle()
 							localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_SCREENSHOT;
 
 						// In flying mode, Shift held = sneak/descend
-						if(g_KBMInput.IsKBMActive() && g_KBMInput.IsKeyDown(KeyboardMouseInput::KEY_SNEAK))
+						if(g_KBMInput.IsKBMActive() && g_KBMInput.IsActionDown(KBM_ACTION_SNEAK))
 						{
 							if (localplayers[i]->abilities.flying && !ui.GetMenuDisplayed(i))
 								localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_SNEAK_TOGGLE;
@@ -1574,7 +1627,7 @@ void Minecraft::run_middle()
 
 						if (g_KBMInput.IsKBMActive() && g_KBMInput.IsMouseGrabbed() &&
 							localgameModes[i] != nullptr && localgameModes[i]->isInputAllowed(MINECRAFT_ACTION_SNEAK_TOGGLE) &&
-							g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_SNEAK_ALT))
+							g_KBMInput.IsActionPressed(KBM_ACTION_SNEAK_ALT))
 						{
 							if (localplayers[i]->input != nullptr)
 								localplayers[i]->input->sneakToggle = !localplayers[i]->input->sneakToggle;
@@ -2292,9 +2345,6 @@ void Minecraft::verify()
 	*/
 }
 
-
-
-
 void Minecraft::levelTickUpdateFunc(void* pParam)
 {
 	Level* pLevel = static_cast<Level *>(pParam);
@@ -2308,7 +2358,6 @@ void Minecraft::levelTickThreadInitFunc()
 	IntCache::CreateNewThreadStorage();
 	Compression::UseDefaultThreadStorage();
 }
-
 
 // 4J - added bFirst parameter, which is true for the first active viewport in splitscreen
 // 4J - added bUpdateTextures, which is true if the actual renderer textures are to be updated - this will be true for the last time this tick runs with bFirst true
@@ -2397,6 +2446,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 			screen->tick();
 		}
 	}
+
+	OptionsScreen::checkPendingRestore();
 
 #ifdef _WINDOWS64
 	// Mouse grab/release only for the primary (KBM) player — splitscreen
@@ -4402,7 +4453,7 @@ bool Minecraft::isClientSide()
 
 void Minecraft::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, const wstring& levelName, LevelSettings *levelSettings)
 {
-	}
+}
 
 bool Minecraft::saveSlot(int slot, const wstring& name)
 {
@@ -4768,7 +4819,7 @@ void Minecraft::prepareLevel(int title)
 	{
 		if(progressRenderer != nullptr) this->progressRenderer->progressStage(IDS_PROGRESS_SIMULATING_WORLD);
 		max = 2000;
-}
+	}
 }
 
 wstring Minecraft::gatherStats1()

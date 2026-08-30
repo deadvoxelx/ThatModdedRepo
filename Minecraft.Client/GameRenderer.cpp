@@ -866,7 +866,7 @@ void GameRenderer::tickLightTexture()
 
 void GameRenderer::updateLightTexture(float a)
 {
-	if (g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_FULLBRIGHT))
+	if (g_KBMInput.IsActionPressed(KBM_ACTION_FULLBRIGHT))
 	{
 		fullbrightToggled = !fullbrightToggled;
 	}

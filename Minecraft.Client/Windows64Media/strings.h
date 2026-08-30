@@ -2588,3 +2588,13 @@
 #define IDS_TILE_VELOETT_FLOWER								   2582
 #define IDS_TILE_ENDESERT_BUSH								   2583
 #define IDS_WORLD_SIZE_TITLE_HUGE				               2584
+#define IDS_ITEM_GRAVITITE_PENDANT				               2585
+#define IDS_ITEM_GRAVITITE_RING							       2586
+#define IDS_ITEM_NETHANIUM_PENDANT				               2587
+#define IDS_ITEM_NETHANIUM_RING							       2588
+#define IDS_ITEM_ENDORIUM_PENDANT				               2589
+#define IDS_ITEM_ENDORIUM_RING							       2590
+#define IDS_ITEM_APHALAF_GEM					               2591
+#define IDS_ITEM_NUSA_AMULET							       2592
+#define IDS_WIKI											   2593
+#define IDS_CLASSIC_TEXTURES								   2594
