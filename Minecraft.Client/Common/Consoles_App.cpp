@@ -4812,6 +4812,7 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_APHALAF_GEM, L"Aphalaf Gem");
 		m_stringTable->registerString(IDS_ITEM_NUSA_AMULET, L"Nusa Amulet");
 		m_stringTable->registerString(IDS_WIKI, L"Hellish Wiki");
+		m_stringTable->registerString(IDS_CLASSIC_TEXTURES, L"Classic Textures");
 
 	}
 	else
