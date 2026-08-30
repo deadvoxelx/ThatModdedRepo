@@ -210,6 +210,9 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"mob/frozen_sun_spirit",
 
 	L"item/chest_treasure",
+	L"armor/accessory_agility_cape",
+	L"armor/accessory_swet_cape",
+	L"armor/accessory_valkyrie_cape",
 
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
