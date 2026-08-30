@@ -30,6 +30,8 @@ private:
 	Texture *stitchResult;
 	vector<StitchedTexture *> animatedTextures; // = new ArrayList<StitchedTexture>();
 
+	vector<pair<int,int>> moddedCells;
+
 	void loadUVs();
 public:
 	PreStitchedTextureMap(int type, const wstring &name, const wstring &path, BufferedImage *missingTexture, bool mipMap = false);
