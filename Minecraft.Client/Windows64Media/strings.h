@@ -2597,3 +2597,4 @@
 #define IDS_ITEM_APHALAF_GEM					               2591
 #define IDS_ITEM_NUSA_AMULET							       2592
 #define IDS_WIKI											   2593
+#define IDS_CLASSIC_TEXTURES								   2594
