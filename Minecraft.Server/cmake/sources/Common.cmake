@@ -275,6 +275,7 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/DefaultTexturePack.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/DemoUser.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/DerivedServerLevel.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/DirtBackgroundScreen.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/DirtyChunkSorter.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/DispenserBootstrap.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/DistanceChunkSorter.cpp"
