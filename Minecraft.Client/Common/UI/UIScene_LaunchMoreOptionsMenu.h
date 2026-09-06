@@ -20,6 +20,7 @@ private:
 		eLaunchCheckbox_TNT,
 		eLaunchCheckbox_HostPrivileges,
 		eLaunchCheckbox_ResetNether,
+		eLaunchCheckbox_ResetNurealm,
 		eLaunchCheckbox_Structures,
 		eLaunchCheckbox_FlatWorld,
 		eLaunchCheckbox_Farlands,
@@ -107,6 +108,8 @@ private:
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_Farlands], "CheckboxFarlands")
 
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_ResetNether], "CheckboxResetNether")
+			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_ResetNurealm], "CheckboxResetNurealm")
+
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_DisableSaving], "CheckboxDisableSaving")
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_TrustSystem], "CheckboxTrustSystem")
 			UI_MAP_ELEMENT( m_checkboxes[eLaunchCheckbox_FireSpreads], "CheckboxFireSpreads")
