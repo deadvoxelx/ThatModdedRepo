@@ -13,6 +13,7 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.animal.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.global.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.projectile.h"
+#include "..\Minecraft.World\EntityCrystal.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.boss.enderdragon.h"
 #include "..\Minecraft.World\net.minecraft.network.packet.h"
 #include "..\Minecraft.World\net.minecraft.network.h"
@@ -50,6 +51,7 @@ void EntityTracker::addEntity(shared_ptr<Entity> e)
 	else if (e->instanceof(eTYPE_DARTPOISON)) addEntity(e, 16 * 4, 20, false);
 	else if (e->instanceof(eTYPE_DARTENCHANTED)) addEntity(e, 16 * 4, 20, false);
 	else if (e->instanceof(eTYPE_DARTNETHANIUM)) addEntity(e, 16 * 4, 20, false);
+	else if (e->instanceof(eTYPE_CRYSTAL)) addEntity(e, 16 * 4, 2, true);	// 4J - frequent updates + velocity sync so client-simulated crystals stay on the server path
     else if (e->instanceof(eTYPE_FIREBALL)) addEntity(e, 16 * 4, 10, false);
     else if (e->instanceof(eTYPE_SNOWBALL)) addEntity(e, 16 * 4, 10, true);
 	else if (e->instanceof(eTYPE_HELLSPHERE)) addEntity(e, 16 * 4, 10, true);
