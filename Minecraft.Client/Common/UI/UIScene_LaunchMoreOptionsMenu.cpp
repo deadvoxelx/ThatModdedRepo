@@ -90,7 +90,10 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(int iPad, void *ini
 	m_checkboxes[eLaunchCheckbox_FireSpreads].init(app.GetString(IDS_FIRE_SPREADS),eLaunchCheckbox_FireSpreads,m_params->bFireSpreads);
 	m_checkboxes[eLaunchCheckbox_TNT].init(app.GetString(IDS_TNT_EXPLODES),eLaunchCheckbox_TNT,m_params->bTNT);
 	m_checkboxes[eLaunchCheckbox_HostPrivileges].init(app.GetString(IDS_HOST_PRIVILEGES),eLaunchCheckbox_HostPrivileges,m_params->bHostPrivileges);
+
 	m_checkboxes[eLaunchCheckbox_ResetNether].init(app.GetString(IDS_RESET_END),eLaunchCheckbox_ResetNether,m_params->bResetNether);
+	m_checkboxes[eLaunchCheckbox_ResetNurealm].init(app.GetString(IDS_RESET_NUREALM),eLaunchCheckbox_ResetNurealm,m_params->bResetNurealm);
+
 	m_checkboxes[eLaunchCheckbox_Structures].init(app.GetString(IDS_GENERATE_STRUCTURES),eLaunchCheckbox_Structures,m_params->bStructures);
 	m_checkboxes[eLaunchCheckbox_FlatWorld].init(app.GetString(IDS_SUPERFLAT_WORLD),eLaunchCheckbox_FlatWorld,m_params->bFlatWorld);
 	m_checkboxes[eLaunchCheckbox_Farlands].init(app.GetString(IDS_FARLANDS),eLaunchCheckbox_Farlands,m_params->bFarlands);
@@ -439,6 +442,9 @@ void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId, bool se
 	case eLaunchCheckbox_ResetNether:
 		m_params->bResetNether = selected;
 		break;
+	case eLaunchCheckbox_ResetNurealm:
+		m_params->bResetNurealm = selected;
+		break;
 	case eLaunchCheckbox_Structures:
 		m_params->bStructures = selected;
 		break;
@@ -513,6 +519,9 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId, F64 childId
 		break;
 	case eLaunchCheckbox_ResetNether:
 		stringId = IDS_RESET_END;
+		break;
+	case eLaunchCheckbox_ResetNurealm:
+		stringId = IDS_RESET_NUREALM;
 		break;
 	case eLaunchCheckbox_Structures:
 		stringId = IDS_GAMEOPTION_STRUCTURES;
