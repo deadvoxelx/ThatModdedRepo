@@ -108,6 +108,8 @@ public:
 		eMaterial_gravitite,
 		eMaterial_cloud,
 		eMaterial_fossil,
+		eMaterial_aphal,
+		eMaterial_nusa,
 
 	}
 	eMaterial;
@@ -188,6 +190,7 @@ public:
 		static const Tier *VAMPIRE; //
 		static const Tier *VALKYRIE; //
 		static const Tier *APHALAF; //
+		static const Tier *NUSA; //
 
 	private:
 		const int level;
@@ -567,6 +570,15 @@ public:
 	static Item *netherFlax;
 	static DartShooterNethaniumItem *dartShooterNethanium;
 	static Item *dartNethanium;
+	static Item *gravititePendant;
+	static Item *gravititeRing;
+	static Item *nethaniumPendant;
+	static Item *nethaniumRing;
+	static Item *endoriumPendant;
+	static Item *endoriumRing;
+	static Item *aphalafGem;
+	static Item *nusaAmulet;
+	static Item *nusaBlade;
 
 
 	static const int shovel_iron_Id			= 512;
@@ -882,7 +894,16 @@ public:
 	static const int netherFlax_Id = 801;
 	static const int dartShooterNethanium_Id = 802;
 	static const int dartNethanium_Id = 803;
-
+	static const int gravititePendant_Id = 804;
+	static const int gravititeRing_Id = 805;
+	static const int nethaniumPendant_Id = 806;
+	static const int nethaniumRing_Id = 807;
+	static const int endoriumPendant_Id = 808;
+	static const int endoriumRing_Id = 809;
+	static const int aphalafGem_Id = 810;
+	static const int nusaAmulet_Id = 811;
+	static const int nusaBlade_Id = 812;
+	
 public:
 	const int id;
 
@@ -899,6 +920,8 @@ protected:
 	int m_iMaterial;
 	bool m_handEquipped;
 	bool m_isStackedByData;
+	bool m_isAccessory;
+	bool m_isCape;
 
 private:
 	Item *craftingRemainingItem;
@@ -936,6 +959,11 @@ public:
 	virtual int getMaxStackSize() const;
 	virtual int getLevelDataForAuxValue(int auxValue);
 	bool isStackedByData();
+
+	bool isAccessory() const;
+	bool isCape() const;
+	Item *setAccessory();
+	Item *setCape();
 
 protected:
 	Item *setStackedByData(bool isStackedByData);
