@@ -117,6 +117,7 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Tile::nustone_Id, NustoneTile::TYPE_DEFAULT)
 		ITEM_AUX(Tile::nustone_Id, NustoneTile::TYPE_BRICK)
 		ITEM_AUX(Tile::nustone_Id, NustoneTile::TYPE_DARK)
+		ITEM(Tile::bossStone_Id)
 		ITEM(Tile::glowingNustone_Id)
 
 		ITEM(Tile::aetherGrass_Id)
@@ -200,12 +201,21 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Tile::stairs_birchwood_Id)
 		ITEM(Tile::stairs_sprucewood_Id)
 		ITEM(Tile::stairs_junglewood_Id)
+		ITEM(Tile::netherStairs_Id)
+		ITEM(Tile::purulStairs_Id)
+		ITEM(Tile::skyrootStairs_Id)
+		ITEM(Tile::nusaStairs_Id)
 		ITEM(Tile::stairs_stone_Id)
+		ITEM(Tile::stairs_sandstone_Id)
 		ITEM(Tile::stairs_bricks_Id)
 		ITEM(Tile::stairs_stoneBrick_Id)
 		ITEM(Tile::stairs_netherBricks_Id)
-		ITEM(Tile::stairs_sandstone_Id)
+		ITEM(Tile::goldenclinStairs_Id)
+		ITEM(Tile::goldenclinBrickStairs_Id)
 		ITEM(Tile::stairs_quartz_Id)
+		ITEM(Tile::nustoneStairs_Id)
+		ITEM(Tile::nustoneBrickStairs_Id)
+		ITEM(Tile::darkNustoneStairs_Id)
 
 		ITEM_AUX(Tile::cobbleWall_Id, WallTile::TYPE_NORMAL)
 		ITEM_AUX(Tile::cobbleWall_Id, WallTile::TYPE_MOSSY)
@@ -530,11 +540,13 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM_AUX(Item::spawnEgg_Id, 123); // Nuskull
 		ITEM_AUX(Item::spawnEgg_Id, 124); // Nuclear Nuskull
 		ITEM_AUX(Item::spawnEgg_Id, 125); // Nusa Demon
+		//ITEM_AUX(Item::spawnEgg_Id, 129); // Nusagar
 		ITEM_AUX(Item::spawnEgg_Id, 126); // Moa
 		ITEM_AUX(Item::spawnEgg_Id, 118); // Aerwhale
 		ITEM_AUX(Item::spawnEgg_Id, 116); // Zephyr
 		ITEM_AUX(Item::spawnEgg_Id, 122); // Swet
 		ITEM_AUX(Item::spawnEgg_Id, 119); // Cockatrice 
+		ITEM_AUX(Item::spawnEgg_Id, 128); // Fire Minion 
 		//ITEM_AUX(Item::spawnEgg_Id, 63); // Ender Dragon - doesnt work
 		ITEM_AUX(Item::spawnEgg_Id, 64); // Wither
 		ITEM(Item::record_01_Id)
@@ -752,21 +764,31 @@ void IUIScene_CreativeMenu::staticCtor()
 		ITEM(Item::goldRing_Id)				// 3
 		ITEM(Item::zanitePendant_Id)		// 4
 		ITEM(Item::zaniteRing_Id)			// 5
-		ITEM(Item::ironBubble_Id)			// 6
-		ITEM(Item::regenerationStone_Id)	// 7
-		ITEM(Item::healingStone_Id)			// 8
-		ITEM(Item::lifeShard_Id)			// 9
+		ITEM(Item::gravititePendant_Id)		// 6
+		ITEM(Item::gravititeRing_Id)		// 7
+		ITEM(Item::nethaniumPendant_Id)		// 8
+		ITEM(Item::nethaniumRing_Id)		// 9
 
-		ITEM(Item::bow_Id)					// 0
-		ITEM(Item::arrow_Id)				// 1
-		ITEM(Item::dartShooterGold_Id)		// 2
-		ITEM(Item::dartShooterPoison_Id)	// 3
-		ITEM(Item::dartShooterEnchanted_Id)	// 4
-		ITEM(Item::dartShooterNethanium_Id)	// 5
-		ITEM(Item::dartGold_Id)				// 6
-		ITEM(Item::dartPoison_Id)			// 7
-		ITEM(Item::dartEnchanted_Id)		// 8
-		ITEM(Item::dartNethanium_Id)		// 9
+		ITEM(Item::endoriumPendant_Id)		// 0
+		ITEM(Item::endoriumRing_Id)			// 1
+		ITEM(Item::ironBubble_Id)			// 2
+		ITEM(Item::regenerationStone_Id)	// 3
+		ITEM(Item::aphalafGem_Id)			// 4
+		ITEM(Item::nusaAmulet_Id)			// 5
+		ITEM(Item::healingStone_Id)			// 6
+		ITEM(Item::lifeShard_Id)			// 7
+		ITEM(Item::bow_Id)					// 8
+		ITEM(Item::arrow_Id)				// 9
+
+		ITEM(Item::dartShooterGold_Id)		// 0
+		ITEM(Item::dartShooterPoison_Id)	// 1
+		ITEM(Item::dartShooterEnchanted_Id)	// 2
+		ITEM(Item::dartShooterNethanium_Id)	// 3
+		ITEM(Item::dartGold_Id)				// 4
+		ITEM(Item::dartPoison_Id)			// 5
+		ITEM(Item::dartEnchanted_Id)		// 6
+		ITEM(Item::dartNethanium_Id)		// 7
+		ITEM(Item::nusaBlade_Id)			// 8
 
 		for(unsigned int i = 0; i < Enchantment::enchantments.length; ++i)
 		{
