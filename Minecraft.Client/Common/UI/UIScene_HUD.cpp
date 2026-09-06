@@ -611,7 +611,7 @@ void UIScene_HUD::HideSelectedLabel()
 
 void UIScene_HUD::SetRidingHorse(bool ridingHorse, bool bIsJumpable, int maxHorseHealth)
 {
-	if(m_bRidingHorse != ridingHorse || maxHorseHealth != m_iHorseMaxHealth)
+	if(m_bRidingHorse != ridingHorse || m_bIsJumpable != bIsJumpable || maxHorseHealth != m_iHorseMaxHealth)
 	{
 		app.DebugPrintf("SetRidingHorse to %s\n", ridingHorse?"TRUE":"FALSE");
 		m_bRidingHorse = ridingHorse;
@@ -649,7 +649,7 @@ void UIScene_HUD::SetHorseHealth(int health, bool blink /*= false*/)
 
 void UIScene_HUD::SetHorseJumpBarProgress(float progress)
 {
-	if(m_bRidingHorse && m_horseJumpProgress != progress)
+	if(m_bIsJumpable && m_horseJumpProgress != progress)
 	{
 		app.DebugPrintf("SetHorseJumpBarProgress to %f\n", progress);
 		m_horseJumpProgress = progress;
