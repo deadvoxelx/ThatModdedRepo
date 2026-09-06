@@ -90,6 +90,14 @@ bool AphalafBoss::hurt(DamageSource *source, float dmg)
 	{
 		return false;
 	}
+	if (directEntity != nullptr && directEntity->GetType() == eTYPE_DARTPOISON)
+	{
+		return false;
+	}
+	if (directEntity != nullptr && directEntity->GetType() == eTYPE_DARTNETHANIUM)
+	{
+		return false;
+	}
 	if (directEntity != nullptr && directEntity->GetType() == eTYPE_ENDERMAN)
 	{
 		return false;
