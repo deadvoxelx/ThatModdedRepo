@@ -81,14 +81,10 @@ void IUIScene_HUD::updateFrameTick()
 	{
 		//SetRidingHorse(false, 0);
 		shared_ptr<Entity> riding = pMinecraft->localplayers[iPad]->riding;
-		if(riding == nullptr)
-		{
-			SetRidingHorse(false, false, 0);
-		}
-		else
-		{
-			SetRidingHorse(true, pMinecraft->localplayers[iPad]->isRidingJumpable(), 0);
-		}
+		// On-foot Gravitite charge-jump still needs the jump bar visible, so fake the
+		// riding flag when the charge is active (horse health stays hidden via ShowHorseHealth)
+		bool bIsJumpable = pMinecraft->localplayers[iPad]->isRidingJumpChargeable();
+		SetRidingHorse(riding != nullptr || bIsJumpable, bIsJumpable, 0);
 		ShowHorseHealth(false);
 		m_horseHealth = 0;
 		ShowHealth(false);
@@ -99,7 +95,7 @@ void IUIScene_HUD::updateFrameTick()
 		SetHealthAbsorb(0);			
 	}
 
-	if(pMinecraft->localplayers[iPad]->isRidingJumpable())
+	if(pMinecraft->localplayers[iPad]->isRidingJumpChargeable())
 	{
 		SetHorseJumpBarProgress(pMinecraft->localplayers[iPad]->getJumpRidingScale());
 	}
@@ -223,7 +219,10 @@ void IUIScene_HUD::renderPlayerHealth()
 
 	if(riding == nullptr || riding && !riding->instanceof(eTYPE_LIVINGENTITY))
 	{
-		SetRidingHorse(false, false, 0);
+		// On-foot Gravitite charge-jump still needs the jump bar visible, so fake the
+		// riding flag when the charge is active (horse health stays hidden via ShowHorseHealth)
+		bool bIsJumpable = pMinecraft->localplayers[iPad]->isRidingJumpChargeable();
+		SetRidingHorse(riding != nullptr || bIsJumpable, bIsJumpable, 0);
 
 		ShowFood(true);
 		ShowHorseHealth(false);
@@ -259,7 +258,7 @@ void IUIScene_HUD::renderPlayerHealth()
 		int riderCurrentHealth = static_cast<int>(ceil(living->getHealth()));
 		float maxRiderHealth = living->getMaxHealth();
 
-		SetRidingHorse(true, pMinecraft->localplayers[iPad]->isRidingJumpable(), maxRiderHealth);
+		SetRidingHorse(true, pMinecraft->localplayers[iPad]->isRidingJumpChargeable(), maxRiderHealth);
 		SetHorseHealth(riderCurrentHealth);
 		ShowHorseHealth(true);
 	}
