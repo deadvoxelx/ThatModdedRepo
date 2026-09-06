@@ -19,6 +19,7 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.npc.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.item.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.projectile.h"
+#include "..\Minecraft.World\EntityCrystal.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.global.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.boss.enderdragon.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.monster.h"
@@ -540,6 +541,15 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 		e = std::make_shared<DartNethanium>(level, x, y, z);
 		break;
 
+	case AddEntityPacket::CRYSTAL:
+	{
+		shared_ptr<EntityCrystal> crystal = std::make_shared<EntityCrystal>(level, x, y, z, (eCrystalType)packet->data);
+		crystal->setSMotion(packet->xa / 8000.0, packet->ya / 8000.0, packet->za / 8000.0);
+		e = crystal;
+		packet->data = -1;
+		break;
+	}
+
 	case AddEntityPacket::SNOWBALL:
 		e = std::make_shared<Snowball>(level, x, y, z);
 		break;
@@ -798,7 +808,7 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 
 				if ( owner != nullptr && owner->instanceof(eTYPE_LIVINGENTITY) )
 				{
-					dynamic_pointer_cast<DartEnchanted>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
+					dynamic_pointer_cast<DartNethanium>(e)->owner = dynamic_pointer_cast<LivingEntity>(owner);
 				}
 			}
 
