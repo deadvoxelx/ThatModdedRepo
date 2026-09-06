@@ -34,6 +34,7 @@ const _Tier *_Tier::GRAVITITE = new _Tier(4, 1561, 9, 4, 15); //
 const _Tier *_Tier::VAMPIRE = new _Tier(3, 1000, 8, 3, 10); //
 const _Tier *_Tier::VALKYRIE = new _Tier(3, 1561, 8, 3, 10); //
 const _Tier *_Tier::APHALAF = new _Tier(4, 1561, 9, 4, 15); //
+const _Tier *_Tier::NUSA = new _Tier(9, 2032, 12, 22, 0); //
 
 Random *Item::random = new Random();
 
@@ -384,6 +385,15 @@ Item *Item::lavaReeds = NULL;
 Item *Item::netherFlax = NULL;
 DartShooterNethaniumItem *Item::dartShooterNethanium = NULL;
 Item *Item::dartNethanium = NULL;
+Item *Item::gravititePendant = NULL;
+Item *Item::gravititeRing = NULL;
+Item *Item::nethaniumPendant = NULL;
+Item *Item::nethaniumRing = NULL;
+Item *Item::endoriumPendant = NULL;
+Item *Item::endoriumRing = NULL;
+Item *Item::aphalafGem = NULL;
+Item *Item::nusaAmulet = NULL;
+Item *Item::nusaBlade = NULL;
 
 void Item::staticCtor()
 {
@@ -689,7 +699,7 @@ void Item::staticCtor()
 	Item::healingStone = (HealingStoneItem *)(new HealingStoneItem(228))							->setIconName(L"healingStone")->setDescriptionId(IDS_ITEM_HEALINGSTONE)->setUseDescriptionId(IDS_ITEM_HEALINGSTONE);
 	Item::gummySwetBlue = (new FoodItem(234, 20, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"gummySwetBlue")->setDescriptionId(IDS_ITEM_SWETGUMMY)->setUseDescriptionId(IDS_ITEM_SWETGUMMY);
 	Item::gummySwetGold = (new FoodItem(235, 20, FoodConstants::FOOD_SATURATION_GOOD, false))		->setIconName(L"gummySwetGold")->setDescriptionId(IDS_ITEM_SWETGUMMY)->setUseDescriptionId(IDS_ITEM_SWETGUMMY);
-	Item::regenerationStone = (HealingStoneItem *)(new HealingStoneItem(236))						->setIconName(L"regenerationStone")->setDescriptionId(IDS_ITEM_REGENSTONE)->setUseDescriptionId(IDS_ITEM_REGENSTONE)->setMaxStackSize(1);
+	Item::regenerationStone = (HealingStoneItem *)(new HealingStoneItem(236))						->setIconName(L"regenerationStone")->setDescriptionId(IDS_ITEM_REGENSTONE)->setUseDescriptionId(IDS_ITEM_REGENSTONE)->setMaxStackSize(1)->setAccessory();
 	Item::lifeShard = (HealingStoneItem *)(new HealingStoneItem(237))								->setIconName(L"lifeShard")->setDescriptionId(IDS_ITEM_LIFESHARD)->setUseDescriptionId(IDS_ITEM_LIFESHARD);
 	Item::skyrootBucket_empty = ( new BucketItem(238, 0) )											->setBaseItemTypeAndMaterial(eBaseItemType_utensil,	eMaterial_water)->setIconName(L"skyrootBucket_empty")->setDescriptionId(IDS_ITEM_SKYROOT_BUCKET)->setUseDescriptionId(IDS_ITEM_SKYROOT_BUCKET)->setMaxStackSize(16);
 	Item::skyrootBucket_water = ( new BucketItem(239, Tile::water_Id) )								->setIconName(L"skyrootBucket_water")->setDescriptionId(IDS_ITEM_SKYROOT_BUCKET_WATER)->setCraftingRemainingItem(Item::skyrootBucket_empty)->setUseDescriptionId(IDS_ITEM_SKYROOT_BUCKET_WATER);
@@ -706,23 +716,23 @@ void Item::staticCtor()
 	Item::staffShard = (new Item(255))																->setIconName(L"staffShard")->setDescriptionId(IDS_ITEM_STAFF_SHARD)->setUseDescriptionId(IDS_ITEM_STAFF_SHARD);
 	Item::aphalafShard = (new Item(256))															->setIconName(L"aphalafShard")->setDescriptionId(IDS_ITEM_APHALAF_SHARD)->setUseDescriptionId(IDS_ITEM_APHALAF_SHARD);
 	Item::aphalafRod = (new Item(257))																->setBaseItemTypeAndMaterial(eBaseItemType_stick,	eMaterial_stick)->setIconName(L"aphalafRod")->setDescriptionId(IDS_ITEM_APHALAF_ROD)->setUseDescriptionId(IDS_ITEM_APHALAF_ROD);
-	Item::nusaShard = (new SimpleFoiledItem(258))													->setIconName(L"nusaShard")->setDescriptionId(IDS_ITEM_NUSA_SHARD)->setUseDescriptionId(IDS_ITEM_NUSA_SHARD);
+	Item::nusaShard = (new SimpleFoiledItem(258))													->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_nusa)->setIconName(L"nusaShard")->setDescriptionId(IDS_ITEM_NUSA_SHARD)->setUseDescriptionId(IDS_ITEM_NUSA_SHARD);
 	Item::endothaniumIngot = (new Item(259))														->setIconName(L"endothanium")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDOTHANIUM)->setUseDescriptionId(IDS_ITEM_ENDOTHANIUM);
 	Item::shellFossil = (new Item(260))																->setIconName(L"shellFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_SHELL_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 	Item::fireFossil = (new Item(261))																->setIconName(L"fireFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_FIRE_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 	Item::airFossil = (new Item(262))																->setIconName(L"airFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_AIR_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 	Item::ribFossil = (new Item(263))																->setIconName(L"ribFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_RIB_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
-	Item::ironBubble = (new Item(264))																->setIconName(L"ironBubble")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_BUBBLE)->setUseDescriptionId(IDS_ITEM_IRON_BUBBLE)->setMaxStackSize(1);
-	Item::ironPendant = (new Item(265))																->setIconName(L"ironPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_PENDANT)->setUseDescriptionId(IDS_ITEM_IRON_PENDANT)->setMaxStackSize(1);
-	Item::ironRing = (new Item(266))																->setIconName(L"ironRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_RING)->setUseDescriptionId(IDS_ITEM_IRON_RING)->setMaxStackSize(1);
-	Item::goldPendant = (new Item(267))																->setIconName(L"goldPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gold)->setDescriptionId(IDS_ITEM_GOLD_PENDANT)->setUseDescriptionId(IDS_ITEM_GOLD_PENDANT)->setMaxStackSize(1);
-	Item::goldRing = (new Item(268))																->setIconName(L"goldRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gold)->setDescriptionId(IDS_ITEM_GOLD_RING)->setUseDescriptionId(IDS_ITEM_GOLD_RING)->setMaxStackSize(1);
-	Item::zanitePendant = (new Item(269))															->setIconName(L"zanitePendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_zanite)->setDescriptionId(IDS_ITEM_ZANITE_PENDANT)->setUseDescriptionId(IDS_ITEM_ZANITE_PENDANT)->setMaxStackSize(1);
-	Item::zaniteRing = (new Item(270))																->setIconName(L"zaniteRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_zanite)->setDescriptionId(IDS_ITEM_ZANITE_RING)->setUseDescriptionId(IDS_ITEM_ZANITE_RING)->setMaxStackSize(1);
-	Item::agilityCape = (new Item(271))																->setIconName(L"agilityCape")->setDescriptionId(IDS_ITEM_AGILITY_CAPE)->setUseDescriptionId(IDS_ITEM_AGILITY_CAPE)->setMaxStackSize(1);
-	Item::invisibilityCape = (new Item(272))														->setIconName(L"invisibilityCape")->setDescriptionId(IDS_ITEM_INVISIBILITY_CAPE)->setUseDescriptionId(IDS_ITEM_INVISIBILITY_CAPE)->setMaxStackSize(1);
-	Item::swetCape = (new Item(273))																->setIconName(L"swetCape")->setDescriptionId(IDS_ITEM_SWET_CAPE)->setUseDescriptionId(IDS_ITEM_SWET_CAPE)->setMaxStackSize(1);
-	Item::valkyrieCape = (new Item(274))															->setIconName(L"valkyrieCape")->setDescriptionId(IDS_ITEM_VALKYRIE_CAPE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_CAPE)->setMaxStackSize(1);
+	Item::ironBubble = (new Item(264))																->setIconName(L"ironBubble")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_BUBBLE)->setUseDescriptionId(IDS_ITEM_IRON_BUBBLE)->setMaxStackSize(1)->setAccessory();
+	Item::ironPendant = (new Item(265))																->setIconName(L"ironPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_PENDANT)->setUseDescriptionId(IDS_ITEM_IRON_PENDANT)->setMaxStackSize(1)->setAccessory();
+	Item::ironRing = (new Item(266))																->setIconName(L"ironRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_RING)->setUseDescriptionId(IDS_ITEM_IRON_RING)->setMaxStackSize(1)->setAccessory();
+	Item::goldPendant = (new Item(267))																->setIconName(L"goldPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gold)->setDescriptionId(IDS_ITEM_GOLD_PENDANT)->setUseDescriptionId(IDS_ITEM_GOLD_PENDANT)->setMaxStackSize(1)->setAccessory();
+	Item::goldRing = (new Item(268))																->setIconName(L"goldRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gold)->setDescriptionId(IDS_ITEM_GOLD_RING)->setUseDescriptionId(IDS_ITEM_GOLD_RING)->setMaxStackSize(1)->setAccessory();
+	Item::zanitePendant = (new Item(269))															->setIconName(L"zanitePendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_zanite)->setDescriptionId(IDS_ITEM_ZANITE_PENDANT)->setUseDescriptionId(IDS_ITEM_ZANITE_PENDANT)->setMaxStackSize(1)->setAccessory();
+	Item::zaniteRing = (new Item(270))																->setIconName(L"zaniteRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_zanite)->setDescriptionId(IDS_ITEM_ZANITE_RING)->setUseDescriptionId(IDS_ITEM_ZANITE_RING)->setMaxStackSize(1)->setAccessory();
+	Item::agilityCape = (new Item(271))																->setIconName(L"agilityCape")->setDescriptionId(IDS_ITEM_AGILITY_CAPE)->setUseDescriptionId(IDS_ITEM_AGILITY_CAPE)->setMaxStackSize(1)->setCape();
+	Item::invisibilityCape = (new Item(272))														->setIconName(L"invisibilityCape")->setDescriptionId(IDS_ITEM_INVISIBILITY_CAPE)->setUseDescriptionId(IDS_ITEM_INVISIBILITY_CAPE)->setMaxStackSize(1)->setCape();
+	Item::swetCape = (new Item(273))																->setIconName(L"swetCape")->setDescriptionId(IDS_ITEM_SWET_CAPE)->setUseDescriptionId(IDS_ITEM_SWET_CAPE)->setMaxStackSize(1)->setCape();
+	Item::valkyrieCape = (new Item(274))															->setIconName(L"valkyrieCape")->setDescriptionId(IDS_ITEM_VALKYRIE_CAPE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_CAPE)->setMaxStackSize(1)->setCape();
 	Item::valkyrieLance = ( new WeaponItem(275, _Tier::VALKYRIE) )									->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_iron)->setIconName(L"valkyrieLance")->setDescriptionId(IDS_ITEM_VALKYRIE_LANCE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_LANCE);
 	Item::valkyrieAxe = ( new HatchetItem(276, _Tier::VALKYRIE) )									->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_iron)->setIconName(L"valkyrieAxe")->setDescriptionId(IDS_ITEM_VALKYRIE_AXE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_AXE);
 	Item::valkyriePickaxe = ( new PickaxeItem(277, _Tier::VALKYRIE) )								->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_iron)->setIconName(L"valkyriePickaxe")->setDescriptionId(IDS_ITEM_VALKYRIE_PICKAXE)->setUseDescriptionId(IDS_ITEM_VALKYRIE_PICKAXE);
@@ -740,6 +750,15 @@ void Item::staticCtor()
 	Item::netherFlax = (new FoodItem(289, 8, FoodConstants::FOOD_SATURATION_GOOD, false))			->setBaseItemTypeAndMaterial(eBaseItemType_bread,	eMaterial_bread)->setIconName(L"flax")->setDescriptionId(IDS_ITEM_FLAX)->setUseDescriptionId(IDS_ITEM_FLAX);
 	Item::dartShooterNethanium = (DartShooterNethaniumItem *)(new DartShooterNethaniumItem(290))	->setIconName(L"dartShooterNethanium")->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_bow)->setDescriptionId(IDS_ITEM_DART_SHOOTER)->setUseDescriptionId(IDS_ITEM_DART_SHOOTER);
 	Item::dartNethanium = (new Item(291))															->setBaseItemTypeAndMaterial(eBaseItemType_bow,	eMaterial_arrow)->setIconName(L"dartNethanium")->setDescriptionId(IDS_ITEM_DART)->setUseDescriptionId(IDS_ITEM_DART);
+	Item::gravititePendant = (new Item(292))														->setIconName(L"gravititePendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gravitite)->setDescriptionId(IDS_ITEM_GRAVITITE_PENDANT)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PENDANT)->setMaxStackSize(1)->setAccessory();
+	Item::gravititeRing = (new Item(293))															->setIconName(L"gravititeRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_gravitite)->setDescriptionId(IDS_ITEM_GRAVITITE_RING)->setUseDescriptionId(IDS_ITEM_GRAVITITE_RING)->setMaxStackSize(1)->setAccessory();
+	Item::nethaniumPendant = (new Item(294))														->setIconName(L"nethaniumPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_nethanium)->setDescriptionId(IDS_ITEM_NETHANIUM_PENDANT)->setUseDescriptionId(IDS_ITEM_NETHANIUM_PENDANT)->setMaxStackSize(1)->setAccessory();
+	Item::nethaniumRing = (new Item(295))															->setIconName(L"nethaniumRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_nethanium)->setDescriptionId(IDS_ITEM_NETHANIUM_RING)->setUseDescriptionId(IDS_ITEM_NETHANIUM_RING)->setMaxStackSize(1)->setAccessory();
+	Item::endoriumPendant = (new Item(296))															->setIconName(L"endoriumPendant")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDORIUM_PENDANT)->setUseDescriptionId(IDS_ITEM_ENDORIUM_PENDANT)->setMaxStackSize(1)->setAccessory();
+	Item::endoriumRing = (new Item(297))															->setIconName(L"endoriumRing")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDORIUM_RING)->setUseDescriptionId(IDS_ITEM_ENDORIUM_RING)->setMaxStackSize(1)->setAccessory();
+	Item::aphalafGem = (new SimpleFoiledItem(298))													->setIconName(L"aphalafGem")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_aphal)->setDescriptionId(IDS_ITEM_APHALAF_GEM)->setUseDescriptionId(IDS_ITEM_APHALAF_GEM)->setMaxStackSize(1)->setAccessory();
+	Item::nusaAmulet = (new SimpleFoiledItem(299))													->setIconName(L"nusaAmulet")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_nusa)->setDescriptionId(IDS_ITEM_NUSA_AMULET)->setUseDescriptionId(IDS_ITEM_NUSA_AMULET)->setMaxStackSize(1)->setAccessory();
+	Item::nusaBlade = ( new WeaponItem(300, _Tier::NUSA) )											->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_nusa)->setIconName(L"nusaBlade")->setDescriptionId(IDS_ITEM_NUSA_BLADE)->setUseDescriptionId(IDS_ITEM_NUSA_BLADE);
 
 }
 
@@ -840,6 +859,8 @@ Item::Item(int id) : id( 512 + id )
 	icon = NULL;
 	m_handEquipped = false;
 	m_isStackedByData = false;
+	m_isAccessory = false;
+	m_isCape = false;
 
 	craftingRemainingItem = NULL;
 	potionBrewingFormula = L"";
@@ -936,6 +957,29 @@ shared_ptr<ItemInstance> Item::useTimeDepleted(shared_ptr<ItemInstance> itemInst
 int Item::getMaxStackSize() const
 {
 	return maxStackSize;
+}
+
+// Voxel - added these so accessories can be less hardcoded
+bool Item::isAccessory() const
+{
+	return m_isAccessory;
+}
+
+bool Item::isCape() const
+{
+	return m_isCape;
+}
+
+Item *Item::setAccessory()
+{
+	m_isAccessory = true;
+	return this;
+}
+
+Item *Item::setCape()
+{
+	m_isCape = true;
+	return this;
 }
 
 int Item::getLevelDataForAuxValue(int auxValue)
