@@ -2,6 +2,7 @@
 #include <cmath>
 #include "stdafx.h"
 #include "NurealmBiomeDecorator.h"
+#include "ChunkSource.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
@@ -27,12 +28,28 @@ void NurealmBiomeDecorator::decorate()
 	if(y>level->GetHighestY()) level->SetHighestY(y);
 
 	PIXBeginNamedEvent(0,"Nurealm structures");
-	if (random->nextInt(8) == 0)
+	const int nusaTowerRegions = NUREALM_LEVEL_MIN_WIDTH / 3;
+	const int nusaTowerHalf = NUREALM_LEVEL_MIN_WIDTH / 2;
+	const int chunkX = xo / 16;
+	const int chunkZ = zo / 16;
+	const int regionX = (chunkX + nusaTowerHalf) / nusaTowerRegions;
+	const int regionZ = (chunkZ + nusaTowerHalf) / nusaTowerRegions;
+	if (regionX >= 0 && regionX < 3 && regionZ >= 0 && regionZ < 3)
 	{
-		int x = xo + random->nextInt(16) + 8;
-		int y = random->nextInt(Level::genDepth);
-		int z = zo + random->nextInt(16) + 8;
-		nusaTowerFeature->place(level, random, x, y, z);
+		Random regionRandom(regionX * 341873128711LL + regionZ * 132897987541LL + level->getSeed());
+		const int anchorChunkX = regionX * nusaTowerRegions + regionRandom.nextInt(nusaTowerRegions) - nusaTowerHalf;
+		const int anchorChunkZ = regionZ * nusaTowerRegions + regionRandom.nextInt(nusaTowerRegions) - nusaTowerHalf;
+
+		if (chunkX == anchorChunkX && chunkZ == anchorChunkZ)
+		{
+			int towerX = xo + 8 + (regionRandom.nextInt(3) - 1);
+			int towerZ = zo + 8 + (regionRandom.nextInt(3) - 1);
+			int towerY = level->getTopSolidBlock(towerX, towerZ);
+			if (towerY > 0 && towerY + 28 < Level::genDepth)
+			{
+				nusaTowerFeature->place(level, random, towerX, towerY, towerZ);
+			}
+		}
 	}
 	PIXEndNamedEvent();
 
