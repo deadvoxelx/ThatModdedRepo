@@ -446,6 +446,7 @@ public:
 	static const int dungeonLight_Id = 234;
 	static const int treasureChest_Id = 235;
 
+	static const int bossStone_Id = 245;
 	static const int nustone_Id = 246;
 	static const int nugrass_Id = 247;
 	static const int glowingNustone_Id = 248;
@@ -460,6 +461,17 @@ public:
 	static const int blackroot_Id = 257;
 	static const int lavaReed_Id = 258;
 	static const int boneVine_Id = 259;
+
+	// Stairs omg :O
+	static const int netherStairs_Id = 260;
+	static const int purulStairs_Id = 261;
+	static const int skyrootStairs_Id = 262;
+	static const int nusaStairs_Id = 263;
+	static const int goldenclinStairs_Id = 264;
+	static const int goldenclinBrickStairs_Id = 265;
+	static const int nustoneStairs_Id = 266;
+	static const int nustoneBrickStairs_Id = 267;
+	static const int darkNustoneStairs_Id = 268;
 
 	static Tile *stone;
 	static GrassTile *grass;
@@ -707,6 +719,7 @@ public:
 	static Tile *dungeonLight;
 	static TreasureChestTile *treasureChest;
 
+	static Tile *bossStone;
 	static Tile *nustone;
 	static Tile *nugrass;
 	static Tile *glowingNustone;
@@ -721,6 +734,16 @@ public:
 	static Tile *blackroot;
 	static Tile *lavaReed;
 	static Tile *boneVine;
+
+	static Tile *netherStairs;
+	static Tile *purulStairs;
+	static Tile *skyrootStairs;
+	static Tile *nusaStairs;
+	static Tile *goldenclinStairs;
+	static Tile *goldenclinBrickStairs;
+	static Tile *nustoneStairs;
+	static Tile *nustoneBrickStairs;
+	static Tile *darkNustoneStairs;
 
 	static void staticCtor();
 
