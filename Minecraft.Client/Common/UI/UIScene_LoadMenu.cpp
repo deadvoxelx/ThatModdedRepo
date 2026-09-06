@@ -851,18 +851,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 
 #endif
 
-	if(m_MoreOptionsParams.bResetNether==TRUE)
-	{
-		UINT uiIDA[2];
-		uiIDA[0]=IDS_DONT_RESET_END;
-		uiIDA[1]=IDS_RESET_END;
-
-		ui.RequestAlertMessage(IDS_RESET_END, IDS_RESET_END_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
-	}
-	else
-	{
-		LaunchGame();
-	}
+	checkResetsAndStartGame();
 }
 
 void UIScene_LoadMenu::handleSliderMove(F64 sliderId, F64 currentValue)
@@ -1069,6 +1058,26 @@ int UIScene_LoadMenu::CheckResetNetherReturned(void *pParam,int iPad,C4JStorage:
 	else if(result==C4JStorage::EMessage_ResultAccept)
 	{
 		pClass->m_MoreOptionsParams.bResetNether=FALSE;
+		pClass->LaunchGame();
+	}
+	else
+	{
+		pClass->m_bIgnoreInput=false;
+	}
+	return 0;
+}
+
+int UIScene_LoadMenu::CheckResetNurealmReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
+{
+	UIScene_LoadMenu* pClass = static_cast<UIScene_LoadMenu *>(pParam);
+
+	if(result==C4JStorage::EMessage_ResultDecline) 
+	{
+		pClass->LaunchGame();
+	}
+	else if(result==C4JStorage::EMessage_ResultAccept)
+	{
+		pClass->m_MoreOptionsParams.bResetNurealm=FALSE;
 		pClass->LaunchGame();
 	}
 	else
@@ -1489,6 +1498,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 		app.SetGameHostOption(eGameHostOption_WorldSize, pClass->m_MoreOptionsParams.worldSize+1 );  // 0 is GAME_HOST_OPTION_WORLDSIZE_UNKNOWN
 #endif
 	app.SetResetNether((pClass->m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNurealm((pClass->m_MoreOptionsParams.bResetNurealm==TRUE)?true:false);
 	app.ClearTerrainFeaturePosition();
 
 	app.SetGameHostOption(eGameHostOption_GameType,pClass->m_iGameModeId );
@@ -1525,6 +1535,12 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 
 void UIScene_LoadMenu::checkStateAndStartGame()
 {
+	checkResetsAndStartGame();
+}
+
+void UIScene_LoadMenu::checkResetsAndStartGame()
+{
+	// Confirm the resets before launching, one at a time, mirroring the original "Reset Nether" handling.
 	if(m_MoreOptionsParams.bResetNether==TRUE)
 	{
 		UINT uiIDA[2];
@@ -1532,6 +1548,14 @@ void UIScene_LoadMenu::checkStateAndStartGame()
 		uiIDA[1]=IDS_RESET_END;
 
 		ui.RequestAlertMessage(IDS_RESET_END, IDS_RESET_END_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
+	}
+	else if(m_MoreOptionsParams.bResetNurealm==TRUE)
+	{
+		UINT uiIDA[2];
+		uiIDA[0]=IDS_DONT_RESET_NUREALM;
+		uiIDA[1]=IDS_RESET_NUREALM;
+
+		ui.RequestAlertMessage(IDS_RESET_NUREALM, IDS_RESET_NUREALM_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNurealmReturned,this);
 	}
 	else
 	{
