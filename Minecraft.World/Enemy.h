@@ -16,6 +16,8 @@ public:
 	static const int XP_REWARD_LARGE = 10;
 	static const int XP_REWARD_HUGE = 20;
 	static const int XP_REWARD_BOSS = 50;
+	static const int XP_REWARD_SUN_SPIRIT = 500;
+	static const int XP_REWARD_NUSAGAR = 12000;
 
 	static EntitySelector *ENEMY_SELECTOR;
 };
