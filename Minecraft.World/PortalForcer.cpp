@@ -89,13 +89,62 @@ bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimens
 		r *= 8;
 #endif
 	}
+	int xc = Mth::floor(e->x);
+	int zc = Mth::floor(e->z);
+
 	double closest = -1;
+	int64_t bestKey = 0;
+
+	for (int64_t key : cachedPortalKeys)
+	{
+		PortalPosition *pos = cachedPortals[key];
+		if (pos == nullptr) continue;
+
+		int dx = pos->x - xc;
+		int dz = pos->z - zc;
+		if (dx < -r || dx > r || dz < -r || dz > r) continue;
+
+		if (level->getTile(pos->x, pos->y, pos->z) != portalTileId) continue;
+
+		double xd = (pos->x + 0.5) - e->x;
+		double yd = (pos->y + 0.5) - e->y;
+		double zd = (pos->z + 0.5) - e->z;
+		double dist = xd * xd + yd * yd + zd * zd;
+		if (closest < 0 || dist < closest)
+		{
+			closest = dist;
+			bestKey = key;
+		}
+	}
+
+	if (closest >= 0)
+	{
+		PortalPosition *pos = cachedPortals[bestKey];
+		int x = pos->x;
+		int y = pos->y;
+		int z = pos->z;
+
+		double xt = x + 0.5;
+		double yt = y + 0.5;
+		double zt = z + 0.5;
+
+		if (level->getTile(x - 1, y, z) == portalTileId) xt -= 0.5;
+		if (level->getTile(x + 1, y, z) == portalTileId) xt += 0.5;
+
+		if (level->getTile(x, y, z - 1) == portalTileId) zt -= 0.5;
+		if (level->getTile(x, y, z + 1) == portalTileId) zt += 0.5;
+
+		e->moveTo(xt, yt, zt, e->yRot, 0);
+		e->xd = e->yd = e->zd = 0;
+
+		pos->lastUsed = level->getGameTime();
+		return true;
+	}
+
+	closest = -1;
 	int xTarget = 0;
 	int yTarget = 0;
 	int zTarget = 0;
-
-	int xc = Mth::floor(e->x);
-	int zc = Mth::floor(e->z);
 
 	for (int x = xc - r; x <= xc + r; x++)
 	{
@@ -145,6 +194,8 @@ bool PortalForcer::findPortal(Level *level, shared_ptr<Entity> e, int lastDimens
 
 		e->moveTo(xt, yt, zt, e->yRot, 0);
 		e->xd = e->yd = e->zd = 0;
+
+		recordPortal(level, xTarget, yTarget, zTarget);	// remember it for next time
 		return true;
 	}
 
@@ -398,22 +449,62 @@ bool PortalForcer::createPortal(Level *level, shared_ptr<Entity> e, int lastDime
 		}
 	}
 
-	if (isAether && closest < 0)
+	recordPortal(level, x, y, z);
+
+	return true;
+}
+
+void PortalForcer::recordPortal(Level *level, int x, int y, int z)
+{
+	int64_t key = (int64_t)((x >> 4) + 0x7fffffff) | ((int64_t)((z >> 4) + 0x7fffffff) << 32);
+
+	auto it = cachedPortals.find(key);
+	if (it == cachedPortals.end())
 	{
-		for (int ext = 1; ext <= 2; ext++)
+		cachedPortals[key] = new PortalPosition(x, y, z, level->getGameTime());
+		cachedPortalKeys.push_back(key);
+	}
+	else
+	{
+		PortalPosition *pos = it->second;
+		pos->x = x;
+		pos->y = y;
+		pos->z = z;
+		pos->lastUsed = level->getGameTime();
+	}
+}
+
+void PortalForcer::recordPortalNear(Level *level, int x, int y, int z, int portalTileId)
+{
+	for (int dx = -1; dx <= 1; dx++)
+	{
+		for (int dz = -1; dz <= 1; dz++)
 		{
-			level->setTileAndData(x + (-1 - ext) * xa, y - 1, z + (-1 - ext) * za, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
-			level->setTileAndData(x + (2 + ext) * xa, y - 1, z + (2 + ext) * za, Tile::glowstone_Id, 0, Tile::UPDATE_CLIENTS);
+			for (int dy = 0; dy <= 3; dy++)
+			{
+				int tx = x + dx;
+				int ty = y + dy;
+				int tz = z + dz;
+
+				if (level->getTile(tx, ty, tz) == portalTileId)
+				{
+					while (level->getTile(tx, ty - 1, tz) == portalTileId)
+					{
+						ty--;
+					}
+					recordPortal(level, tx, ty, tz);
+					return;
+				}
+			}
 		}
 	}
-	return true;
 }
 
 void PortalForcer::tick(int64_t time)
 {
 	if (time % (SharedConstants::TICKS_PER_SECOND * 5) == 0)
 	{
-		int64_t cutoff = time - SharedConstants::TICKS_PER_SECOND * 30;
+		int64_t cutoff = time - SharedConstants::TICKS_PER_SECOND * 60 * 25;
 
         for (auto it = cachedPortalKeys.begin(); it != cachedPortalKeys.end();)
         {
