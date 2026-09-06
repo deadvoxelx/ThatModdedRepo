@@ -343,6 +343,7 @@ typedef struct _LaunchMoreOptionsMenuInitData
 
 	bool bHostPrivileges;
 	bool bResetNether;
+	bool bResetNurealm;
 	bool bMobGriefing;
 	bool bKeepInventory;
 	bool bDoMobSpawning;
