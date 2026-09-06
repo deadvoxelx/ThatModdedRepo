@@ -768,10 +768,10 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable()
 				bool bFound=false;
 				shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[i].pRecipy->assemble(nullptr);
 				//int iIcon=pTempItemInst->getItem()->getIcon(pTempItemInst->getAuxValue());
-				int iID=pTempItemInst->getItem()->id;
+				int iID=(pTempItemInst->getItem()!=nullptr)?pTempItemInst->getItem()->id:0;
 				int iBaseType;
 
-				if(iID<256) // is it a tile?
+				if(iID>=0 && iID<Tile::TILE_NUM_COUNT && Tile::tiles[iID] != nullptr)
 				{
 					iBaseType=Tile::tiles[iID]->getBaseItemType();
 				}
@@ -1236,11 +1236,11 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade)
 		}
 
 		shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot]].pRecipy->assemble(nullptr);
-		int iID=pTempItemInst->getItem()->id;
+		int iID=(pTempItemInst->getItem()!=nullptr)?pTempItemInst->getItem()->id:0;
 		int iAuxVal=pTempItemInst->getAuxValue();
 		int iBaseType;
 
-		if(iID<256) // is it a tile?
+		if(iID>=0 && iID<Tile::TILE_NUM_COUNT && Tile::tiles[iID] != nullptr)
 		{
 			iBaseType=Tile::tiles[iID]->getBaseItemType();
 
