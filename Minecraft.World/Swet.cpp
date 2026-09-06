@@ -213,6 +213,17 @@ int Swet::getJumpDelay()
 
 void Swet::playerTouch(shared_ptr<Player> player)
 {
+	if (player->inventory != nullptr)
+	{
+		for (unsigned int i = 0; i < player->inventory->aether.length; i++)
+		{
+			if (player->inventory->aether[i] != nullptr && player->inventory->aether[i]->id == Item::swetCape_Id)
+			{
+				return;
+			}
+		}
+	}
+
 	if (isDealsDamage())
 	{
 		int size = getSize();
