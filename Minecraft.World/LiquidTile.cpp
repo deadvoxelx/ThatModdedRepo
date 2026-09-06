@@ -355,6 +355,14 @@ void LiquidTile::onPlace(Level *level, int x, int y, int z)
 			}
 		}
 	}
+
+	if (material == Material::lava)
+	{
+		if ((level->dimension->id == 3))
+		{
+			level->setTileAndUpdate(x, y, z, Tile::aerogel_Id);
+		}
+	}
 }
 
 void LiquidTile::neighborChanged(Level *level, int x, int y, int z, int type)
@@ -378,14 +386,7 @@ void LiquidTile::updateLiquid(Level *level, int x, int y, int z)
 			int data = level->getData(x, y, z);
 			if (data == 0)
 			{
-				if (level->dimension->id == 3)
-				{
-					level->setTileAndUpdate(x, y, z, Tile::aerogel_Id);
-				}
-				else
-				{
-					level->setTileAndUpdate(x, y, z, Tile::obsidian_Id);
-				}
+				level->setTileAndUpdate(x, y, z, Tile::obsidian_Id);
 			}
 			else if (data <= 4)
 			{
