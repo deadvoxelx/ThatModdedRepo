@@ -225,11 +225,17 @@ const WCHAR *ConsoleSoundEngine::wchSoundNames[eSoundType_MAX]=
 	L"fire.new_ignite",
 
 	L"damage.critical",				//eSoundType_DAMAGE_CRITICAL,
+
 	L"mob.aphalafhurt",
 	L"mob.aerwhalecall",
 	L"mob.aerwhaledeath",
-};
+	L"mob.evupulgoldhurt",
+	L"mob.evupulgolddeath",
+	L"mob.evupulgoldambient",
 
+	L"random.nusagarsummoned",
+	L"mob.nusagarhurt",
+};
 
 const WCHAR *ConsoleSoundEngine::wchUISoundNames[eSFX_MAX]=
 {
