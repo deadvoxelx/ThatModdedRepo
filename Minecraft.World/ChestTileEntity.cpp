@@ -296,6 +296,7 @@ void ChestTileEntity::_init(bool isBonusChest)
 	placementPartnerZ = 0;
 	placementPartnerStrict = false;
 	this->isBonusChest = isBonusChest;
+	unlocked = false;
 
 	openness = 0.0f;
 	oOpenness = 0.0f;
@@ -416,6 +417,7 @@ void ChestTileEntity::load(CompoundTag *base)
 		if (slot >= 0 && slot < items->length) (*items)[slot] = ItemInstance::fromTag(tag, level);
 	}
 	isBonusChest = base->getBoolean(L"bonus");
+	unlocked = base->getBoolean(L"unlocked");
 }
 
 void ChestTileEntity::save(CompoundTag *base)
@@ -436,6 +438,7 @@ void ChestTileEntity::save(CompoundTag *base)
 	base->put(L"Items", listTag);
 	if (hasCustomName()) base->putString(L"CustomName", name);
 	base->putBoolean(L"bonus", isBonusChest);
+	base->putBoolean(L"unlocked", unlocked);
 }
 
 int ChestTileEntity::getMaxStackSize() const
@@ -522,7 +525,6 @@ void ChestTileEntity::checkNeighbors()
 {
 	if (hasCheckedNeighbors) return;
 
-	// get cached neighbors
 	shared_ptr<ChestTileEntity> cachedN = n.lock();
 	shared_ptr<ChestTileEntity> cachedE = e.lock();
 	shared_ptr<ChestTileEntity> cachedW = w.lock();
@@ -744,6 +746,7 @@ shared_ptr<TileEntity> ChestTileEntity::clone()
 			result->items->data[i] = ItemInstance::clone(items->data[i]);
 		}
 	}
+	result->unlocked = unlocked;
 	result->hasPlacementPartnerIntent = hasPlacementPartnerIntent;
 	result->placementPartnerX = placementPartnerX;
 	result->placementPartnerY = placementPartnerY;
