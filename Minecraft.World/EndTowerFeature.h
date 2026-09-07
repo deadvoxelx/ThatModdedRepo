@@ -12,6 +12,6 @@ public:
     virtual bool place(Level *level, Random *random, int x, int y, int z);
 
 private:
-	static const int TREASURE_ITEMS_COUNT = 16;
+	static const int TREASURE_ITEMS_COUNT = 20;
 	static WeighedTreasure *endTowerTreasure[TREASURE_ITEMS_COUNT];
 };
