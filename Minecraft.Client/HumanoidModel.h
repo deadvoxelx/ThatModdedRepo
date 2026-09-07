@@ -9,6 +9,7 @@ public:
 
 	int holdingLeftHand;
     int holdingRightHand;
+	bool leftHandSwing;
 	bool idle;
 	bool sneaking;
 	bool swimming;
