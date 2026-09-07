@@ -124,10 +124,6 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
     ArrayList<File> enderBaseFolders = new ArrayList<File>();
 	ArrayList<ChunkFile> outerEndRegions = new ArrayList<ChunkFile>();
     ArrayList<File> outerEndBaseFolders = new ArrayList<File>();
-	ArrayList<ChunkFile> aetherRegions = new ArrayList<ChunkFile>();
-    ArrayList<File> aetherBaseFolders = new ArrayList<File>();
-	ArrayList<ChunkFile> nurealmRegions = new ArrayList<ChunkFile>();
-    ArrayList<File> nurealmBaseFolders = new ArrayList<File>();
 
 	//File baseFolder = File(baseDir, levelId);
 	//File netherFolder = File(baseFolder, LevelStorage::HELL_FOLDER);
@@ -155,17 +151,7 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
         addRegions(outerEndFolder, outerEndRegions, outerEndBaseFolders);
     }
 
-	if (aetherFolder.exists())
-	{
-        addRegions(aetherFolder, aetherRegions, aetherBaseFolders);
-    }
-
-	if (nurealmFolder.exists())
-	{
-		addRegions(nurealmFolder, nurealmRegions, nurealmBaseFolders);
-	}
-
-	int totalCount = normalRegions->size() + netherRegions->size() + enderRegions.size() + outerEndRegions.size() + aetherRegions.size() + nurealmRegions.size() + normalBaseFolders->size() + netherBaseFolders->size() + enderBaseFolders.size() + outerEndBaseFolders.size() + aetherBaseFolders.size() + nurealmBaseFolders.size();
+	int totalCount = normalRegions->size() + netherRegions->size() + enderRegions.size() + outerEndRegions.size() + normalBaseFolders->size() + netherBaseFolders->size() + enderBaseFolders.size() + outerEndBaseFolders.size();
 
 	// System.out.println("Total conversion count is " + totalCount); 4J Jev, TODO
 
@@ -175,12 +161,8 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 	convertRegions(netherFolder, netherRegions, normalRegions->size(), totalCount, progress);
     // convert end world
     convertRegions(enderFolder, enderRegions, normalRegions.size() + netherRegions.size(), totalCount, progress);
-	// convert outer end world
-	convertRegions(outerEndFolder, outerEndRegions, normalRegions.size() + netherRegions.size() + enderRegions.size(), totalCount, progress);
-	// convert aether world
-	convertRegions(aetherFolder, aetherRegions, normalRegions.size() + netherRegions.size() + enderRegions.size() + outerEndRegions.size(), totalCount, progress);
-	// convert nurealm world
-	convertRegions(nurealmFolder, nurealmRegions, normalRegions.size() + netherRegions.size() + enderRegions.size() + outerEndRegions.size() + aetherRegions.size(), totalCount, progress);
+
+	convertRegions(outerEndFolder, outerEndRegions, normalRegions.size(), totalCount, progress);
 
 	LevelData *levelData = getDataTagFor(levelId);
 	levelData->setVersion(McRegionLevelStorage::MCREGION_VERSION_ID);
@@ -188,33 +170,12 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 	LevelStorage *levelStorage = selectLevel(levelId, false);
 	levelStorage->saveLevelData(levelData);
 
-	// reset end
-	//eraseFolders(normalBaseFolders, normalRegions->size() + enderRegions->size(), totalCount, progress);
-	//if (enderFolder.exists())
-	//{
-	//	eraseFolders(enderBaseFolders, normalRegions->size() + enderRegions->size() + normalBaseFolders->size(), totalCount, progress);
-	//}
-
-	// reset outer end
-	eraseFolders(normalBaseFolders, normalRegions->size() + outerEndRegions->size(), totalCount, progress);
-	if (outerEndFolder.exists())
+	// erase old files
+	eraseFolders(normalBaseFolders, normalRegions->size() + netherRegions->size(), totalCount, progress);
+	if (netherFolder.exists())
 	{
-		eraseFolders(outerEndBaseFolders, normalRegions->size() + outerEndRegions->size() + normalBaseFolders->size(), totalCount, progress);
+		eraseFolders(netherBaseFolders, normalRegions->size() + netherRegions->size() + normalBaseFolders->size(), totalCount, progress);
 	}
-
-	// reset aether
-	//eraseFolders(normalBaseFolders, normalRegions->size() + aetherRegions->size(), totalCount, progress);
-	//if (aetherFolder.exists())
-	//{
-	//	eraseFolders(aetherBaseFolders, normalRegions->size() + aetherRegions->size() + normalBaseFolders->size(), totalCount, progress);
-	//}
-	
-	// reset nurealm
-	//eraseFolders(normalBaseFolders, normalRegions->size() + nurealmRegions->size(), totalCount, progress);
-	//if (nurealmFolder.exists())
-	//{
-	//	eraseFolders(nurealmBaseFolders, normalRegions->size() + nurealmRegions->size() + normalBaseFolders->size(), totalCount, progress);
-	//}
 #endif
 	return true;
 }
