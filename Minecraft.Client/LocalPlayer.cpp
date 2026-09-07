@@ -5,7 +5,6 @@
 #include "StatsCounter.h"
 #include "ParticleEngine.h"
 #include "TakeAnimationParticle.h"
-#include "Options.h"
 #include "TextEditScreen.h"
 #include "ContainerScreen.h"
 #include "CraftingScreen.h"
@@ -58,6 +57,15 @@
 #endif
 extern ConsoleUIController ui;
 
+static const float GRAVITITE_JUMP_STRENGTH = 1.2f;
+static const float ENDORIUM_AIR_JUMP_STRENGTH = 0.52f;
+
+static bool isToolOrWeaponItem(shared_ptr<ItemInstance> instance)
+{
+	if (instance == nullptr || instance->getItem() == nullptr) return false;
+	Item *item = instance->getItem();
+	return dynamic_cast<WeaponItem *>(item) != nullptr || dynamic_cast<DiggerItem *>(item) != nullptr || dynamic_cast<RelicMalletItem *>(item) != nullptr || dynamic_cast<AphalafSwordItem *>(item) != nullptr;
+}
 
 LocalPlayer::LocalPlayer(Minecraft *minecraft, Level *level, User *user, int dimension) : Player(level, user->name)
 {
@@ -73,6 +81,7 @@ LocalPlayer::LocalPlayer(Minecraft *minecraft, Level *level, User *user, int dim
 	oPortalTime = 0.0f;
 	jumpRidingTicks = 0;
 	jumpRidingScale = 0.0f;
+	airJumpUsed = false;
 
 	yBob = xBob = yBobO = xBobO = 0.0f;
 
@@ -146,6 +155,11 @@ void LocalPlayer::serverAiStep()
 	this->xxa = input->xa;
 	this->yya = input->ya;
 	this->jumping = input->jumping;
+
+	if (this->jumping && riding == nullptr && !abilities.flying && gravititeChargeJump())
+	{
+		this->jumping = false;
+	}
 
 	yBobO = yBob;
 	xBobO = xBob;
@@ -357,9 +371,11 @@ void LocalPlayer::aiStep()
 		}
 	}
 
-	if (isRidingJumpable())
+	bool canChargeJump = isRidingJumpable() || (!isRiding() && !abilities.flying && gravititeChargeJump());
+	if (canChargeJump)
 	{
 		bool instantJumpMount = riding != nullptr && riding->GetType() == eTYPE_MOA;
+		bool gravititeJump = riding == nullptr;
 
 		if (jumpRidingTicks < 0)
 		{
@@ -374,7 +390,15 @@ void LocalPlayer::aiStep()
 		{
 			// jump release
 			jumpRidingTicks = -10;
-			if (!instantJumpMount)
+			if (gravititeJump)
+			{
+				if (onGround)
+				{
+					yd = (0.42f + 0.42f * jumpRidingScale) * GRAVITITE_JUMP_STRENGTH;
+					hasImpulse = true;
+				}
+			}
+			else if (!instantJumpMount)
 			{
 				sendRidingJump();
 			}
@@ -408,6 +432,18 @@ void LocalPlayer::aiStep()
 	else
 	{
 		jumpRidingScale = 0;
+	}
+
+	if (onGround)
+	{
+		airJumpUsed = false;
+	}
+	if (!wasJumping && input->jumping && !onGround && !isRiding() && !abilities.flying &&
+		!isInWater() && !isInLava() && endoriumAirJump() && !airJumpUsed)
+	{
+		yd = ENDORIUM_AIR_JUMP_STRENGTH;
+		airJumpUsed = true;
+		hasImpulse = true;
 	}
 
 	Player::aiStep();
@@ -1209,12 +1245,42 @@ bool LocalPlayer::isRidingJumpable()
 
 bool LocalPlayer::isRidingJumpChargeable()
 {
-	return riding != nullptr && riding->GetType() == eTYPE_HORSE;
+	return (riding != nullptr && riding->GetType() == eTYPE_HORSE) || (!isRiding() && !abilities.flying && gravititeChargeJump());
 }
 
 float LocalPlayer::getJumpRidingScale()
 {
 	return jumpRidingScale;
+}
+
+bool LocalPlayer::gravititeChargeJump()
+{
+	if (inventory == nullptr) return false;
+
+	for (unsigned int i = 0; i < inventory->aether.length; i++)
+	{
+		if (inventory->aether[i] != nullptr &&
+			(inventory->aether[i]->id == Item::gravititePendant_Id || inventory->aether[i]->id == Item::gravititeRing_Id))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool LocalPlayer::endoriumAirJump()
+{
+	if (inventory == nullptr) return false;
+
+	for (unsigned int i = 0; i < inventory->aether.length; i++)
+	{
+		if (inventory->aether[i] != nullptr &&
+			(inventory->aether[i]->id == Item::endoriumPendant_Id || inventory->aether[i]->id == Item::endoriumRing_Id))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void LocalPlayer::sendRidingJump()
@@ -1488,6 +1554,18 @@ bool LocalPlayer::creativeModeHandleMouseClick(int button, bool buttonPressed)
 bool LocalPlayer::handleMouseClick(int button)
 {
 	bool returnItemPlaced = false;
+
+	if (button == 1 && inventory != nullptr && inventory->aether.length > 0 &&
+		isToolOrWeaponItem(inventory->aether[0]) &&
+		isToolOrWeaponItem(inventory->getSelected()))
+	{
+		button = 0;
+		leftHandSwing = true;
+	}
+	else
+	{
+		leftHandSwing = false;
+	}
 
 	if (button == 0 && missTime > 0) return false;
 	if (button == 0) 
