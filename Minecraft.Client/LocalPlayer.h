@@ -66,13 +66,12 @@ public:
 	bool isRaining ;
 	int m_iThirdPersonView;
 
-	bool m_bHasAwardedStayinFrosty;
-
-private:
+	bool m_bHasAwardedStayinFrosty;	private:
 	float flyX, flyY, flyZ;
 
 	int jumpRidingTicks;
 	float jumpRidingScale;
+	bool airJumpUsed;
 
 protected:
 	// 4J-PB - player's xbox pad
@@ -192,6 +191,8 @@ public:
 	bool isRidingJumpable();
 	bool isRidingJumpChargeable();
 	float getJumpRidingScale();
+	bool gravititeChargeJump();
+	bool endoriumAirJump();
 
 protected:
 	virtual void sendRidingJump();

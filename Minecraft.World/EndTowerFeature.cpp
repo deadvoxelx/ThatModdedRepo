@@ -1338,4 +1338,8 @@ WeighedTreasure *EndTowerFeature::endTowerTreasure[EndTowerFeature::TREASURE_ITE
 	new WeighedTreasure(Item::gravititeBoots_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::nusaShard_Id, 0, 1, 1, 4),
 	new WeighedTreasure(Item::lifeShard_Id, 0, 1, 1, 3),
+	new WeighedTreasure(Item::gravititePendant_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititeRing_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumPendant_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumRing_Id, 0, 1, 1, 2),
 };

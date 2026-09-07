@@ -104,6 +104,11 @@
 #include "NusaDemonRenderer.h"
 #include "SunSpiritModel.h"
 #include "SunSpiritRenderer.h"
+#include "CrystalRenderer.h"
+#include "NusagarModel.h"
+#include "NusagarRenderer.h"
+#include "NusaSpikeModel.h"
+#include "NusaSpikeRenderer.h"
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
@@ -153,6 +158,9 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_NUCLEAR_NUSKULL] = new NuskullRenderer();
 	renderers[eTYPE_NUSA_DEMON] = new NusaDemonRenderer();
 	renderers[eTYPE_SUN_SPIRIT] = new SunSpiritRenderer();
+	renderers[eTYPE_FIRE_MINION] = new SunSpiritRenderer();
+	renderers[eTYPE_NUSAGAR] = new NusagarRenderer();
+	renderers[eTYPE_NUSA_SPIKE] = new NusaSpikeRenderer();
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
@@ -161,6 +169,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_DARTENCHANTED] = new ArrowRenderer();
 	renderers[eTYPE_DARTPOISON] = new ArrowRenderer();
 	renderers[eTYPE_DARTNETHANIUM] = new ArrowRenderer();
+	renderers[eTYPE_CRYSTAL] = new CrystalRenderer();
 	//
 	renderers[eTYPE_SNOWMAN] = new SnowManRenderer();
 	renderers[eTYPE_SKELETON] = new SkeletonRenderer();

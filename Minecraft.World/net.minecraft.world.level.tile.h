@@ -179,3 +179,4 @@
 #include "BlackrootTile.h"
 #include "LavaReedTile.h"
 #include "BoneVineTile.h"
+#include "NugrassTile.h"

@@ -6,6 +6,9 @@
 #include "WitherBoss.h"
 #include "AphalafBoss.h"
 #include "SunSpirit.h"
+#include "Nusagar.h"
+#include "NusaSpike.h"
+#include "EntityCrystal.h"
 #include "net.minecraft.world.entity.ambient.h"
 #include "net.minecraft.world.entity.animal.h"
 #include "net.minecraft.world.entity.item.h"
@@ -130,6 +133,9 @@ void EntityIO::staticCtor()
 	setId(NusaDemon::create, eTYPE_NUSA_DEMON, L"NusaDemon", 125, eMinecraftColour_Mob_Enderman_Colour1, eMinecraftColour_Mob_Enderman_Colour1, IDS_NUSA_DEMON);
 	setId(Moa::create, eTYPE_MOA, L"Moa", 126, eMinecraftColour_Mob_Zombie_Colour1, eMinecraftColour_Mob_Squid_Colour1, IDS_MOA);
 	setId(SunSpirit::create, eTYPE_SUN_SPIRIT, L"SunSpirit", 127, eMinecraftColour_Mob_Spider_Colour2, eMinecraftColour_Mob_Blaze_Colour1, IDS_SUN_SPIRIT);
+	setId(FireMinion::create, eTYPE_FIRE_MINION, L"FireMinion", 128, eMinecraftColour_Mob_Spider_Colour2, eMinecraftColour_Mob_Blaze_Colour1, IDS_FIRE_MINION);
+	setId(Nusagar::create, eTYPE_NUSAGAR, L"Nusagar", 129, eMinecraftColour_Mob_Enderman_Colour2, eMinecraftColour_Mob_Enderman_Colour2, IDS_NUSAGAR);
+	setId(NusaSpike::create, eTYPE_NUSA_SPIKE, L"NusaSpike", 130);
 
 	setId(EnderCrystal::create, eTYPE_ENDER_CRYSTAL, L"EnderCrystal", 200);
 
@@ -138,6 +144,7 @@ void EntityIO::staticCtor()
 	setId(Dart::create, eTYPE_DARTPOISON, L"DartP", 202);
 	setId(Dart::create, eTYPE_DARTENCHANTED, L"DartE", 203);
 	setId(Dart::create, eTYPE_DARTNETHANIUM, L"DartN", 204);
+	setId(EntityCrystal::create, eTYPE_CRYSTAL, L"Crystal", 205);
 	 
 	 
 	setId(DragonFireball::create, eTYPE_DRAGON_FIREBALL, L"DragonFireball", 1000);

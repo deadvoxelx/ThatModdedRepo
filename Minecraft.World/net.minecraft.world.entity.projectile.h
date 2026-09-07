@@ -29,3 +29,4 @@
 #include "DartPoison.h"
 #include "DartEnchanted.h"
 #include "DartNethanium.h"
+#include "EntityCrystal.h"

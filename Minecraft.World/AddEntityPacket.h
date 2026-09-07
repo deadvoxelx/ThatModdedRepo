@@ -35,6 +35,7 @@ public:
 	static const int DARTPOISON = 202;
 	static const int DARTENCHANTED = 203;
 	static const int DARTNETHANIUM = 204;
+	static const int CRYSTAL = 205;
 
 	int id;
 	int x, y, z;

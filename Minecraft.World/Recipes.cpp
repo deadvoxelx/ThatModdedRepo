@@ -478,6 +478,42 @@ Recipes::Recipes()
 		L'#', new ItemInstance(Tile::wood, 1, TreeTile::JUNGLE_TRUNK),
 		L'S');
 
+	addShapedRecipy(new ItemInstance(Tile::netherStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_DEFAULT),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::purulStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_PURUL),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::skyrootStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_SKYROOT),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::nusaStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::netherPlanks, 1, NetherPlanksTile::TYPE_NUSA),
+		L'S');
+
 	addShapedRecipy(new ItemInstance(Tile::stairs_stone, 6), //
 		L"sssctg",
 		L"#  ", //
@@ -485,6 +521,15 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', Tile::cobblestone,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::stairs_sandstone, 6), //
+		L"sssctg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', Tile::sandStone,
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stairs_bricks, 6), //
@@ -514,13 +559,22 @@ Recipes::Recipes()
 		L'#', Tile::netherBrick,
 		L'S');
 
-	addShapedRecipy(new ItemInstance(Tile::stairs_sandstone, 6), //
-		L"sssctg",
+	addShapedRecipy(new ItemInstance(Tile::goldenclinStairs, 6), //
+		L"sssczg",
 		L"#  ", //
 		L"## ", //
 		L"###", //
 
-		L'#', Tile::sandStone,
+		L'#', new ItemInstance(Tile::goldenclin, 1, GoldenclinTile::TYPE_DEFAULT),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::goldenclinBrickStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::goldenclin, 1, GoldenclinTile::TYPE_BRICK),
 		L'S');
 
 	addShapedRecipy(new ItemInstance(Tile::stairs_quartz, 6), //
@@ -530,6 +584,33 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', Tile::quartzBlock,
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::nustoneStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::nustone, 1, NustoneTile::TYPE_DEFAULT),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::nustoneBrickStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::nustone, 1, NustoneTile::TYPE_BRICK),
+		L'S');
+
+	addShapedRecipy(new ItemInstance(Tile::darkNustoneStairs, 6), //
+		L"sssczg",
+		L"#  ", //
+		L"## ", //
+		L"###", //
+
+		L'#', new ItemInstance(Tile::nustone, 1, NustoneTile::TYPE_DARK),
 		L'S');
 
 	pArmorRecipes->addRecipes(this);
@@ -590,6 +671,75 @@ Recipes::Recipes()
 		L" Z ", //
 
 		L'Z', Item::zaniteGemstone,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::gravititePendant, 1), //
+		L"ssscictg",
+		L"###", //
+		L"# #", //
+		L" G ", //
+
+		L'#', Item::string,
+		L'G', Tile::enchantedGravitite,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::gravititeRing, 1), //
+		L"sssctg",
+		L" G ", //
+		L"G G", //
+		L" G ", //
+
+		L'G', Tile::enchantedGravitite,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::nethaniumPendant, 1), //
+		L"ssscicig",
+		L" N ", //
+		L"N#N", //
+		L" N ", //
+
+		L'#', Item::goldPendant,
+		L'N', Item::nethanium,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::nethaniumRing, 1), //
+		L"ssscicig",
+		L" N ", //
+		L"N#N", //
+		L" N ", //
+
+		L'#', Item::goldRing,
+		L'N', Item::nethanium,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::endoriumPendant, 1), //
+		L"ssscicig",
+		L" E ", //
+		L"E#E", //
+		L" E ", //
+
+		L'#', Item::gravititePendant,
+		L'E', Item::endorium,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::endoriumRing, 1), //
+		L"ssscicig",
+		L" E ", //
+		L"E#E", //
+		L" E ", //
+
+		L'#', Item::gravititeRing,
+		L'E', Item::endorium,
+		L'A');
+
+	addShapedRecipy(new ItemInstance(Item::aphalafGem, 1), //
+		L"ssscicig",
+		L" A ", //
+		L"ADA", //
+		L" A ", //
+
+		L'D', Item::diamond,
+		L'A', Item::aphalafShard,
 		L'A');
 
 	pClothDyeRecipes->addRecipes(this);
@@ -892,6 +1042,16 @@ Recipes::Recipes()
 		L"###", //
 
 		L'#', Tile::wood,
+		L'V');
+
+	addShapedRecipy(new ItemInstance(Item::saddle, 1), //
+		L"ssscicig",
+		L"###", //
+		L"#I#", //
+		L"I I", //
+
+		L'#', Item::leather,
+		L'I', Item::ironIngot,
 		L'V');
 
 	addShapedRecipy(new ItemInstance((Item *)Item::fishingRod, 1), //

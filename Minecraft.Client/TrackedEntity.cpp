@@ -10,6 +10,7 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.animal.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.global.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.projectile.h"
+#include "..\Minecraft.World\EntityCrystal.h"
 #include "..\Minecraft.World\net.minecraft.network.packet.h"
 #include "..\Minecraft.World\net.minecraft.world.item.h"
 #include "..\Minecraft.World\net.minecraft.world.level.saveddata.h"
@@ -714,6 +715,15 @@ shared_ptr<Packet> TrackedEntity::getAddEntityPacket()
 	{
 		shared_ptr<Entity> owner = (dynamic_pointer_cast<DartNethanium>(e))->owner;
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::DARTNETHANIUM, owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp, yp, zp);
+	}
+	else if (e->instanceof(eTYPE_CRYSTAL))
+	{
+		shared_ptr<EntityCrystal> crystal = dynamic_pointer_cast<EntityCrystal>(e);
+		shared_ptr<AddEntityPacket> aep = std::make_shared<AddEntityPacket>(e, AddEntityPacket::CRYSTAL, crystal->getCrystalType(), yRotp, xRotp, xp, yp, zp);
+		aep->xa = static_cast<int>(crystal->getSMotionX() * 8000);
+		aep->ya = static_cast<int>(crystal->getSMotionY() * 8000);
+		aep->za = static_cast<int>(crystal->getSMotionZ() * 8000);
+		return aep;
 	}
 	else if (e->instanceof(eTYPE_SNOWBALL))
 	{

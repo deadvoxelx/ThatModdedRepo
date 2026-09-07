@@ -1,10 +1,13 @@
 #pragma once
 #include "MobRenderer.h"
 
+class FireMinion;
+
 class SunSpiritRenderer : public MobRenderer
 {
 private:
 	static ResourceLocation SUN_SPIRIT_LOCATION;
+	static ResourceLocation SUN_SPIRIT_FROZEN_LOCATION;
 
 public:
 	SunSpiritRenderer();

@@ -11,6 +11,7 @@
 #include "TreasureChestTile.h"
 #include "ChestTile.h"
 #include "Facing.h"
+#include "..\Minecraft.Client\ServerPlayer.h"
 
 TreasureChestTile::TreasureChestTile(int id) : BaseEntityTile(id, Material::stone, isSolidRender() )
 {
@@ -227,6 +228,29 @@ bool TreasureChestTile::use(Level *level, int x, int y, int z, shared_ptr<Player
 	{
 		return true;
 	}
+
+	shared_ptr<ChestTileEntity> chestEntity = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity(x, y, z));
+
+	if (chestEntity == nullptr || !chestEntity->unlocked)
+	{
+		shared_ptr<ItemInstance> item = player->inventory->getSelected();
+		if (item == nullptr || item->id != Item::keyGold_Id)
+		{
+			if (player->instanceof(eTYPE_SERVERPLAYER))
+			{
+				dynamic_pointer_cast<ServerPlayer>(player)->sendMessage(app.GetString(IDS_CHEST_LOCKED));
+			}
+			return true;
+		}
+
+		player->inventory->removeItem(player->inventory->selected, 1);
+		if (chestEntity != nullptr)
+		{
+			chestEntity->unlocked = true;
+			chestEntity->setChanged();
+		}
+	}
+
 	shared_ptr<Container> container = getContainer(level, x, y, z);
 
 	if (container != nullptr)

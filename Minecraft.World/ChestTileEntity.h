@@ -33,6 +33,7 @@ private:
 
 public:
 	bool isBonusChest;					// 4J added
+	bool unlocked;						// 4J added - set when a Treasure Chest is unlocked with a Gold Key
 	bool hasCheckedNeighbors;
 	weak_ptr<ChestTileEntity> n;
 	weak_ptr<ChestTileEntity> e;

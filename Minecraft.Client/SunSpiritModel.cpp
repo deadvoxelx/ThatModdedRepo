@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Minecraft.World\Mth.h"
+#include "..\Minecraft.World\FireMinion.h"
 #include "SunSpiritModel.h"
 #include "ModelPart.h"
 
@@ -61,8 +62,12 @@ void SunSpiritModel::render(shared_ptr<Entity> entity, float time, float r, floa
 
 void SunSpiritModel::setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, shared_ptr<Entity> entity, unsigned int uiBitmaskOverrideAnim)
 {
+    shared_ptr<FireMinion> fireMinion = dynamic_pointer_cast<FireMinion>(entity);
+
     head->yRot = yRot / (float) (180 / PI);
     head->xRot = xRot / (float) (180 / PI);
+
+    if (fireMinion) torso->y = 6;
 
     rightArm->xRot = -(Mth::sin(time * 0.067f) * 0.05f);
     rightArm->yRot = 0.0f;

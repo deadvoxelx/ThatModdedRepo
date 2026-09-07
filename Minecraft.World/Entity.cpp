@@ -22,6 +22,7 @@
 #include "..\Minecraft.Client\MultiplayerLocalPlayer.h"
 #include "..\Minecraft.Client\ServerLevel.h"
 #include "..\Minecraft.Client\PlayerList.h"
+#include "PortalForcer.h"
 
 const wstring Entity::RIDING_TAG = L"Riding";
 
@@ -577,6 +578,8 @@ void Entity::baseTick()
 								targetDimension = -1;
 							}
 
+							static_cast<ServerLevel *>(level)->getPortalForcer()->recordPortalNear(level, Mth::floor(x), Mth::floor(y), Mth::floor(z), Tile::portalTile_Id);
+
 							changeDimension(targetDimension);
 						}
 					}
@@ -603,6 +606,9 @@ void Entity::baseTick()
 						{
 							targetDimension = 3;
 						}
+
+						static_cast<ServerLevel *>(level)->getPortalForcer()->recordPortalNear(level, Mth::floor(x), Mth::floor(y), Mth::floor(z), Tile::aetherPortal_Id);
+
 						changeDimension(targetDimension);
 					}
 				}
@@ -741,9 +747,6 @@ void Entity::baseTick()
 	}
 
 	firstTick = false;
-
-	// 4J Stu - Unused
-	//util.Timer.pop();
 }
 
 int Entity::getPortalWaitTime()
@@ -1574,7 +1577,6 @@ const wstring Entity::getEncodeId()
 */
 void Entity::onLoadedFromSave()
 {
-
 }
 
 template<typename ...Args>

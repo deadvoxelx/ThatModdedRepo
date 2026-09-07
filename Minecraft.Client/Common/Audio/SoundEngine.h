@@ -11,6 +11,8 @@ constexpr float SFX_3D_MAX_DISTANCE = 16.0f;
 constexpr float SFX_3D_ROLLOFF = 0.5f;
 constexpr float SFX_VOLUME_MULTIPLIER = 1.5f;
 constexpr float SFX_MAX_GAIN = 1.5f;
+constexpr float NUSA_CORE_SOUND_GAIN = 9.0f;
+constexpr float NUSA_CORE_MAX_GAIN = SFX_MAX_GAIN * NUSA_CORE_SOUND_GAIN;
 
 enum eMUSICFILES
 {
@@ -39,16 +41,21 @@ enum eMUSICFILES
 	eStream_Overworld_piano1,
 	eStream_Overworld_piano2,
 	eStream_Overworld_piano3, // <-- make piano3 the last overworld one
+
 	// Nether
 	eStream_Nether1,
 	eStream_Nether2,
 	eStream_Nether3,
 	eStream_Nether4,
+
 	// The End
 	eStream_end_dragon,
 	eStream_end_end,
+
 	// Nurealm
 	eStream_nurealm,
+	eStream_nusagarBoss,	// Nusagar boss theme
+
 	eStream_CD_1,
 	eStream_CD_2,
 	eStream_CD_3,
@@ -168,6 +175,7 @@ private:
 
 	Random *random;
 	int m_musicID;
+	bool m_bNusagarBossMusic;
 	int m_iMusicDelay;
 	int m_StreamState;
 	int m_MusicType;

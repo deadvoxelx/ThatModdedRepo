@@ -71,6 +71,7 @@ CRITICAL_SECTION GameRenderer::m_csDeleteStack;
 
 ResourceLocation GameRenderer::RAIN_LOCATION = ResourceLocation(TN_ENVIRONMENT_RAIN);
 ResourceLocation GameRenderer::SNOW_LOCATION = ResourceLocation(TN_ENVIRONMENT_SNOW);
+ResourceLocation GameRenderer::ASH_LOCATION = ResourceLocation(TN_ENVIRONMENT_NUSA_ASH);
 
 GameRenderer::GameRenderer(Minecraft *mc)
 {
@@ -1778,8 +1779,10 @@ void GameRenderer::tickRain()
 // 4J - this whole function updated from 1.8.2
 void GameRenderer::renderSnowAndRain(float a)
 {
-	float rainLevel = mc->level->getRainLevel(a);
-	if (rainLevel <= 0) return;
+	Level *level = mc->level;
+	const bool nusaAsh = level != nullptr && level->dimension != nullptr && level->dimension->id == 4;
+	float rainLevel = nusaAsh ? 1.0f : level->getRainLevel(a);
+	if (!nusaAsh && rainLevel <= 0) return;
 
 	// 4J - rain is relatively low poly, but high fill-rate - better to clip it
 	RenderManager.StateSetEnableViewportClipPlanes(true);
@@ -1805,7 +1808,6 @@ void GameRenderer::renderSnowAndRain(float a)
 	}
 
 	shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
-	Level *level = mc->level;
 
 	int x0 = Mth::floor(player->x);
 	int y0 = Mth::floor(player->y);
@@ -1819,7 +1821,7 @@ void GameRenderer::renderSnowAndRain(float a)
 	glAlphaFunc(GL_GREATER, 0.01f);
 
 	MemSect(31);
-	mc->textures->bindTexture(&SNOW_LOCATION);	// 4J was L"/environment/snow.png"
+	mc->textures->bindTexture(nusaAsh ? &ASH_LOCATION : &SNOW_LOCATION);	// 4J was L"/environment/snow.png"
 	MemSect(0);
 
 	double xo = player->xOld + (player->x - player->xOld) * a;
@@ -1864,15 +1866,23 @@ void GameRenderer::renderSnowAndRain(float a)
 
 			// 4J - changes here brought forward from 1.8.2
 			Biome *b = level->getBiome(x, z);
-			if (!b->hasRain() && !b->hasSnow()) continue;
+			if (!nusaAsh && !b->hasRain() && !b->hasSnow()) continue;
 
 			int floor = level->getTopRainBlock(x, z);
 
 			int yy0 = y0 - r;
 			int yy1 = y0 + r;
 
-			if (yy0 < floor) yy0 = floor;
-			if (yy1 < floor) yy1 = floor;
+			if (nusaAsh)
+			{
+				yy0 = y0 - r;
+				yy1 = y0 + r;
+			}
+			else
+			{
+				if (yy0 < floor) yy0 = floor;
+				if (yy1 < floor) yy1 = floor;
+			}
 			float s = 1;
 
 			int yl = floor;
@@ -1882,9 +1892,8 @@ void GameRenderer::renderSnowAndRain(float a)
 			{
 				random->setSeed((x * x * 3121 + x * 45238971) ^ (z * z * 418711 + z * 13761));
 
-				// 4J - changes here brought forward from 1.8.2
 				float temp = b->getTemperature();
-				if (level->getBiomeSource()->scaleTemp(temp, floor) >= 0.15f)
+				if (!nusaAsh && level->getBiomeSource()->scaleTemp(temp, floor) >= 0.15f)
 				{
 					if (mode != 0)
 					{
@@ -1912,8 +1921,7 @@ void GameRenderer::renderSnowAndRain(float a)
 						x - xa + 0.5, yy1, z - za + 0.5, 0 * s, yy1 * s / 4.0f + ra * s,
 						br, br, br, Alpha, br, br, br, 0, tex2);
 #else
-					t->tex2(level->getLightColor(x, yl, z, 0));
-					t->color(br, br, br, ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel);
+					t->tex2(level->getLightColor(x, yl, z, 0));									t->color(br, br, br, ((1 - dd * dd) * (nusaAsh ? 0.25f : 0.5f) + 0.5f) * rainLevel);
 					t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s, yy0 * s / 4.0f + ra * s);
 					t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s, yy0 * s / 4.0f + ra * s);
 					t->color(br, br, br, 0.0f);														// 4J - added to soften the top visible edge of the rain
@@ -1929,10 +1937,10 @@ void GameRenderer::renderSnowAndRain(float a)
 					{
 						if (mode >= 0) t->end();
 						mode = 1;
-						mc->textures->bindTexture(&SNOW_LOCATION);
+						mc->textures->bindTexture(nusaAsh ? &ASH_LOCATION : &SNOW_LOCATION);
 						t->begin();
 					}
-					float ra = (((_tick) & 511) + a) / 512.0f;
+					float ra = ((((nusaAsh ? (_tick / 4) : _tick)) & 511) + a) / 512.0f;
 					float uo = random->nextFloat() + time * 0.01f * static_cast<float>(random->nextGaussian());
 					float vo = random->nextFloat() + time * static_cast<float>(random->nextGaussian()) * 0.001f;
 					double xd = (x + 0.5f) - player->x;
@@ -2025,8 +2033,10 @@ void GameRenderer::setupClearColor(float a)
 	fg += (sg - fg) * whiteness;
 	fb += (sb - fb) * whiteness;
 
+	bool nurealmSky = (level->dimension->id == 4);
+
 	float rainLevel = level->getRainLevel(a);
-	if (rainLevel > 0)
+	if (rainLevel > 0 && !nurealmSky)
 	{
 		float ba = 1 - rainLevel * 0.5f;
 		float bb = 1 - rainLevel * 0.4f;
@@ -2035,7 +2045,7 @@ void GameRenderer::setupClearColor(float a)
 		fb *= bb;
 	}
 	float thunderLevel = level->getThunderLevel(a);
-	if (thunderLevel > 0)
+	if (thunderLevel > 0 && !nurealmSky)
 	{
 		float ba = 1 - thunderLevel * 0.5f;
 		fr *= ba;

@@ -214,6 +214,16 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"armor/accessory_swet_cape",
 	L"armor/accessory_valkyrie_cape",
 
+	L"mob/fireCrystal",
+	L"mob/iceCrystal",
+	L"mob/cloudCrystal",
+	L"mob/thunderCrystal",
+
+	L"environment/nusaAsh",
+
+	L"mob/nusagar",
+	L"mob/nusaSpike",
+
 #ifdef _LARGE_WORLDS
 	L"misc/additionalmapicons",
 #endif

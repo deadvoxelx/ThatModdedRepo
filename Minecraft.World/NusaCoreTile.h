@@ -2,6 +2,8 @@
 
 #include "Tile.h"
 
+class Nusagar;
+
 class NusaCoreTile : public Tile
 {
 public:
@@ -14,6 +16,9 @@ public:
 	static const wstring TEXTURE_NAMES[];
 
 private:
+	static const int CORE_ACTIVE_CYCLES = 5;
+	static const int CORE_CYCLE_DELAY = 80;
+
 	Icon** icons;
 	Icon *iconTop;
 

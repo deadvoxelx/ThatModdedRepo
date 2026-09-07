@@ -735,6 +735,10 @@ public:
 
 	void			SetResetNether(bool bResetNether) {m_bResetNether=bResetNether;}
 	bool			GetResetNether() {return m_bResetNether;}
+
+	void			SetResetNurealm(bool bResetNurealm) {m_bResetNurealm=bResetNurealm;}
+	bool			GetResetNurealm() {return m_bResetNurealm;}
+
 	bool			CanRecordStatsAndAchievements();
 
 	// World seed from png image
@@ -889,6 +893,7 @@ private:
 
 
 	bool m_bResetNether;
+	bool m_bResetNurealm;
 	DWORD m_dwRequiredTexturePackID;
 #ifdef _XBOX_ONE
 	vector <PBYTE> m_vTMSPPData;

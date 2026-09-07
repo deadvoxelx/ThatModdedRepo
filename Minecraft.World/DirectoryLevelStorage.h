@@ -142,6 +142,7 @@ public:
 	virtual void deleteMapFilesForPlayer(shared_ptr<Player> player);
 	virtual void saveAllCachedData();
 	void resetNetherPlayerPositions(); // 4J Added
+	void resetNurealmPlayerPositions();
 	static wstring getPlayerDir() { return sc_szPlayerDir; }
 
 private:

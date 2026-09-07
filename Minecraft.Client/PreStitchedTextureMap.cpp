@@ -1387,6 +1387,7 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_MOD_ICON(26,	12,	L"blackroot");
 		ADD_MOD_ICON(26,	13,	L"lavaReed");
 		ADD_MOD_ICON(26,	14,	L"boneVine");
+		ADD_MOD_ICON(26,	15,	L"bossStone");
 
 		ADD_MOD_ICON(27,	0,	L"nether_diamond");
 		ADD_MOD_ICON(27,	1,	L"nether_gold");

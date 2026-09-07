@@ -222,7 +222,7 @@ ItemInHandRenderer::ItemInHandRenderer(Minecraft *minecraft, bool optimisedMinim
 
 }
 
-void ItemInHandRenderer::renderItem(shared_ptr<LivingEntity> mob, shared_ptr<ItemInstance> item, int layer, bool setColor/* = true*/)
+void ItemInHandRenderer::renderItem(shared_ptr<LivingEntity> mob, shared_ptr<ItemInstance> item, int layer, bool setColor, bool mirrorItem)
 {
 	// 4J - code borrowed from render method below, although not factoring in brightness as that should already be being taken into account
 	// by texture lighting. This is for colourising things held in 3rd person view.
@@ -292,9 +292,9 @@ void ItemInHandRenderer::renderItem(shared_ptr<LivingEntity> mob, shared_ptr<Ite
         float s = 1.5f;
         glScalef(s, s, s);
 
-        glRotatef(50, 0, 1, 0);
-        glRotatef(45 + 290, 0, 0, 1);
-        glTranslatef(-15 / 16.0f, -1 / 16.0f, 0);
+        glRotatef(mirrorItem ? -50 : 50, 0, 1, 0);
+		glRotatef(45 + 290, 0, 0, 1);
+		glTranslatef(-15 / 16.0f, -1 / 16.0f, 0);
         float dd = 1 / 16.0f;
 
         renderItem3D(t, u0, v0, u1, v1, icon->getSourceWidth(), icon->getSourceHeight(), 1 / 16.0f, false, bIsTerrain);
@@ -558,35 +558,38 @@ void ItemInHandRenderer::render(float a)
 #else
 		static const float swingPowFactor = 4.0f;		// 4J added, to slow the swing down when nearest the player for avoiding luminance flash issues
 #endif
-        if (player->getUseItemDuration() > 0)
-		{
-            UseAnim anim = item->getUseAnimation();
-            if ( (anim == UseAnim_eat) || (anim == UseAnim_drink) )
-			{
-                float t = (player->getUseItemDuration() - a + 1);
-                float swing = 1 - (t / item->getUseDuration());
+        if (!player->leftHandSwing)
+        {
+            if (player->getUseItemDuration() > 0)
+            {
+                UseAnim anim = item->getUseAnimation();
+                if ( (anim == UseAnim_eat) || (anim == UseAnim_drink) )
+                {
+                    float t = (player->getUseItemDuration() - a + 1);
+                    float swing = 1 - (t / item->getUseDuration());
 
-                float is = 1 - swing;
-                is = is * is * is;
-                is = is * is * is;
-                is = is * is * is;
-                float iss = 1 - is;
-                glTranslatef(0, Mth::abs(Mth::cos(t / 4 * PI) * 0.1f) * (swing > 0.2 ? 1 : 0), 0);
-                glTranslatef(iss * 0.6f, -iss * 0.5f, 0);
-                glRotatef(iss * 90, 0, 1, 0);
-                glRotatef(iss * 10, 1, 0, 0);
-                glRotatef(iss * 30, 0, 0, 1);
+                    float is = 1 - swing;
+                    is = is * is * is;
+                    is = is * is * is;
+                    is = is * is * is;
+                    float iss = 1 - is;
+                    glTranslatef(0, Mth::abs(Mth::cos(t / 4 * PI) * 0.1f) * (swing > 0.2 ? 1 : 0), 0);
+                    glTranslatef(iss * 0.6f, -iss * 0.5f, 0);
+                    glRotatef(iss * 90, 0, 1, 0);
+                    glRotatef(iss * 10, 1, 0, 0);
+                    glRotatef(iss * 30, 0, 0, 1);
+                }
+            }
+            else
+            {
+                float swing = powf(player->getAttackAnim(a),swingPowFactor);
+
+                float swing1 = Mth::sin(swing * PI);
+                float swing2 = Mth::sin((sqrt(swing)) * PI);
+                glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * PI * 2) * 0.2f, -swing1 * 0.2f);
+
             }
         }
-		else
-		{
-			float swing = powf(player->getAttackAnim(a),swingPowFactor);
-
-			float swing1 = Mth::sin(swing * PI);
-			float swing2 = Mth::sin((sqrt(swing)) * PI);
-			glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * PI * 2) * 0.2f, -swing1 * 0.2f);
-
-		}
 
         glTranslatef(0.7f * d, -0.65f * d - (1 - h) * 0.6f, -0.9f * d);
 		glTranslatef(fudgeX, fudgeY, fudgeZ);	// 4J added
@@ -594,12 +597,15 @@ void ItemInHandRenderer::render(float a)
         glRotatef(45, 0, 1, 0);
         glEnable(GL_RESCALE_NORMAL);
 
-		float swing = powf(player->getAttackAnim(a),swingPowFactor);
-		float swing3 = Mth::sin(swing * swing * PI);
-		float swing2 = Mth::sin(sqrt(swing) * PI);
-		glRotatef(-swing3 * 20, 0, 1, 0);
-		glRotatef(-swing2 * 20, 0, 0, 1);
-		glRotatef(-swing2 * 80, 1, 0, 0);
+		if (!player->leftHandSwing)
+		{
+			float swing = powf(player->getAttackAnim(a),swingPowFactor);
+			float swing3 = Mth::sin(swing * swing * PI);
+			float swing2 = Mth::sin(sqrt(swing) * PI);
+			glRotatef(-swing3 * 20, 0, 1, 0);
+			glRotatef(-swing2 * 20, 0, 0, 1);
+			glRotatef(-swing2 * 80, 1, 0, 0);
+		}
 
         float ss = 0.4f;
         glScalef(ss, ss, ss);
@@ -725,6 +731,77 @@ void ItemInHandRenderer::render(float a)
 		MemSect(0);
         glPopMatrix();
     }
+
+	shared_ptr<ItemInstance> leftHandItem = player->inventory->aether[0];
+	if (leftHandItem != nullptr)
+	{
+		glPushMatrix();
+		float d = 0.8f;
+
+		if (player->leftHandSwing)
+		{
+			float swing = powf(player->getAttackAnim(a), 1.0f);
+			float swing1 = Mth::sin(swing * PI);
+			float swing2 = Mth::sin((sqrt(swing)) * PI);
+			glTranslatef(swing2 * 0.4f, Mth::sin(sqrt(swing) * PI * 2) * 0.2f, -swing1 * 0.2f);
+		}
+
+		glTranslatef(-0.7f * d, -0.65f * d - (1 - h) * 0.6f, -0.9f * d);
+		glTranslatef(fudgeX, fudgeY, fudgeZ);
+		glRotatef(40, 0, 1, 0);
+		glRotatef(0, 0, 1, 0);
+		glRotatef(-1, 0, 0, 1);
+		glEnable(GL_RESCALE_NORMAL);
+
+		if (player->leftHandSwing)
+		{
+			float swing = -powf(player->getAttackAnim(a), 1.0f);
+			float swing3 = Mth::sin(swing * swing * PI);
+			float swing2 = Mth::sin(sqrt(swing) * PI);
+			glRotatef(-swing3 * 20, 0, 1, 0);
+			glRotatef(-swing2 * 20, 0, 0, 1);
+			glRotatef(-swing2 * 80, 1, 0, 0);
+		}
+
+		float ss = 0.4f;
+		glScalef(ss, ss, ss);
+
+		if (leftHandItem->getItem()->isMirroredArt())
+		{
+			glRotatef(180, 0, 1, 0);
+		}
+
+		if (leftHandItem->getItem()->hasMultipleSpriteLayers())
+		{
+			int col0 = leftHandItem->getItem()->getColor(leftHandItem, 0);
+			float red0 = ((col0 >> 16) & 0xff) / 255.0f;
+			float g0 = ((col0 >> 8) & 0xff) / 255.0f;
+			float b0 = ((col0) & 0xff) / 255.0f;
+			glColor4f(br * red0, br * g0, br * b0, 1);
+			renderItem(player, leftHandItem, 0, false);
+
+			int col = Item::items[leftHandItem->id]->getColor(leftHandItem, 1);
+			float red = ((col >> 16) & 0xff) / 255.0f;
+			float g = ((col >> 8) & 0xff) / 255.0f;
+			float b = ((col) & 0xff) / 255.0f;
+
+			glColor4f(br * red, br * g, br * b, 1);
+
+			renderItem(player, leftHandItem, 1, false);
+		}
+		else
+		{
+			int col = Item::items[leftHandItem->id]->getColor(leftHandItem, 0);
+			float red = ((col >> 16) & 0xff) / 255.0f;
+			float g = ((col >> 8) & 0xff) / 255.0f;
+			float b = ((col) & 0xff) / 255.0f;
+
+			glColor4f(br * red, br * g, br * b, 1);
+
+			renderItem(player, leftHandItem, 0, false);
+		}
+		glPopMatrix();
+	}
 
     glDisable(GL_RESCALE_NORMAL);
     Lighting::turnOff();

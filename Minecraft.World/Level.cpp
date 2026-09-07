@@ -2033,7 +2033,7 @@ Vec3 *Level::getSkyColor(shared_ptr<Entity> source, float a)
 	b *= br;
 
 	float rainLevel = getRainLevel(a);
-	if (rainLevel > 0)
+	if (rainLevel > 0 && dimension->id != 4)
 	{
 		float mid = (r * 0.30f + g * 0.59f + b * 0.11f) * 0.6f;
 
@@ -2043,7 +2043,7 @@ Vec3 *Level::getSkyColor(shared_ptr<Entity> source, float a)
 		b = b * ba + mid * (1 - ba);
 	}
 	float thunderLevel = getThunderLevel(a);
-	if (thunderLevel > 0)
+	if (thunderLevel > 0 && dimension->id != 4)
 	{
 		float mid = (r * 0.30f + g * 0.59f + b * 0.11f) * 0.2f;
 

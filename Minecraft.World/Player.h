@@ -81,6 +81,9 @@ public:
 	BYTE userType;
 	float oBob, bob;
 
+	bool leftHandSwing;
+	bool m_bUsingOffHand;
+
 	wstring name;
 	int takeXpDelay;
 

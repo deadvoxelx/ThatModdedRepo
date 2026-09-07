@@ -613,7 +613,41 @@ void DirectoryLevelStorage::resetNetherPlayerPositions()
 					if(tag->contains(L"Dimension") && tag->getInt(L"Dimension") == LevelData::DIMENSION_OUTER_END && tag->contains(L"Pos"))
 					{
 						ListTag<DoubleTag> *pos = (ListTag<DoubleTag> *) tag->getList(L"Pos");
-						pos->get(3)->data = DBL_MAX;
+						pos->get(1)->data = DBL_MAX;
+
+						ConsoleSaveFileOutputStream fos = ConsoleSaveFileOutputStream( m_saveFile, realFile );
+						NbtIo::writeCompressed(tag, &fos);
+					}
+					delete tag;
+				}
+			}
+			delete playerFiles;
+		}
+	}
+}
+
+void DirectoryLevelStorage::resetNurealmPlayerPositions()
+{
+	if(app.GetResetNurealm())
+	{
+#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+		vector<FileEntry *> *playerFiles = m_saveFile->getValidPlayerDatFiles();
+#else
+		const vector<FileEntry *> *playerFiles = m_saveFile->getFilesWithPrefix( playerDir.getName() );
+#endif
+		
+		if ( playerFiles )
+		{
+			for ( FileEntry * realFile : *playerFiles )
+			{
+				ConsoleSaveFileInputStream fis = ConsoleSaveFileInputStream(m_saveFile, realFile);
+				CompoundTag *tag = NbtIo::readCompressed(&fis);
+				if (tag != nullptr)
+				{
+					if(tag->contains(L"Dimension") && tag->getInt(L"Dimension") == LevelData::DIMENSION_NUREALM && tag->contains(L"Pos"))
+					{
+						ListTag<DoubleTag> *pos = (ListTag<DoubleTag> *) tag->getList(L"Pos");
+						pos->get(1)->data = DBL_MAX;
 
 						ConsoleSaveFileOutputStream fos = ConsoleSaveFileOutputStream( m_saveFile, realFile );
 						NbtIo::writeCompressed(tag, &fos);

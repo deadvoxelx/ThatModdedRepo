@@ -42,6 +42,7 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.player.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.item.h"
+#include "..\Minecraft.World\Nusagar.h"
 #include "..\Minecraft.World\net.minecraft.world.phys.h"
 #include "..\Minecraft.World\File.h"
 #include "..\Minecraft.World\net.minecraft.world.level.storage.h"
@@ -4644,6 +4645,10 @@ void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, shared_pt
 		cameraTargetPlayer = nullptr;
 		EntityRenderDispatcher::instance->cameraEntity = nullptr;
 		TileEntityRenderDispatcher::instance->cameraEntity = nullptr;
+
+		// Without this, the Nusagar bossfight music can play when reloading a world after saving without exiting
+		// (to a point before the Nusagar was summoned obv)
+		Nusagar::resetBossFightState();
 	}
 	this->level = level;
 

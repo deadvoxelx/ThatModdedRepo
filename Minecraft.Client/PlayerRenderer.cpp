@@ -216,6 +216,9 @@ void PlayerRenderer::render(shared_ptr<Entity> _mob, double x, double y, double 
 
     shared_ptr<ItemInstance> item = mob->inventory->getSelected();
     armorParts1->holdingRightHand = armorParts2->holdingRightHand = humanoidModel->holdingRightHand = item != nullptr ? 1 : 0;
+	shared_ptr<ItemInstance> leftHandItem = mob->inventory->aether[0];
+	armorParts1->holdingLeftHand = armorParts2->holdingLeftHand = humanoidModel->holdingLeftHand = leftHandItem != nullptr ? 1 : 0;
+	armorParts1->leftHandSwing = armorParts2->leftHandSwing = humanoidModel->leftHandSwing = mob->leftHandSwing;
 	if (item != nullptr)
 	{
 		if (mob->getUseItemDuration() > 0)
@@ -311,6 +314,8 @@ void PlayerRenderer::render(shared_ptr<Entity> _mob, double x, double y, double 
     armorParts1->sneaking = armorParts2->sneaking = humanoidModel->sneaking = false;
     armorParts1->swimming = armorParts2->swimming = humanoidModel->swimming = false;
     armorParts1->holdingRightHand = armorParts2->holdingRightHand = humanoidModel->holdingRightHand = 0;
+    armorParts1->holdingLeftHand = armorParts2->holdingLeftHand = humanoidModel->holdingLeftHand = 0;
+    armorParts1->leftHandSwing = armorParts2->leftHandSwing = humanoidModel->leftHandSwing = false;
 
 }
 
@@ -391,7 +396,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 	/*boolean loaded = mob->getCloakTexture()->isLoaded();
     boolean b1 = !mob->isInvisible();
     boolean b2 = !mob->isCapeHidden();*/
-	
+
 	bool agilityCapeEquipped = false;
 	bool swetCapeEquipped = false;
 	bool valkyrieCapeEquipped = false;
@@ -564,6 +569,82 @@ void PlayerRenderer::additionalRendering(shared_ptr<LivingEntity> _mob, float a)
 		}
 
         glPopMatrix();
+	}
+
+	shared_ptr<ItemInstance> leftHandItem = (mob->inventory != nullptr) ? mob->inventory->aether[0] : nullptr;
+
+	if (leftHandItem != nullptr)
+	{
+		glPushMatrix();
+		humanoidModel->arm1->translateTo(1 / 16.0f);
+		glTranslatef(1 / 16.0f, 7 / 16.0f, 1 / 16.0f);
+
+		if (leftHandItem->id >= 0 && leftHandItem->id < 512 && TileRenderer::canRender(Tile::tiles[leftHandItem->id]->getRenderShape()))
+		{
+			float s = 8 / 16.0f;
+			glTranslatef(-0 / 16.0f, 3 / 16.0f, -5 / 16.0f);
+			s *= 0.75f;
+			glRotatef(20, 1, 0, 0);
+			glRotatef(-45, 0, 1, 0);
+			glScalef(-s, -s, s);
+		}
+		else if (leftHandItem->id == Item::bow->id)
+		{
+			float s = 10 / 16.0f;
+			glTranslatef(0 / 16.0f, 2 / 16.0f, 5 / 16.0f);
+			glRotatef(20, 0, 1, 0);
+			glScalef(s, -s, s);
+			glRotatef(-100, 1, 0, 0);
+			glRotatef(-45, 0, 1, 0);
+		}
+		else if (leftHandItem->getItem() != nullptr && Item::items[leftHandItem->id]->isHandEquipped())
+		{
+			float s = 10 / 16.0f;
+			if (Item::items[leftHandItem->id]->isMirroredArt())
+			{
+				glRotatef(180, 0, 0, 1);
+				glTranslatef(0, -2 / 16.0f, 0);
+			}
+			glTranslatef(0, 1 / 16.0f, 0);
+			glScalef(s, -s, s);
+			glRotatef(-60, 1, 0, 0);
+			glRotatef(-45, 0, 1, 0);
+		}
+		else
+		{
+			float s = 6 / 16.0f;
+			glTranslatef(-4 / 16.0f, +3 / 16.0f, -3 / 16.0f);
+			glScalef(s, s, s);
+			glRotatef(-60, 0, 0, 1);
+			glRotatef(-90, 1, 0, 0);
+			glRotatef(-20, 0, 0, 1);
+		}
+
+		if (leftHandItem->getItem() != nullptr && leftHandItem->getItem()->hasMultipleSpriteLayers())
+		{
+			for (int layer = 0; layer <= 1; layer++)
+			{
+				int col = leftHandItem->getItem()->getColor(leftHandItem, layer);
+				float red = ((col >> 16) & 0xff) / 255.0f;
+				float g = ((col >> 8) & 0xff) / 255.0f;
+				float b = ((col) & 0xff) / 255.0f;
+
+				glColor4f(red, g, b, 1);
+				this->entityRenderDispatcher->itemInHandRenderer->renderItem(mob, leftHandItem, layer, false, true);
+			}
+		}
+		else
+		{
+			int col = leftHandItem->getItem() != nullptr ? leftHandItem->getItem()->getColor(leftHandItem, 0) : 0xFFFFFF;
+			float red = ((col >> 16) & 0xff) / 255.0f;
+			float g = ((col >> 8) & 0xff) / 255.0f;
+			float b = ((col) & 0xff) / 255.0f;
+
+			glColor4f(red, g, b, 1);
+			this->entityRenderDispatcher->itemInHandRenderer->renderItem(mob, leftHandItem, 0, true, true);
+		}
+
+		glPopMatrix();
 	}
 }
 

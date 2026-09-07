@@ -188,29 +188,12 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			resetNetherPlayerPositions();
 		}*/
 
-		int iSaveVersion=m_saveFile->getSaveVersion();
-
-		if((iSaveVersion!=0) && (iSaveVersion < SAVE_FILE_VERSION_NEW_END))
-		{
-			app.DebugPrintf("Loaded save version number is: %d, required to keep The End is: %d\n",m_saveFile->getSaveVersion(), SAVE_FILE_VERSION_NEW_END);
-
-			vector<FileEntry *> *aetherFiles = m_saveFile->getFilesWithPrefix(LevelStorage::AETHER_FOLDER);
-
-			if(aetherFiles!=nullptr)
-			{
-				for(auto& aetherFile : *aetherFiles)
-				{
-					m_saveFile->deleteFile(aetherFile);
-				}
-				delete aetherFiles;
-			}
-		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::AETHER_FOLDER);
 	}
 
 	if (dynamic_cast<NurealmDimension *>(dimension))
 	{
-		/*if(app.GetResetNether())
+		if(app.GetResetNurealm())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *nurealmFiles = m_saveFile->getRegionFilesByDimension(5);
@@ -234,25 +217,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 				delete nurealmFiles;
 			}
 #endif
-			resetNetherPlayerPositions();
-		}*/
-
-		int iSaveVersion=m_saveFile->getSaveVersion();
-
-		if((iSaveVersion!=0) && (iSaveVersion < SAVE_FILE_VERSION_NEW_END))
-		{
-			app.DebugPrintf("Loaded save version number is: %d, required to keep The End is: %d\n",m_saveFile->getSaveVersion(), SAVE_FILE_VERSION_NEW_END);
-
-			vector<FileEntry *> *nurealmFiles = m_saveFile->getFilesWithPrefix(LevelStorage::NUREALM_FOLDER);
-
-			if(nurealmFiles!=nullptr)
-			{
-				for(auto& nurealmFile : *nurealmFiles)
-				{
-					m_saveFile->deleteFile(nurealmFile);
-				}
-				delete nurealmFiles;
-			}
+			resetNurealmPlayerPositions();
 		}
 
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::NUREALM_FOLDER);

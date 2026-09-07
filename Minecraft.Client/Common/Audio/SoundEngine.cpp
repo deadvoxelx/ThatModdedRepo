@@ -6,6 +6,7 @@
 #include "..\..\..\Minecraft.World\net.minecraft.world.level.h"
 #include "..\..\Minecraft.World\leveldata.h"
 #include "..\..\Minecraft.World\mth.h"
+#include "..\..\Minecraft.World\Nusagar.h"
 #include "..\..\TexturePackRepository.h"
 #include "..\..\DLCTexturePack.h"
 #include "Common\DLC\DLCAudioFile.h"
@@ -144,6 +145,7 @@ const char *SoundEngine::m_szStreamFileA[eStream_Max]=
 
 	// Nurealm
 	"nurealm",
+	"nusagarbosstheme",		// Nusagar boss theme
 	
 	// CDs
 	"11",
@@ -266,9 +268,17 @@ void SoundEngine::updateMiniAudio()
         }
 
         float finalVolume = s->info.volume * m_MasterEffectsVolume * SFX_VOLUME_MULTIPLIER;
-        if (finalVolume > SFX_MAX_GAIN)
-            finalVolume = SFX_MAX_GAIN;
+        const bool isNusaCoreSound = (s->info.iSound == eSoundType_RANDOM_NUSAGAR_SUMMONED + eSFX_MAX);
+        if (isNusaCoreSound) finalVolume *= NUSA_CORE_SOUND_GAIN;
 
+        const float maxGain = isNusaCoreSound ? NUSA_CORE_MAX_GAIN : SFX_MAX_GAIN;
+        if (finalVolume > maxGain) finalVolume = maxGain;
+
+        ma_sound_set_max_gain(&s->sound, maxGain);
+        if (isNusaCoreSound)
+        {
+            ma_sound_set_spatialization_enabled(&s->sound, MA_FALSE);
+        }
         ma_sound_set_volume(&s->sound, finalVolume);
         ma_sound_set_pitch(&s->sound, s->info.pitch);
 
@@ -422,6 +432,7 @@ SoundEngine::SoundEngine()
 	);
 
 	m_musicID=getMusicID(LevelData::DIMENSION_OVERWORLD);
+	m_bNusagarBossMusic=false;
 
 	m_StreamingAudioInfo.bIs3D=false;
 	m_StreamingAudioInfo.x=0;
@@ -542,23 +553,25 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume, floa
 		}
 	}
 
+    const bool isNusaCoreSound = (iSound == eSoundType_RANDOM_NUSAGAR_SUMMONED);
     MiniAudioSound* s = new MiniAudioSound();
     memset(&s->info, 0, sizeof(AUDIO_INFO));
 
-	s->info.x = x;
+    s->info.x = x;
     s->info.y = y;
-   	s->info.z = z;
-	
+    s->info.z = z;
     s->info.volume = volume;
     s->info.pitch = pitch;
-    s->info.bIs3D = true;
+    s->info.bIs3D = !isNusaCoreSound;
     s->info.bUseSoundsPitchVal = false;
     s->info.iSound = iSound + eSFX_MAX;
 
+    const ma_uint32 soundFlags = MA_SOUND_FLAG_ASYNC |
+        (isNusaCoreSound ? MA_SOUND_FLAG_NO_SPATIALIZATION : 0);
     if (ma_sound_init_from_file(
             &m_engine,
             finalPath,
-            MA_SOUND_FLAG_ASYNC,
+            soundFlags,
             nullptr,
             nullptr,
             &s->sound) != MA_SUCCESS)
@@ -568,20 +581,28 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume, floa
         return;
     }
 
-    ma_sound_set_spatialization_enabled(&s->sound, MA_TRUE);
+    ma_sound_set_spatialization_enabled(&s->sound, isNusaCoreSound ? MA_FALSE : MA_TRUE);
     ma_sound_set_min_distance(&s->sound, SFX_3D_MIN_DISTANCE);
     ma_sound_set_max_distance(&s->sound, SFX_3D_MAX_DISTANCE);
     ma_sound_set_rolloff(&s->sound, SFX_3D_ROLLOFF);
+    ma_sound_set_max_gain(&s->sound, isNusaCoreSound ? NUSA_CORE_MAX_GAIN : SFX_MAX_GAIN);
+    if (isNusaCoreSound)
+    {
+        ma_sound_set_attenuation_model(&s->sound, ma_attenuation_model_none);
+    }
 
     float finalVolume = volume * m_MasterEffectsVolume * SFX_VOLUME_MULTIPLIER;
-    if (finalVolume > SFX_MAX_GAIN)
-        finalVolume = SFX_MAX_GAIN;
+    if (isNusaCoreSound) finalVolume *= NUSA_CORE_SOUND_GAIN;
+
+    const float maxGain = isNusaCoreSound ? NUSA_CORE_MAX_GAIN : SFX_MAX_GAIN;
+    if (finalVolume > maxGain) finalVolume = maxGain;
 
     ma_sound_set_volume(&s->sound, finalVolume);
     ma_sound_set_pitch(&s->sound, pitch);
     ma_sound_set_position(&s->sound, x, y, z);
 
     ma_sound_start(&s->sound);
+    ma_sound_set_volume(&s->sound, finalVolume);
 
     m_activeSounds.push_back(s);
 }
@@ -713,6 +734,7 @@ void SoundEngine::playStreaming(const wstring& name, float x, float y , float z,
 		bool playerInEnd=false;
 		bool playerInNether=false;
 		bool playerInOuterEnd=false;
+		bool playerInNurealm=false;
 
 		for(unsigned int i=0;i<MAX_LOCAL_PLAYERS;i++)
 		{
@@ -730,6 +752,10 @@ void SoundEngine::playStreaming(const wstring& name, float x, float y , float z,
 				{
 					playerInOuterEnd=true;
 				}
+				else if(pMinecraft->localplayers[i]->dimension==LevelData::DIMENSION_NUREALM)
+				{
+					playerInNurealm=true;
+				}
 			}
 		}
 		if(playerInEnd)
@@ -743,6 +769,20 @@ void SoundEngine::playStreaming(const wstring& name, float x, float y , float z,
 		else if(playerInOuterEnd)
 		{
 			m_musicID = getMusicID(LevelData::DIMENSION_OUTER_END);
+		}
+		else if(playerInNurealm)
+		{
+			if (Nusagar::isBossFightActive())
+			{	// Voxel - Nusagar bossfight music
+				m_musicID = eStream_nusagarBoss;
+				m_bNusagarBossMusic = true;
+				m_iMusicDelay = 0;
+			}
+			else
+			{	// Voxel - Regular Nurealm music
+				m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+				m_bNusagarBossMusic = false;
+			}
 		}
 		else
 		{
@@ -976,7 +1016,8 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter)
     }
 
     ma_sound_set_spatialization_enabled(&soundEngine->m_musicStream, MA_FALSE);
-    ma_sound_set_looping(&soundEngine->m_musicStream, MA_FALSE);
+    // Voxel - Nusagar boss theme loops until death
+    ma_sound_set_looping(&soundEngine->m_musicStream, soundEngine->m_musicID == eStream_nusagarBoss ? MA_TRUE : MA_FALSE);
 
     soundEngine->m_musicStreamActive = true;
 
@@ -1001,6 +1042,44 @@ void SoundEngine::playMusicUpdate()
 {
 	static float fMusicVol = 0.0f;
 	fMusicVol = getMasterMusicVolume();
+
+	{
+		Minecraft *pMinecraft = Minecraft::GetInstance();
+		bool playerInNurealm = false;
+		for (unsigned int i = 0; i < MAX_LOCAL_PLAYERS; i++)
+		{
+			if (pMinecraft->localplayers[i] != nullptr && pMinecraft->localplayers[i]->dimension == LevelData::DIMENSION_NUREALM)
+			{
+				playerInNurealm = true;
+				break;
+			}
+		}
+
+		if (playerInNurealm && m_bNusagarBossMusic != Nusagar::isBossFightActive())
+		{
+			m_iMusicDelay = 0;
+
+			if (Nusagar::isBossFightActive())
+			{
+				m_musicID = eStream_nusagarBoss;
+				m_bNusagarBossMusic = true;
+			}
+			else
+			{
+				m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+				m_bNusagarBossMusic = false;
+			}
+
+			if (m_StreamState == eMusicStreamState_Opening)
+			{
+				m_StreamState = eMusicStreamState_OpeningCancel;
+			}
+			else if (m_StreamState != eMusicStreamState_OpeningCancel && m_StreamState != eMusicStreamState_Stop)
+			{
+				m_StreamState = eMusicStreamState_Stop;
+			}
+		}
+	}
 
 	switch(m_StreamState)
 	{
@@ -1467,12 +1546,37 @@ void SoundEngine::playMusicUpdate()
 				{
 					m_StreamState=eMusicStreamState_Stop;
 
-					// Set the outer end track
-					m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+					if (Nusagar::isBossFightActive())
+					{
+						m_musicID = eStream_nusagarBoss;
+						m_bNusagarBossMusic = true;
+						m_iMusicDelay = 0;
+					}
+					else
+					{
+						m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+						m_bNusagarBossMusic = false;
+					}
 					SetIsPlayingNurealmMusic(true);
 					SetIsPlayingOuterEndMusic(false);
 					SetIsPlayingEndMusic(false);
 					SetIsPlayingNetherMusic(false);
+				}
+				else if(playerInNurealm && GetIsPlayingNurealmMusic() && m_bNusagarBossMusic != Nusagar::isBossFightActive())
+				{
+					m_StreamState=eMusicStreamState_Stop;
+					m_iMusicDelay = 0;
+
+					if (Nusagar::isBossFightActive())
+					{
+						m_musicID = eStream_nusagarBoss;
+						m_bNusagarBossMusic = true;
+					}
+					else
+					{
+						m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+						m_bNusagarBossMusic = false;
+					}
 				}
 				else if(!playerInNurealm && GetIsPlayingNurealmMusic())
 				{
@@ -1635,6 +1739,8 @@ void SoundEngine::playMusicUpdate()
 			Minecraft *pMinecraft=Minecraft::GetInstance();
 			bool playerInEnd=false;
 			bool playerInNether=false;
+			bool playerInOuterEnd=false;
+			bool playerInNurealm=false;
 
 			for(unsigned int i=0;i<MAX_LOCAL_PLAYERS;i++)
 			{
@@ -1648,6 +1754,14 @@ void SoundEngine::playMusicUpdate()
 					{
 						playerInNether=true;
 					}
+					else if(pMinecraft->localplayers[i]->dimension==LevelData::DIMENSION_OUTER_END)
+					{
+						playerInOuterEnd=true;
+					}
+					else if(pMinecraft->localplayers[i]->dimension==LevelData::DIMENSION_NUREALM)
+					{
+						playerInNurealm=true;
+					}
 				}
 			}
 			if(playerInEnd)
@@ -1655,18 +1769,50 @@ void SoundEngine::playMusicUpdate()
 				m_musicID = getMusicID(LevelData::DIMENSION_END);
 				SetIsPlayingEndMusic(true);
 				SetIsPlayingNetherMusic(false);
+				SetIsPlayingOuterEndMusic(false);
+				SetIsPlayingNurealmMusic(false);
 			}
 			else if(playerInNether)
 			{
 				m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
 				SetIsPlayingNetherMusic(true);
 				SetIsPlayingEndMusic(false);
+				SetIsPlayingOuterEndMusic(false);
+				SetIsPlayingNurealmMusic(false);
+			}
+			else if(playerInOuterEnd)
+			{
+				m_musicID = getMusicID(LevelData::DIMENSION_OUTER_END);
+				SetIsPlayingNetherMusic(false);
+				SetIsPlayingEndMusic(false);
+				SetIsPlayingOuterEndMusic(true);
+				SetIsPlayingNurealmMusic(false);
+			}
+			else if(playerInNurealm)
+			{
+				if (Nusagar::isBossFightActive())
+				{	// Voxel - Nusagar bossfight music
+					m_musicID = eStream_nusagarBoss;
+					m_bNusagarBossMusic = true;
+					m_iMusicDelay = 0;
+				}
+				else
+				{	// Voxel - Regular Nurealm music
+					m_musicID = getMusicID(LevelData::DIMENSION_NUREALM);
+					m_bNusagarBossMusic = false;
+				}
+				SetIsPlayingNetherMusic(false);
+				SetIsPlayingEndMusic(false);
+				SetIsPlayingOuterEndMusic(false);
+				SetIsPlayingNurealmMusic(true);
 			}
 			else
 			{
 				m_musicID = getMusicID(LevelData::DIMENSION_OVERWORLD);
 				SetIsPlayingNetherMusic(false);
 				SetIsPlayingEndMusic(false);
+				SetIsPlayingOuterEndMusic(false);
+				SetIsPlayingNurealmMusic(false);
 			}
 
 			m_StreamState=eMusicStreamState_Idle;

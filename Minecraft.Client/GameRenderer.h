@@ -23,6 +23,7 @@ class GameRenderer
 private:
 	static ResourceLocation RAIN_LOCATION;
     static ResourceLocation SNOW_LOCATION;
+    static ResourceLocation ASH_LOCATION;
 
 public:
 	static bool anaglyph3d;
