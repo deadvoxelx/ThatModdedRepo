@@ -279,4 +279,10 @@ WeighedTreasure *EndOutpostFeature::endOutpostTreasure[EndOutpostFeature::TREASU
 	new WeighedTreasure(Tile::endoriumGrate_Id, 0, 3, 7, 5),
 	new WeighedTreasure(Item::endoriumHoe_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::nusaShard_Id, 0, 1, 1, 1),
+	new WeighedTreasure(Item::nethaniumPendant_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::nethaniumRing_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::zanitePendant_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::zaniteRing_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititePendant_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititeRing_Id, 0, 1, 1, 2),
 };
