@@ -55,6 +55,8 @@ void Player::_init()
 
 	userType = 0;
 	oBob = bob = 0.0f;
+	leftHandSwing = false;
+	m_bUsingOffHand = false;
 
 	xCloakO = yCloakO = zCloakO = 0.0;
 	xCloak = yCloak = zCloak = 0.0;
@@ -246,7 +248,7 @@ void Player::updateFrameTick()
 			}
 		}
 
-		if (item->id == Item::cloudParachute->id)
+		if (item != nullptr && item->id == Item::cloudParachute->id)
 		{
 			yd *= 0.8;
 			fallDistance = 0;
@@ -1254,6 +1256,30 @@ bool Player::hurt(DamageSource *source, float dmg)
 			attacker = arrow->owner;
 		}
 	}
+
+	if (source->isFire())
+	{
+		for (unsigned int i = 0; i < inventory->aether.length; i++)
+		{
+			if (inventory->aether[i] != nullptr && (inventory->aether[i]->id == Item::nethaniumPendant_Id || inventory->aether[i]->id == Item::nethaniumRing_Id ))
+			{
+				dmg *= 0.5f;
+				break;
+			}
+		}
+	}
+
+	if (!level->isClientSide && attacker != nullptr && attacker != shared_from_this() && attacker->instanceof(eTYPE_LIVINGENTITY))
+	{
+		for (unsigned int i = 0; i < inventory->aether.length; i++)
+		{
+			if (inventory->aether[i] != nullptr && inventory->aether[i]->id == Item::aphalafGem_Id)
+			{
+				dynamic_pointer_cast<LivingEntity>(attacker)->addEffect(new MobEffectInstance(MobEffect::weakness->id, 100, 0));
+				break;
+			}
+		}
+	}
 	return LivingEntity::hurt(source, dmg);
 }
 
@@ -1402,11 +1428,20 @@ bool Player::interact(shared_ptr<Entity> entity)
 
 shared_ptr<ItemInstance> Player::getSelectedItem()
 {
+	if (m_bUsingOffHand && inventory != nullptr && inventory->aether.length > 0 && inventory->aether[0] != nullptr)
+	{
+		return inventory->aether[0];
+	}
 	return inventory->getSelected();
 }
 
 void Player::removeSelectedItem()
 {
+	if (m_bUsingOffHand && inventory != nullptr && inventory->aether.length > 0)
+	{
+		inventory->aether[0] = nullptr;
+		return;
+	}
 	inventory->setItem(inventory->selected, nullptr);
 }
 
@@ -1425,6 +1460,20 @@ void Player::attack(shared_ptr<Entity> entity)
 	if (entity->skipAttackInteraction(shared_from_this()))
 	{
 		return;
+	}
+
+	shared_ptr<ItemInstance> mainHandItem = getSelectedItem();
+	bool mainHandIsWeapon = mainHandItem != nullptr && mainHandItem->getItem() != nullptr
+		&& (dynamic_cast<WeaponItem *>(mainHandItem->getItem()) != nullptr || dynamic_cast<DiggerItem *>(mainHandItem->getItem()) != nullptr);
+	bool usingOffHand = leftHandSwing && mainHandIsWeapon
+		&& inventory != nullptr && inventory->aether.length > 0 && inventory->aether[0] != nullptr
+		&& inventory->aether[0]->getItem() != nullptr
+		&& (dynamic_cast<WeaponItem *>(inventory->aether[0]->getItem()) != nullptr || dynamic_cast<DiggerItem *>(inventory->aether[0]->getItem()) != nullptr);
+	if (usingOffHand)
+	{
+		if (mainHandItem != nullptr) getAttributes()->removeItemModifiers(mainHandItem);
+		getAttributes()->addItemModifiers(inventory->aether[0]);
+		m_bUsingOffHand = true;
 	}
 
 	float dmg = static_cast<float>(getAttribute(SharedMonsterAttributes::ATTACK_DAMAGE)->getValue());
@@ -1537,6 +1586,13 @@ void Player::attack(shared_ptr<Entity> entity)
 		}
 
 		causeFoodExhaustion(FoodConstants::EXHAUSTION_ATTACK);
+	}
+
+	if (usingOffHand)
+	{
+		getAttributes()->removeItemModifiers(inventory->aether[0]);
+		if (mainHandItem != nullptr) getAttributes()->addItemModifiers(mainHandItem);
+		m_bUsingOffHand = false;
 	}
 }
 
@@ -2453,6 +2509,10 @@ shared_ptr<ItemInstance> Player::getCarried(int slot)
 
 shared_ptr<ItemInstance> Player::getCarriedItem()
 {
+	if (m_bUsingOffHand && inventory != nullptr && inventory->aether.length > 0 && inventory->aether[0] != nullptr)
+	{
+		return inventory->aether[0];
+	}
 	return inventory->getSelected();
 }
 
