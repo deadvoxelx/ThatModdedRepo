@@ -17,7 +17,7 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 	{
 		if ((belowTile == Tile::nustone_Id || belowTile == Tile::nugrass_Id) && (thisTile != Tile::nustone_Id && thisTile != Tile::nugrass_Id && thisTile != Tile::nusaLog_Id && thisTile != Tile::netherLeaves_Id))
 		{
-		//Fix for End Tower being filled with End Stone sometimes; Clear space up to roof height
+		// Clear space up to roof height
 			for (int dx = -3; dx <= 3; dx++)
 			{
 				for (int dy = 0; dy <= 28; dy++)
@@ -29,7 +29,7 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 				}
 			}
 
-		//UnderLayer
+		// UnderLayer
 			for (int fx = -4; fx <= 4; fx++)
 			{
 				for (int fz = -2; fz <= 2; fz++)
@@ -49,108 +49,251 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x - 3, y - 1, z - 3, Tile::nustone_Id, 0);
 			placeBlock(level, x + 3, y - 1, z - 3, Tile::nustone_Id, 0);
 			placeBlock(level, x - 3, y - 1, z + 3, Tile::nustone_Id, 0);
+
+		// Walls
+			for (int wallx = -2; wallx <= 2; wallx++)
+			{
+				for (int wally = 0; wally <= 23; wally++)
+				{
+					placeBlock(level, x + wallx, y + wally, z + 4, Tile::nustone_Id, 1);
+					placeBlock(level, x + wallx, y + wally, z - 4, Tile::nustone_Id, 1);
+				}
+			}
+			for (int wallz = -2; wallz <= 2; wallz++)
+			{
+				for (int wally = 0; wally <= 23; wally++)
+				{
+					placeBlock(level, x + 4, y + wally, z + wallz, Tile::nustone_Id, 1);
+					placeBlock(level, x - 4, y + wally, z + wallz, Tile::nustone_Id, 1);
+				}
+			}
+			for (int pillary = 0; pillary <= 27; pillary++)
+			{
+				placeBlock(level, x + 3, y + pillary, z + 3, Tile::nusaLog_Id, 0);
+				placeBlock(level, x - 3, y + pillary, z + 3, Tile::nusaLog_Id, 0);
+				placeBlock(level, x + 3, y + pillary, z - 3, Tile::nusaLog_Id, 0);
+				placeBlock(level, x - 3, y + pillary, z - 3, Tile::nusaLog_Id, 0);
+			}
+			
+		// Windows
+			placeBlock(level, x + 4, y + 2, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x - 4, y + 2, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 2, z + 4, Tile::stained_glass_Id, 3);
+
+			placeBlock(level, x + 4, y + 6, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x - 4, y + 6, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 6, z + 4, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 6, z - 4, Tile::stained_glass_Id, 3);
+
+			placeBlock(level, x + 4, y + 10, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x - 4, y + 10, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 10, z + 4, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 10, z - 4, Tile::stained_glass_Id, 3);
+
+			placeBlock(level, x + 4, y + 14, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x - 4, y + 14, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 14, z + 4, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 14, z - 4, Tile::stained_glass_Id, 3);
+
+			placeBlock(level, x + 4, y + 18, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x - 4, y + 18, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 18, z + 4, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 18, z - 4, Tile::stained_glass_Id, 3);
+
+			placeBlock(level, x + 4, y + 22, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x - 4, y + 22, z, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 22, z + 4, Tile::stained_glass_Id, 3);
+			placeBlock(level, x, y + 22, z - 4, Tile::stained_glass_Id, 3);
+
+		// Doorway
+			placeBlock(level, x, y + 1, z + 4, 0, 0);
+			placeBlock(level, x, y + 2, z + 4, 0, 0);
 	
-		//Floor 1
-			for (int hx = -3; hx <= 3; hx++)
+		// Floors
+			for (int floorx = -3; floorx <= 3; floorx++)
 			{
-				for (int hz = -2; hz <= 2; hz++)
+				for (int floorz = -2; floorz <= 2; floorz++)
 				{
-					placeBlock(level, x + hx, y, z + hz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx, y, z + floorz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx, y + 4, z + floorz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx, y + 8, z + floorz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx, y + 12, z + floorz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx, y + 16, z + floorz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx, y + 20, z + floorz, Tile::netherPlanks_Id, 3);
 				}
 			}
-			for (int ix = -2; ix <= 2; ix++)
+			for (int floorx2 = -2; floorx2 <= 2; floorx2++)
 			{
-				for (int iz = -3; iz <= 3; iz++)
+				for (int floorz2 = -3; floorz2 <= 3; floorz2++)
 				{
-					placeBlock(level, x + ix, y, z + iz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx2, y, z + floorz2, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx2, y + 4, z + floorz2, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx2, y + 8, z + floorz2, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx2, y + 12, z + floorz2, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx2, y + 16, z + floorz2, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floorx2, y + 20, z + floorz2, Tile::netherPlanks_Id, 3);
 				}
 			}
-		
-			placeBlock(level, x + 3, y, z + 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x + 3, y, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y, z + 3, Tile::nusaLog_Id, 0);
 
-			placeBlock(level, x + 4, y, z + 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y, z + 2, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y, z + 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y, z + 1, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 2, y, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 2, y, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 1, y, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 1, y, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y, z, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y, z, Tile::nustone_Id, 1);
-			placeBlock(level, x, y, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x, y, z + 4, Tile::nustone_Id, 1);
-		
-		//Floor 2
-			for (int jx = -3; jx <= 3; jx++)
+			for (int floor7x = -4; floor7x <= 4; floor7x++)
 			{
-				for (int jz = -2; jz <= 2; jz++)
+				for (int floor7z = -2; floor7z <= 2; floor7z++)
 				{
-					placeBlock(level, x + jx, y + 4, z + jz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floor7x, y + 24, z + floor7z, Tile::netherPlanks_Id, 3);
 				}
 			}
-			for (int kx = -2; kx <= 2; kx++)
+			for (int floor7x2 = -2; floor7x2 <= 2; floor7x2++)
 			{
-				for (int kz = -3; kz <= 3; kz++)
+				for (int floor7z2 = -4; floor7z2 <= 4; floor7z2++)
 				{
-					placeBlock(level, x + kx, y + 4, z + kz, Tile::netherPlanks_Id, 3);
+					placeBlock(level, x + floor7x2, y + 24, z + floor7z2, Tile::netherPlanks_Id, 3);
 				}
 			}
-			for (int lx = -1; lx <= 1; lx++)
-			{
-				for (int lz = -1; lz <= 1; lz++)
-				{
-					placeBlock(level, x + lx, y + 4, z + lz, 0, 0);
-				}
-			}
-		
-			placeBlock(level, x + 3, y + 4, z + 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 4, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x + 3, y + 4, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 4, z + 3, Tile::nusaLog_Id, 0);
 
-			placeBlock(level, x + 4, y + 4, z + 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 4, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 4, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 4, z + 2, Tile::nustone_Id, 1);
+			// 1st floor stairs
+			placeBlock(level, x - 2, y + 1, z - 2, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 1, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 2, z - 1, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 2, z, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 3, z, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 3, z + 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 4, z + 1, Tile::darkNustoneStairs_Id, 2);
+
+			placeBlock(level, x - 2, y + 4, z - 2, 0, 0);
+			placeBlock(level, x - 2, y + 4, z - 1, 0, 0);
+			placeBlock(level, x - 2, y + 4, z, 0, 0);
+			//
+			
+			// 2nd floor stairs
+			placeBlock(level, x + 2, y + 5, z + 2, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 5, z + 1, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 6, z + 1, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 6, z, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 7, z, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 7, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 8, z - 1, Tile::darkNustoneStairs_Id, 3);
+
+			placeBlock(level, x + 2, y + 8, z + 2, 0, 0);
+			placeBlock(level, x + 2, y + 8, z + 1, 0, 0);
+			placeBlock(level, x + 2, y + 8, z, 0, 0);
+			//
+
+			// 3rd floor stairs
+			placeBlock(level, x - 2, y + 9, z - 2, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 9, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 10, z - 1, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 10, z, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 11, z, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 11, z + 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 12, z + 1, Tile::darkNustoneStairs_Id, 2);
+
+			placeBlock(level, x - 2, y + 12, z - 2, 0, 0);
+			placeBlock(level, x - 2, y + 12, z - 1, 0, 0);
+			placeBlock(level, x - 2, y + 12, z, 0, 0);
+			//
+			
+			// 4th floor stairs
+			placeBlock(level, x + 2, y + 13, z + 2, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 13, z + 1, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 14, z + 1, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 14, z, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 15, z, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 15, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 16, z - 1, Tile::darkNustoneStairs_Id, 3);
+
+			placeBlock(level, x + 2, y + 16, z + 2, 0, 0);
+			placeBlock(level, x + 2, y + 16, z + 1, 0, 0);
+			placeBlock(level, x + 2, y + 16, z, 0, 0);
+			//
+
+			// 5th floor stairs
+			placeBlock(level, x - 2, y + 17, z - 2, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 17, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 18, z - 1, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 18, z, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 19, z, Tile::darkNustoneStairs_Id, 2);
+			placeBlock(level, x - 2, y + 19, z + 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 2, y + 20, z + 1, Tile::darkNustoneStairs_Id, 2);
+
+			placeBlock(level, x - 2, y + 20, z - 2, 0, 0);
+			placeBlock(level, x - 2, y + 20, z - 1, 0, 0);
+			placeBlock(level, x - 2, y + 20, z, 0, 0);
+			//
+			
+			// 6th floor stairs
+			placeBlock(level, x + 2, y + 21, z + 2, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 21, z + 1, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 22, z + 1, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 22, z, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 23, z, Tile::darkNustoneStairs_Id, 3);
+			placeBlock(level, x + 2, y + 23, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x + 2, y + 24, z - 1, Tile::darkNustoneStairs_Id, 3);
+
+			placeBlock(level, x + 2, y + 24, z + 2, 0, 0);
+			placeBlock(level, x + 2, y + 24, z + 1, 0, 0);
+			placeBlock(level, x + 2, y + 24, z, 0, 0);
+			//
+
+			// 7th floor is the top floor, so no stairs
+
+		// Chest/Core
+			if (random->nextInt(2) == 0)
+			{
+				level->setTileAndData(x, y + 25, z, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
+				WeighedTreasureArray wrapperArray(nusaTowerTreasure, TREASURE_ITEMS_COUNT);
+				WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(wrapperArray, Item::enchantedBook->createForRandomTreasure(random));
+				shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>( level->getTileEntity(x, y + 25, z) );
+				if (chest != NULL)
+				{
+					WeighedTreasure::addChestItems(random, treasure, chest, 7 + random->nextInt(3));
+				}
+			}
+			else
+			{
+				placeBlock(level, x, y + 25, z, Tile::nustone_Id, 1);
+				placeBlock(level, x, y + 26, z, Tile::nusaCore_Id, 0);
+			}
+
+		// Roof
+			for (int roofx = -4; roofx <= 4; roofx++)
+			{
+				for (int roofz = -4; roofz <= 4; roofz++)
+				{
+					placeBlock(level, x + roofx, y + 28, z + roofz, Tile::nustone_Id, 2);
+				}
+			}
+			for (int roofx2 = -3; roofx2 <= 3; roofx2++)
+			{
+				for (int roofz2 = -5; roofz2 <= 5; roofz2++)
+				{
+					placeBlock(level, x + roofx2, y + 28, z + roofz2, Tile::nustone_Id, 2);
+				}
+			}
+			for (int roofx3 = -5; roofx3 <= 5; roofx3++)
+			{
+				for (int roofz3 = -3; roofz3 <= 3; roofz3++)
+				{
+					placeBlock(level, x + roofx3, y + 28, z + roofz3, Tile::nustone_Id, 2);
+				}
+			}
 		
-			placeBlock(level, x + 4, y + 4, z + 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 4, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 4, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 4, z + 1, Tile::nustone_Id, 1);
+			placeBlock(level, x + 6, y + 28, z + 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 6, y + 28, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x + 6, y + 28, z - 1, Tile::nustone_Id, 2);
+			placeBlock(level, x - 6, y + 28, z + 1, Tile::nustone_Id, 2);
 		
-			placeBlock(level, x + 2, y + 4, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 4, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 2, y + 4, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 4, z + 4, Tile::nustone_Id, 1);
+			placeBlock(level, x + 1, y + 28, z + 6, Tile::nustone_Id, 2);
+			placeBlock(level, x - 1, y + 28, z - 6, Tile::nustone_Id, 2);
+			placeBlock(level, x + 1, y + 28, z - 6, Tile::nustone_Id, 2);
+			placeBlock(level, x - 1, y + 28, z + 6, Tile::nustone_Id, 2);
 		
-			placeBlock(level, x + 1, y + 4, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 4, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 1, y + 4, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 4, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 4, z, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 4, z, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 4, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 4, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
+			placeBlock(level, x + 6, y + 28, z, Tile::nustone_Id, 2);
+			placeBlock(level, x - 6, y + 28, z, Tile::nustone_Id, 2);
+			placeBlock(level, x, y + 28, z - 6, Tile::nustone_Id, 2);
+			placeBlock(level, x, y + 28, z + 6, Tile::nustone_Id, 2);
+
+		// Rings
+			// Floor 2
 			placeBlock(level, x + 5, y + 4, z + 2, Tile::nustone_Id, 2);
 			placeBlock(level, x - 5, y + 4, z - 2, Tile::nustone_Id, 2);
 			placeBlock(level, x + 5, y + 4, z - 2, Tile::nustone_Id, 2);
@@ -186,61 +329,7 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x + 3, y + 4, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x - 3, y + 4, z + 4, Tile::nustone_Id, 2);
 		
-		//Floor 3
-			for (int mx = -3; mx <= 3; mx++)
-			{
-				for (int mz = -2; mz <= 2; mz++)
-				{
-					placeBlock(level, x + mx, y + 8, z + mz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int nx = -2; nx <= 2; nx++)
-			{
-				for (int nz = -3; nz <= 3; nz++)
-				{
-					placeBlock(level, x + nx, y + 8, z + nz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int ox = -1; ox <= 1; ox++)
-			{
-				for (int oz = -1; oz <= 1; oz++)
-				{
-					placeBlock(level, x + ox, y + 8, z + oz, 0, 0);
-				}
-			}
-		
-			placeBlock(level, x + 3, y + 8, z + 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 8, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x + 3, y + 8, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 8, z + 3, Tile::nusaLog_Id, 0);
-
-			placeBlock(level, x + 4, y + 8, z + 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 8, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 8, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 8, z + 2, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 8, z + 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 8, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 8, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 8, z + 1, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 2, y + 8, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 8, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 2, y + 8, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 8, z + 4, Tile::nustone_Id, 1);
-			
-			placeBlock(level, x + 1, y + 8, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 8, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 1, y + 8, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 8, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 8, z, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 8, z, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 8, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 8, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
+			// Floor 3
 			placeBlock(level, x + 5, y + 8, z + 2, Tile::nustone_Id, 2);
 			placeBlock(level, x - 5, y + 8, z - 2, Tile::nustone_Id, 2);
 			placeBlock(level, x + 5, y + 8, z - 2, Tile::nustone_Id, 2);
@@ -276,61 +365,7 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x + 3, y + 8, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x - 3, y + 8, z + 4, Tile::nustone_Id, 2);
 		
-		//Floor 4
-			for (int px = -3; px <= 3; px++)
-			{
-				for (int pz = -2; pz <= 2; pz++)
-				{
-					placeBlock(level, x + px, y + 12, z + pz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int qx = -2; qx <= 2; qx++)
-			{
-				for (int qz = -3; qz <= 3; qz++)
-				{
-					placeBlock(level, x + qx, y + 12, z + qz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int rx = -1; rx <= 1; rx++)
-			{
-				for (int rz = -1; rz <= 1; rz++)
-				{
-					placeBlock(level, x + rx, y + 12, z + rz, 0, 0);
-				}
-			}
-		
-			placeBlock(level, x + 3, y + 12, z + 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 12, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x + 3, y + 12, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 12, z + 3, Tile::nusaLog_Id, 0);
-
-			placeBlock(level, x + 4, y + 12, z + 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 12, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 12, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 12, z + 2, Tile::nustone_Id, 1);
-			
-			placeBlock(level, x + 4, y + 12, z + 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 12, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 12, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 12, z + 1, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 2, y + 12, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 12, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 2, y + 12, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 12, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 1, y + 12, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 12, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 1, y + 12, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 12, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 12, z, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 12, z, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 12, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 12, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
+			// Floor 4
 			placeBlock(level, x + 5, y + 12, z + 2, Tile::nustone_Id, 2);
 			placeBlock(level, x - 5, y + 12, z - 2, Tile::nustone_Id, 2);
 			placeBlock(level, x + 5, y + 12, z - 2, Tile::nustone_Id, 2);
@@ -366,61 +401,7 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x + 3, y + 12, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x - 3, y + 12, z + 4, Tile::nustone_Id, 2);
 		
-		//Floor 5
-			for (int sx = -3; sx <= 3; sx++)
-			{
-				for (int sz = -2; sz <= 2; sz++)
-				{
-					placeBlock(level, x + sx, y + 16, z + sz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int tx = -2; tx <= 2; tx++)
-			{
-				for (int tz = -3; tz <= 3; tz++)
-				{
-					placeBlock(level, x + tx, y + 16, z + tz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int ux = -1; ux <= 1; ux++)
-			{
-				for (int uz = -1; uz <= 1; uz++)
-				{
-					placeBlock(level, x + ux, y + 16, z + uz, 0, 0);
-				}
-			}
-		
-			placeBlock(level, x + 3, y + 16, z + 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 16, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x + 3, y + 16, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 16, z + 3, Tile::nusaLog_Id, 0);
-
-			placeBlock(level, x + 4, y + 16, z + 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 16, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 16, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 16, z + 2, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 16, z + 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 16, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 16, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 16, z + 1, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 2, y + 16, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 16, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 2, y + 16, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 16, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 1, y + 16, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 16, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 1, y + 16, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 16, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 16, z, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 16, z, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 16, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 16, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
+			// Floor 5
 			placeBlock(level, x + 5, y + 16, z + 2, Tile::nustone_Id, 2);
 			placeBlock(level, x - 5, y + 16, z - 2, Tile::nustone_Id, 2);
 			placeBlock(level, x + 5, y + 16, z - 2, Tile::nustone_Id, 2);
@@ -456,61 +437,7 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x + 3, y + 16, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x - 3, y + 16, z + 4, Tile::nustone_Id, 2);
 		
-		//Floor 6
-			for (int vx = -3; vx <= 3; vx++)
-			{
-				for (int vz = -2; vz <= 2; vz++)
-				{
-					placeBlock(level, x + vx, y + 20, z + vz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int wx = -2; wx <= 2; wx++)
-			{
-				for (int wz = -3; wz <= 3; wz++)
-				{
-					placeBlock(level, x + wx, y + 20, z + wz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int xx = -1; xx <= 1; xx++)
-			{
-				for (int xz = -1; xz <= 1; xz++)
-				{
-					placeBlock(level, x + xx, y + 20, z + xz, 0, 0);
-				}
-			}
-		
-			placeBlock(level, x + 3, y + 20, z + 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 20, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x + 3, y + 20, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 20, z + 3, Tile::nusaLog_Id, 0);
-
-			placeBlock(level, x + 4, y + 20, z + 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 20, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 20, z - 2, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 20, z + 2, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 20, z + 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 20, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x + 4, y + 20, z - 1, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 20, z + 1, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 2, y + 20, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 20, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 2, y + 20, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 2, y + 20, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 1, y + 20, z + 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 20, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x + 1, y + 20, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x - 1, y + 20, z + 4, Tile::nustone_Id, 1);
-		
-			placeBlock(level, x + 4, y + 20, z, Tile::nustone_Id, 1);
-			placeBlock(level, x - 4, y + 20, z, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 20, z - 4, Tile::nustone_Id, 1);
-			placeBlock(level, x, y + 20, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
+			// Floor 6
 			placeBlock(level, x + 5, y + 20, z + 2, Tile::nustone_Id, 2);
 			placeBlock(level, x - 5, y + 20, z - 2, Tile::nustone_Id, 2);
 			placeBlock(level, x + 5, y + 20, z - 2, Tile::nustone_Id, 2);
@@ -545,55 +472,8 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x - 3, y + 20, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x + 3, y + 20, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x - 3, y + 20, z + 4, Tile::nustone_Id, 2);
-		
-		//Floor 7
-			for (int yx = -3; yx <= 3; yx++)
-			{
-				for (int yz = -2; yz <= 2; yz++)
-				{
-					placeBlock(level, x + yx, y + 24, z + yz, Tile::netherPlanks_Id, 3);
-				}
-			}
-			for (int zx = -2; zx <= 2; zx++)
-			{
-				for (int zz = -3; zz <= 3; zz++)
-				{
-					placeBlock(level, x + zx, y + 24, z + zz, Tile::netherPlanks_Id, 3);
-				}
-			}
-		
-			placeBlock(level, x + 3, y + 24, z + 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 24, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x + 3, y + 24, z - 3, Tile::nusaLog_Id, 0);
-			placeBlock(level, x - 3, y + 24, z + 3, Tile::nusaLog_Id, 0);
 
-			placeBlock(level, x + 4, y + 24, z + 2, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 4, y + 24, z - 2, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x + 4, y + 24, z - 2, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 4, y + 24, z + 2, Tile::netherPlanks_Id, 3);
-		
-			placeBlock(level, x + 4, y + 24, z + 1, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 4, y + 24, z - 1, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x + 4, y + 24, z - 1, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 4, y + 24, z + 1, Tile::netherPlanks_Id, 3);
-		
-			placeBlock(level, x + 2, y + 24, z + 4, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 2, y + 24, z - 4, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x + 2, y + 24, z - 4, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 2, y + 24, z + 4, Tile::netherPlanks_Id, 3);
-		
-			placeBlock(level, x + 1, y + 24, z + 4, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 1, y + 24, z - 4, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x + 1, y + 24, z - 4, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 1, y + 24, z + 4, Tile::netherPlanks_Id, 3);
-		
-			placeBlock(level, x + 4, y + 24, z, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x - 4, y + 24, z, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x, y + 24, z - 4, Tile::netherPlanks_Id, 3);
-			placeBlock(level, x, y + 24, z + 4, Tile::netherPlanks_Id, 3);
-		
-		
-		
+			// Floor 7
 			placeBlock(level, x + 5, y + 24, z + 2, Tile::nustone_Id, 2);
 			placeBlock(level, x - 5, y + 24, z - 2, Tile::nustone_Id, 2);
 			placeBlock(level, x + 5, y + 24, z - 2, Tile::nustone_Id, 2);
@@ -628,690 +508,6 @@ bool NusaTowerFeature::place(Level *level, Random *random, int x, int y, int z)
 			placeBlock(level, x - 3, y + 24, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x + 3, y + 24, z - 4, Tile::nustone_Id, 2);
 			placeBlock(level, x - 3, y + 24, z + 4, Tile::nustone_Id, 2);
-
-		//Roof
-			for (int ex = -4; ex <= 4; ex++)
-			{
-				for (int ez = -4; ez <= 4; ez++)
-				{
-					placeBlock(level, x + ex, y + 28, z + ez, Tile::nustone_Id, 2);
-				}
-			}
-		
-			placeBlock(level, x + 5, y + 28, z + 3, Tile::nustone_Id, 2);
-			placeBlock(level, x - 5, y + 28, z - 3, Tile::nustone_Id, 2);
-			placeBlock(level, x + 5, y + 28, z - 3, Tile::nustone_Id, 2);
-			placeBlock(level, x - 5, y + 28, z + 3, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 5, y + 28, z + 2, Tile::nustone_Id, 2);
-			placeBlock(level, x - 5, y + 28, z - 2, Tile::nustone_Id, 2);
-			placeBlock(level, x + 5, y + 28, z - 2, Tile::nustone_Id, 2);
-			placeBlock(level, x - 5, y + 28, z + 2, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 5, y + 28, z + 1, Tile::nustone_Id, 2);
-			placeBlock(level, x - 5, y + 28, z - 1, Tile::nustone_Id, 2);
-			placeBlock(level, x + 5, y + 28, z - 1, Tile::nustone_Id, 2);
-			placeBlock(level, x - 5, y + 28, z + 1, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 3, y + 28, z + 5, Tile::nustone_Id, 2);
-			placeBlock(level, x - 3, y + 28, z - 5, Tile::nustone_Id, 2);
-			placeBlock(level, x + 3, y + 28, z - 5, Tile::nustone_Id, 2);
-			placeBlock(level, x - 3, y + 28, z + 5, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 2, y + 28, z + 5, Tile::nustone_Id, 2);
-			placeBlock(level, x - 2, y + 28, z - 5, Tile::nustone_Id, 2);
-			placeBlock(level, x + 2, y + 28, z - 5, Tile::nustone_Id, 2);
-			placeBlock(level, x - 2, y + 28, z + 5, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 1, y + 28, z + 5, Tile::nustone_Id, 2);
-			placeBlock(level, x - 1, y + 28, z - 5, Tile::nustone_Id, 2);
-			placeBlock(level, x + 1, y + 28, z - 5, Tile::nustone_Id, 2);
-			placeBlock(level, x - 1, y + 28, z + 5, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 5, y + 28, z, Tile::nustone_Id, 2);
-			placeBlock(level, x - 5, y + 28, z, Tile::nustone_Id, 2);
-			placeBlock(level, x, y + 28, z - 5, Tile::nustone_Id, 2);
-			placeBlock(level, x, y + 28, z + 5, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 6, y + 28, z + 1, Tile::nustone_Id, 2);
-			placeBlock(level, x - 6, y + 28, z - 1, Tile::nustone_Id, 2);
-			placeBlock(level, x + 6, y + 28, z - 1, Tile::nustone_Id, 2);
-			placeBlock(level, x - 6, y + 28, z + 1, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 1, y + 28, z + 6, Tile::nustone_Id, 2);
-			placeBlock(level, x - 1, y + 28, z - 6, Tile::nustone_Id, 2);
-			placeBlock(level, x + 1, y + 28, z - 6, Tile::nustone_Id, 2);
-			placeBlock(level, x - 1, y + 28, z + 6, Tile::nustone_Id, 2);
-		
-			placeBlock(level, x + 6, y + 28, z, Tile::nustone_Id, 2);
-			placeBlock(level, x - 6, y + 28, z, Tile::nustone_Id, 2);
-			placeBlock(level, x, y + 28, z - 6, Tile::nustone_Id, 2);
-			placeBlock(level, x, y + 28, z + 6, Tile::nustone_Id, 2);
-		
-		
-		
-		//Walls
-		placeBlock(level, x + 3, y + 1, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 1, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 1, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 1, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 4, y + 1, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 1, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 1, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 1, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 1, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 1, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 1, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 1, z + 1, Tile::nustone_Id, 1);
-
-		placeBlock(level, x + 2, y + 1, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 1, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 1, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 1, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 1, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 1, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 1, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 1, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 1, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 1, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 1, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 2, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 2, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 2, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 2, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 4, y + 2, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 2, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 2, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 2, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 2, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 2, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 2, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 2, z + 1, Tile::nustone_Id, 1);
-
-		placeBlock(level, x + 2, y + 2, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 2, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 2, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 2, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 2, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 2, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 2, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 2, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 2, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x - 4, y + 2, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x, y + 2, z + 4, Tile::stained_glass_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 3, y + 3, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 3, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 3, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 3, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 3, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 3, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 3, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 3, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 3, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 3, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 3, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 3, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 3, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 3, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 3, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 3, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 3, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 3, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 3, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 3, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 3, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 3, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 3, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 3, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 5, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 5, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 5, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 5, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 5, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 5, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 5, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 5, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 5, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 5, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 5, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 5, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 5, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 5, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 5, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 5, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 5, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 5, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 5, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 5, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 5, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 5, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 5, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 5, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 6, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 6, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 6, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 6, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 4, y + 6, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 6, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 6, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 6, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 6, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 6, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 6, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 6, z + 1, Tile::nustone_Id, 1);
-
-		placeBlock(level, x + 2, y + 6, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 6, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 6, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 6, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 6, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 6, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 6, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 6, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 6, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x - 4, y + 6, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x, y + 6, z + 4, Tile::stained_glass_Id, 3);
-		placeBlock(level, x, y + 6, z - 4, Tile::stained_glass_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 3, y + 7, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 7, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 7, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 7, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 7, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 7, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 7, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 7, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 7, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 7, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 7, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 7, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 7, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 7, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 7, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 7, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 7, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 7, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 7, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 7, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 7, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 7, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 7, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 7, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 9, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 9, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 9, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 9, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 9, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 9, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 9, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 9, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 9, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 9, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 9, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 9, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 9, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 9, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 9, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 9, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 9, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 9, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 9, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 9, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 9, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 9, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 9, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 9, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 10, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 10, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 10, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 10, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 4, y + 10, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 10, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 10, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 10, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 10, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 10, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 10, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 10, z + 1, Tile::nustone_Id, 1);
-
-		placeBlock(level, x + 2, y + 10, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 10, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 10, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 10, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 10, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 10, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 10, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 10, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 10, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x - 4, y + 10, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x, y + 10, z + 4, Tile::stained_glass_Id, 3);
-		placeBlock(level, x, y + 10, z - 4, Tile::stained_glass_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 3, y + 11, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 11, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 11, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 11, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 11, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 11, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 11, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 11, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 11, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 11, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 11, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 11, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 11, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 11, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 11, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 11, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 11, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 11, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 11, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 11, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 11, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 11, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 11, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 11, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 13, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 13, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 13, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 13, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 13, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 13, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 13, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 13, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 13, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 13, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 13, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 13, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 13, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 13, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 13, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 13, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 13, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 13, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 13, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 13, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 13, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 13, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 13, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 13, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 14, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 14, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 14, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 14, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 4, y + 14, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 14, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 14, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 14, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 14, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 14, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 14, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 14, z + 1, Tile::nustone_Id, 1);
-
-		placeBlock(level, x + 2, y + 14, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 14, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 14, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 14, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 14, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 14, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 14, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 14, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 14, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x - 4, y + 14, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x, y + 14, z + 4, Tile::stained_glass_Id, 3);
-		placeBlock(level, x, y + 14, z - 4, Tile::stained_glass_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 3, y + 15, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 15, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 15, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 15, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 15, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 15, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 15, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 15, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 15, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 15, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 15, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 15, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 15, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 15, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 15, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 15, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 15, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 15, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 15, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 15, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 15, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 15, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 15, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 15, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 17, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 17, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 17, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 17, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 17, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 17, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 17, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 17, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 17, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 17, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 17, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 17, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 17, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 17, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 17, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 17, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 17, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 17, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 17, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 17, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 17, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 17, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 17, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 17, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 18, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 18, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 18, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 18, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 4, y + 18, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 18, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 18, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 18, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 18, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 18, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 18, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 18, z + 1, Tile::nustone_Id, 1);
-
-		placeBlock(level, x + 2, y + 18, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 18, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 18, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 18, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 18, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 18, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 18, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 18, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 18, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x - 4, y + 18, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x, y + 18, z + 4, Tile::stained_glass_Id, 3);
-		placeBlock(level, x, y + 18, z - 4, Tile::stained_glass_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 3, y + 19, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 19, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 19, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 19, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 19, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 19, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 19, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 19, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 19, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 19, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 19, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 19, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 19, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 19, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 19, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 19, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 19, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 19, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 19, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 19, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 19, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 19, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 19, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 19, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 21, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 21, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 21, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 21, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 21, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 21, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 21, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 21, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 21, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 21, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 21, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 21, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 21, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 21, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 21, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 21, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 21, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 21, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 21, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 21, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 21, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 21, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 21, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 21, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 22, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 22, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 22, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 22, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 4, y + 22, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 22, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 22, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 22, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 22, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 22, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 22, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 22, z + 1, Tile::nustone_Id, 1);
-
-		placeBlock(level, x + 2, y + 22, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 22, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 22, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 22, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 22, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 22, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 22, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 22, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 22, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x - 4, y + 22, z, Tile::stained_glass_Id, 3);
-	    placeBlock(level, x, y + 22, z + 4, Tile::stained_glass_Id, 3);
-		placeBlock(level, x, y + 22, z - 4, Tile::stained_glass_Id, 3);
-		
-		
-		
-		placeBlock(level, x + 3, y + 23, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 23, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 23, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 23, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 4, y + 23, z + 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 23, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 23, z - 2, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 23, z + 2, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 23, z + 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 23, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 4, y + 23, z - 1, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 23, z + 1, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 2, y + 23, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 23, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 2, y + 23, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 2, y + 23, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 1, y + 23, z + 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 23, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x + 1, y + 23, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 1, y + 23, z + 4, Tile::nustone_Id, 1);
-		
-		placeBlock(level, x + 4, y + 23, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x - 4, y + 23, z, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 23, z - 4, Tile::nustone_Id, 1);
-	    placeBlock(level, x, y + 23, z + 4, Tile::nustone_Id, 1);
-		
-		
-		
-		placeBlock(level, x + 3, y + 25, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 25, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 25, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 25, z + 3, Tile::nusaLog_Id, 0);
-		
-		placeBlock(level, x + 3, y + 26, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 26, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 26, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 26, z + 3, Tile::nusaLog_Id, 0);
-
-		placeBlock(level, x + 3, y + 27, z + 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 27, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x + 3, y + 27, z - 3, Tile::nusaLog_Id, 0);
-	    placeBlock(level, x - 3, y + 27, z + 3, Tile::nusaLog_Id, 0);
-		
-		
-		
-		//Ladder
-			for (int posty = 0; posty <= 24; posty++)
-			{
-				if (level->getTile(x, y + posty, z + 2) == 0)
-				{
-					placeBlock(level, x, y + posty, z + 2, Tile::nusaLog_Id, 0);
-				}
-			}
-			for (int laddery = 0; laddery <= 23; laddery++)
-			{
-				placeBlock(level, x, y + laddery + 1, z + 1, Tile::ladder_Id, 2);
-			}
-
-		//Chest/Core
-			if (random->nextInt(2) == 0)
-			{
-				level->setTileAndData(x, y + 25, z, Tile::chest_Id, 0, Tile::UPDATE_CLIENTS);
-				WeighedTreasureArray wrapperArray(nusaTowerTreasure, TREASURE_ITEMS_COUNT);
-				WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(wrapperArray, Item::enchantedBook->createForRandomTreasure(random));
-				shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>( level->getTileEntity(x, y + 25, z) );
-				if (chest != NULL)
-				{
-					WeighedTreasure::addChestItems(random, treasure, chest, 7 + random->nextInt(3));
-				}
-			}
-			else
-			{
-				placeBlock(level, x, y + 25, z, Tile::nustone_Id, 1);
-				placeBlock(level, x, y + 26, z, Tile::nusaCore_Id, 0);
-			}
 		}
 	}
     return true;
@@ -1339,4 +535,8 @@ WeighedTreasure *NusaTowerFeature::nusaTowerTreasure[NusaTowerFeature::TREASURE_
 	new WeighedTreasure(Item::valkyrieAxe_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::agilityCape_Id, 0, 1, 1, 2),
 	new WeighedTreasure(Item::ironBubble_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititePendant_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::gravititeRing_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumPendant_Id, 0, 1, 1, 2),
+	new WeighedTreasure(Item::endoriumRing_Id, 0, 1, 1, 2),
 };
