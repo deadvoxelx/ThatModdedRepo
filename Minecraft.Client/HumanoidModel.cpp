@@ -114,6 +114,7 @@ void HumanoidModel::_init(float g, float yOffset, int texWidth, int texHeight)
 
 	holdingLeftHand=0;
 	holdingRightHand=0;
+	leftHandSwing=false;
 	sneaking=false;
 	swimming=false;
 	idle=false;
@@ -316,16 +317,25 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot, float 
 			swing = 1.0f - swing;
 			float aa = Mth::sin(swing * PI);
 			float bb = Mth::sin(attackTime * PI) * -(head->xRot - 0.7f) * 0.75f;
-			arm0->xRot -= aa * 1.2f + bb;	// 4J - changed 1.2 -> 1.2f
-			arm0->yRot += body->yRot * 2.0f;         
-
-			if((uiBitmaskOverrideAnim&(1<<eAnim_StatueOfLiberty))&& (holdingRightHand==0) && (attackTime==0.0f))
+			if (leftHandSwing)
 			{
-				arm0->zRot -= Mth::sin(attackTime * PI) * -0.4f;
+				arm1->xRot -= aa * 1.2f + bb;
+				arm1->yRot -= body->yRot * 2.0f;         
+				arm1->zRot = Mth::sin(attackTime * PI) * 0.4f;
 			}
 			else
 			{
-				arm0->zRot = Mth::sin(attackTime * PI) * -0.4f;
+				arm0->xRot -= aa * 1.2f + bb;	// 4J - changed 1.2 -> 1.2f
+				arm0->yRot += body->yRot * 2.0f;         
+
+				if((uiBitmaskOverrideAnim&(1<<eAnim_StatueOfLiberty))&& (holdingRightHand==0) && (attackTime==0.0f))
+				{
+					arm0->zRot -= Mth::sin(attackTime * PI) * -0.4f;
+				}
+				else
+				{
+					arm0->zRot = Mth::sin(attackTime * PI) * -0.4f;
+				}
 			}
 		}
 
