@@ -6,47 +6,46 @@
 #include "net.minecraft.world.item.crafting.h"
 #include "AetherSlot.h"
 
-AetherSlot::AetherSlot(int slotNum, shared_ptr<Container> container, int id, int x, int y)
-	: Slot( container, id, x, y ),
-	slotNum( slotNum )
+AetherSlot::AetherSlot(int slotNum, shared_ptr<Container> container, int id, int x, int y) : Slot( container, id, x, y ), slotNum( slotNum )
 {
 }
 
 int AetherSlot::getMaxStackSize() const
 {
+	if (slotNum == 3) // Full stacks allowed in the offhand
+	{
+		return container->getMaxStackSize();
+	}
 	return 1;
 }
 
 bool AetherSlot::mayPlace(shared_ptr<ItemInstance> item)
 {
+	int id = item->getItem()->id;
+	// Replacing the hardcoded defined items with the new isAccessory + isCape components
+	bool isAccessory = (item->getItem()->isAccessory() || item->getItem()->isCape());
+
 	if (item == nullptr)
 	{
 		return false;
 	}
-	if (item->getItem()->id == Item::regenerationStone_Id)
+
+	// 1st 3 Slots are the actual Aether slots; 4th isnt used in the official Aether mod
+	if (isAccessory)
 	{
+		if (item->getItem()->isCape())
+		{
+			return slotNum == 1;
+		}
 		return slotNum <= 2;
 	}
-	if (item->getItem()->id == Item::ironBubble_Id)
+
+	// 4th Slot acts as the "offhand" slot, everything but accessories can go here
+	if (slotNum == 3)
 	{
-		return slotNum <= 2;
+		return !isAccessory;
 	}
-	if (item->getItem()->id == Item::ironPendant_Id || item->getItem()->id == Item::ironRing_Id)
-	{
-		return slotNum <= 2;
-	}
-	if (item->getItem()->id == Item::goldPendant_Id || item->getItem()->id == Item::goldRing_Id)
-	{
-		return slotNum <= 2;
-	}
-	if (item->getItem()->id == Item::zanitePendant_Id || item->getItem()->id == Item::zaniteRing_Id)
-	{
-		return slotNum <= 2;
-	}
-	if (item->getItem()->id == Item::agilityCape_Id || item->getItem()->id == Item::invisibilityCape_Id || item->getItem()->id == Item::swetCape_Id || item->getItem()->id == Item::valkyrieCape_Id)
-	{
-		return slotNum == 1;
-	}
+
 	return false;
 }
 
