@@ -206,6 +206,7 @@ CMinecraftApp::CMinecraftApp()
 	m_dwRequiredTexturePackID=0;
 
 	m_bResetNether=false;
+	m_bResetNurealm=false;
 
 	m_seedOverride = 0;
 	m_hasSeedOverride = false;
@@ -4579,10 +4580,13 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_EVUPULGOLD, L"Golden Evupul");
 		m_stringTable->registerString(IDS_RESET_END, L"Reset Outer End");
 		m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset Outer End");
-		//m_stringTable->registerString(IDS_RESET_END, L"Reset Aether");
-		//m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset Aether");
-		//m_stringTable->registerString(IDS_RESET_END_INFO, L"DO NOT USE THIS SETTING IF YOU ARE CURRENTLY IN THE END OR OUTER END DIMENSIONS!!");
+		m_stringTable->registerString(IDS_RESET_AETHER, L"Reset Aether");
+		m_stringTable->registerString(IDS_DONT_RESET_AETHER, L"Don't Reset Aether");
+		m_stringTable->registerString(IDS_RESET_NUREALM, L"Reset Nurealm");
+		m_stringTable->registerString(IDS_DONT_RESET_NUREALM, L"Don't Reset Nurealm");
 		m_stringTable->registerString(IDS_RESET_END_INFO, L"This will erase anything you may or may not have done in the Outer End. Are you sure?");
+		m_stringTable->registerString(IDS_RESET_AETHER_INFO, L"This will erase anything you may or may not have done in the Aether. Are you sure?");
+		m_stringTable->registerString(IDS_RESET_NUREALM_INFO, L"This will erase anything you may or may not have done in the Nurealm. Are you sure?");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING, L"Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING_GOLD, L"Golden Evupul Wing");
 		m_stringTable->registerString(IDS_ITEM_ISOGAL_RIB, L"Isogal Rib");
@@ -4813,6 +4817,29 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_NUSA_AMULET, L"Nusa Amulet");
 		m_stringTable->registerString(IDS_WIKI, L"Hellish Wiki");
 		m_stringTable->registerString(IDS_CLASSIC_TEXTURES, L"Classic Textures");
+		m_stringTable->registerString(IDS_FIRE_MINION, L"Fire Minion");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_0, L"You are certainly a brave soul to have entered this chamber.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_1, L"Begone human, you serve no purpose here.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_2, L"Your presence annoys me. Do you not fear my burning aura?");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_3, L"I have nothing to offer you, fool. Leave me at peace.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_4, L"Perhaps you are ignorant. Do you wish to know who I am?");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_5_1, L"I am a sun spirit, embodiment of Aether's eternal daylight. As");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_5_2, L"long as I am alive, the sun will never set on this world.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_6_1, L"My body burns with the anger of a thousand beasts. No man,");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_6_2, L"hero, or villain can harm me. You are no exception.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_7_1, L"You wish to challenge the might of the sun? You are mad.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_7_2, L"Do not further insult me or you will feel my wrath.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_8, L"This is your final warning. Leave now, or prepare to burn.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_9, L"As you wish, your death will be slow and agonizing.");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_10, L"Did your previous death not satisfy your curiosity, human?");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_DEATH, L"Such bitter cold... is this the feeling... of pain?");
+		m_stringTable->registerString(IDS_SUN_SPIRIT_DIALOG_KILLED_PLAYER, L"Such is the fate of a being who opposes the might of the sun.");
+		m_stringTable->registerString(IDS_CHEST_LOCKED, L"Need the Gold Key");
+		m_stringTable->registerString(IDS_NUSAGAR, L"The Nusagar");
+		m_stringTable->registerString(IDS_ITEM_NUSA_BLADE, L"Nusa Blade");
+		m_stringTable->registerString(IDS_GOOD_LUCK, L"Good Luck...");
+		m_stringTable->registerString(IDS_TILE_BOSS_STONE, L"Enchanted Dark Nustone");
+		m_stringTable->registerString(IDS_TILE_GLOWING_NUSTONE, L"Glowing Nustone");
 
 	}
 	else
@@ -8883,6 +8910,10 @@ wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		return app.GetString(IDS_NUCLEAR_NUSKULL);
 	case eTYPE_NUSA_DEMON:
 		return app.GetString(IDS_NUSA_DEMON);
+	case eTYPE_NUSAGAR:
+		return app.GetString(IDS_NUSAGAR);
+	case eTYPE_NUSA_SPIKE:
+		return app.GetString(IDS_NUSAGAR);
 	};
 
 	return L"";
