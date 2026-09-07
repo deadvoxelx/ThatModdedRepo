@@ -41,3 +41,5 @@
 #include "NuclearNuskull.h"
 #include "NusaDemon.h"
 #include "SunSpirit.h"
+#include "FireMinion.h"
+#include "Nusagar.h"
