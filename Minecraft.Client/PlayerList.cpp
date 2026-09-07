@@ -428,9 +428,9 @@ void PlayerList::validatePlayerSpawnPosition(shared_ptr<ServerPlayer> player)
 	// Finding a valid, safe spawn point is potentially computationally expensive (may have to hunt through a large part
 	// of the nether) so move the player to their spawn position in the overworld so that they do not lose their inventory
 	// 4J Stu - We also use this mechanism to force a spawn point in the overworld for players who were in the save when the reset nether option was applied
-	if(level->dimension->id == -1 && player->y > 125)
+	if( (level->dimension->id == -1 && player->y > 125) || ((level->dimension->id == 2 || level->dimension->id == 4) && player->y > 1000000.0) )
 	{
-		app.DebugPrintf("Player in the nether tried to spawn at y = %f, moving to overworld\n", player->y);
+		app.DebugPrintf("Player in dimension %d tried to spawn at y = %f, moving to overworld\n", level->dimension->id, player->y);
 		player->setLevel(server->getLevel(0));
 		player->gameMode->setLevel(server->getLevel(0));
 		player->dimension = 0;
@@ -1534,7 +1534,7 @@ void PlayerList::sendLevelInfo(shared_ptr<ServerPlayer> player, ServerLevel *lev
 	}
 
 	// send the stronghold position if there is one
-	if( (level->dimension->id==0) && level->getLevelData()->getHasStronghold() )
+	if((level->dimension->id==0) && level->getLevelData()->getHasStronghold())
 	{
 		player->connection->send(std::make_shared<XZPacket>(XZPacket::STRONGHOLD, level->getLevelData()->getXStronghold(), level->getLevelData()->getZStronghold()));
 	}
