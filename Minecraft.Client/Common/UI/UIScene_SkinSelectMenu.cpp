@@ -398,6 +398,103 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 	}
 }
 
+#ifdef _WINDOWS64
+bool UIScene_SkinSelectMenu::handleMouseClick(F32 x, F32 y)
+{
+	if (m_bIgnoreInput) return false;
+
+	if (m_bAnimatingMove) return false;
+
+	m_controlTabSelector.UpdateControl();
+	m_tabPackLeft.UpdateControl();
+	m_tabPackCentre.UpdateControl();
+	m_tabPackRight.UpdateControl();
+
+	const S32 tabStripX = m_controlTabSelector.getXPos();
+	const S32 tabStripY = m_controlTabSelector.getYPos();
+
+	UIControl *tabControls[3] = { &m_tabPackLeft, &m_tabPackCentre, &m_tabPackRight };
+	F32 fTabCentre[3] = { 0.0f, 0.0f, 0.0f };
+	S32 tabY0 = 0, tabY1 = 0;
+	bool bFound = false;
+	for (int i = 0; i < 3; ++i)
+	{
+		UIControl *ctrl = tabControls[i];
+		if (ctrl->getWidth() <= 0 || ctrl->getHeight() <= 0) continue;
+
+		fTabCentre[i] = tabStripX + ctrl->getXPos() + ctrl->getWidth() * 0.5f;
+		const S32 y0 = tabStripY + ctrl->getYPos();
+		const S32 y1 = y0 + ctrl->getHeight();
+		if (!bFound)
+		{
+			tabY0 = y0;
+			tabY1 = y1;
+			bFound = true;
+		}
+		else
+		{
+			if (y0 < tabY0) tabY0 = y0;
+			if (y1 > tabY1) tabY1 = y1;
+		}
+	}
+	if (!bFound) return false;
+
+	tabY0 -= 6;
+	tabY1 += 6;
+	if (y < tabY0 || y > tabY1) return false;
+
+	F32 b0, b1, b2, b3;
+	if (fTabCentre[1] > fTabCentre[0] && fTabCentre[2] > fTabCentre[1])
+	{
+		b0 = fTabCentre[0] - (fTabCentre[1] - fTabCentre[0]) * 0.5f;
+		b1 = (fTabCentre[0] + fTabCentre[1]) * 0.5f;
+		b2 = (fTabCentre[1] + fTabCentre[2]) * 0.5f;
+		b3 = fTabCentre[2] + (fTabCentre[2] - fTabCentre[1]) * 0.5f;
+	}
+	else
+	{
+		const F32 fStep = (fTabCentre[2] - fTabCentre[0]) / 3.0f;
+		b0 = fTabCentre[0];
+		b1 = fTabCentre[0] + fStep;
+		b2 = fTabCentre[0] + fStep * 2.0f;
+		b3 = fTabCentre[2];
+	}
+
+	int iClickedTab = -1;
+	if (x >= b0 && x < b1) iClickedTab = 0;
+	else if (x >= b1 && x < b2) iClickedTab = 1;
+	else if (x >= b2 && x <= b3) iClickedTab = 2;
+
+	if (iClickedTab < 0) return false;
+
+	if (m_currentNavigation != eSkinNavigation_Pack)
+	{
+		ui.PlayUISFX(eSFX_Scroll);
+		m_currentNavigation = eSkinNavigation_Pack;
+		sendInputToMovie(ACTION_MENU_UP, false, true, false);
+	}
+
+	if (iClickedTab == 1) return true;
+
+	ui.PlayUISFX(eSFX_Scroll);
+	DWORD startingIndex = m_packIndex;
+	if (iClickedTab == 0)
+	{
+		m_packIndex = getPreviousPackIndex(m_packIndex);
+	}
+	else
+	{
+		m_packIndex = getNextPackIndex(m_packIndex);
+	}
+	if (startingIndex != m_packIndex)
+	{
+		handlePackIndexChanged();
+	}
+
+	return true;
+}
+#endif
+
 void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 {
 	ui.AnimateKeyPress(iPad, ACTION_MENU_OK, false, true, false);
