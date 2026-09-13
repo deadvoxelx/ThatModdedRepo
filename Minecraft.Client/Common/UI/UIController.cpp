@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Host\RubyLauncherHost.h"
 #include "UIController.h"
 #include "UI.h"
 #include "UIScene.h"
@@ -389,6 +390,8 @@ void UIController::SetupFont()
 	app.m_dlcManager.LanguageChanged();
 
 	app.loadStringTable(); // Switch to use new string table,
+
+	RubyLoader::onStringTableReloaded();
 
 	if (m_eTargetFont == m_eCurrentFont)
 	{
