@@ -22,6 +22,9 @@ void UIControl_Label::init(UIString label)
 {
 	m_label = label;
 
+	// Voxel - adding this so the game wont crash when i mess a label up again
+	if (!m_parentScene || !m_parentScene->getMovie()) return;
+
 	IggyDataValue result;
 	IggyDataValue value[1];
 	value[0].type = IGGY_DATATYPE_string_UTF16;
