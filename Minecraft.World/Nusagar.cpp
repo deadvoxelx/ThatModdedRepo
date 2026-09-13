@@ -25,10 +25,12 @@
 // AAAAAAUUUUUUUUGGGGGGHHHHHHHHH!!!!!!!!!!!
 
 int Nusagar::s_aliveCount = 0;
+bool Nusagar::s_bossDefeated = false;
 
 Nusagar::Nusagar(Level *level) : FlyingMonster( level )
 {
 	s_aliveCount++;
+	s_bossDefeated = false;
 
 	this->defineSynchedData();
 	registerAttributes();
@@ -63,6 +65,14 @@ Nusagar::Nusagar(Level *level) : FlyingMonster( level )
 Nusagar::~Nusagar()
 {
 	s_aliveCount--;
+}
+
+void Nusagar::die(DamageSource *source)
+{
+	// Voxel - fix for boss music not stopping on death til relogging
+	s_bossDefeated = true;
+
+	FlyingMonster::die(source);
 }
 
 void Nusagar::defineSynchedData()
