@@ -25,5 +25,15 @@ bool VeloettVineTile::mayPlace(Level *level, int x, int y, int z)
 bool VeloettVineTile::canSurvive(Level *level, int x, int y, int z)
 {
 	int below = level->getTile(x, y - 1, z);
-	return below == Tile::veloettVine_Id || below == Tile::veloettGrass_Id || below == Tile::nusaVine_Id || below == Tile::nugrass_Id;
+	Material *m = level->getMaterial(x, y - 1, z);
+	return below == Tile::veloettVine_Id;
+	return m == Material::stone || Material::endStone  || Material::netherrack || Material::grass || Material::veloettGrass || Material::dirt || Material::wood;
+}
+
+void VeloettVineTile::neighborChanged(Level *level, int x, int y, int z, int type)
+{
+	if (!canSurvive(level, x, y, z))
+	{
+		level->destroyTile(x, y, z, true);
+	}
 }
