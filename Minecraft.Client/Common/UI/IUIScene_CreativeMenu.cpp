@@ -14,6 +14,8 @@
 #include "..\..\..\Minecraft.World\net.minecraft.world.entity.monster.h"
 #include "..\..\..\Minecraft.World\JavaMath.h"
 
+#include "Host/RubyLauncherHost.h"
+
 // 4J JEV - Images for each tab.
 IUIScene_CreativeMenu::TabSpec **IUIScene_CreativeMenu::specs = nullptr;
 
@@ -31,7 +33,6 @@ void IUIScene_CreativeMenu::staticCtor()
 	// Building Blocks
 	DEF(eCreativeInventory_BuildingBlocks)
 		//ITEM(Tile::nusaPortal_Id)		// Voxel - here for test purposes
-		//ITEM(Tile::newTile_Id)		// Voxel - here for test purposes
 		ITEM(Tile::grass_Id)
 		ITEM(Tile::mycel_Id)
 		ITEM(Tile::dirt_Id)
@@ -991,6 +992,7 @@ void IUIScene_CreativeMenu::staticCtor()
 			ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_EXTENDED, MASK_SLOWNESS))
 			ITEM_AUX(Item::potion_Id,MACRO_MAKEPOTION_AUXVAL(MASK_SPLASH, MASK_LEVEL2, MASK_INSTANTDAMAGE))
 
+		appendModItems();
 
 		specs = new TabSpec*[eCreativeInventoryTab_COUNT];
 
@@ -1041,6 +1043,37 @@ void IUIScene_CreativeMenu::staticCtor()
 	ECreative_Inventory_Groups debugMiscGroup[] = {eCreativeInventory_ArtToolsMisc};
 	specs[eCreativeInventoryTab_Misc] = new TabSpec(L"Misc", IDS_GROUPNAME_MISCELLANEOUS, 1, miscGroup);
 #endif
+}
+
+void IUIScene_CreativeMenu::appendModItems()
+{	// Pushing items to the end of the specified categories to make it clear where theyre at
+	// Bedslop addons and some Java mods are like that too
+	const vector<RubyCreativeEntry> entries = RubyLoader::getCreativeEntries();
+
+	for (const RubyCreativeEntry &entry : entries)
+	{
+		if (entry.id <= 0 || entry.id >= Item::ITEM_NUM_COUNT || Item::items[entry.id] == nullptr) continue;
+
+		ECreative_Inventory_Groups group;
+		switch (entry.group)
+		{
+		case RubyCreativeGroup_Food:
+			group = eCreativeInventory_Food;
+			break;
+		case RubyCreativeGroup_Tools:
+			group = eCreativeInventory_ToolsArmourWeapons;
+			break;
+		case RubyCreativeGroup_Materials:
+			group = eCreativeInventory_Materials;
+			break;
+		case RubyCreativeGroup_BuildingBlocks:
+		default:
+			group = eCreativeInventory_BuildingBlocks;
+			break;
+		}
+
+		categoryGroups[group].push_back( shared_ptr<ItemInstance>(new ItemInstance(entry.id, 1, entry.aux)) );
+	}
 }
 
 IUIScene_CreativeMenu::IUIScene_CreativeMenu()
