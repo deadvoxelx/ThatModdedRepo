@@ -19,6 +19,7 @@
 #include "ResourceLocation.h"
 #include "..\Minecraft.World\ItemEntity.h"
 #include "TextureAtlas.h"
+#include "Host/RubyLauncherHost.h"
 
 bool Textures::MIPMAP = true;
 C4JRender::eTextureFormat Textures::TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGyBzAw;
@@ -373,8 +374,6 @@ intArray Textures::loadTexturePixels(TEXTURE_NAME texId, const wstring& resource
 		BufferedImage *bufImage = readImage(texId, resourceName); //in);
 		if (bufImage == nullptr)
 		{
-			// 4J - missing texture asset (e.g. a preloaded name with no png in the pack):
-			// fall back to the missing-texture placeholder rather than crashing.
 			res = loadTexturePixels(missingNo);
 		}
 		else
@@ -607,7 +606,6 @@ void Textures::bind(int id)
 ResourceLocation *Textures::getTextureLocation(shared_ptr<Entity> entity)
 {
 	shared_ptr<ItemEntity> item = dynamic_pointer_cast<ItemEntity>(entity);
-	// 4J - guard against dropped items holding an unregistered item id (ItemInstance::getItem() returns nullptr)
 	if (item == nullptr || item->getItem() == nullptr || item->getItem()->getItem() == nullptr)
 	{
 		return getTextureLocation(Icon::TYPE_ITEM);
@@ -1458,6 +1456,17 @@ Icon *Textures::getMissingIcon(int type)
 
 BufferedImage *Textures::readImage(TEXTURE_NAME texId, const wstring& name)	// 4J was InputStream *in
 {
+	if (name.size() > 6 && name.compare(0, 6, L"armor/") == 0)
+	{
+		std::wstring drive;
+		std::wstring texturePath;
+
+		if (RubyLoader::resolveArmorTexture(name, drive, texturePath))
+		{
+			return new BufferedImage(texturePath, false, false, drive);
+		}
+	}
+
 	BufferedImage *img=nullptr;
 	MemSect(32);
 	// is this image one of the Title Update ones?
