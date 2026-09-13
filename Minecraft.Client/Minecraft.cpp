@@ -74,6 +74,7 @@
 #include "Common\UI\IUIScene_CreativeMenu.h"
 #include "Common\UI\UIFontData.h"
 #include "DLCTexturePack.h"
+#include "Host\RubyLauncherHost.h"
 
 #ifdef _WINDOWS64
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -5084,6 +5085,9 @@ void Minecraft::main()
 	useLomp = true;
 
 	MinecraftWorld_RunStaticCtors();
+
+	// Voxel - mods are read and loaded here
+	RubyLoader::onClientBoot();
 	EntityRenderDispatcher::staticCtor();
 	TileEntityRenderDispatcher::staticCtor();
 	User::staticCtor();
