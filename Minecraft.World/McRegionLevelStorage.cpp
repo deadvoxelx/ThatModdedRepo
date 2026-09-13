@@ -24,7 +24,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 {
     if (dynamic_cast<HellDimension *>(dimension) != nullptr)
 	{
-		/*if(app.GetResetNether())
+		if(app.GetResetNether())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *netherFiles = m_saveFile->getRegionFilesByDimension(1);
@@ -49,14 +49,13 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			}
 #endif
 			resetNetherPlayerPositions();
-		}*/
-
+		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::NETHER_FOLDER);
     }
 
 	if (dynamic_cast<TheEndDimension *>(dimension))
 	{
-		/*if(app.GetResetNether())
+		if(app.GetResetEnd())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *endFiles = m_saveFile->getRegionFilesByDimension(2);
@@ -80,8 +79,8 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 				delete endFiles;
 			}
 #endif
-			resetNetherPlayerPositions();
-		}*/
+			resetEndPlayerPositions();
+		}
 
 		//File dir2 = new File(folder, LevelStorage.ENDER_FOLDER);
 		//dir2.mkdirs();
@@ -112,7 +111,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 
 	if (dynamic_cast<TheOuterEndDimension *>(dimension))
 	{
-		if(app.GetResetNether())
+		if(app.GetResetOuterEnd())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *outerEndFiles = m_saveFile->getRegionFilesByDimension(3);
@@ -136,32 +135,14 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 				delete outerEndFiles;
 			}
 #endif
-			resetNetherPlayerPositions();
-		}
-
-		int iSaveVersion=m_saveFile->getSaveVersion();
-
-		if((iSaveVersion!=0) && (iSaveVersion < SAVE_FILE_VERSION_NEW_END))
-		{
-			app.DebugPrintf("Loaded save version number is: %d, required to keep The End is: %d\n",m_saveFile->getSaveVersion(), SAVE_FILE_VERSION_NEW_END);
-
-			vector<FileEntry *> *outerEndFiles = m_saveFile->getFilesWithPrefix(LevelStorage::OUTEREND_FOLDER);
-
-			if(outerEndFiles!=nullptr)
-			{
-				for(auto& outerEndFile : *outerEndFiles)
-				{
-					m_saveFile->deleteFile(outerEndFile);
-				}
-				delete outerEndFiles;
-			}
+			resetOuterEndPlayerPositions();
 		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::OUTEREND_FOLDER);
 	}
 
 	if (dynamic_cast<AetherDimension *>(dimension))
 	{
-		/*if(app.GetResetNether())
+		if(app.GetResetAether())
 		{
 #ifdef SPLIT_SAVES
 			vector<FileEntry *> *aetherFiles = m_saveFile->getRegionFilesByDimension(4);
@@ -185,9 +166,8 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 				delete aetherFiles;
 			}
 #endif
-			resetNetherPlayerPositions();
-		}*/
-
+			resetAetherPlayerPositions();
+		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::AETHER_FOLDER);
 	}
 
@@ -219,7 +199,6 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 #endif
 			resetNurealmPlayerPositions();
 		}
-
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::NUREALM_FOLDER);
 	}
     return new McRegionChunkStorage(m_saveFile, L"");
