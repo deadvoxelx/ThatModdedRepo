@@ -9,6 +9,7 @@
 #include "..\Minecraft.World\net.minecraft.world.entity.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.monster.h"
 #include "..\Minecraft.World\net.minecraft.h"
+#include "Host/RubyLauncherHost.h"
 
 const wstring HumanoidMobRenderer::MATERIAL_NAMES[9] = { L"cloth", L"chain", L"iron", L"diamond", L"gold", L"nethanium", L"endorium", L"zanite", L"gravitite" };
 std::map<wstring, ResourceLocation> HumanoidMobRenderer::ARMOR_LOCATION_CACHE;
@@ -40,28 +41,28 @@ ResourceLocation *HumanoidMobRenderer::getArmorLocation(ArmorItem *armorItem, in
 
 ResourceLocation *HumanoidMobRenderer::getArmorLocation(ArmorItem *armorItem, int layer, bool overlay)
 {
-	switch(armorItem->modelIndex)
+	wstring materialName;
+	bool overlayExists = true;
+
+	if (armorItem->modelIndex >= 0 && armorItem->modelIndex < 9)
 	{
-	case 0:
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
-	case 3:
-		break;
-	case 4:
-		break;
-	case 5:
-		break;
-	case 6:
-		break;
-	case 7:
-		break;
-	case 8:
-		break;
-	};
-	wstring path = wstring(L"armor/" + MATERIAL_NAMES[armorItem->modelIndex]).append(L"_").append(std::to_wstring(layer == 2 ? 2 : 1)).append((overlay ? L"_b" :L"")).append(L".png");
+		materialName = MATERIAL_NAMES[armorItem->modelIndex];
+	}
+	else
+	{
+		materialName = RubyLoader::getArmorSetName(armorItem->modelIndex);
+
+		if (materialName.empty())
+		{
+			materialName = MATERIAL_NAMES[2];
+		}
+		else
+		{
+			overlayExists = RubyLoader::armorSetHasOverlay(armorItem->modelIndex);
+		}
+	}
+
+	wstring path = wstring(L"armor/").append(materialName).append(L"_").append(std::to_wstring(layer == 2 ? 2 : 1)).append((overlay && overlayExists ? L"_b" :L"")).append(L".png");
 
 	std::map<wstring, ResourceLocation>::iterator it = ARMOR_LOCATION_CACHE.find(path);
 
