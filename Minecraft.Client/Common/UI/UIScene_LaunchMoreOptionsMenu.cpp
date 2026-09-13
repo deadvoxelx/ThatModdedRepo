@@ -91,7 +91,10 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(int iPad, void *ini
 	m_checkboxes[eLaunchCheckbox_TNT].init(app.GetString(IDS_TNT_EXPLODES),eLaunchCheckbox_TNT,m_params->bTNT);
 	m_checkboxes[eLaunchCheckbox_HostPrivileges].init(app.GetString(IDS_HOST_PRIVILEGES),eLaunchCheckbox_HostPrivileges,m_params->bHostPrivileges);
 
-	m_checkboxes[eLaunchCheckbox_ResetNether].init(app.GetString(IDS_RESET_END),eLaunchCheckbox_ResetNether,m_params->bResetNether);
+	m_checkboxes[eLaunchCheckbox_ResetNether].init(app.GetString(IDS_RESET_NETHER),eLaunchCheckbox_ResetNether,m_params->bResetNether);
+	m_checkboxes[eLaunchCheckbox_ResetAether].init(app.GetString(IDS_RESET_AETHER),eLaunchCheckbox_ResetAether,m_params->bResetAether);
+	m_checkboxes[eLaunchCheckbox_ResetEnd].init(app.GetString(IDS_RESET_END),eLaunchCheckbox_ResetEnd,m_params->bResetEnd);
+	m_checkboxes[eLaunchCheckbox_ResetOuterEnd].init(app.GetString(IDS_RESET_OUTER_END),eLaunchCheckbox_ResetOuterEnd,m_params->bResetOuterEnd);
 	m_checkboxes[eLaunchCheckbox_ResetNurealm].init(app.GetString(IDS_RESET_NUREALM),eLaunchCheckbox_ResetNurealm,m_params->bResetNurealm);
 
 	m_checkboxes[eLaunchCheckbox_Structures].init(app.GetString(IDS_GENERATE_STRUCTURES),eLaunchCheckbox_Structures,m_params->bStructures);
@@ -442,6 +445,15 @@ void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId, bool se
 	case eLaunchCheckbox_ResetNether:
 		m_params->bResetNether = selected;
 		break;
+	case eLaunchCheckbox_ResetAether:
+		m_params->bResetAether = selected;
+		break;
+	case eLaunchCheckbox_ResetEnd:
+		m_params->bResetEnd = selected;
+		break;
+	case eLaunchCheckbox_ResetOuterEnd:
+		m_params->bResetOuterEnd = selected;
+		break;
 	case eLaunchCheckbox_ResetNurealm:
 		m_params->bResetNurealm = selected;
 		break;
@@ -518,7 +530,16 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId, F64 childId
 		stringId = IDS_GAMEOPTION_HOST_PRIVILEGES;
 		break;
 	case eLaunchCheckbox_ResetNether:
+		stringId = IDS_RESET_NETHER;
+		break;
+	case eLaunchCheckbox_ResetAether:
+		stringId = IDS_RESET_AETHER;
+		break;
+	case eLaunchCheckbox_ResetEnd:
 		stringId = IDS_RESET_END;
+		break;
+	case eLaunchCheckbox_ResetOuterEnd:
+		stringId = IDS_RESET_OUTER_END;
 		break;
 	case eLaunchCheckbox_ResetNurealm:
 		stringId = IDS_RESET_NUREALM;
