@@ -11,6 +11,7 @@
 #include "net.minecraft.world.damagesource.h"
 #include "net.minecraft.world.entity.ai.attributes.h"
 #include "net.minecraft.world.entity.ai.goal.h"
+#include "net.minecraft.world.entity.ai.control.h"
 #include "net.minecraft.world.entity.ai.navigation.h"
 #include "net.minecraft.world.entity.ai.goal.target.h"
 #include "net.minecraft.world.entity.item.h"
@@ -21,6 +22,13 @@
 #include "..\Minecraft.Client\Textures.h"
 #include "MobCategory.h"
 
+namespace
+{
+	const double Y_ATTACK_REACH = 6.0;
+	const double Y_ATTACK_RANGE = 5.0;
+	const int COOLDOWN = 20;
+}
+
 AphalafBoss::AphalafBoss(Level *level) : Monster( level )
 {
 	this->defineSynchedData();
@@ -29,6 +37,7 @@ AphalafBoss::AphalafBoss(Level *level) : Monster( level )
 	setSize(2.2f, 3.0f);
 
 	attackAnimationTick = 0;
+	verticalAttackCooldown = 0;
 
 	xpReward = Enemy::XP_REWARD_BOSS;
 	fireImmune = true;
@@ -210,6 +219,48 @@ void AphalafBoss::tick()
 			explode2();
 		}
 	}
+
+	if (!level->isClientSide)
+	{
+		yAttack();
+	}
+}
+
+void AphalafBoss::yAttack()
+{
+	if (verticalAttackCooldown > 0)
+	{
+		--verticalAttackCooldown;
+		return;
+	}
+
+	const double horizRangeSqr = Y_ATTACK_RANGE * Y_ATTACK_RANGE;
+
+	shared_ptr<Player> best = nullptr;
+	double bestDistSqr = 0;
+
+	for (auto& p : level->players)
+	{
+		if (p == nullptr || !p->isAlive() || p->abilities.invulnerable || p->hasInvisiblePrivilege()) continue;
+
+		if (p->bb->y0 <= bb->y1) continue;
+		if (p->bb->y0 - bb->y1 > Y_ATTACK_REACH) continue;
+
+		double horizDistSqr = distanceToSqr(p->x, y, p->z);
+		if (horizDistSqr > horizRangeSqr) continue;
+
+		if (best == nullptr || horizDistSqr < bestDistSqr)
+		{
+			best = p;
+			bestDistSqr = horizDistSqr;
+		}
+	}
+
+	if (best == nullptr) return;
+
+	verticalAttackCooldown = COOLDOWN;
+	getLookControl()->setLookAt(best, 30, 30);
+	doHurtTarget(best);
 }
 
 void AphalafBoss::explode1()
