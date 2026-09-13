@@ -128,6 +128,10 @@ enum EUIScene
 	eUIScene_EULA,
 	eUIScene_InGameSaveManagementMenu,
 	eUIScene_LanguageSelector,
+#ifdef _WINDOWS64
+	eUIScene_KeybindsMenu,
+	eUIScene_ModsMenu,
+#endif
 #endif // ndef _XBOX
 
 #ifdef _DEBUG_MENUS_ENABLED
