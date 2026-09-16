@@ -2627,3 +2627,16 @@
 #define IDS_GOOD_LUCK										   2621
 #define IDS_TILE_BOSS_STONE									   2622
 #define IDS_TILE_GLOWING_NUSTONE							   2623
+#define IDS_RESET_OUTER_END									   2624
+#define IDS_DONT_RESET_OUTER_END							   2625
+#define IDS_RESET_OUTER_END_INFO							   2626
+#define IDS_RESET_NETHER_INFO								   2627
+#define IDS_MODS_MENU										   2628
+#define IDS_NO_MODS											   2629
+#define IDS_MOD_NAME										   2630
+#define IDS_MOD_SIZE										   2631
+#define IDS_MOD_FOLDER										   2632
+#define IDS_RUBY_LAUNCHER									   2633
+#define IDS_MOD_ID											   2634
+#define IDS_MOD_VERSION										   2635
+#define IDS_MOD_STATUS										   2636
