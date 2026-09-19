@@ -206,6 +206,9 @@ CMinecraftApp::CMinecraftApp()
 	m_dwRequiredTexturePackID=0;
 
 	m_bResetNether=false;
+	m_bResetAether=false;
+	m_bResetEnd=false;
+	m_bResetOuterEnd=false;
 	m_bResetNurealm=false;
 
 	m_seedOverride = 0;
@@ -2473,8 +2476,7 @@ unsigned char CMinecraftApp::GetGameSettings(int iPad,eGameSetting eVal)
 
 void CMinecraftApp::SetKeybind(int index, unsigned char ucVal)
 {
-	if (index < 0 || index >= KEYBINDS_STORAGE_COUNT)
-		return;
+	if (index < 0 || index >= KEYBINDS_STORAGE_COUNT) return;
 	int iPad = ProfileManager.GetPrimaryPad();
 	GameSettingsA[iPad]->ucKeybinds[index] = ucVal;
 	GameSettingsA[iPad]->ucKeybindsMagic = KEYBINDS_STORAGE_MAGIC;
@@ -2483,8 +2485,7 @@ void CMinecraftApp::SetKeybind(int index, unsigned char ucVal)
 
 unsigned char CMinecraftApp::GetKeybind(int index)
 {
-	if (index < 0 || index >= KEYBINDS_STORAGE_COUNT)
-		return 0;
+	if (index < 0 || index >= KEYBINDS_STORAGE_COUNT) return 0;
 	return GameSettingsA[ProfileManager.GetPrimaryPad()]->ucKeybinds[index];
 }
 
@@ -4578,13 +4579,17 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_EVUPUL, L"Evupul");
 		m_stringTable->registerString(IDS_EVUPULDARK, L"Dark Evupul");
 		m_stringTable->registerString(IDS_EVUPULGOLD, L"Golden Evupul");
-		m_stringTable->registerString(IDS_RESET_END, L"Reset Outer End");
-		m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset Outer End");
+		m_stringTable->registerString(IDS_RESET_END, L"Reset End");
+		m_stringTable->registerString(IDS_DONT_RESET_END, L"Don't Reset End");
+		m_stringTable->registerString(IDS_RESET_OUTER_END, L"Reset Outer End");
+		m_stringTable->registerString(IDS_DONT_RESET_OUTER_END, L"Don't Reset Outer End");
 		m_stringTable->registerString(IDS_RESET_AETHER, L"Reset Aether");
 		m_stringTable->registerString(IDS_DONT_RESET_AETHER, L"Don't Reset Aether");
 		m_stringTable->registerString(IDS_RESET_NUREALM, L"Reset Nurealm");
 		m_stringTable->registerString(IDS_DONT_RESET_NUREALM, L"Don't Reset Nurealm");
-		m_stringTable->registerString(IDS_RESET_END_INFO, L"This will erase anything you may or may not have done in the Outer End. Are you sure?");
+		m_stringTable->registerString(IDS_RESET_NETHER_INFO, L"This will erase anything you may or may not have done in the Nether. Are you sure?");
+		m_stringTable->registerString(IDS_RESET_END_INFO, L"This will erase anything you may or may not have done in the End, including the Ender Dragon bossfight. Are you sure?");
+		m_stringTable->registerString(IDS_RESET_OUTER_END_INFO, L"This will erase anything you may or may not have done in the Outer End. Are you sure?");
 		m_stringTable->registerString(IDS_RESET_AETHER_INFO, L"This will erase anything you may or may not have done in the Aether. Are you sure?");
 		m_stringTable->registerString(IDS_RESET_NUREALM_INFO, L"This will erase anything you may or may not have done in the Nurealm. Are you sure?");
 		m_stringTable->registerString(IDS_ITEM_EVUPUL_WING, L"Evupul Wing");
@@ -4840,6 +4845,15 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_GOOD_LUCK, L"Good Luck...");
 		m_stringTable->registerString(IDS_TILE_BOSS_STONE, L"Enchanted Dark Nustone");
 		m_stringTable->registerString(IDS_TILE_GLOWING_NUSTONE, L"Glowing Nustone");
+		m_stringTable->registerString(IDS_MODS_MENU, L"Mods");
+		m_stringTable->registerString(IDS_NO_MODS, L"Nothing to see here...");
+		m_stringTable->registerString(IDS_MOD_NAME, L"Name: ");
+		m_stringTable->registerString(IDS_MOD_SIZE, L"Size: ");
+		m_stringTable->registerString(IDS_MOD_FOLDER, L"Open Mods Folder");
+		m_stringTable->registerString(IDS_RUBY_LAUNCHER, L"Ruby Launcher");
+		m_stringTable->registerString(IDS_MOD_ID, L"ID: ");
+		m_stringTable->registerString(IDS_MOD_VERSION, L"Version: ");
+		m_stringTable->registerString(IDS_MOD_STATUS, L"Status: ");
 
 	}
 	else

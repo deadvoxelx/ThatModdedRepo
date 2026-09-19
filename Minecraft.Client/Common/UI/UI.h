@@ -125,4 +125,7 @@
 #include "UIScene_EULA.h"
 #include "UIScene_NewUpdateMessage.h"
 
+#include "UIScene_KeybindsMenu.h"
+#include "UIScene_ModsMenu.h"
+
 extern ConsoleUIController ui;

@@ -32,6 +32,13 @@ void UIControl_Base::tick()
 		//app.DebugPrintf("Calling SetLabel - '%ls'\n", m_label.c_str());
 		m_bLabelChanged = false;
 
+		// Voxel - adding this so the game wont crash when i miss a mapping again
+		if (!m_parentScene || !m_parentScene->getMovie())
+		{
+			m_label.setUpdated();
+			return;
+		}
+
 		IggyDataValue result;
 		IggyDataValue value[1];
 		value[0].type = IGGY_DATATYPE_string_UTF16;
@@ -55,6 +62,9 @@ void UIControl_Base::setLabel(UIString label, bool instant, bool force)
 	if(m_bLabelChanged && instant)
 	{
 		m_bLabelChanged = false;
+
+		// Voxel - adding this so the game wont crash when i miss a mapping again
+		if (!m_parentScene || !m_parentScene->getMovie()) return;
 
 		IggyDataValue result;
 		IggyDataValue value[1];

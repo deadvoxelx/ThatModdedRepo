@@ -30,6 +30,25 @@ void Recipes::_init()
 	recipies = new RecipyList();
 }
 
+void Recipes::addRecipe(Recipy *recipe) { if (recipe) recipies->push_back(recipe); }
+
+void Recipes::rebuildIngredientsArray(void)
+{
+    if (m_pRecipeIngredientsRequired != nullptr)
+    {
+        for (int i = 0; i < m_ingredientsCount; ++i)
+        {
+            delete [] m_pRecipeIngredientsRequired[i].iIngIDA;
+            delete [] m_pRecipeIngredientsRequired[i].iIngValA;
+            delete [] m_pRecipeIngredientsRequired[i].iIngAuxValA;
+            delete [] m_pRecipeIngredientsRequired[i].uiGridA;
+        }
+        delete [] m_pRecipeIngredientsRequired;
+        m_pRecipeIngredientsRequired = nullptr;
+    }
+    buildRecipeIngredientsArray();
+}
+
 Recipes::Recipes()
 {
 	int iCount=0;
@@ -1982,6 +2001,7 @@ void Recipes::buildRecipeIngredientsArray(void)
 	int iRecipeC=static_cast<int>(recipies->size());
 
 	m_pRecipeIngredientsRequired= new Recipy::INGREDIENTS_REQUIRED [iRecipeC];
+	m_ingredientsCount = iRecipeC;
 
 	int iCount=0;
 	for (auto& recipe : *recipies)

@@ -10,11 +10,14 @@ class Player;
 
 class AphalafBoss : public Monster, public BossMob
 {
+private:
+	int attackAnimationTick;
+	int verticalAttackCooldown;
+
 public:
 	eINSTANCEOF GetType() { return eTYPE_APHALAF_BOSS; }
 	static Entity *create(Level *level){ return new AphalafBoss(level); }
 
-public:
 	AphalafBoss(Level *level);
 	virtual bool isPushable();
 	virtual bool useNewAi();
@@ -44,8 +47,7 @@ public:
 	virtual int getDimension() { return Entity::dimension; };
 
 private:
-	int attackAnimationTick;
-
 	void explode1();
 	void explode2();
+	void yAttack();
 };

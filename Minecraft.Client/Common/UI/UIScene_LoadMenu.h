@@ -115,6 +115,9 @@ private:
 	static int LoadDataComplete(void *pParam);
 	static int LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes);
 	static int CheckResetNetherReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
+	static int CheckResetAetherReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
+	static int CheckResetEndReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
+	static int CheckResetOuterEndReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int CheckResetNurealmReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int DeleteSaveDataReturned(void *pParam,bool bSuccess);

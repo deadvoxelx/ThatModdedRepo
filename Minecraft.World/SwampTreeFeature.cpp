@@ -4,9 +4,17 @@
 #include "net.minecraft.world.level.tile.h"
 #include "JavaMath.h"
 
+SwampTreeFeature::SwampTreeFeature(bool doUpdate) : Feature(doUpdate), baseHeight(5), trunkType(0), leafType(0), trunkTile(Tile::treeTrunk_Id), leafTile(Tile::leaves_Id)
+{
+}
+
+SwampTreeFeature::SwampTreeFeature(bool doUpdate, int baseHeight, int trunkType, int leafType, int trunkTile, int leafTile) : Feature(doUpdate), baseHeight(baseHeight), trunkType(trunkType), leafType(leafType), trunkTile(trunkTile), leafTile(leafTile)
+{
+}
+
 bool SwampTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 {
-	int treeHeight = random->nextInt(4) + 5;
+	int treeHeight = random->nextInt(4) + baseHeight;
 	while (level->getMaterial(x, y - 1, z) == Material::water)
 		y--;
 
@@ -37,7 +45,7 @@ bool SwampTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 				if (yy >= 0 && yy < Level::genDepth)
 				{
 					int tt = level->getTile(xx, yy, zz);
-					if (tt != 0 && tt != Tile::leaves_Id)
+					if (tt != 0 && tt != leafTile)
 					{
 						if (tt == Tile::calmWater_Id || tt == Tile::water_Id)
 						{
@@ -59,8 +67,8 @@ bool SwampTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 
 	if (!free) return false;
 
-	int belowTile = level->getTile(x, y - 1, z);
-	if ((belowTile != Tile::grass_Id && belowTile != Tile::dirt_Id) || y >= Level::genDepth - treeHeight - 1) return false;
+	Material *belowMaterial = level->getMaterial(x, y - 1, z);
+	if ((belowMaterial != Material::grass && belowMaterial != Material::dirt) || y >= Level::maxBuildHeight - treeHeight - 1 ) return false;
 
 	placeBlock(level, x, y - 1, z, Tile::dirt_Id);
 
@@ -75,7 +83,7 @@ bool SwampTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
 				int zo = zz - (z);
 				if (abs(xo) == offs && abs(zo) == offs && (random->nextInt(2) == 0 || yo == 0)) continue;
-				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::leaves_Id);
+				if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, leafTile, leafType);
 			}
 		}
 	}
@@ -83,7 +91,7 @@ bool SwampTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 	for (int hh = 0; hh < treeHeight; hh++)
 	{
 		int t = level->getTile(x, y + hh, z);
-		if (t == 0 || t == Tile::leaves_Id || t == Tile::water_Id || t == Tile::calmWater_Id) placeBlock(level, x, y + hh, z, Tile::treeTrunk_Id);
+		if (t == 0 || t == leafTile || t == Tile::water_Id || t == Tile::calmWater_Id) placeBlock(level, x, y + hh, z, trunkTile, trunkType);
 	}
 
 	for (int yy = y - 3 + treeHeight; yy <= y + treeHeight; yy++)
@@ -94,7 +102,7 @@ bool SwampTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 		{
 			for (int zz = z - offs; zz <= z + offs; zz++)
 			{
-				if (level->getTile(xx, yy, zz) == Tile::leaves_Id)
+				if (level->getTile(xx, yy, zz) == leafTile)
 				{
 					if (random->nextInt(4) == 0 && level->getTile(xx - 1, yy, zz) == 0)
 					{

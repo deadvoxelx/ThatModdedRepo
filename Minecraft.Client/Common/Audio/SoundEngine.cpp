@@ -1055,11 +1055,13 @@ void SoundEngine::playMusicUpdate()
 			}
 		}
 
-		if (playerInNurealm && m_bNusagarBossMusic != Nusagar::isBossFightActive())
+		const bool bBossFightActive = Nusagar::isBossFightActive();
+
+		if (playerInNurealm && (m_bNusagarBossMusic != bBossFightActive || (m_musicID == eStream_nusagarBoss) != bBossFightActive))
 		{
 			m_iMusicDelay = 0;
 
-			if (Nusagar::isBossFightActive())
+			if (bBossFightActive)
 			{
 				m_musicID = eStream_nusagarBoss;
 				m_bNusagarBossMusic = true;
@@ -1610,7 +1612,7 @@ void SoundEngine::playMusicUpdate()
 						SetIsPlayingOuterEndMusic(true);
 						SetIsPlayingEndMusic(false);
 						SetIsPlayingNetherMusic(false);
-						SetIsPlayingNurealmMusic(true);
+						SetIsPlayingNurealmMusic(false);
 					}
 
 					else

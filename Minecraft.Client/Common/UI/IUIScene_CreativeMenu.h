@@ -105,6 +105,9 @@ public:
 	IUIScene_CreativeMenu();
 
 protected:
+	static void appendModItems();
+
+protected:
 	ECreativeInventoryTabs m_curTab;
 	int m_tabDynamicPos[eCreativeInventoryTab_COUNT];
 	int m_tabPage[eCreativeInventoryTab_COUNT];

@@ -19,6 +19,69 @@
 #include "SimpleIcon.h"
 #include "CompassTexture.h"
 #include "ClockTexture.h"
+#include "Common/ModPaths.h"
+#include "Host/RubyLauncherHost.h"
+
+namespace
+{	// Voxel - Mod texture stuff
+	const int ATLAS_CELL = 16;
+	const int ATLAS_COLUMNS = 16;
+	const int ATLAS_ROWS = 32;
+
+	bool loadModTextures(const std::wstring &filePath, const std::string &iconName, vector<int> &pixels)
+	{	// Reading mod textures from a mods texture folder
+		D3DXIMAGE_INFO imageInfo;
+		ZeroMemory(&imageInfo, sizeof(imageInfo));
+
+		int *data = nullptr;
+
+		if (RenderManager.LoadTextureData(wstringtofilename(filePath), &imageInfo, &data) != ERROR_SUCCESS || data == nullptr)
+		{	// Fall back to vanilla textures if a mods texture is missing/incorrectly named/whatever to prevent crashing
+			app.DebugPrintf("Ruby Launcher: couldnt read '%s' for '%s'\n", RubyPaths::toNarrow(filePath).c_str(), iconName.c_str());
+			return false;
+		}
+
+		if (imageInfo.Width != ATLAS_CELL || imageInfo.Height != ATLAS_CELL)
+		{	// Mod textures must be 16x16 px resolution
+			// Fall back to vanilla textures if it isnt to avoid any weird shit that i dont wanna look into
+			delete[] data;
+			return false;
+		}
+
+		pixels.assign(data, data + ATLAS_CELL * ATLAS_CELL);
+		delete[] data;
+		return true;
+	}
+
+	std::wstring textureFileBaseName(const std::wstring &filePath)
+	{
+		const size_t slash = filePath.find_last_of(L"/\\");
+		std::wstring name = filePath.substr((slash == std::wstring::npos) ? 0 : slash + 1);
+		const size_t dot = name.find_last_of(L'.');
+
+		return (dot == std::wstring::npos) ? name : name.substr(0, dot);
+	}
+
+	vector<int> downscaleHalf(const vector<int> &source, int size)
+	{	// Mipmap mod textures for consistency
+		const int half = size / 2;
+		vector<int> out(half * half);
+
+		for (int y = 0; y < half; ++y)
+		{
+			for (int x = 0; x < half; ++x)
+			{
+				int c0 = source[(y * 2 + 0) * size + (x * 2 + 0)];
+				int c1 = source[(y * 2 + 0) * size + (x * 2 + 1)];
+				int c2 = source[(y * 2 + 1) * size + (x * 2 + 0)];
+				int c3 = source[(y * 2 + 1) * size + (x * 2 + 1)];
+
+				out[y * half + x] = Texture::crispBlend(Texture::crispBlend(c0, c1), Texture::crispBlend(c2, c3));
+			}
+		}
+		return out;
+	}
+}
 
 const wstring PreStitchedTextureMap::NAME_MISSING_TEXTURE = L"missingno";
 
@@ -31,6 +94,7 @@ PreStitchedTextureMap::PreStitchedTextureMap(int type, const wstring &name, cons
 	stitchResult = nullptr;
 
 	m_mipMap = mipmap;
+	m_modTexturesAllocated = false;
 	missingPosition = static_cast<StitchedTexture *>(new SimpleIcon(NAME_MISSING_TEXTURE, NAME_MISSING_TEXTURE, 0, 0, 1, 1));
 }
 
@@ -43,6 +107,8 @@ void PreStitchedTextureMap::stitch()
 	}
 
 	loadUVs();
+
+	allocateModTextureCells();
 
 	if (iconType == Icon::TYPE_TERRAIN)
 	{
@@ -130,6 +196,7 @@ void PreStitchedTextureMap::stitch()
 	//BufferedImage *image = new BufferedImage(texturePack->getResource(L"/" + filename),false,true,drive); //ImageIO::read(texturePack->getResource(L"/" + filename));
 	BufferedImage *image = texturePack->getImageResource(filename, false, true, drive);
 	MemSect(0);
+	if (image == nullptr) return;
 	int height = image->getHeight();
 	int width = image->getWidth();
 
@@ -149,27 +216,21 @@ void PreStitchedTextureMap::stitch()
 				{
 					int levelW = width >> level;
 					int levelH = height >> level;
-
-					if (levelW <= 0 || levelH <= 0)
-						break;
-
-					if (modImage->getData(level) != nullptr)
-						continue;	// If MipMaps exist, use them
-					// To make my life easier, i'll just be fabricating them instead
-					// This way i only have to edit 1 texture file to add new blocks
 					int prevLevel = level - 1;
 					int prevW = width >> prevLevel;
 					int *prev = modImage->getData(prevLevel);
 
-					if (prev == nullptr && !genModLevel[prevLevel].empty())
-						prev = genModLevel[prevLevel].data();
-
-					if (prev == nullptr)
-						break;
+					if (levelW <= 0 || levelH <= 0) break;
+					if (modImage->getData(level) != nullptr) continue;
+					if (prev == nullptr && !genModLevel[prevLevel].empty()) prev = genModLevel[prevLevel].data();
+					if (prev == nullptr) break;
 
 					genModLevel[level].resize((size_t)levelW * levelH);
 					int *out = genModLevel[level].data();
 
+					// If MipMaps exist, use them
+					// To make my life easier, i'll just be fabricating them instead
+					// This way i only have to edit 1 texture file to add new blocks
 					for (int y = 0; y < levelH; y++)
 					{
 						for (int x = 0; x < levelW; x++)
@@ -187,28 +248,15 @@ void PreStitchedTextureMap::stitch()
 				{
 					int levelW = width >> level;
 					int levelH = height >> level;
-
-					if (levelW <= 0 || levelH <= 0)
-						continue;
-
 					int cell = tileSize >> level;
-
-					if (cell <= 0)
-						continue;
-
 					int *dst = image->getData(level);
-
-					if (dst == nullptr)
-						continue;
-
 					int *src = modImage->getData(level);
 
-					if (src == nullptr && !genModLevel[level].empty())
-						src = genModLevel[level].data();
-
-					if (src == nullptr)
-						continue;
-
+					if (levelW <= 0 || levelH <= 0) continue;
+					if (cell <= 0) continue;
+					if (dst == nullptr) continue;
+					if (src == nullptr && !genModLevel[level].empty()) src = genModLevel[level].data();
+					if (src == nullptr) continue;
 					for (auto &c : moddedCells)
 					{
 						int sx = (c.second * tileSize) >> level;
@@ -225,6 +273,8 @@ void PreStitchedTextureMap::stitch()
 			modImage = nullptr;
 		}
 	}
+
+	blitModTextures(image);
 
 	if(stitchResult != nullptr)
 	{
@@ -374,6 +424,154 @@ Texture *PreStitchedTextureMap::getStitchedTexture()
 	return stitchResult;
 }
 
+void PreStitchedTextureMap::allocateModTextureCells()
+{	// Voxel - Create the mod cells in the base atlas so the game actually knows to use them
+	// Otherwise the game will just ignore the "empty cells" since theyre not already defined
+	const vector<RubyModTexture> &requests = RubyLoader::getModTextures();
+	bool taken[ATLAS_ROWS][ATLAS_COLUMNS];
+	const bool terrainAtlas = (iconType == Icon::TYPE_TERRAIN);
+	const char *atlasName = terrainAtlas ? "terrain" : "items";
+
+	int lastUsedRow = -1;
+	int next = (lastUsedRow + 1) * ATLAS_COLUMNS;
+	int packedFirstRow = -1;
+	int packedLastRow = -1;
+	int packed = 0;
+
+	if (m_modTexturesAllocated) return;
+	m_modTexturesAllocated = true;
+	if (iconType != Icon::TYPE_TERRAIN && iconType != Icon::TYPE_ITEM) return;
+	if (requests.empty()) return;
+
+	for (int row = 0; row < ATLAS_ROWS; ++row)
+	{
+		for (int col = 0; col < ATLAS_COLUMNS; ++col)
+		{
+			taken[row][col] = false;
+		}
+	}
+
+	for (auto &entry : texturesByName)
+	{
+		StitchedTexture *icon = static_cast<StitchedTexture *>(entry.second);
+
+		const int col0 = static_cast<int>(icon->getU0() * ATLAS_COLUMNS + 0.5f);
+		const int row0 = static_cast<int>(icon->getV0() * ATLAS_ROWS + 0.5f);
+		const int col1 = static_cast<int>(icon->getU1() * ATLAS_COLUMNS + 0.5f);
+		const int row1 = static_cast<int>(icon->getV1() * ATLAS_ROWS + 0.5f);
+
+		for (int row = row0; row < row1 && row < ATLAS_ROWS; ++row)
+		{
+			if (row < 0) continue;
+
+			for (int col = col0; col < col1 && col < ATLAS_COLUMNS; ++col)
+			{
+				if (col >= 0) taken[row][col] = true;
+			}
+
+			if (row > lastUsedRow) lastUsedRow = row;
+		}
+	}
+
+	for (auto &request : requests)
+	{	// Put them below all the built-in textures so nothing overlaps
+		if (request.block != terrainAtlas) continue;
+
+		const wstring name = RubyPaths::toWide(request.iconName);
+
+		if (texturesByName.find(name) != texturesByName.end()) continue;
+
+		int cell = -1;
+
+		for (int i = next; i < ATLAS_ROWS * ATLAS_COLUMNS; ++i)
+		{
+			const int row = i / ATLAS_COLUMNS;
+			const int col = i % ATLAS_COLUMNS;
+
+			if (!taken[row][col])
+			{
+				taken[row][col] = true;
+				cell = i;
+				next = i + 1;
+				break;
+			}
+		}
+
+		vector<int> pixels;
+
+		if (cell < 0)
+		{	// If the atlas is full, it falls back to vanilla textures
+			// I should expand the atlas sizes soon...
+			app.DebugPrintf("Ruby Launcher: the %s atlas is full...\n", atlasName);
+		}
+		else if (!request.filePath.empty() && loadModTextures(RubyPaths::toWide(request.filePath), request.iconName, pixels))
+		{
+			ModTextureCell modTexture;
+			modTexture.name = name;
+			modTexture.row = cell / ATLAS_COLUMNS;
+			modTexture.col = cell % ATLAS_COLUMNS;
+			modTexture.pixels.swap(pixels);
+			modTextures.push_back(modTexture);
+			texturesByName[name] = new SimpleIcon(name, textureFileBaseName(RubyPaths::toWide(request.filePath)), static_cast<float>(modTexture.col) / ATLAS_COLUMNS, static_cast<float>(modTexture.row) / ATLAS_ROWS, static_cast<float>(modTexture.col + 1) / ATLAS_COLUMNS, static_cast<float>(modTexture.row + 1) / ATLAS_ROWS);
+
+			++packed;
+			if (packedFirstRow < 0) packedFirstRow = modTexture.row;
+			packedLastRow = modTexture.row;
+
+			app.DebugPrintf("Ruby Launcher: '%s' in the %s atlas, row %d, column %d\n", request.iconName.c_str(), atlasName, modTexture.row, modTexture.col);
+			continue;
+		}
+
+		registerModTextureFallback(name, RubyPaths::toWide(request.fallback));
+	}
+}
+
+void PreStitchedTextureMap::blitModTextures(BufferedImage *image)
+{	// Render the mod textures in the base atlases with the cells they get
+	if (image == nullptr || modTextures.empty()) return;
+
+	const int atlasWidth = image->getWidth();
+	const int atlasHeight = image->getHeight();
+
+	for (auto &modTexture : modTextures)
+	{
+		if (modTexture.pixels.empty()) continue;
+
+		vector<int> level = modTexture.pixels;
+		int cellSize = ATLAS_CELL;
+
+		for (int l = 0; l < 10; ++l)
+		{
+			const int levelWidth = atlasWidth >> l;
+			const int levelHeight = atlasHeight >> l;
+			const int x = modTexture.col * cellSize;
+			const int y = modTexture.row * cellSize;
+			int *dst = image->getData(l);
+
+			if (dst == nullptr || levelWidth <= 0 || levelHeight <= 0 || cellSize <= 0) break;
+
+			for (int row = 0; row < cellSize; ++row)
+			{
+				memcpy(dst + (y + row) * levelWidth + x, level.data() + row * cellSize, cellSize * sizeof(int));
+			}
+
+			if (cellSize <= 1) break;
+
+			level = downscaleHalf(level, cellSize);
+			cellSize /= 2;
+		}
+	}
+}
+
+void PreStitchedTextureMap::registerModTextureFallback(const wstring &name, const wstring &fallbackName)
+{
+	auto it = texturesByName.find(fallbackName);
+	if (it == texturesByName.end()) return;
+
+	StitchedTexture *fallback = static_cast<StitchedTexture *>(it->second);
+	texturesByName[name] = new SimpleIcon(name, fallback->m_fileName, fallback->getU0(), fallback->getV0(), fallback->getU1(), fallback->getV1());
+}
+
 // 4J Stu - register is a reserved keyword in C++
 Icon *PreStitchedTextureMap::registerIcon(const wstring &name)
 {
@@ -416,7 +614,7 @@ Icon *PreStitchedTextureMap::getMissingIcon()
 #define ADD_ICON(row, column, name) (texturesByName[name] =	new SimpleIcon(name,name,horizRatio*column,vertRatio*row,horizRatio*(column+1),vertRatio*(row+1)));
 #define ADD_ICON_WITH_NAME(row, column, name, filename) (texturesByName[name] =	new SimpleIcon(name,filename,horizRatio*column,vertRatio*row,horizRatio*(column+1),vertRatio*(row+1)));
 #define ADD_ICON_SIZE(row, column, name, height, width) (texturesByName[name] =	new SimpleIcon(name,name,horizRatio*column,vertRatio*row,horizRatio*(column+width),vertRatio*(row+height)));
-// Voxel - for the non-vanilla textures
+// Voxel - for the Hellish Ends-specific textures
 #define ADD_MOD_ICON(row, column, name) (texturesByName[name] =	new SimpleIcon(name,name,horizRatio*column,vertRatio*row,horizRatio*(column+1),vertRatio*(row+1)), moddedCells.push_back(std::make_pair(row, column)));
 
 void PreStitchedTextureMap::loadUVs()
@@ -709,7 +907,7 @@ void PreStitchedTextureMap::loadUVs()
 		//ADD_ICON(15,		14,	L"record_13")
 		//ADD_ICON(15,		15,	L"record_cat")
 
-		// Modded Items
+		// HE Items
 		ADD_MOD_ICON(16,		0,	L"nethanium_helmet")
 		ADD_MOD_ICON(16,		1,	L"nethanium_chestplate")
 		ADD_MOD_ICON(16,		2,	L"nethanium_leggings")
@@ -1248,7 +1446,7 @@ void PreStitchedTextureMap::loadUVs()
 		ADD_ICON(17,	14,	L"hardened_clay_stained_white");
 		ADD_ICON(17,	15,	L"hardened_clay_stained_yellow");
 
-		// Modded Blocks
+		// HE Blocks
 		ADD_MOD_ICON(18,	0,	L"nether_log_top");
 		ADD_MOD_ICON(18,	1,	L"planks_nether");
 		ADD_MOD_ICON(18,	2,	L"nether_vine");

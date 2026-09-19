@@ -1067,6 +1067,66 @@ int UIScene_LoadMenu::CheckResetNetherReturned(void *pParam,int iPad,C4JStorage:
 	return 0;
 }
 
+int UIScene_LoadMenu::CheckResetAetherReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
+{
+	UIScene_LoadMenu* pClass = static_cast<UIScene_LoadMenu *>(pParam);
+
+	if(result==C4JStorage::EMessage_ResultDecline) 
+	{
+		pClass->LaunchGame();
+	}
+	else if(result==C4JStorage::EMessage_ResultAccept)
+	{
+		pClass->m_MoreOptionsParams.bResetAether=FALSE;
+		pClass->LaunchGame();
+	}
+	else
+	{
+		pClass->m_bIgnoreInput=false;
+	}
+	return 0;
+}
+
+int UIScene_LoadMenu::CheckResetEndReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
+{
+	UIScene_LoadMenu* pClass = static_cast<UIScene_LoadMenu *>(pParam);
+
+	if(result==C4JStorage::EMessage_ResultDecline) 
+	{
+		pClass->LaunchGame();
+	}
+	else if(result==C4JStorage::EMessage_ResultAccept)
+	{
+		pClass->m_MoreOptionsParams.bResetEnd=FALSE;
+		pClass->LaunchGame();
+	}
+	else
+	{
+		pClass->m_bIgnoreInput=false;
+	}
+	return 0;
+}
+
+int UIScene_LoadMenu::CheckResetOuterEndReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
+{
+	UIScene_LoadMenu* pClass = static_cast<UIScene_LoadMenu *>(pParam);
+
+	if(result==C4JStorage::EMessage_ResultDecline) 
+	{
+		pClass->LaunchGame();
+	}
+	else if(result==C4JStorage::EMessage_ResultAccept)
+	{
+		pClass->m_MoreOptionsParams.bResetOuterEnd=FALSE;
+		pClass->LaunchGame();
+	}
+	else
+	{
+		pClass->m_bIgnoreInput=false;
+	}
+	return 0;
+}
+
 int UIScene_LoadMenu::CheckResetNurealmReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
 	UIScene_LoadMenu* pClass = static_cast<UIScene_LoadMenu *>(pParam);
@@ -1540,14 +1600,38 @@ void UIScene_LoadMenu::checkStateAndStartGame()
 
 void UIScene_LoadMenu::checkResetsAndStartGame()
 {
-	// Confirm the resets before launching, one at a time, mirroring the original "Reset Nether" handling.
+	// Voxel - one for each dimension now (except the Overworld obviously)
 	if(m_MoreOptionsParams.bResetNether==TRUE)
+	{
+		UINT uiIDA[2];
+		uiIDA[0]=IDS_DONT_RESET_NETHER;
+		uiIDA[1]=IDS_RESET_NETHER;
+
+		ui.RequestAlertMessage(IDS_RESET_NETHER, IDS_RESET_NETHER_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
+	}
+	else if(m_MoreOptionsParams.bResetAether==TRUE)
+	{
+		UINT uiIDA[2];
+		uiIDA[0]=IDS_DONT_RESET_AETHER;
+		uiIDA[1]=IDS_RESET_AETHER;
+
+		ui.RequestAlertMessage(IDS_RESET_AETHER, IDS_RESET_AETHER_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetAetherReturned,this);
+	}
+	else if(m_MoreOptionsParams.bResetEnd==TRUE)
 	{
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_DONT_RESET_END;
 		uiIDA[1]=IDS_RESET_END;
 
-		ui.RequestAlertMessage(IDS_RESET_END, IDS_RESET_END_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetNetherReturned,this);
+		ui.RequestAlertMessage(IDS_RESET_END, IDS_RESET_END_INFO, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetEndReturned,this);
+	}
+	else if(m_MoreOptionsParams.bResetOuterEnd==TRUE)
+	{
+		UINT uiIDA[2];
+		uiIDA[0]=IDS_DONT_RESET_OUTER_END;
+		uiIDA[1]=IDS_RESET_OUTER_END;
+
+		ui.RequestAlertMessage(IDS_RESET_OUTER_END, IDS_DONT_RESET_OUTER_END, uiIDA, 2, m_iPad,&UIScene_LoadMenu::CheckResetOuterEndReturned,this);
 	}
 	else if(m_MoreOptionsParams.bResetNurealm==TRUE)
 	{

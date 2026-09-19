@@ -37,6 +37,7 @@ set_target_properties(Minecraft.Server PROPERTIES
 
 target_link_libraries(Minecraft.Server PRIVATE
   Minecraft.World
+  Ruby.Launcher
   d3d11
   d3dcompiler
   XInput9_1_0

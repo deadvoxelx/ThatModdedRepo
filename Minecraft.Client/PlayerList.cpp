@@ -7,6 +7,7 @@
 #include "Settings.h"
 #include "ServerLevel.h"
 #include "ServerChunkCache.h"
+#include "Host\RubyLauncherHost.h"
 #include "ServerPlayer.h"
 #include "ServerPlayerGameMode.h"
 #include "ServerConnection.h"
@@ -242,6 +243,8 @@ bool PlayerList::placeNewPlayer(Connection *connection, shared_ptr<ServerPlayer>
 	//shared_ptr<PlayerConnection> playerConnection = shared_ptr<PlayerConnection>(new PlayerConnection(server, connection, player));
 	player->connection = playerConnection;	// Used to be assigned in PlayerConnection ctor but moved out so we can use shared_ptr
 
+	RubyLoader::firePlayerConnection(player.get());
+
 	// 4J Added to store UGC settings
 	playerConnection->m_friendsOnlyUGC = packet->m_friendsOnlyUGC;
 	playerConnection->m_offlineXUID = packet->m_offlineXuid;
@@ -291,6 +294,8 @@ bool PlayerList::placeNewPlayer(Connection *connection, shared_ptr<ServerPlayer>
 
 	player->doTick(true, true, false);	// 4J - added - force sending of the nearest chunk before the player is teleported, so we have somewhere to arrive on...
 	playerConnection->teleport(player->x, player->y, player->z, player->yRot, player->xRot);
+
+	RubyLoader::firePlayerJoin(player.get());
 
 	server->getConnection()->addPlayerConnection(playerConnection);
 	playerConnection->send(std::make_shared<SetTimePacket>(level->getGameTime(), level->getDayTime(), level->getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)));
@@ -428,7 +433,7 @@ void PlayerList::validatePlayerSpawnPosition(shared_ptr<ServerPlayer> player)
 	// Finding a valid, safe spawn point is potentially computationally expensive (may have to hunt through a large part
 	// of the nether) so move the player to their spawn position in the overworld so that they do not lose their inventory
 	// 4J Stu - We also use this mechanism to force a spawn point in the overworld for players who were in the save when the reset nether option was applied
-	if( (level->dimension->id == -1 && player->y > 125) || ((level->dimension->id == 2 || level->dimension->id == 4) && player->y > 1000000.0) )
+	if( (level->dimension->id == -1 && player->y > 125) || ((level->dimension->id == 1 || level->dimension->id == 2 || level->dimension->id == 3 || level->dimension->id == 4) && player->y > 1000000.0) )
 	{
 		app.DebugPrintf("Player in dimension %d tried to spawn at y = %f, moving to overworld\n", level->dimension->id, player->y);
 		player->setLevel(server->getLevel(0));

@@ -69,6 +69,8 @@ public:
 	static const int ANY_AUX_VALUE = -1;
 
 private: 
+	int m_ingredientsCount = 0; 
+
 	static Recipes *instance;
 
 	vector <Recipy *> *recipies;
@@ -76,7 +78,9 @@ private:
 public:
 	static void staticCtor();
 
-public: 
+	void addRecipe(Recipy *recipe);
+	void rebuildIngredientsArray();
+ 
 	static Recipes *getInstance() 
 	{
 		return instance;
@@ -99,7 +103,7 @@ public:
 
 private:
 	void buildRecipeIngredientsArray();
-	Recipy::INGREDIENTS_REQUIRED *m_pRecipeIngredientsRequired;
+	Recipy::INGREDIENTS_REQUIRED *m_pRecipeIngredientsRequired = nullptr;
 
 public:
 	static ToolRecipies			*pToolRecipies;

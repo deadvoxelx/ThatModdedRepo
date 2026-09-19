@@ -3,7 +3,11 @@
 #include "BirchFeature.h"
 #include "net.minecraft.world.level.tile.h"
 
-BirchFeature::BirchFeature(bool doUpdate) : Feature(doUpdate)
+BirchFeature::BirchFeature(bool doUpdate) : Feature(doUpdate), baseHeight(9), trunkType(TreeTile::BIRCH_TRUNK), leafType(LeafTile::BIRCH_LEAF), trunkTile(Tile::treeTrunk_Id), leafTile(Tile::leaves_Id)
+{
+}
+
+BirchFeature::BirchFeature(bool doUpdate, int baseHeight, int trunkType, int leafType, int trunkTile, int leafTile) : Feature(doUpdate), baseHeight(baseHeight), trunkType(trunkType), leafType(leafType), trunkTile(trunkTile), leafTile(leafTile)
 {
 }
 
@@ -21,10 +25,10 @@ bool BirchFeature::branch(Level *level, Random *random, int x, int y, int z, int
     	z += directionZ;
     	i -= directionX;
     	k -= directionZ;
-    	if (level->getTile(x, y, z) == Tile::leaves_Id)
+    	if (level->getTile(x, y, z) == leafTile)
 		{
-        	placeBlock(level, x, y, z, Tile::treeTrunk_Id, TreeTile::BIRCH_TRUNK);
-        	placeBlock(level, i, y, k, Tile::treeTrunk_Id, TreeTile::BIRCH_TRUNK);
+        	placeBlock(level, x, y, z, trunkTile, trunkType);
+        	placeBlock(level, i, y, k, trunkTile, trunkType);
     	} 
     } 
     return true;
@@ -32,12 +36,12 @@ bool BirchFeature::branch(Level *level, Random *random, int x, int y, int z, int
 
 bool BirchFeature::place(Level *level, Random *random, int x, int y, int z)
 {
-    int belowTile = level->getTile(x, y - 1, z);
-	if (belowTile != Tile::aetherGrass_Id && belowTile != Tile::aetherDirt_Id && belowTile != Tile::grass_Id && belowTile != Tile::dirt_Id) return false;
+    Material *belowMaterial = level->getMaterial(x, y - 1, z);
+	if (belowMaterial != Material::grass && belowMaterial != Material::dirt) return false;
 	
 	placeBlock(level, x, y - 1, z, Tile::dirt_Id, 0);
  
-    int height = 9;
+    int height = baseHeight;
     for (int x1 = x - 2; x1 < x + 3; x1++)
 	{
     	for (int y1 = y + 5; y1 < y + 12; y1++)
@@ -46,7 +50,7 @@ bool BirchFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
         		if ((x1 - x) * (x1 - x) + (y1 - y - 8) * (y1 - y - 8) + (z1 - z) * (z1 - z) < 12 + random->nextInt(7))
 				{
-					placeBlock(level, x1, y1, z1, Tile::leaves_Id, LeafTile::BIRCH_LEAF);
+					placeBlock(level, x1, y1, z1, leafTile, leafType);
 				} 
         	} 
     	} 
@@ -56,7 +60,7 @@ bool BirchFeature::place(Level *level, Random *random, int x, int y, int z)
 	{
 		branch(level, random, x, y + n, z, n / 4 - 1);
 		int t = level->getTile(x, y + n, z);
-		if (t == 0 || t == Tile::leaves_Id || t == Tile::tallgrass_Id) placeBlock(level, x, y + n, z, Tile::treeTrunk_Id, TreeTile::BIRCH_TRUNK);
+        if (t == 0 || t == leafTile || t == Tile::tallgrass_Id) placeBlock(level, x, y + n, z, trunkTile, trunkType);
 	}
     return true;
 }

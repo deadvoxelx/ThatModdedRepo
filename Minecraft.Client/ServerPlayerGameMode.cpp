@@ -3,6 +3,7 @@
 #include "ServerLevel.h"
 #include "ServerPlayer.h"
 #include "PlayerConnection.h"
+#include "Host\RubyLauncherHost.h"
 #include "..\Minecraft.World\net.minecraft.world.level.tile.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.player.h"
 #include "..\Minecraft.World\net.minecraft.world.item.h"
@@ -248,6 +249,11 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z)
 	int t = level->getTile(x, y, z);
 	int data = level->getData(x, y, z);
 
+	if (RubyLoader::firePlayerBlockBreak(dynamic_pointer_cast<ServerPlayer>(player).get(), x, y, z, t, data))
+	{
+		return false;
+	}
+
 	level->levelEvent(player, LevelEvent::PARTICLES_DESTROY_BLOCK, x, y, z, t + (level->getData(x, y, z) << Tile::TILE_NUM_SHIFT));
 
 	// 4J - In creative mode, the point where we need to tell the renderer that we are about to destroy a tile via destroyingTileAt is quite complicated.
@@ -317,6 +323,8 @@ bool ServerPlayerGameMode::useItem(shared_ptr<Player> player, Level *level, shar
 {
 	if(!player->isAllowedToUse(item)) return false;
 
+	RubyLoader::fireItemInteract(item.get(), dynamic_cast<ServerLevel *>(level), dynamic_pointer_cast<ServerPlayer>(player).get());
+
 	int oldCount = item->count;
 	int oldAux = item->getAuxValue();
 	shared_ptr<ItemInstance> itemInstance = item->use(level, player);
@@ -366,6 +374,12 @@ bool ServerPlayerGameMode::useItemOn(shared_ptr<Player> player, Level *level, sh
 	}
 
 	if (item == nullptr || !player->isAllowedToUse(item)) return false;
+
+	if (RubyLoader::firePlayerBlockPlace(dynamic_pointer_cast<ServerPlayer>(player).get(), x, y, z, item.get(), t))
+	{
+		return false;
+	}
+
 	if (isCreative())
 	{
 		int aux = item->getAuxValue();

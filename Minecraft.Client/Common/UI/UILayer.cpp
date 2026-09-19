@@ -299,6 +299,14 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void *initData)
 	case eUIScene_ControlsMenu:
 		newScene = new UIScene_ControlsMenu(iPad, initData, this);
 		break;
+#ifdef _WINDOWS64
+	case eUIScene_KeybindsMenu:
+		newScene = new UIScene_KeybindsMenu(iPad, initData, this);
+		break;
+	case eUIScene_ModsMenu:
+		newScene = new UIScene_ModsMenu(iPad, initData, this);
+		break;
+#endif
 	case eUIScene_ReinstallMenu:
 		newScene = new UIScene_ReinstallMenu(iPad, initData, this);
 		break;

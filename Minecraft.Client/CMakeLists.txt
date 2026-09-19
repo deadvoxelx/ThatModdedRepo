@@ -51,6 +51,7 @@ set_target_properties(Minecraft.Client PROPERTIES
 
 target_link_libraries(Minecraft.Client PRIVATE
   Minecraft.World
+  Ruby.Launcher
   d3d11
   d3dcompiler
   XInput9_1_0

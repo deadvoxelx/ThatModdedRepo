@@ -20,7 +20,6 @@ UIScene_HelpAndOptionsMenu::UIScene_HelpAndOptionsMenu(int iPad, void *initData,
 
 	m_buttons[BUTTON_HAO_WIKI].init(IDS_WIKI,BUTTON_HAO_WIKI);
 	m_buttons[BUTTON_HAO_SETTINGS].init(IDS_SETTINGS,BUTTON_HAO_SETTINGS);
-	m_buttons[BUTTON_HAO_AUDIO].init(IDS_AUDIO,BUTTON_HAO_AUDIO);
 	m_buttons[BUTTON_HAO_GRAPHICS].init(IDS_GRAPHICS,BUTTON_HAO_GRAPHICS);
 	m_buttons[BUTTON_HAO_UI].init(IDS_USER_INTERFACE,BUTTON_HAO_UI);
 	m_buttons[BUTTON_HAO_SENSITIVITY].init(IDS_SENSITIVITY,BUTTON_HAO_SENSITIVITY);
@@ -33,12 +32,20 @@ UIScene_HelpAndOptionsMenu::UIScene_HelpAndOptionsMenu(int iPad, void *initData,
 	{
 		m_buttons[BUTTON_HAO_CREDITS].init(IDS_CREDITS,BUTTON_HAO_CREDITS);
 	}
+	m_buttons[BUTTON_HAO_MODS].init(IDS_MODS_MENU,BUTTON_HAO_MODS);
 	
 	if(app.GetLocalPlayerCount()>1)
 	{
 		// no credits in splitscreen
 		removeControl( &m_buttons[BUTTON_HAO_CREDITS], false);
 	}
+
+	WCHAR TempString[256];	
+	swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_MUSIC ),app.GetGameSettings(m_iPad,eGameSetting_MusicVolume));	
+	m_sliderMusic.init(TempString,eControl_Music,0,100,app.GetGameSettings(m_iPad,eGameSetting_MusicVolume));
+	
+	swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_SOUND ),app.GetGameSettings(m_iPad,eGameSetting_SoundFXVolume));	
+	m_sliderSound.init(TempString,eControl_Sound,0,100,app.GetGameSettings(m_iPad,eGameSetting_SoundFXVolume));
 
 	// 4J-TomK Moved horizontal resize check to the end to prevent horizontal scaling for buttons that might get removed anyways (debug options for example)
 	doHorizontalResizeCheck();
@@ -119,7 +126,34 @@ void UIScene_HelpAndOptionsMenu::handleInput(int iPad, int key, bool repeat, boo
 
 	case ACTION_MENU_UP:
 	case ACTION_MENU_DOWN:
+	case ACTION_MENU_LEFT:
+	case ACTION_MENU_RIGHT:
 		sendInputToMovie(key, repeat, pressed, released);
+		break;
+	}
+}
+
+void UIScene_HelpAndOptionsMenu::handleSliderMove(F64 sliderId, F64 currentValue)
+{
+	WCHAR TempString[256];
+	int value = static_cast<int>(currentValue);
+	switch(static_cast<int>(sliderId))
+	{
+	case eControl_Music:
+		m_sliderMusic.handleSliderMove(value);
+		
+		app.SetGameSettings(m_iPad,eGameSetting_MusicVolume,value);	
+		swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_MUSIC ),value);	
+		m_sliderMusic.setLabel(TempString);
+
+		break;
+	case eControl_Sound:
+		m_sliderSound.handleSliderMove(value);
+		
+		app.SetGameSettings(m_iPad,eGameSetting_SoundFXVolume,value);
+		swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_SOUND ),value);
+		m_sliderSound.setLabel(TempString);
+
 		break;
 	}
 }
@@ -135,9 +169,6 @@ void UIScene_HelpAndOptionsMenu::handlePress(F64 controlId, F64 childId)
 	case BUTTON_HAO_SETTINGS:
 		ui.NavigateToScene(m_iPad, eUIScene_SettingsOptionsMenu);
 		break;
-	case BUTTON_HAO_AUDIO:
-		ui.NavigateToScene(m_iPad, eUIScene_SettingsAudioMenu);
-		break;
 	case BUTTON_HAO_GRAPHICS:
 		ui.NavigateToScene(m_iPad, eUIScene_SettingsGraphicsMenu);
 		break;
@@ -149,11 +180,7 @@ void UIScene_HelpAndOptionsMenu::handlePress(F64 controlId, F64 childId)
 		break;
 	case BUTTON_HAO_CONTROLS:
 #ifdef _WINDOWS64
-		ui.CloseAllPlayersScenes();
-		m_parentLayer->removeComponent(eUIComponent_Panorama);
-		m_parentLayer->removeComponent(eUIComponent_Logo);
-		m_parentLayer->removeComponent(eUIComponent_MenuBackground);
-		Minecraft::GetInstance()->setScreen(new ControlsScreen(nullptr, Minecraft::GetInstance()->options));
+		ui.NavigateToScene(m_iPad, eUIScene_KeybindsMenu);
 #else
 		ui.NavigateToScene(m_iPad, eUIScene_ControlsMenu);
 #endif
@@ -167,6 +194,11 @@ void UIScene_HelpAndOptionsMenu::handlePress(F64 controlId, F64 childId)
 		{
 			ui.NavigateToScene(m_iPad, eUIScene_Credits);
 		}
+		break;
+	case BUTTON_HAO_MODS:
+#ifdef _WINDOWS64
+		ui.NavigateToScene(m_iPad, eUIScene_ModsMenu);
+#endif
 		break;
 	}
 }

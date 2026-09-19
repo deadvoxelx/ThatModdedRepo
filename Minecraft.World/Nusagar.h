@@ -34,12 +34,14 @@ private:
 	int spinTicks;
 
 	static int s_aliveCount;
+	static bool s_bossDefeated;
 
 public:
 	eINSTANCEOF GetType() { return eTYPE_NUSAGAR; }
 	static Entity *create(Level *level){ return new Nusagar(level); }
-	static bool isBossFightActive() { return s_aliveCount > 0; }	// For triggering the bossfight music
-	static void resetBossFightState() { s_aliveCount = 0; }			// See Minecraft.cpp line 4649
+
+	static bool isBossFightActive() { return s_aliveCount > 0 && !s_bossDefeated; }
+	static void resetBossFightState() { s_aliveCount = 0; s_bossDefeated = false; }	// See Minecraft.cpp line 4649
 
 	Nusagar(Level *level);
 	~Nusagar();
@@ -50,6 +52,7 @@ public:
 	void setOriginPosition(int x, int y, int z);
 	virtual void aiStep();
 	virtual bool hurt(DamageSource *source, float dmg);
+	virtual void die(DamageSource *source);
 	bool isSpinning();
 	virtual void playerTouch(shared_ptr<Player> player);
 	virtual bool isPushable();

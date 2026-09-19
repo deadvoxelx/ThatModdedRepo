@@ -47,9 +47,8 @@ void ControlsScreen::buttonClicked(Button *button)
     }
     if (button->id == 200)
 	{
-        //minecraft->setScreen(lastScreen);
         ui.PlayUISFX(eSFX_Back);
-         minecraft->setScreen(lastScreen);
+        minecraft->setScreen(lastScreen);
     }
 	else
 	{

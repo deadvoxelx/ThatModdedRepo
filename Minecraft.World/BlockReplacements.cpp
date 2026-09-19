@@ -6,7 +6,7 @@ byteArray BlockReplacements::replacements = byteArray(512);
 
 void BlockReplacements::staticCtor()
 {
-    for (int i = 0; i < 512; i++)
+    for (int i = 0; i < 256; i++)
 	{
         byte b = static_cast<byte>(i);
         if (b != 0 && Tile::tiles[b & 0x1ff] == nullptr)
@@ -21,6 +21,7 @@ void BlockReplacements::replace(byteArray blocks)
 {
     for (unsigned int i = 0; i < blocks.length; i++)
 	{
+		if ((blocks[i] & 0x1ff) >= 256) continue;
         blocks[i] = replacements[blocks[i] & 0x1ff];
     }
 }

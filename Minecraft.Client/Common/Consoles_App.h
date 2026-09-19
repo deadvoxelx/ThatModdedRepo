@@ -157,6 +157,8 @@ public:
 
 	static			LPCWSTR			GetString(int iID);
 
+	StringTable		*getStringTable()																		{ return m_stringTable; }
+
 	eGameMode		GetGameMode()																										{ return m_eGameMode;}
 	void			SetGameMode(eGameMode eMode)																						{ m_eGameMode=eMode;}
 
@@ -736,6 +738,15 @@ public:
 	void			SetResetNether(bool bResetNether) {m_bResetNether=bResetNether;}
 	bool			GetResetNether() {return m_bResetNether;}
 
+	void			SetResetAether(bool bResetAether) {m_bResetAether=bResetAether;}
+	bool			GetResetAether() {return m_bResetAether;}
+
+	void			SetResetEnd(bool bResetEnd) {m_bResetEnd=bResetEnd;}
+	bool			GetResetEnd() {return m_bResetEnd;}
+
+	void			SetResetOuterEnd(bool bResetOuterEnd) {m_bResetOuterEnd=bResetOuterEnd;}
+	bool			GetResetOuterEnd() {return m_bResetOuterEnd;}
+
 	void			SetResetNurealm(bool bResetNurealm) {m_bResetNurealm=bResetNurealm;}
 	bool			GetResetNurealm() {return m_bResetNurealm;}
 
@@ -893,6 +904,9 @@ private:
 
 
 	bool m_bResetNether;
+	bool m_bResetAether;
+	bool m_bResetEnd;
+	bool m_bResetOuterEnd;
 	bool m_bResetNurealm;
 	DWORD m_dwRequiredTexturePackID;
 #ifdef _XBOX_ONE

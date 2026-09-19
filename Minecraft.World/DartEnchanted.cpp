@@ -447,6 +447,7 @@ void DartEnchanted::addAdditonalSaveData(CompoundTag *tag)
 	tag->putShort(L"yTile", static_cast<short>(yTile));
 	tag->putShort(L"zTile", static_cast<short>(zTile));
 	tag->putByte(L"inTile", static_cast<byte>(lastTile));
+	tag->putShort(L"inTileId", static_cast<short>(lastTile));
 	tag->putByte(L"inData", static_cast<byte>(lastData));
 	tag->putByte(L"shake", static_cast<byte>(shakeTime));
 	tag->putByte(L"inGround", static_cast<byte>(inGround ? 1 : 0));
@@ -459,7 +460,14 @@ void DartEnchanted::readAdditionalSaveData(CompoundTag *tag)
 	xTile = tag->getShort(L"xTile");
 	yTile = tag->getShort(L"yTile");
 	zTile = tag->getShort(L"zTile");
-	lastTile = tag->getByte(L"inTile") & 0x1ff;
+	if (tag->contains(L"inTileId"))
+	{
+		lastTile = tag->getShort(L"inTileId") & 0x1ff;
+	}
+	else
+	{
+		lastTile = tag->getByte(L"inTile") & 0x1ff;
+	}
 	lastData = tag->getByte(L"inData") & 0xff;
 	shakeTime = tag->getByte(L"shake") & 0xff;
 	inGround = tag->getByte(L"inGround") == 1;

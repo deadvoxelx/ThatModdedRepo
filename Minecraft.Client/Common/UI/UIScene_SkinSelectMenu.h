@@ -50,6 +50,10 @@ private:
 	UIControl_Label m_labelSkinName, m_labelSkinOrigin;
 	UIControl_Label m_labelSelected;
 	UIControl m_controlSkinNamePlate, m_controlSelectedPanel, m_controlIggyCharacters, m_controlTimer;
+#ifdef _WINDOWS64
+	UIControl m_controlTabSelector;
+	UIControl m_tabPackLeft, m_tabPackCentre, m_tabPackRight;
+#endif
 #ifdef __PSVITA__
 	UIControl_Touch m_TouchTabLeft, m_TouchTabRight, m_TouchTabCenter, m_TouchIggyCharacters;
 #endif
@@ -74,6 +78,14 @@ private:
 		UI_END_MAP_CHILD_ELEMENTS()
 
 		UI_MAP_ELEMENT( m_controlTimer, "Timer" )
+#ifdef _WINDOWS64
+		UI_MAP_ELEMENT( m_controlTabSelector, "TabSelector")
+		UI_BEGIN_MAP_CHILD_ELEMENTS( m_controlTabSelector )
+			UI_MAP_ELEMENT( m_tabPackLeft, "Left")
+			UI_MAP_ELEMENT( m_tabPackCentre, "Center")
+			UI_MAP_ELEMENT( m_tabPackRight, "Right")
+		UI_END_MAP_CHILD_ELEMENTS()
+#endif
 
 		// 4J Stu - These aren't really used a AS3 controls, but adding here means that they get ticked by the scene
 		UI_MAP_ELEMENT( m_controlIggyCharacters, "IggyCharacters" )
@@ -139,6 +151,9 @@ protected:
 public:
 	// INPUT
 	virtual void handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled);
+#ifdef _WINDOWS64
+	virtual bool handleMouseClick(F32 x, F32 y);
+#endif
 
 	virtual void customDraw(IggyCustomDrawCallbackRegion *region);
 

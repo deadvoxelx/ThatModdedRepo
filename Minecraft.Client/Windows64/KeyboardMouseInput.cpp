@@ -244,6 +244,9 @@ void KeyboardMouseInput::OnRawMouseDelta(int dx, int dy)
 
 bool KeyboardMouseInput::IsKeyDown(int vkCode) const
 {
+	if (vkCode >= 0 && vkCode < MAX_MOUSE_BUTTONS)
+		return m_mouseButtonDown[vkCode];
+
 	if (vkCode == VK_SHIFT || vkCode == VK_CONTROL || vkCode == VK_MENU)
 		return IsModifierKeyDown(m_keyDown, vkCode);
 
@@ -254,6 +257,9 @@ bool KeyboardMouseInput::IsKeyDown(int vkCode) const
 
 bool KeyboardMouseInput::IsKeyPressed(int vkCode) const
 {
+	if (vkCode >= 0 && vkCode < MAX_MOUSE_BUTTONS)
+		return m_mouseBtnPressed[vkCode];
+
 	if (vkCode == VK_SHIFT || vkCode == VK_CONTROL || vkCode == VK_MENU)
 		return IsModifierKeyDown(m_keyPressed, vkCode);
 
@@ -264,6 +270,9 @@ bool KeyboardMouseInput::IsKeyPressed(int vkCode) const
 
 bool KeyboardMouseInput::IsKeyReleased(int vkCode) const
 {
+	if (vkCode >= 0 && vkCode < MAX_MOUSE_BUTTONS)
+		return m_mouseBtnReleased[vkCode];
+
 	if (vkCode == VK_SHIFT || vkCode == VK_CONTROL || vkCode == VK_MENU)
 		return IsModifierKeyDown(m_keyReleased, vkCode);
 

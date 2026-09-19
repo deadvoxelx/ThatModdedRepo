@@ -5,6 +5,7 @@
 #include "ServerPlayerGameMode.h"
 #include "PlayerList.h"
 #include "MinecraftServer.h"
+#include "Host\RubyLauncherHost.h"
 #include "..\Minecraft.World\net.minecraft.commands.h"
 #include "..\Minecraft.World\net.minecraft.world.entity.item.h"
 #include "..\Minecraft.World\net.minecraft.world.level.h"
@@ -302,11 +303,18 @@ void PlayerConnection::handleMovePlayer(shared_ptr<MovePlayerPacket> packet)
 		}
 
 		// 4J Stu Added to stop server player y pos being different than client when flying
+		const bool bWasFlying = player->abilities.flying;
 		if(player->abilities.mayfly || player->isAllowedToFly() )
 		{
 			player->abilities.flying = packet->isFlying;
 		}
 		else player->abilities.flying = false;
+
+		if (player->abilities.flying != bWasFlying)
+		{
+			if (player->abilities.flying) RubyLoader::fireFlightStarted(player.get());
+			else RubyLoader::fireFlightEnded(player.get());
+		}
 
 		player->doTick(false);
 		player->ySlideOffset = 0;
@@ -954,6 +962,8 @@ void PlayerConnection::handleInteract(shared_ptr<InteractPacket> packet)
 
 		if (packet->action == InteractPacket::INTERACT)
 		{
+			RubyLoader::fireItemInteractEntity(player->getSelectedItem().get(), target.get());
+
 			player->interact(target);
 		}
 		else if (packet->action == InteractPacket::ATTACK)

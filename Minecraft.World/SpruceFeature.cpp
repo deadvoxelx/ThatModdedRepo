@@ -3,14 +3,18 @@
 #include "net.minecraft.world.level.tile.h"
 #include "SpruceFeature.h"
 
-SpruceFeature::SpruceFeature(bool doUpdate) : Feature(doUpdate)
+SpruceFeature::SpruceFeature(bool doUpdate) : Feature(doUpdate), baseHeight(6), trunkType(TreeTile::DARK_TRUNK), leafType(LeafTile::EVERGREEN_LEAF), trunkTile(Tile::treeTrunk_Id), leafTile(Tile::leaves_Id)
+{
+}
+
+SpruceFeature::SpruceFeature(bool doUpdate, int baseHeight, int trunkType, int leafType, int trunkTile, int leafTile) : Feature(doUpdate), baseHeight(baseHeight), trunkType(trunkType), leafType(leafType), trunkTile(trunkTile), leafTile(leafTile)
 {
 }
 
 bool SpruceFeature::place(Level *level, Random *random, int x, int y, int z)
 {
     // pines can be quite tall
-    int treeHeight = random->nextInt(4) + 6;
+    int treeHeight = random->nextInt(4) + baseHeight;
     int trunkHeight = 1 + random->nextInt(2);
     int topHeight = treeHeight - trunkHeight;
     int leafRadius = 2 + random->nextInt(2);
@@ -53,7 +57,7 @@ bool SpruceFeature::place(Level *level, Random *random, int x, int y, int z)
                 if (yy >= 0 && yy < Level::maxBuildHeight)
 				{
                     int tt = level->getTile(xx, yy, zz);
-                    if (tt != 0 && tt != Tile::leaves_Id) free = false;
+                    if (tt != 0 && tt != leafTile) free = false;
                 }
 				else
 				{
@@ -66,8 +70,8 @@ bool SpruceFeature::place(Level *level, Random *random, int x, int y, int z)
     if (!free) return false;
 
     // must stand on ground
-    int belowTile = level->getTile(x, y - 1, z);
-    if ((belowTile != Tile::grass_Id && belowTile != Tile::dirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
+    Material *belowMaterial = level->getMaterial(x, y - 1, z);
+	if ((belowMaterial != Material::grass && belowMaterial != Material::dirt) || y >= Level::maxBuildHeight - treeHeight - 1 ) return false;
 
     placeBlock(level, x, y - 1, z, Tile::dirt_Id);
 
@@ -87,7 +91,7 @@ bool SpruceFeature::place(Level *level, Random *random, int x, int y, int z)
 			{
                 int zo = zz - (z);
                 if (abs(xo) == currentRadius && abs(zo) == currentRadius && currentRadius > 0) continue;
-                if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::leaves_Id, LeafTile::EVERGREEN_LEAF);
+                if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, leafTile, leafType);
             }
         }
 
@@ -110,7 +114,7 @@ bool SpruceFeature::place(Level *level, Random *random, int x, int y, int z)
     for (int hh = 0; hh < treeHeight - topOffset; hh++)
 	{
         int t = level->getTile(x, y + hh, z);
-        if (t == 0 || t == Tile::leaves_Id) placeBlock(level, x, y + hh, z, Tile::treeTrunk_Id, TreeTile::DARK_TRUNK);
+        if (t == 0 || t == leafTile) placeBlock(level, x, y + hh, z, trunkTile, trunkType);
     }
     return true;
 }
