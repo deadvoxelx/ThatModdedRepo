@@ -1046,8 +1046,7 @@ void IUIScene_CreativeMenu::staticCtor()
 }
 
 void IUIScene_CreativeMenu::appendModItems()
-{	// Pushing items to the end of the specified categories to make it clear where theyre at
-	// Bedslop addons and some Java mods are like that too
+{
 	const vector<RubyCreativeEntry> entries = RubyLoader::getCreativeEntries();
 
 	for (const RubyCreativeEntry &entry : entries)
@@ -1062,6 +1061,9 @@ void IUIScene_CreativeMenu::appendModItems()
 			break;
 		case RubyCreativeGroup_Tools:
 			group = eCreativeInventory_ToolsArmourWeapons;
+			break;
+		case RubyCreativeGroup_Decoration:
+			group = eCreativeInventory_Decoration;
 			break;
 		case RubyCreativeGroup_Materials:
 			group = eCreativeInventory_Materials;
