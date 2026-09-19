@@ -974,10 +974,7 @@ void PlayerConnection::handleInteract(shared_ptr<InteractPacket> packet)
 				//server.warn("Player " + player.getName() + " tried to attack an invalid entity");
 				return;
 			}
-			// 4J - dual-wield: the client flagged this as an offhand (left-hand) attack - use the offhand weapon's stats
-			player->leftHandSwing = packet->leftHand;
 			player->attack(target);
-			player->leftHandSwing = false;
 		}
 	}
 
