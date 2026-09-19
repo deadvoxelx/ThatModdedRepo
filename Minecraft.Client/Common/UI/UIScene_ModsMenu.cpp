@@ -10,7 +10,7 @@
 #include "Common/ModPaths.h"
 #include "Host/RubyLauncherHost.h"
 
-static const wchar_t *MODS_FOLDER_PATH = L"Windows64\\Mods";
+static const wchar_t *MODS_FOLDER_PATH = L"mods";
 static const wchar_t *ICON_TEXTURE_NAME = L"rubyLauncher";
 static const wchar_t *ICON_FILE = L"Common/res/1_2_2/gui/rubyLauncher.png";
 

@@ -37,7 +37,7 @@ namespace
 		if (!g_modsRootWide.empty())
 			return;
 
-		g_modsRootWide = executableDirectory() + L"\\Windows64\\Mods";
+		g_modsRootWide = executableDirectory() + L"\\mods";
 		g_modsRootNarrow = RubyPaths::toNarrow(g_modsRootWide);
 	}
 }
