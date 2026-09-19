@@ -21,5 +21,5 @@ SwampBiome::SwampBiome(int id) : Biome(id)
 
 Feature *SwampBiome::getTreeFeature(Random *random)
 {
-	return new SwampTreeFeature();
+	return new SwampTreeFeature(false);
 }

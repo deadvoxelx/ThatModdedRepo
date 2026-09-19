@@ -2,6 +2,7 @@
 #include "Color.h"
 #include "..\Minecraft.Client\Minecraft.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
+#include "net.minecraft.world.level.biome.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.entity.animal.h"
@@ -9,7 +10,7 @@
 #include "net.minecraft.world.entity.h"
 #include "Biome.h"
 #include "..\RubyLauncher\Registry\WorldGen\OreFeatureRegistry.h"
-#include "net.minecraft.world.level.biome.h"
+#include "..\RubyLauncher\Registry\WorldGen\TreeFeatureRegistry.h"
 
 Biome *Biome::biomes[256];
 
@@ -279,6 +280,7 @@ void Biome::decorate(Level *level, Random *random, int xo, int zo)
 {
 	decorator->decorate(level, random, xo, zo);
 	OreFeatureRegistry::decorateChunk(level, random, xo, zo, this);
+	TreeFeatureRegistry::decorateChunk(level, random, xo, zo, this);
 }
 
 typedef int (*BiomeColorGetter)(Biome *biome);

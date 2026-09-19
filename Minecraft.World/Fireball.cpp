@@ -301,6 +301,7 @@ void Fireball::addAdditonalSaveData(CompoundTag *tag)
     tag->putShort(L"yTile", static_cast<short>(yTile));
     tag->putShort(L"zTile", static_cast<short>(zTile));
     tag->putByte(L"inTile", static_cast<byte>(lastTile));
+    tag->putShort(L"inTileId", static_cast<short>(lastTile));
     tag->putByte(L"inGround", static_cast<byte>(inGround ? 1 : 0));
 	tag->put(L"direction", newDoubleList(3, xd, yd, zd));
 }
@@ -310,7 +311,14 @@ void Fireball::readAdditionalSaveData(CompoundTag *tag)
     xTile = tag->getShort(L"xTile");
     yTile = tag->getShort(L"yTile");
     zTile = tag->getShort(L"zTile");
-    lastTile = tag->getByte(L"inTile") & 0x1ff;
+if (tag->contains(L"inTileId"))
+    {
+        lastTile = tag->getShort(L"inTileId") & 0x1ff;
+    }
+    else
+    {
+        lastTile = tag->getByte(L"inTile") & 0x1ff;
+    }
     inGround = tag->getByte(L"inGround") == 1;
 
 	// Load the stored direction and apply it to the fireball

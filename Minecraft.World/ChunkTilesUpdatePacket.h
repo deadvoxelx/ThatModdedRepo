@@ -10,7 +10,7 @@ class ChunkTilesUpdatePacket : public Packet, public enable_shared_from_this<Chu
 public:
 	int xc, zc;
     shortArray positions;
-    byteArray blocks;
+    shortArray blocks;
     byteArray data;
     byte count; // 4J Was int but never has a value higher than 10
 	int levelIdx;

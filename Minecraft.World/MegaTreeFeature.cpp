@@ -3,7 +3,7 @@
 #include "net.minecraft.world.level.tile.h"
 #include "MegaTreeFeature.h"
 
-MegaTreeFeature::MegaTreeFeature(bool doUpdate, int baseHeight, int trunkType, int leafType) : Feature(doUpdate), baseHeight(baseHeight), trunkType(trunkType), leafType(leafType)
+MegaTreeFeature::MegaTreeFeature(bool doUpdate, int baseHeight, int trunkType, int leafType, int trunkTile, int leafTile) : Feature(doUpdate), baseHeight(baseHeight), trunkType(trunkType), leafType(leafType), trunkTile(trunkTile), leafTile(leafTile)
 {
 }
 
@@ -40,7 +40,7 @@ bool MegaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 				if (yy >= 0 && yy < Level::maxBuildHeight)
 				{
 					int tt = level->getTile(xx, yy, zz);
-					if (tt != 0 && tt != Tile::leaves_Id && tt != Tile::grass_Id && tt != Tile::dirt_Id && tt != Tile::treeTrunk_Id && tt != Tile::sapling_Id) free = false;
+					if (tt != 0 && tt != leafTile && tt != Tile::grass_Id && tt != Tile::dirt_Id && tt != trunkTile && tt != Tile::sapling_Id) free = false;
 				}
 				else
 				{
@@ -52,8 +52,8 @@ bool MegaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 
 	if (!free) return false;
 
-	int belowTile = level->getTile(x, y - 1, z);
-	if ((belowTile != Tile::grass_Id && belowTile != Tile::dirt_Id) || y >= Level::maxBuildHeight - treeHeight - 1) return false;
+	Material *belowMaterial = level->getMaterial(x, y - 1, z);
+	if ((belowMaterial != Material::grass && belowMaterial != Material::dirt) || y >= Level::maxBuildHeight - treeHeight - 1 ) return false;
 
 	level->setTileAndData(x, y - 1, z, Tile::dirt_Id, 0, Tile::UPDATE_CLIENTS);
 	level->setTileAndData(x + 1, y - 1, z, Tile::dirt_Id, 0, Tile::UPDATE_CLIENTS);
@@ -77,7 +77,7 @@ bool MegaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 		{
 			bx = x + static_cast<int>(1.5f + Mth::cos(angle) * b);
 			bz = z + static_cast<int>(1.5f + Mth::sin(angle) * b);
-			placeBlock(level, bx, branchHeight - 3 + b / 2, bz, Tile::treeTrunk_Id, trunkType);
+			placeBlock(level, bx, branchHeight - 3 + b / 2, bz, trunkTile, trunkType);
 		}
 
 		branchHeight -= 2 + random->nextInt(4);
@@ -88,9 +88,9 @@ bool MegaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 	for (int hh = 0; hh < treeHeight; hh++)
 	{
 		int t = level->getTile(x, y + hh, z);
-		if (t == 0 || t == Tile::leaves_Id)
+		if (t == 0 || t == leafTile)
 		{
-			placeBlock(level, x, y + hh, z, Tile::treeTrunk_Id, trunkType);
+			placeBlock(level, x, y + hh, z, trunkTile, trunkType);
 			if (hh > 0)
 			{
 				if (random->nextInt(3) > 0 && level->isEmptyTile(x - 1, y + hh, z))
@@ -106,9 +106,9 @@ bool MegaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 		if (hh < (treeHeight - 1))
 		{
 			t = level->getTile(x + 1, y + hh, z);
-			if (t == 0 || t == Tile::leaves_Id)
+			if (t == 0 || t == leafTile)
 			{
-				placeBlock(level, x + 1, y + hh, z, Tile::treeTrunk_Id, trunkType);
+				placeBlock(level, x + 1, y + hh, z, trunkTile, trunkType);
 				if (hh > 0)
 				{
 					if (random->nextInt(3) > 0 && level->isEmptyTile(x + 2, y + hh, z))
@@ -122,9 +122,9 @@ bool MegaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 				}
 			}
 			t = level->getTile(x + 1, y + hh, z + 1);
-			if (t == 0 || t == Tile::leaves_Id)
+			if (t == 0 || t == leafTile)
 			{
-				placeBlock(level, x + 1, y + hh, z + 1, Tile::treeTrunk_Id, trunkType);
+				placeBlock(level, x + 1, y + hh, z + 1, trunkTile, trunkType);
 				if (hh > 0)
 				{
 					if (random->nextInt(3) > 0 && level->isEmptyTile(x + 2, y + hh, z + 1))
@@ -138,9 +138,9 @@ bool MegaTreeFeature::place(Level *level, Random *random, int x, int y, int z)
 				}
 			}
 			t = level->getTile(x, y + hh, z + 1);
-			if (t == 0 || t == Tile::leaves_Id)
+			if (t == 0 || t == leafTile)
 			{
-				placeBlock(level, x, y + hh, z + 1, Tile::treeTrunk_Id, trunkType);
+				placeBlock(level, x, y + hh, z + 1, trunkTile, trunkType);
 				if (hh > 0)
 				{
 					if (random->nextInt(3) > 0 && level->isEmptyTile(x - 1, y + hh, z + 1))
@@ -189,10 +189,10 @@ void MegaTreeFeature::placeLeaves(Level *level, int x, int z, int topPosition, i
 				PIXBeginNamedEvent(0,"Getting tile");
 				int t = level->getTile(xx, yy, zz);
 				PIXEndNamedEvent();
-				if (t == 0 || t == Tile::leaves_Id)
+				if (t == 0 || t == leafTile)
 				{
 					PIXBeginNamedEvent(0,"Placing block");
-					placeBlock(level, xx, yy, zz, Tile::leaves_Id, leafType);
+					placeBlock(level, xx, yy, zz, leafTile, leafType);
 					PIXEndNamedEvent();
 				}
 			}
