@@ -9,7 +9,7 @@
 #include "UIBitmapFont.h"
 #include "..\..\Minecraft.h"
 #include "..\..\OptionsScreen.h"
-#include "..\..\MultiplayerLocalPlayer.h"
+#include "..\..\MultiPlayerLocalPlayer.h"
 #include <windows.h>
 #include <shellapi.h>
 #ifdef __ORBIS__
