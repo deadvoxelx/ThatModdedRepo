@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "ClientConnection.h"
+#include "Host\RubyLauncherHost.h"
+#include "Common\ModNetBus.h"
+#include "Common\ModPaths.h"
 #include "MultiPlayerLevel.h"
 #include "MultiPlayerLocalPlayer.h"
 #include "StatsCounter.h"
@@ -3869,6 +3872,12 @@ void ClientConnection::handleSoundEvent(shared_ptr<LevelSoundPacket> packet)
 
 void ClientConnection::handleCustomPayload(shared_ptr<CustomPayloadPacket> customPayloadPacket)
 {
+	if (customPayloadPacket->identifier.compare(0, 5, L"ruby:") == 0)
+	{
+		RubyLoader::onModNetPacket(nullptr, RubyPaths::toNarrow(customPayloadPacket->identifier.substr(5)), byteArrayToString(customPayloadPacket->data));
+		return;
+	}
+
 	if (CustomPayloadPacket::TRADER_LIST_PACKET.compare(customPayloadPacket->identifier) == 0)
 	{
 		ByteArrayInputStream bais(customPayloadPacket->data);

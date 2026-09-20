@@ -1,5 +1,4 @@
 #include "Host/RubyLauncherHost.h"
-
 #include "Loader.h"
 #include "Registry/IDs.h"
 #include "Registry/Item/ItemRegistry.h"
@@ -7,10 +6,9 @@
 #include "Registry/Block/BlockRegistry.h"
 #include "Registry/WorldGen/OreFeatureRegistry.h"
 #include "Registry/WorldGen/TreeFeatureRegistry.h"
-
 #include "Common/EventSystem/EventBus.h"
+#include "Common/ModNetBus.h"
 #include "Common/ModPaths.h"
-
 #include "Server/Events/Item/ItemCompleteUseEvent.h"
 #include "Server/Events/Item/ItemInteractEvent.h"
 #include "Server/Events/Item/ItemInteractEntityEvent.h"
@@ -152,6 +150,7 @@ void RubyLoader::onClientBoot()
 	g_creativeEntries.clear();
 	g_modTextures.clear();
 	g_armorSets.clear();
+	ModNetBus::Get().clearClient();
 
 	IDMapping::get()->init();
 
@@ -172,11 +171,36 @@ void RubyLoader::onStringTableReloaded()
 	ItemRegistry::changeLang(*app.getStringTable());
 }
 
+void RubyLoader::onServerTick(MinecraftServer *server)
+{
+	if (g_loader == nullptr) return;
+	g_loader->tickServer(server);
+}
+
+void RubyLoader::onClientTick()
+{
+	if (g_loader == nullptr) return;
+	g_loader->tickClient();
+}
+
+void RubyLoader::onModNetPacket(ServerPlayer *player, const std::string &channel, const std::string &data)
+{
+	if (player != nullptr)
+	{
+		ModNetBus::Get().fireServer(player, channel, data);
+	}
+	else
+	{
+		ModNetBus::Get().fireClient(channel, data);
+	}
+}
+
 void RubyLoader::onServerStart(MinecraftServer *server)
 {
 	if (g_loader == nullptr) return;
 
-	EventBus::Get().clearListeners();
+	EventBus::Get().clearServerListeners();
+	ModNetBus::Get().clearServer();
 	OreFeatureRegistry::reset();
 	TreeFeatureRegistry::reset();
 

@@ -6,6 +6,8 @@
 #include "PlayerList.h"
 #include "MinecraftServer.h"
 #include "Host\RubyLauncherHost.h"
+#include "Common\ModNetBus.h"
+#include "Common\ModPaths.h"
 #include "../Minecraft.World/net.minecraft.commands.h"
 #include "../Minecraft.World/net.minecraft.world.entity.item.h"
 #include "../Minecraft.World/net.minecraft.world.level.h"
@@ -1649,6 +1651,12 @@ void PlayerConnection::handlePlayerAbilities(shared_ptr<PlayerAbilitiesPacket> p
 
 void PlayerConnection::handleCustomPayload(shared_ptr<CustomPayloadPacket> customPayloadPacket)
 {
+	if (customPayloadPacket->identifier.compare(0, 5, L"ruby:") == 0)
+	{
+		RubyLoader::onModNetPacket(player.get(), RubyPaths::toNarrow(customPayloadPacket->identifier.substr(5)), byteArrayToString(customPayloadPacket->data));
+		return;
+	}
+
 #if 0
 	if (CustomPayloadPacket.CUSTOM_BOOK_PACKET.equals(customPayloadPacket.identifier))
 	{
