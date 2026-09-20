@@ -11,7 +11,7 @@
 #include "TierRegistry.h"
 
 std::map<int, std::wstring> ItemRegistry::langList;
-int ItemRegistry::itemNameIdMax = 2444;
+int ItemRegistry::itemNameIdMax = 8191;	// Cranking this shit up so i dont gotta fw it again lmao
 int ItemRegistry::itemIdMax = 8191;		// Changing this so mod items start at ID 8192
 										// Im never adding that many items to the base lmao
 namespace

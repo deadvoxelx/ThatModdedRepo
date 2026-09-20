@@ -6,6 +6,7 @@
 #include "net.minecraft.world.level.storage.h"
 #include "BiomeSource.h"
 #include "HellRandomLevelSource.h"
+#include "../RubyLauncher/Registry/WorldGen/OreFeatureRegistry.h"
 
 HellRandomLevelSource::HellRandomLevelSource(Level *level, __int64 seed)
 {
@@ -655,6 +656,9 @@ void HellRandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 		int z = zo + pprandom->nextInt(16);
 		netherFossilFeature.place(level, pprandom, x, y, z);
 	}
+
+	// Voxel - needed for Ruby Launcher
+	OreFeatureRegistry::decorateChunk(level, pprandom, xo, zo, level->getBiome(xo + 8, zo + 8));
 
 	for (int i = 0; i < 19; i++)
 	{
