@@ -37,9 +37,9 @@
 #include "Player.h"
 #include "ParticleTypes.h"
 #include "SoundTypes.h"
-#include "..\Minecraft.Client\Textures.h"
-#include "..\Minecraft.Client\LocalPlayer.h"
-#include "..\Minecraft.Client\HumanoidModel.h"
+#include "../Minecraft.Client/Textures.h"
+#include "../Minecraft.Client/LocalPlayer.h"
+#include "../Minecraft.Client/HumanoidModel.h"
 #include "..\Minecraft.Client\Input.h"
 
 #ifdef _WINDOWS64

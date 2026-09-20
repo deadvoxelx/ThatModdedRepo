@@ -5,7 +5,7 @@
 #include "Minecraft.h"
 #include "MinecraftServer.h"
 #include "ServerLogger.h"
-#include "Common\\StringUtils.h"
+#include "Common//StringUtils.h"
 
 #include <stdio.h>
 #include <string.h>

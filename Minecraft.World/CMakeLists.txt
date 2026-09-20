@@ -11,7 +11,7 @@ set(MINECRAFT_WORLD_SOURCES
   ${SOURCES_COMMON}
 )
 
-add_library(Minecraft.World STATIC ${MINECRAFT_WORLD_SOURCES} "EndGatewayFeature.h" "EndGatewayFeature.cpp" "EndGatewayTile.h" "EndGatewayTIle.cpp" "EndGatewayTileEntity.cpp" "EndGatewayTileEntity.h" "TheOuterEndDimension.cpp" "TheOuterEndDimension.h" "TheOuterEndLevelRandomLevelSource.cpp" "TheOuterEndLevelRandomLevelSource.h" "TheOuterEndBiomeDecorator.cpp" "TheOuterEndBiomeDecorator.h" "TheOuterEndBiome.cpp" "TheOuterEndBiome.h")
+add_library(Minecraft.World STATIC ${MINECRAFT_WORLD_SOURCES} "EndGatewayFeature.h" "EndGatewayFeature.cpp" "EndGatewayTile.h" "EndGatewayTile.cpp" "EndGatewayTileEntity.cpp" "EndGatewayTileEntity.h" "TheOuterEndDimension.cpp" "TheOuterEndDimension.h" "TheOuterEndLevelRandomLevelSource.cpp" "TheOuterEndLevelRandomLevelSource.h" "TheOuterEndBiomeDecorator.cpp" "TheOuterEndBiomeDecorator.h" "TheOuterEndBiome.cpp" "TheOuterEndBiome.h")
 
 target_include_directories(Minecraft.World
   PRIVATE

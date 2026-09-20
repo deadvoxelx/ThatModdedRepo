@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIScene_SettingsMenu.h"
-#include "..\..\Minecraft.h"
+#include "../../Minecraft.h"
 
 // Voxel - this ui scene is basically dead; may repurpose it later
 

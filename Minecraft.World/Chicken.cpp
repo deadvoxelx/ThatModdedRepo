@@ -13,7 +13,7 @@
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.stats.h"
 #include "Chicken.h"
-#include "..\Minecraft.Client\Textures.h"
+#include "../Minecraft.Client/Textures.h"
 #include "SoundTypes.h"
 #include "MobCategory.h"
 

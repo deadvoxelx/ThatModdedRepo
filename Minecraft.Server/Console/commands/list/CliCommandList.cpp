@@ -2,10 +2,10 @@
 
 #include "CliCommandList.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\..\Common\StringUtils.h"
-#include "..\..\..\..\Minecraft.Client\MinecraftServer.h"
-#include "..\..\..\..\Minecraft.Client\PlayerList.h"
+#include "../../ServerCliEngine.h"
+#include "../../../Common/StringUtils.h"
+#include "../../../../Minecraft.Client/MinecraftServer.h"
+#include "../../../../Minecraft.Client/PlayerList.h"
 
 namespace ServerRuntime
 {

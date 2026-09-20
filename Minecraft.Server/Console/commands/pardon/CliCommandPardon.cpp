@@ -2,11 +2,11 @@
 
 #include "CliCommandPardon.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\Access\Access.h"
-#include "..\..\..\Common\StringUtils.h"
-#include "..\..\..\..\Minecraft.Client\ServerPlayer.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../Access/Access.h"
+#include "../../../Common/StringUtils.h"
+#include "../../../../Minecraft.Client/ServerPlayer.h"
 
 #include <algorithm>
 

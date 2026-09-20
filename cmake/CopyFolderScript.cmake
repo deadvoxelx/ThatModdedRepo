@@ -46,6 +46,9 @@ if(CMAKE_HOST_WIN32)
     message(FATAL_ERROR "robocopy failed (exit code ${rc})")
   endif()
 elseif(CMAKE_HOST_UNIX)
+  # Ensure destination directory exists
+  file(MAKE_DIRECTORY "${COPY_DEST}")
+
   set(rsync_args -av)
 
   foreach(pattern IN LISTS EXCLUDE_FILES)

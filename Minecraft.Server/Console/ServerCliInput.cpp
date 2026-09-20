@@ -3,8 +3,8 @@
 #include "ServerCliInput.h"
 
 #include "ServerCliEngine.h"
-#include "..\ServerLogger.h"
-#include "..\vendor\linenoise\linenoise.h"
+#include "../ServerLogger.h"
+#include "../vendor/linenoise/linenoise.h"
 
 #include <ctype.h>
 #include <stdlib.h>

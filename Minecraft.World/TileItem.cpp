@@ -9,7 +9,7 @@ using namespace std;
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.stats.h"
 #include "TileItem.h"
-#include "facing.h"
+#include "Facing.h"
 
 // 4J-PB - for the debug option of not removing items
 #include <xuiresource.h>

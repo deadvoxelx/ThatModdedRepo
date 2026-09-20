@@ -9,8 +9,8 @@
 #include "net.minecraft.world.item.enchantment.h"
 #include "net.minecraft.network.packet.h"
 #include "net.minecraft.world.level.dimension.h"
-#include "..\Minecraft.Client\ServerPlayer.h"
-#include "..\Minecraft.Client\PlayerConnection.h"
+#include "../Minecraft.Client/ServerPlayer.h"
+#include "../Minecraft.Client/PlayerConnection.h"
 #include "com.mojang.nbt.h"
 #include "Arrow.h"
 

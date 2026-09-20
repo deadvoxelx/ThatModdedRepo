@@ -2,11 +2,11 @@
 
 #include "CliCommandTime.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\Common\StringUtils.h"
-#include "..\..\..\..\Minecraft.World\GameCommandPacket.h"
-#include "..\..\..\..\Minecraft.World\TimeCommand.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../Common/StringUtils.h"
+#include "../../../../Minecraft.World/GameCommandPacket.h"
+#include "../../../../Minecraft.World/TimeCommand.h"
 
 namespace ServerRuntime
 {

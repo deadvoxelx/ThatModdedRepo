@@ -6,15 +6,15 @@
 #ifdef _WINDOWS64
 
 #include "WinsockNetLayer.h"
-#include "..\..\Common\Network\PlatformNetworkManagerStub.h"
-#include "..\..\..\Minecraft.World\Socket.h"
+#include "../../Common/Network/PlatformNetworkManagerStub.h"
+#include "../../../Minecraft.World/Socket.h"
 #if defined(MINECRAFT_SERVER_BUILD)
-#include "..\..\..\Minecraft.Server\Access\Access.h"
-#include "..\..\..\Minecraft.Server\ServerLogManager.h"
+#include "../../../Minecraft.Server/Access/Access.h"
+#include "../../../Minecraft.Server/ServerLogManager.h"
 #endif
-#include "..\..\..\Minecraft.World\DisconnectPacket.h"
-#include "..\..\Minecraft.h"
-#include "..\4JLibs\inc\4J_Profile.h"
+#include "../../../Minecraft.World/DisconnectPacket.h"
+#include "../../Minecraft.h"
+#include "../4JLibs/inc/4J_Profile.h"
 
 #include <string>
 

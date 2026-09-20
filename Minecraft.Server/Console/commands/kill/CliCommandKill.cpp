@@ -2,10 +2,10 @@
 
 #include "CliCommandKill.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\..\Minecraft.World\CommandSender.h"
-#include "..\..\..\..\Minecraft.Client\ServerPlayer.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../../Minecraft.World/CommandSender.h"
+#include "../../../../Minecraft.Client/ServerPlayer.h"
 
 namespace ServerRuntime
 {

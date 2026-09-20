@@ -13,8 +13,8 @@
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.inventory.h"
 #include "net.minecraft.world.phys.h"
-#include "..\Minecraft.Client\Textures.h"
-#include "..\Minecraft.Client\Minecraft.h"
+#include "../Minecraft.Client/Textures.h"
+#include "../Minecraft.Client/Minecraft.h"
 #include "BasicTypeContainers.h"
 #include "EntityHorse.h"
 
@@ -558,17 +558,17 @@ int EntityHorse::getDeathSound()
 	int type = getType();
 	if (type == TYPE_UNDEAD)
 	{
-		return eSoundType_MOB_HORSE_ZOMBIE_DEATH; //"mob.horse.zombie.death";
+		return eSoundType_MOB_HORSE_ZOMBIE_DEATH; //"Mob.horse.zombie.death";
 	}
 	if (type == TYPE_SKELETON)
 	{
-		return eSoundType_MOB_HORSE_SKELETON_DEATH; //"mob.horse.skeleton.death";
+		return eSoundType_MOB_HORSE_SKELETON_DEATH; //"Mob.horse.skeleton.death";
 	}
 	if (type == TYPE_DONKEY || type == TYPE_MULE)
 	{
-		return eSoundType_MOB_HORSE_DONKEY_DEATH; //"mob.horse.donkey.death";
+		return eSoundType_MOB_HORSE_DONKEY_DEATH; //"Mob.horse.donkey.death";
 	}
-	return eSoundType_MOB_HORSE_DEATH; //"mob.horse.death";
+	return eSoundType_MOB_HORSE_DEATH; //"Mob.horse.death";
 }
 
 int EntityHorse::getDeathLoot()
@@ -604,17 +604,17 @@ int EntityHorse::getHurtSound()
 	int type = getType();
 	if (type == TYPE_UNDEAD)
 	{
-		return eSoundType_MOB_HORSE_ZOMBIE_HIT; //"mob.horse.zombie.hit";
+		return eSoundType_MOB_HORSE_ZOMBIE_HIT; //"Mob.horse.zombie.hit";
 	}
 	if (type == TYPE_SKELETON)
 	{
-		return eSoundType_MOB_HORSE_SKELETON_HIT; //"mob.horse.skeleton.hit";
+		return eSoundType_MOB_HORSE_SKELETON_HIT; //"Mob.horse.skeleton.hit";
 	}
 	if (type == TYPE_DONKEY || type == TYPE_MULE)
 	{
-		return eSoundType_MOB_HORSE_DONKEY_HIT; //"mob.horse.donkey.hit";
+		return eSoundType_MOB_HORSE_DONKEY_HIT; //"Mob.horse.donkey.hit";
 	}
-	return eSoundType_MOB_HORSE_HIT; //"mob.horse.hit";
+	return eSoundType_MOB_HORSE_HIT; //"Mob.horse.hit";
 }
 
 bool EntityHorse::isSaddled()
@@ -633,17 +633,17 @@ int EntityHorse::getAmbientSound()
 	int type = getType();
 	if (type == TYPE_UNDEAD)
 	{
-		return eSoundType_MOB_HORSE_ZOMBIE_IDLE; //"mob.horse.zombie.idle";
+		return eSoundType_MOB_HORSE_ZOMBIE_IDLE; //"Mob.horse.zombie.idle";
 	}
 	if (type == TYPE_SKELETON)
 	{
-		return eSoundType_MOB_HORSE_SKELETON_IDLE; //"mob.horse.skeleton.idle";
+		return eSoundType_MOB_HORSE_SKELETON_IDLE; //"Mob.horse.skeleton.idle";
 	}
 	if (type == TYPE_DONKEY || type == TYPE_MULE)
 	{
-		return eSoundType_MOB_HORSE_DONKEY_IDLE; //"mob.horse.donkey.idle";
+		return eSoundType_MOB_HORSE_DONKEY_IDLE; //"Mob.horse.donkey.idle";
 	}
-	return eSoundType_MOB_HORSE_IDLE; //"mob.horse.idle";
+	return eSoundType_MOB_HORSE_IDLE; //"Mob.horse.idle";
 }
 
 /**
@@ -660,9 +660,9 @@ int EntityHorse::getMadSound()
 	}
 	if (type == TYPE_DONKEY || type == TYPE_MULE)
 	{
-		return eSoundType_MOB_HORSE_DONKEY_ANGRY; //"mob.horse.donkey.angry";
+		return eSoundType_MOB_HORSE_DONKEY_ANGRY; //"Mob.horse.donkey.angry";
 	}
-	return eSoundType_MOB_HORSE_ANGRY; //"mob.horse.angry";
+	return eSoundType_MOB_HORSE_ANGRY; //"Mob.horse.angry";
 }
 
 void EntityHorse::playStepSound(int xt, int yt, int zt, int t)

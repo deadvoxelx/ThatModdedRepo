@@ -2,13 +2,13 @@
 
 #include "CliCommandEnchant.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\CommandParsing.h"
-#include "..\..\..\..\Minecraft.World\GameCommandPacket.h"
-#include "..\..\..\..\Minecraft.World\EnchantItemCommand.h"
-#include "..\..\..\..\Minecraft.World\net.minecraft.world.entity.player.h"
-#include "..\..\..\..\Minecraft.Client\ServerPlayer.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../CommandParsing.h"
+#include "../../../../Minecraft.World/GameCommandPacket.h"
+#include "../../../../Minecraft.World/EnchantItemCommand.h"
+#include "../../../../Minecraft.World/net.minecraft.world.entity.player.h"
+#include "../../../../Minecraft.Client/ServerPlayer.h"
 
 namespace ServerRuntime
 {

@@ -12,7 +12,7 @@
 
 #include <unordered_map>
 #if defined __PSVITA__
-#include "..\..\Minecraft.Client\PSVita\4JLibs\inc\4J_Profile.h"
+#include "../../Minecraft.Client/PSVita/4JLibs/inc/4J_Profile.h"
 #endif
 
 class SQRNetworkPlayer;

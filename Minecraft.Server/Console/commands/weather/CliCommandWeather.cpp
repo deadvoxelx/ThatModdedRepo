@@ -2,10 +2,10 @@
 
 #include "CliCommandWeather.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\..\Minecraft.World\GameCommandPacket.h"
-#include "..\..\..\..\Minecraft.World\ToggleDownfallCommand.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../../Minecraft.World/GameCommandPacket.h"
+#include "../../../../Minecraft.World/ToggleDownfallCommand.h"
 
 namespace ServerRuntime
 {

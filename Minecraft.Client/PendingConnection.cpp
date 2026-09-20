@@ -7,20 +7,20 @@
 #include "ServerLevel.h"
 #include "PlayerList.h"
 #include "MinecraftServer.h"
-#include "..\Minecraft.World\net.minecraft.network.h"
-#include "..\Minecraft.World\pos.h"
-#include "..\Minecraft.World\net.minecraft.world.level.dimension.h"
-#include "..\Minecraft.World\net.minecraft.world.level.storage.h"
-#include "..\Minecraft.World\net.minecraft.world.item.h"
-#include "..\Minecraft.World\SharedConstants.h"
+#include "../Minecraft.World/net.minecraft.network.h"
+#include "../Minecraft.World/Pos.h"
+#include "../Minecraft.World/net.minecraft.world.level.dimension.h"
+#include "../Minecraft.World/net.minecraft.world.level.storage.h"
+#include "../Minecraft.World/net.minecraft.world.item.h"
+#include "../Minecraft.World/SharedConstants.h"
 #include "Settings.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\Minecraft.Server\ServerLogManager.h"
-#include "..\Minecraft.Server\Access\Access.h"
-#include "..\Minecraft.World\Socket.h"
+#include "../Minecraft.Server/ServerLogManager.h"
+#include "../Minecraft.Server/Access/Access.h"
+#include "../Minecraft.World/Socket.h"
 #endif
 // #ifdef __PS3__
-// #include "PS3\Network\NetworkPlayerSony.h"
+// #include "PS3/Network/NetworkPlayerSony.h"
 // #endif
 
 Random *PendingConnection::random = new Random();

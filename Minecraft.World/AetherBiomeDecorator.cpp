@@ -5,7 +5,7 @@
 #include "net.minecraft.world.level.levelgen.feature.h"
 #include "net.minecraft.world.level.biome.h"
 #include "QuicksoilShelfFeature.h"
-#include "AerCloudFeature.h"
+#include "AercloudFeature.h"
 #include "BerryBushFeature.h"
 #include "HolidayTreeFeature.h"
 

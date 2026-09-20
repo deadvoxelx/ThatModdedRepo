@@ -2,13 +2,13 @@
 
 #include "CliCommandExperience.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\CommandParsing.h"
-#include "..\..\..\Common\StringUtils.h"
-#include "..\..\..\..\Minecraft.Client\MinecraftServer.h"
-#include "..\..\..\..\Minecraft.Client\PlayerList.h"
-#include "..\..\..\..\Minecraft.Client\ServerPlayer.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../CommandParsing.h"
+#include "../../../Common/StringUtils.h"
+#include "../../../../Minecraft.Client/MinecraftServer.h"
+#include "../../../../Minecraft.Client/PlayerList.h"
+#include "../../../../Minecraft.Client/ServerPlayer.h"
 
 #include <limits>
 

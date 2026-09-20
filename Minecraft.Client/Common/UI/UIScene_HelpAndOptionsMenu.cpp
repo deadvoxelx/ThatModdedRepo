@@ -6,7 +6,7 @@
 #include "ControlsScreen.h"
 #include "DirtBackgroundScreen.h"
 #include "UIScene_HelpAndOptionsMenu.h"
-#include "..\..\Minecraft.h"
+#include "../../Minecraft.h"
 #include <fstream>
 #include <windows.h>
 #include <shellapi.h>

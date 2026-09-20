@@ -6,8 +6,8 @@
 #include "System.h"
 #include "ChunkSource.h"
 #include "BiomeSource.h"
-#include "..\Minecraft.Client\Minecraft.h"
-#include "..\Minecraft.Client\ProgressRenderer.h"
+#include "../Minecraft.Client/Minecraft.h"
+#include "../Minecraft.Client/ProgressRenderer.h"
 
 // 4J - removal of separate temperature & downfall layers brought forward from 1.2.3
 void BiomeSource::_init()

@@ -2,12 +2,12 @@
 
 #include "CliCommandTp.h"
 
-#include "..\..\ServerCliEngine.h"
-#include "..\..\ServerCliParser.h"
-#include "..\..\..\..\Minecraft.Client\PlayerConnection.h"
-#include "..\..\..\..\Minecraft.Client\TeleportCommand.h"
-#include "..\..\..\..\Minecraft.Client\ServerPlayer.h"
-#include "..\..\..\..\Minecraft.World\GameCommandPacket.h"
+#include "../../ServerCliEngine.h"
+#include "../../ServerCliParser.h"
+#include "../../../../Minecraft.Client/PlayerConnection.h"
+#include "../../../../Minecraft.Client/TeleportCommand.h"
+#include "../../../../Minecraft.Client/ServerPlayer.h"
+#include "../../../../Minecraft.World/GameCommandPacket.h"
 
 namespace ServerRuntime
 {

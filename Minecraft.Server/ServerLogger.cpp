@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
 #include "ServerLogger.h"
-#include "Common\\StringUtils.h"
-#include "vendor\\linenoise\\linenoise.h"
+#include "Common//StringUtils.h"
+#include "vendor//linenoise//linenoise.h"
 
 #include <stdio.h>
 #include <stdarg.h>

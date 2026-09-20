@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "..\..\Minecraft.World\ArrayWithLength.h"
-#include "..\..\Minecraft.World\CommandsEnum.h"
+#include "../../Minecraft.World/ArrayWithLength.h"
+#include "../../Minecraft.World/CommandsEnum.h"
 
 class GameType;
 class ServerPlayer;

@@ -72,7 +72,55 @@ cd .\build\windows64\Minecraft.Server\Debug
 ```
 
 Notes:
-- The CMake build is Windows-only and x64-only.
-- Contributors on macOS or Linux need a Windows machine or VM to build the project. Running the game via Wine is separate from having a supported build environment.
 - Post-build asset copy is automatic for `Minecraft.Client` in CMake (Debug and Release variants).
 - The game relies on relative paths (for example `Common\Media\...`), so launching from the output directory is required.
+
+## CMake (Linux x64 Cross-Compile with Clang)
+
+Cross-compile Windows x64 binaries on Linux using LLVM/Clang and the Windows SDK obtained via xwin.
+
+### Prerequisites
+
+Install the following packages (example for Ubuntu):
+
+```bash
+sudo apt install clang lld llvm cmake ninja-build rsync cargo
+```
+
+Install xwin for downloading the Windows SDK:
+
+```bash
+cargo install xwin
+```
+
+### Compile
+
+Run this (Release):
+```bash
+./build-linux.sh
+```
+
+Or, for debug:
+```bash
+./build-linux.sh . Debug
+```
+
+### NixOS / Nix
+
+For NixOS or systems with Nix installed, use the provided flake:
+
+```bash
+nix build .#client
+nix build .#server
+```
+
+Or enter the development shell with all dependencies:
+
+```bash
+nix develop
+```
+
+Notes:
+- Requires LLVM 15+ with clang-cl, lld-link, llvm-rc, and llvm-mt.
+- Wine is required to run the compiled Windows executables on Linux.
+

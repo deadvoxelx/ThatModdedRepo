@@ -39,6 +39,9 @@ if(CMAKE_HOST_WIN32)
   endforeach()
 
 elseif(CMAKE_HOST_UNIX)
+  # Ensure destination directory exists
+  file(MAKE_DIRECTORY "${COPY_DEST}")
+
   execute_process(
     COMMAND rsync -av ${COPY_SOURCE} "${COPY_DEST}/"
     RESULT_VARIABLE rs

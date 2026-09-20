@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #if defined(_WINDOWS64) && defined(MINECRAFT_SERVER_BUILD)
-#include "..\..\Minecraft.Server\ServerLogManager.h"
+#include "../../Minecraft.Server/ServerLogManager.h"
 #endif
 
 //--------------------------------------------------------------------------------------
