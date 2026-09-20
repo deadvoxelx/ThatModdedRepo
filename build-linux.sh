@@ -5,7 +5,7 @@ SOURCE_DIR="${1:-.}"
 BUILD_CI="${BUILD_CI:-0}"
 BUILD_TYPE="${2:-Release}"
 XWIN_CACHE="${XWIN_CACHE:-$PWD/.xwin}"
-INSTALL_DIR="${INSTALL_PREFIX:-$HOME/.local/share/evolved-lce}"
+INSTALL_DIR="${INSTALL_PREFIX:-$HOME/.local/share/hellishends-lce}"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -211,7 +211,7 @@ LAUNCHER
 
 BUILD_DIR="$SOURCE_DIR/build/windows64-clang"
 mkdir -p "$BUILD_DIR"
-info "Revelations LCE v$VERSION build script"
+info "Hellish Ends LCE v$VERSION build script"
 info "Source: $SOURCE_DIR | Type: $BUILD_TYPE"
 echo ""
 check_deps
@@ -220,4 +220,3 @@ patch_winsdk_symlinks
 do_cmake_configure
 do_build
 do_install
-
