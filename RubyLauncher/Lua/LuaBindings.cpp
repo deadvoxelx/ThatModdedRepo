@@ -311,9 +311,11 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
         logTable["error"] = [](const std::string &message) {
             Loader::log("Error: " + message);
         };
-        logTable[sol::meta_function::call] = [](const std::string &message) {
+        sol::table logMeta = lua->create_table();
+        logMeta[sol::meta_function::call] = [](sol::table, const std::string &message) {
             Loader::log(message);
         };
+        logTable[sol::metatable_key] = logMeta;
         (*lua)["log"] = logTable;
         lua->set_function("schedule", [](double delayTicks, sol::protected_function fn, sol::this_state state) {
             return schedulerFor(state.lua_state()).schedule(delayTicks, std::move(fn));
