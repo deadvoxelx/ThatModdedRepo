@@ -20,11 +20,13 @@ sol::protected_function RubyMod::getClientFunction(std::string n) {
 };
 
 std::string_view RubyMod::getServerEntry() const {
-    return metadata.at("serverMain");
+    auto it = metadata.find("serverMain");
+    return it == metadata.end() ? std::string_view{} : std::string_view{it->second};
 };
 
 std::string_view RubyMod::getClientEntry() const {
-    return metadata.at("clientMain");
+    auto it = metadata.find("clientMain");
+    return it == metadata.end() ? std::string_view{} : std::string_view{it->second};
 };
 
 std::string_view RubyMod::getPathName() const {
@@ -49,4 +51,12 @@ sol::environment& RubyMod::getServerEnv() {
 
 sol::environment& RubyMod::getClientEnv() {
     return clientEnv;
+};
+
+const std::vector<std::string>& RubyMod::getDependencies() const {
+    return dependencies;
+};
+
+const std::vector<std::string>& RubyMod::getLoadAfter() const {
+    return loadAfter;
 };

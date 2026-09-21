@@ -59,6 +59,9 @@ namespace RubyLoader
 {
 	void onClientBoot();
 	void onServerStart(MinecraftServer *server);
+	void onServerTick(MinecraftServer *server);
+	void onClientTick();
+	void onModNetPacket(ServerPlayer *player, const std::string &channel, const std::string &data);
 	void onStringTableReloaded();
 	void addModTexture(const RubyModTexture &texture);
 	const std::vector<RubyModTexture> &getModTextures();

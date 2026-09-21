@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 #include "sol/sol.hpp"
 
@@ -26,6 +27,12 @@ public:
     std::string_view getServerEntry() const;
     std::string_view getClientEntry() const;
     std::string_view getPathName() const;
+
+    std::vector<std::string> dependencies;
+    std::vector<std::string> loadAfter;
+
+    const std::vector<std::string>& getDependencies() const;
+    const std::vector<std::string>& getLoadAfter() const;
 
     void setPathName(std::string name);
     void setServerEnv(sol::environment env);
