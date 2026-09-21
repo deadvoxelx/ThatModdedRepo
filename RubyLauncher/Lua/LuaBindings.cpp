@@ -9,6 +9,7 @@
 
 #include "ServerPlayerGameMode.h"
 #include "ServerPlayer.h"
+#include "LivingEntity.h"
 #include "PlayerList.h"
 #include "MinecraftServer.h"
 #include "LevelSettings.h"
@@ -52,8 +53,16 @@
 #include "Common/EventSystem/ClientTickEvent.h"
 #include "Common/EventSystem/EventBus.h"
 #include "Common/EventSystem/ServerTickEvent.h"
+#include "../../Minecraft.Client/ServerPlayer.h"
+#include "../../Minecraft.World/ItemInstance.h"
+#include "../../Minecraft.World/Level.h"
+#include "../../Minecraft.World/MobEffect.h"
+#include "../../Minecraft.World/MobEffectInstance.h"
+#include "../Registry/IDs.h"
+#include "../Server/Events/Item/ItemTickEvent.h"
 #include "Common/RubyUtils.h"
 #include "LuaStructs.h"
+#include "../Registry/IDs.h"
 
 namespace
 {
@@ -546,6 +555,9 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         },
         "clear", [](Inventory& inv) {
             inv.clearInventory(-1, -1);
+        },
+        "isInAccessory", [](Inventory& inv, ItemInstance* item) {
+            return inv.inAccessory(item);
         }
     );
 
@@ -602,6 +614,15 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         },
         "addEffect", [](ServerPlayer& player, int effectId, int durationTicks, int amplifier) {
             player.addEffect(new MobEffectInstance(effectId, durationTicks, amplifier));
+        },
+        "hasEffect", [](ServerPlayer& player, int effectId) {
+            for (MobEffectInstance* effect : *player.getActiveEffects()) {
+                if (effect == nullptr) continue;
+                if (effect->getId() == effectId) {
+                    return true;
+                }
+            }
+            return false;
         },
         "pos", sol::property([](ServerPlayer& player) { return LuaVec3(player.x, player.y, player.z); }),
         "teleport", [](ServerPlayer& player, sol::object target, sol::this_state state) {
@@ -666,10 +687,7 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         "setGameMode", [](ServerPlayer& player, int gameTypeId) {
             if (GameType* type = GameType::byId(gameTypeId)) player.setGameMode(type);
         },
-        "sendMessage", [](ServerPlayer& p, const std::string& message) {
-            std::wstring wmessage(message.begin(), message.end());
-            p.sendMessage(wmessage);
-        },
+
         "destroyBlock", [](ServerPlayer& p, sol::object target, sol::this_state state) {
             if (target.is<LuaVec3>()) {
                 auto vec3 = target.as<LuaVec3>();
@@ -678,7 +696,8 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
             }else {
                 RubyUtils::LuaException(state, "Not a valid Vec3 object");
             }
-        }
+        },
+        sol::base_classes, sol::bases<Player, CommandSender, LivingEntity>()
     );
 
     lua.new_usertype<PlayerBlockBreakEvent>("PlayerBlockBreakEvent",
@@ -702,8 +721,16 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
 
     lua.new_usertype<ItemInteractEvent>("ItemInteractEvent",
         "item", &ItemInteractEvent::item,
-        //"level", &ItemInteractEvent::level, // We need to implement a usertype for level
+        "level", &ItemInteractEvent::level,
         "player", &ItemInteractEvent::player,
+        sol::base_classes, sol::bases<RubyEvent>()
+    );
+
+    lua.new_usertype<ItemTickEvent>("ItemTickEvent",
+        "item", &ItemTickEvent::item,
+        "level", &ItemTickEvent::level,
+        "player", &ItemTickEvent::player,
+        "slot", &ItemTickEvent::slot,
         sol::base_classes, sol::bases<RubyEvent>()
     );
 
@@ -766,8 +793,11 @@ void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) 
         "setPos", sol::resolve<void(double, double, double)>(&Player::setPos),
         "abilities", &Player::abilities,
         "changeDimension", &Player::changeDimension,
-        "sendMessage", &Player::sendMessage,
-        sol::base_classes, sol::bases<CommandSender>()
+        "sendMessage", [](Player& p, const std::string& message) {
+            std::wstring wmessage(message.begin(), message.end());
+            p.sendMessage(wmessage);
+        },
+        sol::base_classes, sol::bases<CommandSender, LivingEntity>()
     );
 
     lua.new_usertype<CommandDispatcher>("CommandDispatcher", "performCommand", &CommandDispatcher::performCommand
@@ -794,6 +824,17 @@ void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) 
         "getTile", &ServerLevel::getTile,
         "hasChunkAt", &ServerLevel::hasChunkAt
     );
+
+    lua.new_usertype<Level>("Level",
+        "setTileAndData", &Level::setTileAndData,
+        "getTile", &Level::getTile,
+        "setData", &Level::setData,
+        "getData", &Level::getData
+    );
+
+    lua.set_function("getIdFromString", [](sol::this_environment env, const std::string& id) {
+        return IDMapping::get()->getID(id).id;
+    });
 }
 
 void LuaBindings::bindClientFunctions(sol::state& lua) {

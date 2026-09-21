@@ -210,6 +210,15 @@ int ItemRegistry::registerItem(const std::wstring& path, const std::string& id, 
         }
     }
 
+    if (def.isAccessory)
+    {
+        item->setAccessory();
+    }
+
+    if (def.maxStackSize) {
+        item->setMaxStackSize(def.maxStackSize);
+    }
+
     langList[nameId] = wname;
     IDMapping::get()->add(modId, id, false, itemId);
 

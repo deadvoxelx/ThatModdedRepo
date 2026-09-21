@@ -1,0 +1,7 @@
+{
+  "name": "Hermes Boots",
+  "version": "1.0.0",
+  "modId": "hermes_boots",
+  "serverMain": "module/server.lua",
+  "clientMain": "module/client.lua"
+}
