@@ -53,6 +53,18 @@ shared_ptr<ItemInstance> Inventory::getSelected()
 	return nullptr;
 }
 
+bool Inventory::inAccessory(ItemInstance* item) {
+    if (item == nullptr || aether.length == 0) return false;
+    for (unsigned int i = 0; i < aether.length; i++) {
+        if (i == 3 || i == 4) return false; //4 is just incase
+        if (aether[i] != nullptr && aether[i].get() == item)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 // 4J-PB - Added for the in-game tooltips
 bool Inventory::IsHeldItem()
 {
@@ -295,6 +307,23 @@ void Inventory::tick()
 			items[i]->inventoryTick(player->level, player->shared_from_this(), i, selected == i);
 		}
 	}
+
+    //tick armor + accessories for modloader.
+    for (unsigned int i = 0; i < armor.length; i++)
+    {
+        if (armor[i] != nullptr)
+        {
+            armor[i]->inventoryTick(player->level, player->shared_from_this(), 36+i, false);
+        }
+    }
+
+    for (unsigned int i = 0; i < aether.length; i++)
+    {
+        if (aether[i] != nullptr)
+        {
+            aether[i]->inventoryTick(player->level, player->shared_from_this(), 40+i, false);
+        }
+    }
 
 	{
 		bool regenStone = false;

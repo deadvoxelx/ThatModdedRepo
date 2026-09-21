@@ -739,7 +739,7 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData *initData, DW
 	{
 		pLevelType = LevelType::lvl_normal;
 	}
-	
+
 	ProgressRenderer *mcprogress = Minecraft::GetInstance()->progressRenderer;
 	mcprogress->progressStart(IDS_PROGRESS_INITIALISING_SERVER);
 
@@ -959,7 +959,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 
 		pSave->ConvertToLocalPlatform();
 		storage = std::make_shared<McRegionLevelStorage>(pSave, File(L"."), name, true);
-	
+
 #endif
 	}
 
@@ -2161,6 +2161,7 @@ void MinecraftServer::tick()
 
 	tickCount++;
 
+	RubyLoader::onServerTick(this);
 	// 4J We need to update client difficulty levels based on the servers
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	// 4J-PB - sending this on the host changing the difficulty in the menus

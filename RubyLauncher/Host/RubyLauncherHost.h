@@ -59,6 +59,9 @@ namespace RubyLoader
 {
 	void onClientBoot();
 	void onServerStart(MinecraftServer *server);
+	void onServerTick(MinecraftServer *server);
+	void onClientTick();
+	void onModNetPacket(ServerPlayer *player, const std::string &channel, const std::string &data);
 	void onStringTableReloaded();
 	void addModTexture(const RubyModTexture &texture);
 	const std::vector<RubyModTexture> &getModTextures();
@@ -74,6 +77,7 @@ namespace RubyLoader
 	bool firePlayerBlockPlace(ServerPlayer *player, int x, int y, int z, ItemInstance *item, int targetTile);
 	void fireItemCompleteUse(ItemInstance *item, ServerLevel *level, ServerPlayer *player);
 	void fireItemInteract(ItemInstance *item, ServerLevel *level, ServerPlayer *player);
+	void fireItemTick(ItemInstance *item, ServerLevel *level, ServerPlayer *player, int slot);
 	void fireItemInteractEntity(ItemInstance *item, Entity *entity);
 	void firePlayerConnection(ServerPlayer *player);
 	void firePlayerJoin(ServerPlayer *player);

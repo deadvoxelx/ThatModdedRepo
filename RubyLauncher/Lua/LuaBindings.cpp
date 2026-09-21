@@ -1,11 +1,15 @@
 #include "LuaBindings.h"
+#include "Common/ModNetBus.h"
 #include "Common/ModPaths.h"
+#include "Common/ModStore.h"
 #include "Loader.h"
 
 #include <map>
+#include <vector>
 
 #include "ServerPlayerGameMode.h"
 #include "ServerPlayer.h"
+#include "LivingEntity.h"
 #include "PlayerList.h"
 #include "MinecraftServer.h"
 #include "LevelSettings.h"
@@ -13,6 +17,9 @@
 #include "Level.h"
 #include "PlayerConnection.h"
 #include "Tile.h"
+#include "Minecraft.h"
+#include "ClientConnection.h"
+#include "CustomPayloadPacket.h"
 
 /* Server Includes */
 
@@ -43,8 +50,19 @@
 #include "Server/Events/Player/PlayerFlightStartedEvent.h"
 #include "Server/Events/Player/PlayerFlightEndedEvent.h"
 
+#include "Common/EventSystem/ClientTickEvent.h"
+#include "Common/EventSystem/EventBus.h"
+#include "Common/EventSystem/ServerTickEvent.h"
+#include "../../Minecraft.Client/ServerPlayer.h"
+#include "../../Minecraft.World/ItemInstance.h"
+#include "../../Minecraft.World/Level.h"
+#include "../../Minecraft.World/MobEffect.h"
+#include "../../Minecraft.World/MobEffectInstance.h"
+#include "../Registry/IDs.h"
+#include "../Server/Events/Item/ItemTickEvent.h"
 #include "Common/RubyUtils.h"
 #include "LuaStructs.h"
+#include "../Registry/IDs.h"
 
 namespace
 {
@@ -151,14 +169,255 @@ namespace
 		lua_pop(L, 1);
 		return true;
 	}
+Loader *rubyLoader()
+	{
+		return Loader::getInstance();
+	}
+
+	Scheduler &schedulerFor(lua_State *L)
+	{
+		static Scheduler fallbackScheduler;
+		Loader *loader = rubyLoader();
+		if (loader == nullptr) return fallbackScheduler;
+		if (L == loader->luaClient.lua_state()) return loader->m_clientScheduler;
+		return loader->m_serverScheduler;
+	}
+
+	sol::object callModByName(sol::this_state state, const std::string &modId, const std::string &fnName, sol::variadic_args args)
+	{
+		Loader *loader = rubyLoader();
+		if (loader == nullptr) return sol::lua_nil_t{};
+		RubyMod *mod = loader->findMod(modId);
+		if (mod == nullptr)
+		{
+			Loader::_debugPrint("callMod: unknown mod '" + modId + "'");
+			return sol::lua_nil_t{};
+		}
+
+		lua_State *L = state.lua_state();
+		sol::protected_function fn;
+		try
+		{
+			fn = (L == loader->luaServer.lua_state()) ? mod->getServerFunction(fnName) : mod->getClientFunction(fnName);
+		}
+		catch (const sol::error &e)
+		{
+			Loader::_debugPrint("callMod: error resolving '" + modId + "." + fnName + "': " + e.what());
+			return sol::lua_nil_t{};
+		}
+
+		if (!fn.valid())
+		{
+			Loader::_debugPrint("callMod: mod '" + modId + "' has no function '" + fnName + "'");
+			return sol::lua_nil_t{};
+		}
+
+		std::vector<sol::object> argv;
+		for (sol::object arg : args) argv.push_back(arg);
+		auto result = fn(sol::as_args(argv));
+		if (!result.valid())
+		{
+			Loader::_debugPrint("callMod: error calling '" + modId + "." + fnName + "': " + safeLuaErrorText(result));
+			return sol::lua_nil_t{};
+		}
+		if (result.return_count() == 0) return sol::lua_nil_t{};
+		return result.get<sol::object>(0);
+	}
+
+	sol::table makeModHandle(lua_State *L, const std::string &modId)
+	{
+		sol::table handle(L, sol::create);
+		handle["modId"] = modId;
+		handle["call"] = [modId](sol::this_state state, const std::string &fnName, sol::variadic_args args) -> sol::object {
+			Loader *loader = rubyLoader();
+			if (loader == nullptr) return sol::lua_nil_t{};
+			return callModByName(state, modId, fnName, args);
+		};
+		return handle;
+	}
+
+	std::vector<std::string> variadicArgsToStrings(sol::variadic_args args)
+	{
+		std::vector<std::string> result;
+		for (sol::object arg : args)
+		{
+			if (arg.is<std::string>()) result.push_back(arg.as<std::string>());
+		}
+		return result;
+	}
+
+	bool rubyNetSendServer(Loader *loader, sol::variadic_args args)
+	{
+		std::vector<sol::object> argv;
+		for (sol::object arg : args) argv.push_back(arg);
+		if (argv.size() < 2) return false;
+		ServerPlayer *player = nullptr;
+		size_t offset = 0;
+		if (argv[0].is<ServerPlayer>())
+		{
+			player = argv[0].as<ServerPlayer *>();
+			offset = 1;
+		}
+		if (argv.size() < offset + 2) return false;
+		sol::object channelObj = argv[offset];
+		sol::object dataObj = argv[offset + 1];
+		if (!channelObj.is<std::string>() || !dataObj.is<std::string>()) return false;
+		std::wstring identifier = L"ruby:" + RubyPaths::toWide(channelObj.as<std::string>());
+		byteArray payload = stringToByteArray(dataObj.as<std::string>());
+		if (player != nullptr)
+		{
+			if (player->connection != nullptr)
+			{
+				player->connection->send(std::make_shared<CustomPayloadPacket>(identifier, payload));
+			}
+			return true;
+		}
+
+		if (loader->m_server == nullptr || loader->m_server->getPlayers() == nullptr) return false;
+		for (auto &p : loader->m_server->getPlayers()->players)
+		{
+			if (p != nullptr && p->connection != nullptr)
+			{
+				p->connection->send(std::make_shared<CustomPayloadPacket>(identifier, payload));
+			}
+		}
+		return true;
+	}
+
+	bool rubyNetSendClient(sol::variadic_args args)
+	{
+		std::vector<sol::object> argv;
+		for (sol::object arg : args) argv.push_back(arg);
+		if (argv.size() < 2) return false;
+		if (!argv[0].is<std::string>() || !argv[1].is<std::string>()) return false;
+		Minecraft *mc = Minecraft::GetInstance();
+		if (mc == nullptr) return false;
+		ClientConnection *conn = mc->getConnection(0);
+		if (conn == nullptr) return false;
+		std::wstring identifier = L"ruby:" + RubyPaths::toWide(argv[0].as<std::string>());
+		conn->send(std::make_shared<CustomPayloadPacket>(identifier, stringToByteArray(argv[1].as<std::string>())));
+		return true;
+	}
+
+	bool rubyNetSend(lua_State *L, sol::variadic_args args)
+	{
+		Loader *loader = rubyLoader();
+		if (loader == nullptr) return false;
+		if (L == loader->luaServer.lua_state()) return rubyNetSendServer(loader, args);
+		return rubyNetSendClient(args);
+	}
 }
 
 void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates) {
     for (sol::state* lua : luaStates) {
-        lua->set_function("log", [](const std::string &message) {
+        sol::table logTable = lua->create_table();
+        logTable["info"] = [](const std::string &message) {
             Loader::log(message);
+        };
+        logTable["warn"] = [](const std::string &message) {
+            Loader::log("Warning: " + message);
+        };
+        logTable["error"] = [](const std::string &message) {
+            Loader::log("Error: " + message);
+        };
+        sol::table logMeta = lua->create_table();
+        logMeta[sol::meta_function::call] = [](sol::table, const std::string &message) {
+            Loader::log(message);
+        };
+        logTable[sol::metatable_key] = logMeta;
+        (*lua)["log"] = logTable;
+        lua->set_function("schedule", [](double delayTicks, sol::protected_function fn, sol::this_state state) {
+            return schedulerFor(state.lua_state()).schedule(delayTicks, std::move(fn));
         });
 
+        lua->set_function("scheduleEvery", [](double intervalTicks, sol::protected_function fn, sol::this_state state) {
+            return schedulerFor(state.lua_state()).scheduleEvery(intervalTicks, std::move(fn));
+        });
+
+        lua->set_function("cancelTask", [](int id, sol::this_state state) {
+            schedulerFor(state.lua_state()).cancel(id);
+            return true;
+        });
+
+        lua->set_function("registerEvent",
+            [](const std::string& event_name, sol::function callback, sol::this_state state) {
+                Loader *loader = rubyLoader();
+                bool serverSide = loader != nullptr && state.lua_state() == loader->luaServer.lua_state();
+                EventBus::Get().registerListener(event_name, sol::protected_function(std::move(callback)), serverSide);
+            }
+        );
+
+        lua->new_usertype<CancellableRubyEvent>("CancellableRubyEvent",
+            "setCancelled", &CancellableRubyEvent::setCancelled,
+            "isCancelled", &CancellableRubyEvent::isCancelled,
+            sol::base_classes, sol::bases<RubyEvent>()
+        );
+
+        lua->new_usertype<RubyEvent>("RubyEvent",
+            "name", &RubyEvent::eventName
+        );
+
+        Loader *loader = rubyLoader();
+        if (loader != nullptr && lua->lua_state() == loader->luaServer.lua_state())
+        {
+            lua->new_usertype<ServerTickEvent>("ServerTickEvent",
+                "server", &ServerTickEvent::server,
+                "tickCount", &ServerTickEvent::tickCount
+            );
+        }
+
+        lua->new_usertype<ClientTickEvent>("ClientTickEvent",
+            "tickCount", &ClientTickEvent::tickCount
+        );
+
+        if (loader != nullptr && lua->lua_state() == loader->luaServer.lua_state())
+        {
+            lua->new_usertype<ModNetEvent>("ModNetEvent",
+                "player", &ModNetEvent::player,
+                "channel", &ModNetEvent::channel,
+                "data", &ModNetEvent::data
+            );
+        }
+        else
+        {
+            lua->new_usertype<ModNetEvent>("ModNetEvent",
+                "channel", &ModNetEvent::channel,
+                "data", &ModNetEvent::data
+            );
+        }
+
+        lua->set_function("callMod", [](sol::this_state state, const std::string &modId, const std::string &fnName, sol::variadic_args args) -> sol::object {
+            return callModByName(state, modId, fnName, args);
+        });
+
+        sol::table modsTable = lua->create_table();
+        sol::table modsMeta = lua->create_table();
+        modsMeta[sol::meta_function::index] = [](sol::this_state state, sol::object key) -> sol::object {
+            if (!key.is<std::string>()) return sol::lua_nil_t{};
+            Loader *loader = rubyLoader();
+            if (loader == nullptr || loader->findMod(key.as<std::string>()) == nullptr) return sol::lua_nil_t{};
+            return makeModHandle(state.lua_state(), key.as<std::string>());
+        };
+        modsTable[sol::metatable_key] = modsMeta;
+        (*lua)["mods"] = modsTable;
+        sol::table netTable = lua->create_table();
+        netTable["listen"] = [](const std::string &channel, sol::protected_function fn, sol::this_state state) -> bool {
+            Loader *loader = rubyLoader();
+            if (loader == nullptr || channel.empty() || !fn.valid()) return false;
+            if (state.lua_state() == loader->luaClient.lua_state())
+            {
+                ModNetBus::Get().listenClient(channel, std::move(fn));
+            }
+            else
+            {
+                ModNetBus::Get().listenServer(channel, std::move(fn));
+            }
+            return true;
+        };
+        netTable["send"] = [](sol::this_state state, sol::variadic_args args) -> bool {
+            return rubyNetSend(state.lua_state(), args);
+        };
+        (*lua)["net"] = netTable;
         lua->new_usertype<LuaVec3>("Vec3",
             sol::constructors<LuaVec3(double, double, double)>(),
             "x", &LuaVec3::x,
@@ -273,22 +532,6 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
 }
 
 void LuaBindings::bindServerEvents(sol::state& lua) {
-    lua.set_function("registerEvent",
-        [](const std::string& event_name, sol::function callback) {
-            EventBus::Get().registerListener(event_name, sol::protected_function(std::move(callback)));
-        }
-    );
-
-    lua.new_usertype<CancellableRubyEvent>("CancellableRubyEvent",
-        "setCancelled", &CancellableRubyEvent::setCancelled,
-        "isCancelled", &CancellableRubyEvent::isCancelled,
-        sol::base_classes, sol::bases<RubyEvent>()
-    );
-
-    lua.new_usertype<RubyEvent>("RubyEvent",
-        "name", &RubyEvent::eventName
-    );
-
     lua.new_usertype<Inventory>("Inventory",
         "setItem", [](Inventory& inv, const int slot, int count, const std::string& identifier, sol::this_state state) {
             IDMapping::MappedItem mapping = IDMapping::get()->getID(identifier);
@@ -312,6 +555,9 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         },
         "clear", [](Inventory& inv) {
             inv.clearInventory(-1, -1);
+        },
+        "isInAccessory", [](Inventory& inv, ItemInstance* item) {
+            return inv.inAccessory(item);
         }
     );
 
@@ -341,6 +587,19 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
 
     lua.new_usertype<ServerPlayer>("ServerPlayer",
         "getHeldItem", &ServerPlayer::getCarriedItem,
+        "setData", [](sol::this_environment env, ServerPlayer& player, const std::string &key, sol::object value, sol::this_state state) -> bool {
+            sol::environment& modEnv = env;
+            std::string modId = modEnv["modId"];
+            if (modId.empty()) return false;
+            ModStore::Get().setPlayerData(modId, RubyPaths::toNarrow(player.name), key, value, state);
+            return true;
+        },
+        "getData", [](sol::this_environment env, ServerPlayer& player, const std::string &key, sol::this_state state) -> sol::object {
+            sol::environment& modEnv = env;
+            std::string modId = modEnv["modId"];
+            if (modId.empty()) return sol::lua_nil_t{};
+            return ModStore::Get().getPlayerData(modId, RubyPaths::toNarrow(player.name), key, state);
+        },
         "setFoodLevel", [](ServerPlayer& player, int food) {
             player.getFoodData()->setFoodLevel(food);
         },
@@ -355,6 +614,15 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         },
         "addEffect", [](ServerPlayer& player, int effectId, int durationTicks, int amplifier) {
             player.addEffect(new MobEffectInstance(effectId, durationTicks, amplifier));
+        },
+        "hasEffect", [](ServerPlayer& player, int effectId) {
+            for (MobEffectInstance* effect : *player.getActiveEffects()) {
+                if (effect == nullptr) continue;
+                if (effect->getId() == effectId) {
+                    return true;
+                }
+            }
+            return false;
         },
         "pos", sol::property([](ServerPlayer& player) { return LuaVec3(player.x, player.y, player.z); }),
         "teleport", [](ServerPlayer& player, sol::object target, sol::this_state state) {
@@ -419,10 +687,7 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         "setGameMode", [](ServerPlayer& player, int gameTypeId) {
             if (GameType* type = GameType::byId(gameTypeId)) player.setGameMode(type);
         },
-        "sendMessage", [](ServerPlayer& p, const std::string& message) {
-            std::wstring wmessage(message.begin(), message.end());
-            p.sendMessage(wmessage);
-        },
+
         "destroyBlock", [](ServerPlayer& p, sol::object target, sol::this_state state) {
             if (target.is<LuaVec3>()) {
                 auto vec3 = target.as<LuaVec3>();
@@ -431,7 +696,8 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
             }else {
                 RubyUtils::LuaException(state, "Not a valid Vec3 object");
             }
-        }
+        },
+        sol::base_classes, sol::bases<Player, CommandSender, LivingEntity>()
     );
 
     lua.new_usertype<PlayerBlockBreakEvent>("PlayerBlockBreakEvent",
@@ -455,8 +721,16 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
 
     lua.new_usertype<ItemInteractEvent>("ItemInteractEvent",
         "item", &ItemInteractEvent::item,
-        //"level", &ItemInteractEvent::level, // We need to implement a usertype for level
+        "level", &ItemInteractEvent::level,
         "player", &ItemInteractEvent::player,
+        sol::base_classes, sol::bases<RubyEvent>()
+    );
+
+    lua.new_usertype<ItemTickEvent>("ItemTickEvent",
+        "item", &ItemTickEvent::item,
+        "level", &ItemTickEvent::level,
+        "player", &ItemTickEvent::player,
+        "slot", &ItemTickEvent::slot,
         sol::base_classes, sol::bases<RubyEvent>()
     );
 
@@ -488,6 +762,21 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
 
 void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) {
     lua["server"] = server;
+    Loader *loader = rubyLoader();
+    if (loader != nullptr)
+    {
+        loader->m_commandRegistry.init(server);
+        lua.set_function("registerCommand", [loader](const std::string &name, int permissionLevel, sol::protected_function handler) -> int {
+            return loader->m_commandRegistry.registerCommand(name, permissionLevel, std::move(handler));
+        });
+
+        lua.set_function("runCommand", [loader](sol::object sender, const std::string &name, sol::variadic_args args) -> bool {
+            std::vector<std::string> argv = variadicArgsToStrings(args);
+            if (argv.size() != args.size()) return false;
+            ServerPlayer *player = sender.is<ServerPlayer>() ? sender.as<ServerPlayer *>() : nullptr;
+            return loader->m_commandRegistry.performCommand(name, player, argv);
+        });
+    }
 
     lua.new_usertype<MinecraftServer>("MinecraftServer",
         "getCommandDispatcher", &MinecraftServer::getCommandDispatcher,
@@ -504,8 +793,11 @@ void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) 
         "setPos", sol::resolve<void(double, double, double)>(&Player::setPos),
         "abilities", &Player::abilities,
         "changeDimension", &Player::changeDimension,
-        "sendMessage", &Player::sendMessage,
-        sol::base_classes, sol::bases<CommandSender>()
+        "sendMessage", [](Player& p, const std::string& message) {
+            std::wstring wmessage(message.begin(), message.end());
+            p.sendMessage(wmessage);
+        },
+        sol::base_classes, sol::bases<CommandSender, LivingEntity>()
     );
 
     lua.new_usertype<CommandDispatcher>("CommandDispatcher", "performCommand", &CommandDispatcher::performCommand
@@ -532,6 +824,17 @@ void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) 
         "getTile", &ServerLevel::getTile,
         "hasChunkAt", &ServerLevel::hasChunkAt
     );
+
+    lua.new_usertype<Level>("Level",
+        "setTileAndData", &Level::setTileAndData,
+        "getTile", &Level::getTile,
+        "setData", &Level::setData,
+        "getData", &Level::getData
+    );
+
+    lua.set_function("getIdFromString", [](sol::this_environment env, const std::string& id) {
+        return IDMapping::get()->getID(id).id;
+    });
 }
 
 void LuaBindings::bindClientFunctions(sol::state& lua) {

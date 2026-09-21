@@ -38,6 +38,7 @@ public:
 
 	shared_ptr<ItemInstance> getSelected();
 	bool IsHeldItem();
+	bool inAccessory(ItemInstance* item);
 	static int getSelectionSize();
 	int getSlot(int tileId);
 	int getSlot(int tileId, int data);

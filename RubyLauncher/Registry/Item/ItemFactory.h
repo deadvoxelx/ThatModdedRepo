@@ -245,6 +245,8 @@ struct ItemDefinition {
     // Tool Items
     const Item::Tier* tier = Item::Tier::WOOD;
     int tierIndex = -1;
+    bool isAccessory = false;
+    int maxStackSize = 64;
 
     // Armor Items
     EArmorMaterial armorMaterial = ArmorMaterial_Iron;
@@ -259,11 +261,13 @@ struct ItemDefinition {
         sol::optional<int> n = items["nutrition"];
         sol::optional<float> s = items["saturationMod"];
         sol::optional<bool> meat = items["isMeat"];
+        sol::optional<bool> accessory = items["isAccessory"];
         sol::optional<bool> alwaysEat = items["canAlwaysEat"];
         sol::optional<Item::Tier*> t = items["tier"];
         sol::optional<std::string> armor = items["armorSet"];
         sol::optional<int> customTier = items["customTier"];
         sol::optional<int> customArmor = items["customArmorMaterial"];
+        sol::optional<int> stackSize = items["maxStacksize"];
 
         if (items["material"].is<int>()) {
             material = items["material"].get<EItemMaterial>();
@@ -272,6 +276,8 @@ struct ItemDefinition {
         if (n) nutrition = n.value();
         if (s) saturationMod = s.value();
         if (meat) isMeat = meat.value();
+        if (accessory) isAccessory = accessory.value();
+        if (stackSize) maxStackSize = stackSize.value();
         if (alwaysEat) canAlwaysEat = alwaysEat.value();
         if (armor) armorSet = armor.value();
         if (customTier) tierIndex = customTier.value();

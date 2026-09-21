@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -7,6 +8,15 @@
 
 #include "RubyEvent.h"
 #include "sol/sol.hpp"
+
+inline std::string stackTrace(lua_State* L, int level)
+{
+	luaL_traceback(L, L, nullptr, level);
+	const char* trace = lua_tostring(L, -1);
+	std::string result = trace != nullptr ? std::string(trace) : std::string();
+	lua_pop(L, 1);
+	return result;
+}
 
 inline std::string safeLuaErrorText(const sol::protected_function_result& result)
 {
@@ -18,9 +28,13 @@ inline std::string safeLuaErrorText(const sol::protected_function_result& result
 	if (result.return_count() <= 0) return "(no error value)";
 
 	const char* text = lua_tolstring(L, idx, nullptr);
-	if (text != nullptr) return std::string(text);
+	if (text == nullptr) return "(non-string error of type " + std::string(lua_typename(L, lua_type(L, idx))) + ")";
 
-	return "(non-string error of type " + std::string(lua_typename(L, lua_type(L, idx))) + ")";
+	std::string message(text);
+	message += "\n";
+	message += stackTrace(L, 1);
+
+	return message;
 }
 
 class EventBus {
@@ -32,12 +46,22 @@ public:
         return instance;
     }
 
-    void registerListener(const std::string& eventName, Listener listener) {
-        listeners_[eventName].push_back(std::move(listener));
+    void registerListener(const std::string& eventName, Listener listener, bool serverSide = true) {
+        listeners_[eventName].push_back({ std::move(listener), serverSide });
     }
 
     void clearListeners() {
         listeners_.clear();
+    }
+
+    void clearServerListeners() {
+        for (auto it = listeners_.begin(); it != listeners_.end();)
+        {
+            auto& entries = it->second;
+            entries.erase(std::remove_if(entries.begin(), entries.end(), [](const Entry& e) { return e.serverSide; }), entries.end());
+            if (entries.empty()) it = listeners_.erase(it);
+            else ++it;
+        }
     }
 
     template<typename E>
@@ -46,7 +70,8 @@ public:
         if (it == listeners_.end()) return false;
 
         bool wasCanceled = false;
-        for (auto& fn : it->second) {
+        for (auto& entry : it->second) {
+            auto& fn = entry.listener;
             if (!fn.valid()) continue;
             auto result = fn(&event);
 
@@ -68,6 +93,11 @@ public:
     }
 
 private:
+    struct Entry {
+        Listener listener;
+        bool serverSide;
+    };
+
     EventBus() = default;
-    std::unordered_map<std::string, std::vector<Listener>> listeners_;
+    std::unordered_map<std::string, std::vector<Entry>> listeners_;
 };

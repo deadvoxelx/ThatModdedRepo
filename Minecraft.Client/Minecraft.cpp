@@ -2374,6 +2374,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 	// Tick the opacity timer (to display the interface at default opacity for a certain time if the user has been navigating it)
 	app.TickOpacityTimer(iPad);
 
+	if (bFirst) RubyLoader::onClientTick();
+
 	// 4J added
 	if( bFirst ) levelRenderer->destroyedTileManager->tick();
 

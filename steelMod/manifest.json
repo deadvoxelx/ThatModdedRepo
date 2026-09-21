@@ -1,0 +1,7 @@
+{
+  "name": "Steel Mod",
+  "version": "1.0.0",
+  "modId": "steelMod",
+  "serverMain": "module/server.lua",
+  "clientMain": "module/client.lua"
+}
