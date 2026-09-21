@@ -1,5 +1,6 @@
 #pragma once
 
+class ItemInstance;
 class ServerLevel;
 #include "ServerPlayer.h"
 

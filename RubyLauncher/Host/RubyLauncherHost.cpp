@@ -21,6 +21,7 @@
 #include "Server/Events/Player/PlayerFlightStartedEvent.h"
 #include "Server/Events/Player/PlayerJoinEvent.h"
 
+#include "../Server/Events/Item/ItemTickEvent.h"
 #include "Item.h"
 #include "Mob.h"
 #include "ServerLevel.h"
@@ -323,6 +324,14 @@ void RubyLoader::fireItemInteract(ItemInstance *item, ServerLevel *level, Server
 
 	ItemInteractEvent event(item, level, player);
 	EventBus::Get().fire(event);
+}
+
+void RubyLoader::fireItemTick(ItemInstance *item, ServerLevel *level, ServerPlayer *player, int slot)
+{
+    if (item == nullptr) return;
+
+    ItemTickEvent event(item, level, player, slot);
+    EventBus::Get().fire(event);
 }
 
 void RubyLoader::fireItemInteractEntity(ItemInstance *item, Entity *entity)

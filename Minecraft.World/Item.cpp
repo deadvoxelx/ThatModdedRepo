@@ -1,20 +1,24 @@
 #include "stdafx.h"
 
-#include "net.minecraft.locale.h"
-#include "net.minecraft.world.h"
-#include "net.minecraft.world.entity.h"
-#include "net.minecraft.world.entity.item.h"
-#include "net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.h"
-#include "net.minecraft.world.item.alchemy.h"
-#include "net.minecraft.world.food.h"
-#include "net.minecraft.world.effect.h"
-#include "net.minecraft.stats.h"
-#include "MapItem.h"
-#include "Item.h"
+#include "../Minecraft.Client/ServerLevel.h"
+#include "../Minecraft.Client/ServerPlayer.h"
+#include "../Minecraft.Client/ServerLevel.h"
+#include "../RubyLauncher/Host/RubyLauncherHost.h"
 #include "HangingEntityItem.h"
 #include "HtmlString.h"
+#include "Item.h"
+#include "MapItem.h"
+#include "net.minecraft.locale.h"
+#include "net.minecraft.stats.h"
+#include "net.minecraft.world.effect.h"
+#include "net.minecraft.world.entity.h"
+#include "net.minecraft.world.entity.item.h"
+#include "net.minecraft.world.food.h"
+#include "net.minecraft.world.h"
+#include "net.minecraft.world.item.alchemy.h"
+#include "net.minecraft.world.item.h"
+#include "net.minecraft.world.level.h"
+#include "net.minecraft.world.level.tile.h"
 
 typedef Item::Tier _Tier;
 
@@ -431,7 +435,7 @@ void Item::staticCtor()
 	Item::gravititePickaxe	= ( new PickaxeItem(202, _Tier::GRAVITITE) )->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_gravitite)->setIconName(L"gravititePickaxe")->setDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE)->setUseDescriptionId(IDS_ITEM_GRAVITITE_PICKAXE);
 	Item::zanitePickaxe		= ( new PickaxeItem(207, _Tier::ZANITE) )	->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_zanite)	->setIconName(L"zanitePickaxe")->setDescriptionId(IDS_ITEM_ZANITE_PICKAXE)->setUseDescriptionId(IDS_ITEM_ZANITE_PICKAXE);
 	Item::holystonePickaxe	= ( new PickaxeItem(230, _Tier::STONE) )	->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_stone)	->setIconName(L"holystonePickaxe")->setDescriptionId(IDS_ITEM_HOLYSTONE_PICKAXE)->setUseDescriptionId(IDS_ITEM_HOLYSTONE_PICKAXE);
-	Item::skyrootPickaxe	= ( new PickaxeItem(250, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_wood)		->setIconName(L"skyrootPickaxe")->setDescriptionId(IDS_ITEM_SKYROOT_PICKAXE)->setUseDescriptionId(IDS_ITEM_SKYROOT_PICKAXE);
+	Item::skyrootPickaxe	= ( new PickaxeItem(250, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,	eMaterial_wood)		->setIconName(L"skyrootPickaxe")->setDescriptionId(IDS_ITEM_SKYROOT_PICKAXE)->setDescriptionId(IDS_ITEM_SKYROOT_PICKAXE);
 
 	Item::hatchet_wood		= ( new HatchetItem(15, _Tier::WOOD) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_wood)		->setIconName(L"hatchetWood")->setDescriptionId(IDS_ITEM_HATCHET_WOOD)->setUseDescriptionId(IDS_DESC_HATCHET);
 	Item::hatchet_stone		= ( new HatchetItem(19, _Tier::STONE) )		->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,	eMaterial_stone)	->setIconName(L"hatchetStone")->setDescriptionId(IDS_ITEM_HATCHET_STONE)->setUseDescriptionId(IDS_DESC_HATCHET);
@@ -944,8 +948,12 @@ bool Item::TestUse(shared_ptr<ItemInstance> itemInstance, Level *level, shared_p
 	return false;
 }
 
-shared_ptr<ItemInstance> Item::use(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
-{
+shared_ptr<ItemInstance> Item::use(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player) {
+    if (ServerLevel* serverLevel = dynamic_cast<ServerLevel*>(level)) {
+        if (ServerPlayer* plr = dynamic_cast<ServerPlayer*>(player.get())) {
+            RubyLoader::fireItemInteract(itemInstance.get(), serverLevel, plr);
+        }
+    }
 	return itemInstance;
 }
 
@@ -1160,6 +1168,11 @@ int Item::getColor(shared_ptr<ItemInstance> item, int spriteLayer)
 }
 
 void Item::inventoryTick(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Entity> owner, int slot, bool selected) {
+    if (ServerPlayer* plr = dynamic_cast<ServerPlayer*>(owner.get())) {
+        if (ServerLevel* serverLevel = dynamic_cast<ServerLevel*>(level)) {
+            RubyLoader::fireItemTick(itemInstance.get(), serverLevel, plr, slot);
+        }
+    }
 }
 
 void Item::onCraftedBy(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
@@ -1181,8 +1194,7 @@ int Item::getUseDuration(shared_ptr<ItemInstance> itemInstance)
 	return 0;
 }
 
-void Item::releaseUsing(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player, int durationLeft)
-{
+void Item::releaseUsing(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player, int durationLeft) {
 }
 
 Item *Item::setPotionBrewingFormula(const wstring &potionBrewingFormula)
