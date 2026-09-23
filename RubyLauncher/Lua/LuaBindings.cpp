@@ -925,7 +925,9 @@ void LuaBindings::bindClientFunctions(sol::state& lua) {
         "tier", &ItemDefinition::tier,
         "armorMaterial", &ItemDefinition::armorMaterial,
         "armorSet", &ItemDefinition::armorSet,
-        "material", &ItemDefinition::material
+        "material", &ItemDefinition::material,
+        "fireImmune", &ItemDefinition::fireImmune,
+        "blastImmune", &ItemDefinition::blastImmune
     );
 
     lua.new_usertype<Item::Tier>("Tier",

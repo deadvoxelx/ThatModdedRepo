@@ -256,6 +256,9 @@ struct ItemDefinition {
 
     EItemMaterial material = ItemMaterial_Undefined;
 
+    bool fireImmune = false;
+    bool blastImmune = false;
+
     ItemDefinition(sol::table items) {
         type = items["base"].get<EBaseItem>();
         sol::optional<int> n = items["nutrition"];
@@ -268,6 +271,8 @@ struct ItemDefinition {
         sol::optional<int> customTier = items["customTier"];
         sol::optional<int> customArmor = items["customArmorMaterial"];
         sol::optional<int> stackSize = items["maxStacksize"];
+        sol::optional<bool> fireImmuneValue = items["fireImmune"];
+        sol::optional<bool> blastImmuneValue = items["blastImmune"];
 
         if (items["material"].is<int>()) {
             material = items["material"].get<EItemMaterial>();
@@ -282,6 +287,8 @@ struct ItemDefinition {
         if (armor) armorSet = armor.value();
         if (customTier) tierIndex = customTier.value();
         if (customArmor) armorMaterialIndex = customArmor.value();
+        if (fireImmuneValue) fireImmune = fireImmuneValue.value();
+        if (blastImmuneValue) blastImmune = blastImmuneValue.value();
 
         if (items["armorMaterial"].is<int>()) {
             armorMaterial = items["armorMaterial"].get<EArmorMaterial>();

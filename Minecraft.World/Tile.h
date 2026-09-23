@@ -748,6 +748,7 @@ public:
 	static void staticCtor();
 
 	int id;
+
 protected:
 	float destroySpeed;
 	float explosionResistance;
@@ -757,6 +758,8 @@ protected:
 	bool _isEntityTile;
 	int m_iMaterial;
 	int m_iBaseItemType;
+	bool m_fireImmune;
+	bool m_blastImmune;
 
 	// 4J Stu - Removed this in favour of a TLS version
 	//double xx0, yy0, zz0, xx1, yy1, zz1;
@@ -775,19 +778,17 @@ private:
 protected:
 	Icon *icon;
 
-protected:
 	void _init(int id, Material *material, bool isSolidRender);
 	Tile(int id, Material *material, bool isSolidRender = true);
 	virtual ~Tile() {}
-protected:
 	virtual Tile *sendTileData(unsigned char importantMask=15);		// 4J - added importantMask to indicate which bits in the data are important
-protected:
 	virtual void init();
 	virtual Tile *setSoundType(const SoundType *soundType);
 	virtual Tile *setLightBlock(int i);
 	virtual Tile *setLightEmission(float f);
 	virtual Tile *setExplodeable(float explosionResistance);
 	Tile *setBaseItemTypeAndMaterial(int iType,int iMaterial);
+
 public:
 	static bool isSolidBlockingTile(int t);
 	virtual bool isCubeShaped();
@@ -796,14 +797,23 @@ public:
 	// 4J-PB added
 	int getBaseItemType();
 	int getMaterial();
+
+	bool isFireImmune() const;
+	bool isBlastImmune() const;
+	Tile *setFireImmune(bool fireImmune = true);
+	Tile *setBlastImmune(bool blastImmune = true);
+
 protected:
 	virtual Tile *setDestroyTime(float destroySpeed);
 	virtual Tile *setIndestructible();
+
 public:
 	virtual float getDestroySpeed(Level *level, int x, int y, int z);
+
 protected:
 	virtual Tile *setTicking(bool tick);
 	virtual Tile *disableMipmap();
+
 public:
 	virtual bool isTicking();
 	virtual bool isEntityTile();
@@ -835,6 +845,7 @@ public:
 	virtual float getDestroyProgress(shared_ptr<Player> player, Level *level, int x, int y, int z);
 	virtual void spawnResources(Level *level, int x, int y, int z, int data, int playerBonusLevel);
 	virtual void spawnResources(Level *level, int x, int y, int z, int data, float odds, int playerBonusLevel);
+
 protected:
 	virtual void popResource(Level *level, int x, int y, int z, shared_ptr<ItemInstance> itemInstance);
 	virtual void popExperience(Level *level, int x, int y, int z, int amount);
@@ -843,10 +854,12 @@ public:
 	virtual int getSpawnResourcesAuxValue(int data);
 	virtual float getExplosionResistance(shared_ptr<Entity> source);
 	virtual HitResult *clip(Level *level, int xt, int yt, int zt, Vec3 *a, Vec3 *b);
+
 private:
 	virtual bool containsX(Vec3 *v);
 	virtual bool containsY(Vec3 *v);
 	virtual bool containsZ(Vec3 *v);
+
 public:
 	virtual void wasExploded(Level *level, int x, int y, int z, Explosion *explosion);
 	virtual int getRenderLayer();
@@ -879,9 +892,11 @@ public:
 	virtual void updateDefaultShape();
 	virtual void playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data);
 	virtual bool canSurvive(Level *level, int x, int y, int z);
+
 protected:
 	virtual bool isSilkTouchable();
 	virtual shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
+
 public:
 	virtual int getResourceCountForLootBonus(int bonusLevel, Random *random);
 	virtual void setPlacedBy(Level *level, int x, int y, int z, shared_ptr<LivingEntity> by, shared_ptr<ItemInstance> itemInstance);
@@ -897,8 +912,10 @@ public:
 	// 4J Added so we can check before we try to add a tile to the tick list if it's actually going to do seomthing
 	// Default to true (it's also checking a bool array) and just override when we need to be able to say no
 	virtual bool shouldTileTick(Level *level, int x,int y,int z) { return true; }
+
 protected:
 	virtual Tile *setNotCollectStatistics();
+
 public:
 	virtual int getPistonPushReaction();
 	virtual float getShadeBrightness(LevelSource *level, int x, int y, int z);	// 4J - brought forward from 1.8.2

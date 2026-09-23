@@ -543,7 +543,7 @@ void Tile::staticCtor()
 
 	Tile::packedIce = (new PackedIceTile(161))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_ice)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"packed_ice")->setDescriptionId(IDS_TILE_PACKED_ICE)->sendTileData()->setUseDescriptionId(IDS_TILE_PACKED_ICE);
 	Tile::blueIce = (new BlueIceTile(162))								->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_ice)->setDestroyTime(0.9f)->setLightEmission(5 / 16.0f)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"blue_ice")->setDescriptionId(IDS_TILE_BLUE_ICE)->sendTileData()->setUseDescriptionId(IDS_TILE_BLUE_ICE);
-	Tile::packedGlass = (new PackedGlassTile(163))						->setDestroyTime(0.5f)->setExplodeable(1200)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"packed_glass")->setDescriptionId(IDS_TILE_PACKED_GLASS)->sendTileData()->setUseDescriptionId(IDS_TILE_PACKED_GLASS);
+	Tile::packedGlass = (new PackedGlassTile(163))						->setDestroyTime(0.5f)->setExplodeable(1200)->setSoundType(Tile::SOUND_GLASS)->setIconName(L"packed_glass")->setDescriptionId(IDS_TILE_PACKED_GLASS)->sendTileData()->setUseDescriptionId(IDS_TILE_PACKED_GLASS)->setFireImmune()->setBlastImmune();
 	Tile::endStoneButton = (new EndStoneButtonTile(164))				->setBaseItemTypeAndMaterial(Item::eBaseItemType_button,	Item::eMaterial_stone)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"button")->setDescriptionId(IDS_TILE_ENDSTONE_BUTTON)->sendTileData()->setUseDescriptionId(IDS_DESC_BUTTON);
 	//165
 	//166
@@ -566,22 +566,22 @@ void Tile::staticCtor()
 	Tile::netherPlanks = (new NetherPlanksTile(182))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structwoodstuff,	Item::eMaterial_wood)->setDestroyTime(2.0f)->setSoundType(SOUND_WOOD)->setIconName(L"planks_nether")->setDescriptionId(IDS_TILE_NETHER_PLANKS)->setUseDescriptionId(IDS_DESC_NETHER_PLANKS);
 	Tile::netherVine = (new NetherVineTile(183))						->setDestroyTime(0.2f)->setSoundType(SOUND_GRASS)->setIconName(L"nether_vine")->setDescriptionId(IDS_TILE_VINE)->setUseDescriptionId(IDS_DESC_VINE)->sendTileData()->disableMipmap();
 	Tile::netherBricksMossy = (new Tile(184, Material::netherrack))		->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_netherbrick)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"nether_bricks_mossy")->setDescriptionId(IDS_TILE_NETHERBRICKSMOSSY)->setUseDescriptionId(IDS_DESC_NETHERBRICK);
-	Tile::nethaniumOre = (new OreTile(185))								->setDestroyTime(3.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"nethanium_ore")->setDescriptionId(IDS_TILE_NETHANIUMORE)->setUseDescriptionId(IDS_DESC_NETHANIUMORE);
-	Tile::nethaniumBlock = (new MetalTile(186))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_nethanium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"nethanium_block")->setDescriptionId(IDS_TILE_NETHANIUMBLOCK)->setUseDescriptionId(IDS_TILE_NETHANIUMBLOCK);
+	Tile::nethaniumOre = (new OreTile(185))								->setDestroyTime(3.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L"nethanium_ore")->setDescriptionId(IDS_TILE_NETHANIUMORE)->setUseDescriptionId(IDS_DESC_NETHANIUMORE)->setFireImmune();
+	Tile::nethaniumBlock = (new MetalTile(186))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_nethanium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"nethanium_block")->setDescriptionId(IDS_TILE_NETHANIUMBLOCK)->setUseDescriptionId(IDS_TILE_NETHANIUMBLOCK)->setFireImmune()->setBlastImmune();
 	Tile::netherSapling = (Bush *) (new Mushroom(187))					->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"sapling_nether")->setDescriptionId(IDS_TILE_SAPLING_NETHER)->setUseDescriptionId(IDS_DESC_SAPLING_NETHER)->disableMipmap();
 	Tile::nether_furnace = (new NetherFurnaceTile(188, false))			->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_stone)->setDestroyTime(3.0f)->setSoundType(Tile::SOUND_STONE)->setIconName(L"nether_furnace")->setDescriptionId(IDS_TILE_FURNACE)->sendTileData()->setUseDescriptionId(IDS_DESC_FURNACE);
 	Tile::nether_furnace_lit = (new NetherFurnaceTile(189, true))		->setDestroyTime(3.0f)->setSoundType(Tile::SOUND_STONE)->setLightEmission(14 / 16.0f)->setIconName(L"nether_furnace")->setDescriptionId(IDS_TILE_FURNACE)->sendTileData()->setUseDescriptionId(IDS_DESC_FURNACE);
 	//Tile::endStoneStairs = (new StairTile(190, Tile::endStoneBlock, EndStoneTile::TYPE_DEFAULT))->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,	Item::eMaterial_endStone)->setDestroyTime(3.0f)->setExplodeable(15)->setSoundType(Tile::SOUND_STONE)->setIconName(L"end_stone")->setDescriptionId(IDS_TILE_WHITESTONE)->setUseDescriptionId(IDS_DESC_WHITESTONE);
 	//Tile::mossyEndStoneStairs = (new StairTile(191, Tile::endStoneBlock, EndStoneTile::TYPE_MOSSY))->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,	Item::eMaterial_endStone)->setDestroyTime(3.0f)->setExplodeable(15)->setSoundType(Tile::SOUND_STONE)->setIconName(L"end_stone")->setDescriptionId(IDS_TILE_WHITESTONE)->setUseDescriptionId(IDS_DESC_WHITESTONE);
 	Tile::stainedSand = (new SandTile(192))								->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_SAND)->setIconName(L"sand")->setDescriptionId(IDS_TILE_STAINED_SAND)->setUseDescriptionId(IDS_DESC_SAND);
-	Tile::endothaniumBlock = (new MetalTile(193))						->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endothaniumBlock")->setDescriptionId(IDS_TILE_ENDOTHANIUM)->setUseDescriptionId(IDS_TILE_ENDOTHANIUM);
+	Tile::endothaniumBlock = (new MetalTile(193))						->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endothaniumBlock")->setDescriptionId(IDS_TILE_ENDOTHANIUM)->setUseDescriptionId(IDS_TILE_ENDOTHANIUM)->setFireImmune()->setBlastImmune();
 	Tile::aetherGrass = (AetherGrassTile *) (new AetherGrassTile(194))	->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L"aetherGrass")->setDescriptionId(IDS_TILE_AETHER_GRASS)->setUseDescriptionId(IDS_TILE_AETHER_GRASS);
 	Tile::veloettGrass = (new VeloettGrassTile(195))					->setDestroyTime(3.0f)->setExplodeable(15)->setSoundType(SOUND_STONE)->setIconName(L"veloett_grass")->setDescriptionId(IDS_TILE_VELOETTGRASS)->setUseDescriptionId(IDS_DESC_WHITESTONE);
 	Tile::endSand = (new Tile(196, Material::sand))						->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_SAND)->setIconName(L"end_sand")->setDescriptionId(IDS_TILE_ENDSAND)->setUseDescriptionId(IDS_DESC_SAND);
-	Tile::endoriumOre = (new OreTile(197))								->setDestroyTime(3.0f)->setExplodeable(15)->setSoundType(Tile::SOUND_STONE)->setIconName(L"endorium_ore")->setDescriptionId(IDS_TILE_ENDORIUMORE)->setUseDescriptionId(IDS_DESC_WHITESTONE);
-	Tile::endoriumBlock = (new MetalTile(198))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endorium_block")->setDescriptionId(IDS_TILE_ENDORIUMBLOCK)->setUseDescriptionId(IDS_TILE_ENDORIUMBLOCK);
-	Tile::endoriumGrate = (new EndoriumGrateTile(199))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endorium_grate")->setDescriptionId(IDS_TILE_ENDORIUMGRATE)->setUseDescriptionId(IDS_TILE_ENDORIUMGRATE);
-	Tile::endoriumLamp = (new MetalTile(200))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setLightEmission(1.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endorium_lamp")->setDescriptionId(IDS_TILE_ENDORIUMLAMP)->setUseDescriptionId(IDS_TILE_ENDORIUMLAMP);
+	Tile::endoriumOre = (new OreTile(197))								->setDestroyTime(3.0f)->setExplodeable(15)->setSoundType(Tile::SOUND_STONE)->setIconName(L"endorium_ore")->setDescriptionId(IDS_TILE_ENDORIUMORE)->setUseDescriptionId(IDS_DESC_WHITESTONE)->setFireImmune();
+	Tile::endoriumBlock = (new MetalTile(198))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endorium_block")->setDescriptionId(IDS_TILE_ENDORIUMBLOCK)->setUseDescriptionId(IDS_TILE_ENDORIUMBLOCK)->setFireImmune()->setBlastImmune();
+	Tile::endoriumGrate = (new EndoriumGrateTile(199))					->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endorium_grate")->setDescriptionId(IDS_TILE_ENDORIUMGRATE)->setUseDescriptionId(IDS_TILE_ENDORIUMGRATE)->setFireImmune()->setBlastImmune();
+	Tile::endoriumLamp = (new MetalTile(200))							->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,	Item::eMaterial_endorium)->setDestroyTime(5.0f)->setLightEmission(1.0f)->setExplodeable(1200)->setSoundType(Tile::SOUND_METAL)->setIconName(L"endorium_lamp")->setDescriptionId(IDS_TILE_ENDORIUMLAMP)->setUseDescriptionId(IDS_TILE_ENDORIUMLAMP)->setFireImmune()->setBlastImmune();
 
 	Tile::endGateway = (new EndGatewayTile(201, Material::portal))		->setDestroyTime(INDESTRUCTIBLE_DESTROY_TIME)->setExplodeable(6000000)->setDescriptionId(IDS_TILE_END_PORTAL)->setUseDescriptionId(IDS_DESC_END_PORTAL);
 
@@ -627,8 +627,8 @@ void Tile::staticCtor()
 	Tile::nusaLog = (new NetherWoodTile(249))							->setDestroyTime(3.0f)->setSoundType(SOUND_WOOD)->setIconName(L"nusaLog")->setDescriptionId(IDS_TILE_NUSA_LOG)->setUseDescriptionId(IDS_TILE_NUSA_LOG);
 	Tile::nusaShrub = (VeloettShrubTile *)(new VeloettShrubTile(250))	->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"nusaShrub")->setDescriptionId(IDS_TILE_NUSASHRUB)->setUseDescriptionId(IDS_TILE_NUSASHRUB)->disableMipmap();
 	Tile::nusaVine = (VeloettVineTile *)(new VeloettVineTile(251))		->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L"nusaVine")->setDescriptionId(IDS_TILE_NUSAVINE)->setUseDescriptionId(IDS_TILE_NUSAVINE)->disableMipmap();
-	Tile::nusaCube = (new NusaCubeTile(252, Material::metal))			->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_endStone)->setLightEmission(1.0f)->setDestroyTime(0.5f)->setExplodeable(15)->setSoundType(SOUND_METAL)->setIconName(L"nusaCube")->setDescriptionId(IDS_TILE_NUSA_CUBE)->setUseDescriptionId(IDS_TILE_NUSA_CUBE)->disableMipmap();
-	Tile::nusaCore = (new NusaCoreTile(253, Material::metal))			->setDestroyTime(-1)->setExplodeable(6000000)->setSoundType(SOUND_METAL)->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE)->setUseDescriptionId(IDS_TILE_NUSA_CORE);
+	Tile::nusaCube = (new NusaCubeTile(252, Material::metal))			->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,	Item::eMaterial_endStone)->setLightEmission(1.0f)->setDestroyTime(0.5f)->setExplodeable(15)->setSoundType(SOUND_METAL)->setIconName(L"nusaCube")->setDescriptionId(IDS_TILE_NUSA_CUBE)->setUseDescriptionId(IDS_TILE_NUSA_CUBE)->disableMipmap()->setFireImmune()->setBlastImmune();
+	Tile::nusaCore = (new NusaCoreTile(253, Material::metal))			->setDestroyTime(-1)->setExplodeable(6000000)->setSoundType(SOUND_METAL)->setIconName(L"nusaCore_side")->setDescriptionId(IDS_TILE_NUSA_CORE)->setUseDescriptionId(IDS_TILE_NUSA_CORE)->setFireImmune()->setBlastImmune();
 	Tile::nusaPortal = (NusaPortalTile *)(new NusaPortalTile(254, Material::portal))->setIconName(L"nusa_portal")->setDescriptionId(IDS_TILE_NUSA_PORTAL)->setUseDescriptionId(IDS_TILE_NUSA_PORTAL);
 
 	Tile::fossilOre = (new FossilTile(256))								->setDestroyTime(2.5f)->setExplodeable(15)->setSoundType(SOUND_STONE)->setIconName(L"fossilStone")->setDescriptionId(IDS_TILE_FOSSIL_ORE)->setUseDescriptionId(IDS_TILE_FOSSIL_ORE);
@@ -706,7 +706,7 @@ void Tile::staticCtor()
 		{
 			if( Item::items[i] == NULL)
 			{
-				Item::items[i] = new TileItem(i - 512);
+				Item::items[i] = (new TileItem(i - 512))->setFireImmune(Tile::tiles[i]->isFireImmune())->setBlastImmune(Tile::tiles[i]->isBlastImmune());
 				Tile::tiles[i]->init();
 			}
 
@@ -777,6 +777,8 @@ Tile::Tile(int id, Material *material, bool isSolidRender)
 	m_iMaterial=Item::eMaterial_undefined;
 	m_iBaseItemType=Item::eBaseItemType_undefined;
 	icon = NULL;
+	m_fireImmune = false;
+	m_blastImmune = false;
 }
 
 Tile *Tile::sendTileData(unsigned char importantMask/*=15*/)
@@ -788,7 +790,6 @@ Tile *Tile::sendTileData(unsigned char importantMask/*=15*/)
 void Tile::init()
 {
 }
-
 
 // 4J-PB - adding so we can class different items together for the new crafting menu
 // so pickaxe_stone would get tagged with pickaxe and stone
@@ -807,6 +808,29 @@ int Tile::getBaseItemType()
 int Tile::getMaterial()
 {
 	return this->m_iMaterial;
+}
+
+// Voxel - added these so fire immune + blast immune tile items can be less hardcoded
+bool Tile::isFireImmune() const
+{
+	return m_fireImmune;
+}
+
+bool Tile::isBlastImmune() const
+{
+	return m_blastImmune;
+}
+
+Tile *Tile::setFireImmune(bool fireImmune)
+{
+	m_fireImmune = fireImmune;
+	return this;
+}
+
+Tile *Tile::setBlastImmune(bool blastImmune)
+{
+	m_blastImmune = blastImmune;
+	return this;
 }
 
 

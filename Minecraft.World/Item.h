@@ -922,6 +922,8 @@ protected:
 	bool m_isStackedByData;
 	bool m_isAccessory;
 	bool m_isCape;
+	bool m_fireImmune;
+	bool m_blastImmune;
 
 private:
 	Item *craftingRemainingItem;
@@ -964,6 +966,11 @@ public:
 	bool isCape() const;
 	Item *setAccessory();
 	Item *setCape();
+
+	bool isFireImmune() const;
+	bool isBlastImmune() const;
+	Item *setFireImmune(bool fireImmune = true);
+	Item *setBlastImmune(bool blastImmune = true);
 
 protected:
 	Item *setStackedByData(bool isStackedByData);

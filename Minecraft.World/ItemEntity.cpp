@@ -196,56 +196,21 @@ bool ItemEntity::hurt(DamageSource *source, float damage)
 
 	if (isInvulnerable()) return false;
 
-	//blast & fire immune
-	if (getItem() != nullptr && getItem()->id == Item::netherStar_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::relicMallet_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::aphalafSword_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::aphalafShard_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::aphalafRod_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Tile::packedGlass_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::staffShard_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nusaShard_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nusaBlade_Id && ((source->isExplosion()) || (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
+	// Voxel - this is no longer a hardcoded list; we dont like hardcoding in these parts...
+	// Also needed for Ruby Launcher
+	shared_ptr<ItemInstance> instance = getItem();
+	Item *dropdItem = instance != nullptr ? instance->getItem() : nullptr;
 
-	//fire immune
-	if (getItem() != nullptr && getItem()->id == Item::nethanium_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumSword_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumAxe_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumPickaxe_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumShovel_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumHoe_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumBread_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumHelmet_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumChestplate_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumLeggings_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumBoots_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumPendant_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::nethaniumRing_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::dartNethanium_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::dartShooterNethanium_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::blazeRod_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::blazePowder_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::magmaCream_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::hellSphere_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Tile::nethaniumBlock_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Tile::nethaniumOre_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endorium_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumSword_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumAxe_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumPickaxe_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumShovel_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumHoe_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumHelmet_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumChestplate_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumLeggings_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumBoots_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumPendant_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::endoriumRing_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Tile::endoriumBlock_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Tile::endoriumOre_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Tile::endoriumGrate_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Tile::endoriumLamp_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
-	if (getItem() != nullptr && getItem()->id == Item::lavaReeds_Id && ((source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava))) return false;
+	if (dropdItem != nullptr)
+	{
+		bool isFireDamage = (source == DamageSource::inFire) || (source == DamageSource::onFire) || (source == DamageSource::lava);
+		bool isBlastDamage = source->isExplosion();
+
+		if ((isBlastDamage && dropdItem->isBlastImmune()) || (isFireDamage && dropdItem->isFireImmune()))
+		{
+			return false;
+		}
+	}
 
 	//
 	markHurt();
