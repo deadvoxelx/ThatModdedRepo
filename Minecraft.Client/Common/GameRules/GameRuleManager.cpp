@@ -52,6 +52,7 @@ const WCHAR *GameRuleManager::wchAttrNameA[] =
 	L"useCoords", // eGameRuleAttr_useCoords
 	L"seed", // eGameRuleAttr_seed
 	L"flatworld", // eGameRuleAttr_flatworld
+	L"farlands", // eGameRuleAttr_farlands
 	L"filename", // eGameRuleAttr_filename
 	L"rot", // eGameRuleAttr_rot
 	L"data", // eGameRuleAttr_data
