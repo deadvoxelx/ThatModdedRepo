@@ -606,6 +606,14 @@ bool ServerPlayer::hurt(DamageSource *dmgSource, float dmg)
 {
 	if (isInvulnerable()) return false;
 
+    //RUBY IMPL
+    if (ServerLevel* serverLevel = dynamic_cast<ServerLevel*>(this->level))
+    {
+        if (RubyLoader::firePlayerHurt(this, serverLevel, dmgSource, dmg)) {
+            return false;
+        }
+    }
+
 	// 4J: Not relevant to console servers
 	// Allow falldamage on dedicated pvpservers -- so people cannot cheat their way out of 'fall traps'
 	//bool allowFallDamage = server->isPvpAllowed() && server->isDedicatedServer() && server->isPvpAllowed() && (dmgSource->msgId.compare(L"fall") == 0);

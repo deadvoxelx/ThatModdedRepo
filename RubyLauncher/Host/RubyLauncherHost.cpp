@@ -18,7 +18,11 @@
 #include "Server/Events/Player/PlayerFlightEndedEvent.h"
 #include "Server/Events/Player/PlayerFlightStartedEvent.h"
 #include "Server/Events/Player/PlayerJoinEvent.h"
+#include "Server/Events/Player/PlayerHurtEvent.h"
 
+#include "../../Minecraft.Client/ServerLevel.h"
+#include "../Server/Events/Block/BlockTickEvent.h"
+#include "../Server/Events/Block/BlockUseEvent.h"
 #include "../Server/Events/Item/ItemTickEvent.h"
 #include "Item.h"
 #include "Mob.h"
@@ -157,7 +161,9 @@ void RubyLoader::onClientBoot()
 
 	g_loader->collectMods();
 	g_loader->refreshClientScripts();
-	g_loader->executeClientScripts("main");
+	g_loader->executeClientScripts("main", true);
+    g_loader->refreshStartupScripts();
+    g_loader->executeStartupScripts("main", true);
 
 	onStringTableReloaded();
 
@@ -207,7 +213,7 @@ void RubyLoader::onServerStart(MinecraftServer *server)
 
 	g_loader->registerServerFunctions(server);
 	g_loader->refreshServerScripts();
-	g_loader->executeServerScripts("main");
+	g_loader->executeServerScripts("main", true);
 
 	OreFeatureRegistry::finalize();
 	TreeFeatureRegistry::finalize();
@@ -334,6 +340,14 @@ bool RubyLoader::firePlayerBlockPlace(ServerPlayer *player, int x, int y, int z,
 	return EventBus::Get().fire(event);
 }
 
+bool RubyLoader::firePlayerHurt(ServerPlayer* plr, ServerLevel* level, DamageSource* src, int dmg)
+{
+    if (plr != nullptr && level != nullptr) {
+        PlayerHurtEvent event(plr, level, src, dmg);
+        return EventBus::Get().fire(event);
+    }
+}
+
 void RubyLoader::fireItemCompleteUse(ItemInstance *item, ServerLevel *level, ServerPlayer *player)
 {
 	if (item == nullptr || player == nullptr) return;
@@ -355,6 +369,20 @@ void RubyLoader::fireItemTick(ItemInstance *item, ServerLevel *level, ServerPlay
     if (item == nullptr) return;
 
     ItemTickEvent event(item, level, player, slot);
+    EventBus::Get().fire(event);
+}
+
+void RubyLoader::fireBlockTick(int x, int y, int z, int blockId, ServerLevel* level) {
+    if (level == nullptr) return;
+
+    BlockTickEvent event(x, y, z, blockId, level);
+    EventBus::Get().fire(event);
+}
+
+void RubyLoader::fireBlockUse(int x, int y, int z, int blockId, ServerLevel* level, ServerPlayer* player) {
+    if (level == nullptr || player == nullptr) return;
+
+    BlockUseEvent event(x, y, z, blockId, level, player);
     EventBus::Get().fire(event);
 }
 

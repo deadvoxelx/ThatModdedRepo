@@ -157,7 +157,13 @@ void MerchantRecipeList::load(CompoundTag *tag, Level *level)
 	for (int i = 0; i < list->size(); i++)
 	{
 		CompoundTag *recipeTag = list->get(i);
-		m_recipes.push_back(new MerchantRecipe(recipeTag, level));
+		MerchantRecipe *recipe = new MerchantRecipe(recipeTag, level);
+		if (recipe->getBuyAItem() == nullptr || recipe->getSellItem() == nullptr)
+		{
+			delete recipe;
+			continue;
+		}
+		m_recipes.push_back(recipe);
 	}
 }
 

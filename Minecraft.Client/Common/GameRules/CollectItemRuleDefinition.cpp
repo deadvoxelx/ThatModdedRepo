@@ -36,6 +36,7 @@ void CollectItemRuleDefinition::addAttribute(const wstring &attributeName, const
 	if(attributeName.compare(L"itemId") == 0)
 	{
 		m_itemId = _fromString<int>(attributeValue);
+		if ((m_itemId >= 256 && m_itemId < 512) || (m_itemId >= 2256 && m_itemId < 2268)) m_itemId += 256;
 		app.DebugPrintf("CollectItemRule: Adding parameter itemId=%d\n",m_itemId);
 	}
 	else if(attributeName.compare(L"auxValue") == 0)

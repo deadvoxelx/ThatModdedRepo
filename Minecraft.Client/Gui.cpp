@@ -1084,6 +1084,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
         const float fontScale = static_cast<float>(guiScale) * 1.0f;
         const int debugLeft = 1;
         const int debugTop = 1;
+        const float debugCoordsYFraction = 0.92f;
 
         glTranslatef(static_cast<float>(debugLeft), static_cast<float>(debugTop), 0.f);
         glScalef(fontScale, fontScale, 1.f);
@@ -1280,7 +1281,8 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			swprintf(posString, 44, L"%.3f / %.3f / %.3f", minecraft->player->x, minecraft->player->y, minecraft->player->z);
 			lines.push_back(L"XYZ: " + std::wstring(posString));
 			const float centerX = ((vpW / 2.0f - debugLeft) / fontScale + debugLeft) / debugScale;
-			const float coordY = (201.0f - debugTop) / debugScale + debugTop;
+			const float hudScale = fontScale * debugScale;
+			const float coordY = (vpH * debugCoordsYFraction - debugTop * (1.0f - fontScale)) / hudScale;
 			drawCenteredString(font, posString, Mth::floor(centerX + 0.5f), Mth::floor(coordY + 0.5f), 0x44ff00);
 		}
 

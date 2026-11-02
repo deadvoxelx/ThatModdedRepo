@@ -20,6 +20,10 @@ public:
     void Cleanup();
     void SetGamma(float gamma);
     float GetGamma() const { return m_gamma; }
+    void SetColorPulse(float r, float g, float b, float strength);
+    void ToggleColorPulse() { m_colorPulseEnabled = !m_colorPulseEnabled; }
+    bool IsColorPulseEnabled() const { return m_colorPulseEnabled; }
+    bool HasColorPulse() const { return m_tintStrength > 0.0f; }
     PostProcesser(const PostProcesser&) = delete;
     PostProcesser& operator=(const PostProcesser&) = delete;
 
@@ -42,6 +46,11 @@ private:
 
     bool m_initialized = false;
     float m_gamma = 1.0f;
+    bool m_colorPulseEnabled = false;
+    float m_tintR = 1.0f;
+    float m_tintG = 1.0f;
+    float m_tintB = 1.0f;
+    float m_tintStrength = 0.0f;
     bool m_wineMode = false;
     D3D11_VIEWPORT m_customViewport;
     bool m_useCustomViewport = false;
@@ -51,10 +60,11 @@ private:
     struct GammaCBData
     {
         float gamma;
-        float pad;
         float uvOffsetX, uvOffsetY;
         float uvScaleX, uvScaleY;
-        float pad2[2];
+        float tintR, tintG, tintB;
+        float strength;
+        float pad[3];
     };
 
     static const char* g_gammaVSCode;

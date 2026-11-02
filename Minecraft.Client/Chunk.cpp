@@ -23,23 +23,41 @@ int Chunk::updates = 0;
 
 #ifdef _LARGE_WORLDS
 DWORD Chunk::tlsIdx = TlsAlloc();
+DWORD Chunk::tlsTileRendererIdx = TlsAlloc();
 
 void Chunk::CreateNewThreadStorage()
 {
-	unsigned short *tileIds = new unsigned short[16 * 16 * 512];
+	unsigned short *tileIds = new unsigned short[LevelChunk::SECTION_SLICE_LENGTH];
 	TlsSetValue(tlsIdx, tileIds);
+	TlsSetValue(tlsTileRendererIdx, new TileRenderer());
 }
 
 void Chunk::ReleaseThreadStorage()
 {
 	unsigned short *tileIds = static_cast<unsigned short *>(TlsGetValue(tlsIdx));
 	delete [] tileIds;
+	TlsSetValue(tlsIdx, nullptr);
+
+	TileRenderer *tileRenderer = static_cast<TileRenderer *>(TlsGetValue(tlsTileRendererIdx));
+	delete tileRenderer;
+	TlsSetValue(tlsTileRendererIdx, nullptr);
 }
 
 unsigned short *Chunk::GetTileIdsStorage()
 {
 	unsigned short *tileIds = static_cast<unsigned short *>(TlsGetValue(tlsIdx));
 	return tileIds;
+}
+
+TileRenderer *Chunk::GetTileRendererStorage()
+{
+	TileRenderer *tileRenderer = static_cast<TileRenderer *>(TlsGetValue(tlsTileRendererIdx));
+	if( tileRenderer == nullptr )
+	{
+		tileRenderer = new TileRenderer();
+		TlsSetValue(tlsTileRendererIdx, tileRenderer);
+	}
+	return tileRenderer;
 }
 #else
 // 4J Stu - Don't want this when multi-threaded
@@ -246,23 +264,26 @@ void Chunk::rebuild()
 
 #ifdef _LARGE_WORLDS
 	unsigned short *tileIds = GetTileIdsStorage();
+	TileRenderer *tileRenderer = GetTileRendererStorage();
 #else
-	static unsigned short tileIds[16 * 16 * 512];
+	static unsigned short tileIds[LevelChunk::SECTION_SLICE_LENGTH];
+	static TileRenderer tileRendererStorage;
+	TileRenderer *tileRenderer = &tileRendererStorage;
 #endif
-	level->getChunkAt(x,z)->getBlockData16(tileIds);		// 4J - TODO - now our data has been re-arranged, we could just extra the vertical slice of this chunk rather than the whole thing
+
+	const int sliceYStart = y0 - 1;
+	level->getChunkAt(x,z)->getBlockData16Section(tileIds, sliceYStart);
 
 	LevelSource *region = new Region(level, x0 - r, y0 - r, z0 - r, x1 + r, y1 + r, z1 + r, r);
-	TileRenderer *tileRenderer = new TileRenderer(region, this->x, this->y, this->z, tileIds);
+	tileRenderer->reset(region, this->x, this->y, this->z, tileIds);
 
 	// AP - added a caching system for Chunk::rebuild to take advantage of
 	// Basically we're storing of copy of the tileIDs array inside the region so that calls to Region::getTile can grab data
 	// more quickly from this array rather than calling CompressedTileStorage. On the Vita the total thread time spent in
 	// Region::getTile went from 20% to 4%.
-#ifdef __PSVITA__
 	int xc = x >> 4;
 	int zc = z >> 4;
-	((Region*)region)->setCachedTiles(tileIds, xc, zc);
-#endif
+	((Region*)region)->setCachedTiles(tileIds, sliceYStart, xc, zc);
 
 	// We now go through the vertical section of this level chunk that we are interested in and try and establish
 	// (1) if it is completely empty
@@ -272,20 +293,12 @@ void Chunk::rebuild()
 	bool empty = true;
 	for( int yy = y0; yy < y1; yy++ )
 	{
+		const int row = yy - sliceYStart;
 		for( int zz = 0; zz < 16; zz++ )
 		{
 			for( int xx = 0; xx < 16; xx++ )
 			{
-				// 4J Stu - tile data is ordered in 128 blocks of full width, lower 128 then upper 128
-				int indexY = yy;
-				int offset = 0;
-				if(indexY >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
-				{
-					indexY -= Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-					offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
-				}
-
-				unsigned short tileId = tileIds[ offset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 0 ) << 7 ) | ( indexY + 0 ) ) ];
+				unsigned short tileId = tileIds[ LevelChunk::sectionSliceIndex( xx, zz, row ) ];
 				if( tileId > 0 ) empty = false;
 
 				// Don't bother trying to work out neighbours for this tile if we are at the edge of the chunk - apart from the very
@@ -297,40 +310,26 @@ void Chunk::rebuild()
 				// Establish whether this tile and its neighbours are all made of rock, dirt, unbreakable tiles, or have already
 				// been determined to meet this criteria themselves and have a tile of 65535 set.
 				if( !( ( tileId == Tile::stone_Id ) || ( tileId == Tile::dirt_Id ) || ( tileId == Tile::unbreakable_Id ) || ( tileId == 0xffff) ) ) continue;
-				tileId = tileIds[ offset + ( ( ( xx - 1 ) << 11 ) | ( ( zz + 0 ) << 7 ) | ( indexY + 0 )) ];
+				tileId = tileIds[ LevelChunk::sectionSliceIndex( xx - 1, zz, row ) ];
 				if( !( ( tileId == Tile::stone_Id ) || ( tileId == Tile::dirt_Id ) || ( tileId == Tile::unbreakable_Id ) || ( tileId == 0xffff) ) ) continue;
-				tileId = tileIds[ offset + ( ( ( xx + 1 ) << 11 ) | ( ( zz + 0 ) << 7 ) | ( indexY + 0 )) ];
+				tileId = tileIds[ LevelChunk::sectionSliceIndex( xx + 1, zz, row ) ];
 				if( !( ( tileId == Tile::stone_Id ) || ( tileId == Tile::dirt_Id ) || ( tileId == Tile::unbreakable_Id ) || ( tileId == 0xffff) ) ) continue;
-				tileId = tileIds[ offset + ( ( ( xx + 0 ) << 11 ) | ( ( zz - 1 ) << 7 ) | ( indexY + 0 )) ];
+				tileId = tileIds[ LevelChunk::sectionSliceIndex( xx, zz - 1, row ) ];
 				if( !( ( tileId == Tile::stone_Id ) || ( tileId == Tile::dirt_Id ) || ( tileId == Tile::unbreakable_Id ) || ( tileId == 0xffff) ) ) continue;
-				tileId = tileIds[ offset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 1 ) << 7 ) | ( indexY + 0 )) ];
+				tileId = tileIds[ LevelChunk::sectionSliceIndex( xx, zz + 1, row ) ];
 				if( !( ( tileId == Tile::stone_Id ) || ( tileId == Tile::dirt_Id ) || ( tileId == Tile::unbreakable_Id ) || ( tileId == 0xffff) ) ) continue;
 				// Treat the bottom of the world differently - we shouldn't ever be able to look up at this, so consider tiles as invisible
 				// if they are surrounded on sides other than the bottom
 				if( yy > 0 )
 				{
-					int indexYMinusOne = yy - 1;
-					int yMinusOneOffset = 0;
-					if(indexYMinusOne >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
-					{
-						indexYMinusOne -= Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-						yMinusOneOffset = Level::COMPRESSED_CHUNK_SECTION_TILES;
-					}
-					tileId = tileIds[ yMinusOneOffset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 0 ) << 7 ) | indexYMinusOne ) ];
+					tileId = tileIds[ LevelChunk::sectionSliceIndex( xx, zz, row - 1 ) ];
 					if( !( ( tileId == Tile::stone_Id ) || ( tileId == Tile::dirt_Id ) || ( tileId == Tile::unbreakable_Id ) || ( tileId == 0xffff) ) ) continue;
 				}
-				int indexYPlusOne = yy + 1;
-				int yPlusOneOffset = 0;
-				if(indexYPlusOne >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
-				{
-					indexYPlusOne -= Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-					yPlusOneOffset = Level::COMPRESSED_CHUNK_SECTION_TILES;
-				}
-				tileId = tileIds[ yPlusOneOffset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 0 ) << 7 ) | indexYPlusOne ) ];
+				tileId = tileIds[ LevelChunk::sectionSliceIndex( xx, zz, row + 1 ) ];
 				if( !( ( tileId == Tile::stone_Id ) || ( tileId == Tile::dirt_Id ) || ( tileId == Tile::unbreakable_Id ) || ( tileId == 0xffff) ) ) continue;
 
 				// This tile is surrounded. Flag it as not requiring to be rendered by setting its id to 65535.
-				tileIds[ offset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 0 ) << 7 ) | ( indexY + 0 ) ) ] = 0xffff;
+				tileIds[ LevelChunk::sectionSliceIndex( xx, zz, row ) ] = 0xffff;
 			}
 		}
 	}
@@ -346,7 +345,6 @@ void Chunk::rebuild()
 		}
 
 		delete region;
-		delete tileRenderer;
 		return;
 	}
 	// 4J - optimisation ends
@@ -378,17 +376,8 @@ void Chunk::rebuild()
 			{
 				for (int y = y0; y < y1; y++)
 				{
-					// 4J Stu - tile data is ordered in 128 blocks of full width, lower 128 then upper 128
-					int indexY = y;
-					int offset = 0;
-					if(indexY >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
-					{
-						indexY -= Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-						offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
-					}
-
 					// 4J - get tile from those copied into our local array in earlier optimisation
-					unsigned short tileId = tileIds[ offset + ( ( ( x - x0 ) << 11 ) | ( ( z - z0 ) << 7 ) | indexY) ];
+					unsigned short tileId = tileIds[ LevelChunk::sectionSliceIndex( x - x0, z - z0, y - sliceYStart ) ];
 					// If flagged as not visible, drop out straight away
 					if( tileId == 0xffff ) continue;
 //					int tileId = region->getTile(x,y,z);
@@ -496,7 +485,6 @@ void Chunk::rebuild()
 			   bounds.boundingBox[3], bounds.boundingBox[4], bounds.boundingBox[5]);
 	}
 
-	delete tileRenderer;
 	delete region;
 
 	PIXEndNamedEvent();

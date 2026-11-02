@@ -7,6 +7,7 @@
 class Level;
 class TileEntity;
 class Entity;
+class TileRenderer;
 using namespace std;
 
 class ClipChunk
@@ -36,10 +37,12 @@ private:
     static Tesselator *t;
 #else
 	static DWORD tlsIdx;
+	static DWORD tlsTileRendererIdx;
 public:
 	static void CreateNewThreadStorage();
 	static void ReleaseThreadStorage();
 	static unsigned short *GetTileIdsStorage();
+	static TileRenderer *GetTileRendererStorage();
 #endif
 	
 public:

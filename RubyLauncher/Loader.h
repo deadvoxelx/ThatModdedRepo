@@ -28,12 +28,15 @@ public:
     void execute(sol::environment& (RubyMod::*getEnv)(), std::string funcName, bool warn);
 
     void refreshServerScripts();
+    void refreshStartupScripts();
     void refreshClientScripts();
 
     void executeServerScripts(std::string name = "main", bool warn = false);
+    void executeStartupScripts(std::string name = "main", bool warn = false);
     void executeClientScripts(std::string name = "main", bool warn = false);
 
     static void _debugPrint(const std::string &output);
+    static void writeToLog(const std::string &log);
     static Loader *getInstance();
     RubyMod *findMod(const std::string &modId);
     void tickServer(MinecraftServer *server);
@@ -42,6 +45,7 @@ public:
     std::map<std::string, RubyMod> mods_;
     std::vector<std::string> loadOrder_;
     sol::state luaServer;
+    sol::state luaStartup;
     sol::state luaClient;
     Scheduler m_serverScheduler;
     Scheduler m_clientScheduler;

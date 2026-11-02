@@ -28,24 +28,43 @@ Loader *Loader::getInstance()
 Loader::Loader() {
     s_instance = this;
     luaServer.open_libraries(sol::lib::base, sol::lib::string, sol::lib::table, sol::lib::package, sol::lib::math);
+    luaStartup.open_libraries(sol::lib::base, sol::lib::string, sol::lib::table, sol::lib::package, sol::lib::math);
     luaClient.open_libraries(sol::lib::base, sol::lib::string, sol::lib::table, sol::lib::package, sol::lib::math);
     auto panicHandler = [](lua_State* L) -> int {
-        fprintf(stderr, "[Lua] PANIC: %s\n", lua_tostring(L, -1));
+        Loader::_debugPrint("[Lua] PANIC: " + std::string(lua_tostring(L, -1)));
         return 0;
     };
     lua_atpanic(luaServer.lua_state(), panicHandler);
+    lua_atpanic(luaStartup.lua_state(), panicHandler);
     lua_atpanic(luaClient.lua_state(), panicHandler);
 
     RubyPaths::ensureModsFolderExists();
 
-    LuaBindings::bindCommonFunctions({ &luaServer, &luaClient });
+    LuaBindings::bindCommonFunctions({ &luaServer, &luaClient, &luaStartup });
     LuaBindings::bindClientFunctions(luaClient);
     LuaBindings::bindServerEvents(luaServer);
+    LuaBindings::bindServerUsertypes(luaStartup);
+    LuaBindings::bindStartupFunctions(luaStartup);
     app.DebugPrintf("Ruby Launcher initialized!\n");
+}
+
+void Loader::writeToLog(const string &log) {
+    if (!std::filesystem::exists(RubyPaths::modsRoot() + "/../" + "ruby.log")) {
+        std::ofstream createlog(RubyPaths::modsRoot() + "/../" + "ruby.log");
+        if (createlog.is_open()) createlog.close();
+    }
+
+    std::ofstream outputfile(RubyPaths::modsRoot() + "/../" + "ruby.log", std::ios::app);
+    if (outputfile.is_open())
+    {
+        outputfile << log+"\n";
+        outputfile.close();
+    }
 }
 
 void Loader::_debugPrint(const string &output) {
     app.DebugPrintf(("Ruby Launcher: "+output+"\n").c_str());
+    writeToLog(output);
 }
 
 nlohmann::json Loader::getManifest(const string &filePath) {
@@ -56,6 +75,7 @@ nlohmann::json Loader::getManifest(const string &filePath) {
 
 void Loader::log(const string& message) {
     app.DebugPrintf(("Ruby Launcher: " + message + "\n").c_str());
+    writeToLog(message);
 }
 
 string Loader::loadFile(string fileName) {
@@ -108,6 +128,7 @@ void Loader::collectMods() {
             _debugPrint("Couldnt read manifest.json for '"+modPath+"' exception: "+e.what());
             continue;
         }
+        _debugPrint("collectMods: '" + modPath + "' manifest keys: " + json.dump());
 
         RubyMod m;
         bool missingRequired = false;
@@ -125,12 +146,14 @@ void Loader::collectMods() {
 
         bool hasServer = hasMetadata(json, "serverMain");
         bool hasClient = hasMetadata(json, "clientMain");
-        if (!hasServer && !hasClient) {
-            _debugPrint((modPath+" needs at least one of 'serverMain'/'clientMain' in your manifest.json"));
+        bool hasStartup = hasMetadata(json, "startupMain");
+        if (!hasServer && !hasClient && !hasStartup) {
+            _debugPrint((modPath+" needs at least one of 'serverMain'/'clientMain'/'startupMain' in your manifest.json"));
             continue;
         }
         if (hasServer) m.metadata["serverMain"] = json["serverMain"].get<std::string>();
         if (hasClient) m.metadata["clientMain"] = json["clientMain"].get<std::string>();
+        if (hasStartup) m.metadata["startupMain"] = json["startupMain"].get<std::string>();
         if (json["dependencies"].is_array()) {
             for (const auto &dep : json["dependencies"]) {
                 if (dep.is_string()) m.dependencies.push_back(dep.get<std::string>());
@@ -211,13 +234,19 @@ void Loader::refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)(
     std::vector<std::string> failedMods;
     for (const std::string &name : loadOrder_) {
         auto modIterator = mods_.find(name);
-        if (modIterator == mods_.end()) continue;
+        if (modIterator == mods_.end()) {
+            _debugPrint(name + " not found");
+            continue;
+        }
         RubyMod& mod = modIterator->second;
         std::string modName = std::string(mod.getName());
         std::string modId = std::string(mod.getModID());
         std::string folderName = std::string(mod.getPathName());
         std::string modEntry = std::string((mod.*getEntry)());
-        if (modEntry.empty()) continue;
+        if (modEntry.empty()) {
+            _debugPrint(modName+"'s "+folderName+" has no entry");
+            continue;
+        }
         std::string scriptPath = RubyPaths::modScriptPath(folderName, modEntry);
         if (!fs::exists(scriptPath)) {
             _debugPrint("Couldnt find file for " + scriptPath + " for mod " + modName);
@@ -261,6 +290,8 @@ void Loader::refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)(
         if (result.valid()) {
             if (&luaState == &luaServer) {
                 mod.setServerEnv(std::move(modEnv));
+            } else if (&luaState == &luaStartup) {
+                mod.setStartupEnv(std::move(modEnv));
             } else {
                 mod.setClientEnv(std::move(modEnv));
             }
@@ -281,6 +312,10 @@ void Loader::refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)(
 
 void Loader::refreshServerScripts() {
     refresh(luaServer,&RubyMod::getServerEntry,true);
+}
+
+void Loader::refreshStartupScripts() {
+    refresh(luaStartup,&RubyMod::getStartupEntry,false);
 }
 
 void Loader::refreshClientScripts() {
@@ -311,6 +346,10 @@ void Loader::execute(sol::environment& (RubyMod::*getEnv)(), std::string funcNam
 
 void Loader::executeServerScripts(std::string name, bool warn) {
     execute(&RubyMod::getServerEnv, name, warn);
+}
+
+void Loader::executeStartupScripts(std::string name, bool warn) {
+    execute(&RubyMod::getStartupEnv, name, warn);
 }
 
 void Loader::executeClientScripts(std::string name, bool warn) {

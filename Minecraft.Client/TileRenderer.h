@@ -74,6 +74,7 @@ public:
 	TileRenderer( LevelSource* level );
 	TileRenderer();
 	~TileRenderer();
+	void reset( LevelSource* level, int xMin, int yMin, int zMin, unsigned short *tileIds );
 	void setFixedTexture( Icon *fixedTexture );
 	void clearFixedTexture();
 	bool hasFixedTexture();

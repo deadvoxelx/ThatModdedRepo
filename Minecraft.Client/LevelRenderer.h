@@ -75,18 +75,30 @@ public:
 
 	// 4J-PB added
 	void AddDLCSkinsToMemTextures();
+
 public:
 	void renderEntities(Vec3 *cam, Culler *culler, float a);
+
+private:
+	bool isEntityOccluded(int playerIndex, shared_ptr<Entity> entity, Vec3 *cam);
+	bool isTileEntityCulled(int playerIndex, shared_ptr<TileEntity> tileEntity, Culler *culler, Vec3 *cam, bool allowBlockCulling);
+
+public:
 	wstring gatherStats1();
 	wstring gatherStats2();
+
 private:
 	void resortChunks(int xc, int yc, int zc);
+
 public:
 	int render(shared_ptr<LivingEntity> player, int layer, double alpha, bool updateChunks);
+
 private:
 	int renderChunks(int from, int to, int layer, double alpha);
+
 public:
 	int activePlayers();	// 4J - added
+
 public:
 	void renderSameAsLast(int layer, double alpha);
 	void tick();
@@ -144,6 +156,8 @@ private:
 	Textures *textures;
 	//    vector<Chunk *> *sortedChunks[4];	// 4J - removed - not sorting our chunks anymore
 	ClipChunkArray chunks[4];			// 4J - now one per player
+	vector<unsigned int> m_visibleClipChunks[4];
+	unsigned int m_visibleClipChunksGridLength[4];
 	int lastPlayerCount[4];				// 4J - added
 	int xChunks, yChunks, zChunks;
 #ifdef _LARGE_WORLDS
@@ -163,6 +177,28 @@ private:
 	int totalEntities;
 	int renderedEntities;
 	int culledEntities;
+	int totalTileEntities;
+	int culledTileEntities;
+	class OcclusionState
+	{
+	public:
+		bool	occluded;
+		bool	tested;
+		int		lastTestFrame;
+		int		lastSeenFrame;
+		Level	*testLevel;
+		double	testCamX, testCamY, testCamZ;
+		double	testX, testY, testZ;
+		OcclusionState() : occluded(false), tested(false), lastTestFrame(-1000), lastSeenFrame(-1000),
+			testLevel(nullptr), testCamX(0), testCamY(0), testCamZ(0), testX(0), testY(0), testZ(0) {}
+	};
+	bool traceOcclusion(OcclusionState &state, Level *level, Vec3 *cam, AABB *box, double x, double y, double z, int refireFrames);
+	unordered_map<int, OcclusionState> m_entityOcclusion;
+	unordered_map<const TileEntity *, OcclusionState> m_tileEntityOcclusion;
+	AABB	*m_tileCullBox;
+	bool	m_cameraInSolidBlock;
+	int m_occlusionFrameID;
+	int m_occlusionTracesThisFrame;
 	int chunkFixOffs;
 	vector<Chunk *> _renderChunks;
 	int frame;

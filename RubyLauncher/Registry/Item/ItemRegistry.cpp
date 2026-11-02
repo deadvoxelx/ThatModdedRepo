@@ -6,7 +6,7 @@
 #include "Host/RubyLauncherHost.h"
 #include "ItemFactory.h"
 #include "Loader.h"
-#include "ModItem.h"
+#include "ModItem.hpp"
 #include "Registry/IDs.h"
 #include "TierRegistry.h"
 

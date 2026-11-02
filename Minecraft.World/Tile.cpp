@@ -17,6 +17,11 @@
 #include "net.minecraft.h"
 #include "Tile.h"
 
+#include "../Minecraft.Client/ServerLevel.h"
+#include "../Minecraft.Client/ServerPlayer.h"
+
+#include "../RubyLauncher/Host/RubyLauncherHost.h"
+
 wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile."; 
 
 const float Tile::INDESTRUCTIBLE_DESTROY_TIME = -1.0f;
@@ -1097,8 +1102,10 @@ bool Tile::mayPick()
 	return true;
 }
 
-void Tile::tick(Level *level, int x, int y, int z, Random *random)
-{
+void Tile::tick(Level *level, int x, int y, int z, Random *random) {
+    if (ServerLevel* serverLevel = dynamic_cast<ServerLevel*>(level)) {
+        RubyLoader::fireBlockTick(x, y, z, this->id, serverLevel);
+    }
 }
 
 void Tile::animateTick(Level *level, int x, int y, int z, Random *random)
@@ -1315,6 +1322,12 @@ bool Tile::TestUse(Level *level, int x, int y, int z, shared_ptr<Player> player)
 
 bool Tile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
 {
+    //RUBY
+    if (ServerLevel* serverLevel = dynamic_cast<ServerLevel*>(level)) {
+        if (ServerPlayer* plr = dynamic_cast<ServerPlayer*>(player.get())) {
+            RubyLoader::fireBlockUse(x, y, z, this->id, serverLevel, plr);
+        }
+    }
 	return false;
 }
 

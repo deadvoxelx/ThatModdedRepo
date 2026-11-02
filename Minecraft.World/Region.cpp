@@ -22,9 +22,9 @@ Region::~Region()
 	delete chunks;
 
 	// AP - added a caching system for Chunk::rebuild to take advantage of
-	if( CachedTiles )
+	if( cachedTiles )
 	{
-		free(CachedTiles);
+		free(cachedTiles);
 	}
 }
 
@@ -71,7 +71,8 @@ Region::Region(Level *level, int x1, int y1, int z1, int x2, int y2, int z2, int
 	// AP - added a caching system for Chunk::rebuild to take advantage of
 	xcCached = -1;
 	zcCached = -1;
-	CachedTiles = nullptr;
+	yCached = 0;
+	cachedTiles = nullptr;
 }
 
 bool Region::isAllEmpty()
@@ -87,21 +88,16 @@ int Region::getTile(int x, int y, int z)
 	int xc = (x >> 4);
 	int zc = (z >> 4);
 
-#ifdef __PSVITA__
 	// AP - added a caching system for Chunk::rebuild to take advantage of
-	if( CachedTiles && xc == xcCached && zc == zcCached )
+	if( cachedTiles && xc == xcCached && zc == zcCached )
 	{
-		unsigned short* Tiles = CachedTiles;
-		Tiles += y;
-		if(y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
+		int row = y - yCached;
+		if( (unsigned int)row < (unsigned int)LevelChunk::SECTION_SLICE_ROWS )
 		{
-			Tiles += Level::COMPRESSED_CHUNK_SECTION_TILES - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+			unsigned short tileId = cachedTiles[ LevelChunk::sectionSliceIndex( x, z, row ) ];
+			return ( tileId == 0xffff ) ? 0 : tileId;
 		}
-
-		unsigned short tileId = Tiles[ ( (x & 15) << 11 ) | ( (z & 15) << 7 ) ];
-		return ( tileId == 0xffff ) ? 0 : tileId;
 	}
-#endif
 
 	xc -= xc1;
 	zc -= zc1;
@@ -117,17 +113,17 @@ int Region::getTile(int x, int y, int z)
 	return lc->getTile(x & 15, y, z & 15);
 }
 
-// AP - added a caching system for Chunk::rebuild to take advantage of
-void Region::setCachedTiles(unsigned short *tiles, int xc, int zc)
+void Region::setCachedTiles(unsigned short *tiles, int yStart, int xc, int zc)
 {
 	xcCached = xc;
 	zcCached = zc;
-	int size = 16 * 16 * Level::maxBuildHeight;
-	if( CachedTiles == nullptr )
+	yCached = yStart;
+	int size = LevelChunk::SECTION_SLICE_LENGTH * sizeof(unsigned short);
+	if( cachedTiles == nullptr )
 	{
-		CachedTiles = static_cast<unsigned short *>(malloc(size * sizeof(unsigned short)));
+		cachedTiles = static_cast<unsigned short *>(malloc(size));
 	}
-	memcpy(CachedTiles, tiles, size * sizeof(unsigned short));
+	memcpy(cachedTiles, tiles, size);
 }
 
 LevelChunk* Region::getLevelChunk(int x, int y, int z)

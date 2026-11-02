@@ -386,12 +386,10 @@ void PlayerChunkMap::tick()
         }
     }
 
-	// 4J - some changes here so that we only send one region update per tick. The chunks themselves also
-	// limit their resend rate to once every MIN_TICKS_BETWEEN_REGION_UPDATE ticks
-	bool regionUpdateSent = false;
+	int regionUpdatesSent = 0;
     for (unsigned int i = 0; i < changedChunks.size();)
 	{
-        regionUpdateSent |= changedChunks[i]->broadcastChanges(!regionUpdateSent);
+        if( changedChunks[i]->broadcastChanges(regionUpdatesSent < MAX_REGION_UPDATES_PER_TICK) ) regionUpdatesSent++;
 		// Changes will be 0 if the chunk actually sent something, in which case we can delete it from this array
 		if( changedChunks[i]->changes == 0 )
 		{

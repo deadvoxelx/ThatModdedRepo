@@ -5,6 +5,7 @@
 #include "Minecraft.h"
 #include "Textures.h"
 #include "../Minecraft.World/net.minecraft.world.level.h"
+#include "../Minecraft.World/LevelChunk.h"
 #include "../Minecraft.World/net.minecraft.world.level.tile.h"
 #include "../Minecraft.World/net.minecraft.world.level.material.h"
 #include "../Minecraft.World/net.minecraft.h"
@@ -44,7 +45,11 @@ void TileRenderer::_init()
 	xMin = 0;
 	yMin = 0;
 	zMin = 0;
+	xMin2 = -2;
+	yMin2 = -2;
+	zMin2 = -2;
 	cache = nullptr;
+	tileIds = nullptr;
 }
 
 bool TileRenderer::isTranslucentAt(LevelSource *level, int x, int y, int z)
@@ -117,17 +122,10 @@ int TileRenderer::getLightColor( Tile *tt, LevelSource *level, int x, int y, int
 			int tileId = -1;
 			int xx = x - xMin;
 			int zz = z - zMin;
-			if( ( xx >= 0 ) && ( xx <= 15 ) && ( zz >= 0 ) && ( zz <= 15 ) && ( y >= 0 ) && ( y < Level::maxBuildHeight ) )
+			int row = y - yMin + 1;
+			if( tileIds && ( xx >= 0 ) && ( xx <= 15 ) && ( zz >= 0 ) && ( zz <= 15 ) && ( row >= 0 ) && ( row < LevelChunk::SECTION_SLICE_ROWS ) )
 			{
-				int indexY = y;
-				int offset = 0;
-				if(indexY >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
-				{
-					indexY -= Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-					offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
-				}
-
-				unsigned short ucTileId = tileIds[ offset + ( ( ( xx + 0 ) << 11 ) | ( ( zz + 0 ) << 7 ) | ( indexY + 0 ) ) ];
+				unsigned short ucTileId = tileIds[ LevelChunk::sectionSliceIndex( xx, zz, row ) ];
 				// Tiles that were determined to be invisible (by being surrounded by solid stuff) will be set to 65535 rather than their actual ID
 				if( ucTileId != 0xffff )
 				{
@@ -144,8 +142,16 @@ int TileRenderer::getLightColor( Tile *tt, LevelSource *level, int x, int y, int
 
 TileRenderer::TileRenderer( LevelSource* level, int xMin, int yMin, int zMin, unsigned short *tileIds )
 {
-	this->level = level;
 	_init();
+	reset(level, xMin, yMin, zMin, tileIds);
+}
+
+void TileRenderer::reset( LevelSource* level, int xMin, int yMin, int zMin, unsigned short *tileIds )
+{
+	unsigned int *reuseCache = cache;
+	_init();
+
+	this->level = level;
 	this->xMin = xMin;
 	this->yMin = yMin;
 	this->zMin = zMin;
@@ -153,13 +159,18 @@ TileRenderer::TileRenderer( LevelSource* level, int xMin, int yMin, int zMin, un
 	this->yMin2 = yMin-2;
 	this->zMin2 = zMin-2;
 	this->tileIds = tileIds;
-	cache = new unsigned int[32*32*32];
-	XMemSet(cache,0,32*32*32*sizeof(unsigned int));
+
+	if( reuseCache == nullptr )
+	{
+		reuseCache = new unsigned int[32*32*32];
+	}
+	XMemSet(reuseCache,0,32*32*32*sizeof(unsigned int));
+	cache = reuseCache;
 }
 
 TileRenderer::~TileRenderer()
 {
-	delete cache;
+	delete [] cache;
 }
 
 TileRenderer::TileRenderer( LevelSource* level )

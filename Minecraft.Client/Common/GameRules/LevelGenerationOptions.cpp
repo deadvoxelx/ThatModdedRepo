@@ -99,7 +99,7 @@ ConsoleGameRules::EGameRuleType LevelGenerationOptions::getActionType() { return
 
 void LevelGenerationOptions::writeAttributes(DataOutputStream *dos, UINT numAttrs)
 {
-	GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
+	GameRuleDefinition::writeAttributes(dos, numAttrs + 6);
 
 	ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_spawnX);
 	dos->writeUTF(std::to_wstring(m_spawnPos->x));

@@ -2,7 +2,6 @@
 
 #include "../Minecraft.Client/ServerLevel.h"
 #include "../Minecraft.Client/ServerPlayer.h"
-#include "../Minecraft.Client/ServerLevel.h"
 #include "../RubyLauncher/Host/RubyLauncherHost.h"
 #include "HangingEntityItem.h"
 #include "HtmlString.h"

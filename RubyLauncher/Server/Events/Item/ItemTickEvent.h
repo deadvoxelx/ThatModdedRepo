@@ -2,7 +2,7 @@
 
 class ItemInstance;
 class ServerPlayer;
-class SerevrLevel;
+class ServerLevel;
 
 #include "Common/EventSystem/RubyEvent.h"
 

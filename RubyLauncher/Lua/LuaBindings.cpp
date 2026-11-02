@@ -50,19 +50,26 @@
 #include "Server/Events/Player/PlayerFlightStartedEvent.h"
 #include "Server/Events/Player/PlayerFlightEndedEvent.h"
 
-#include "Common/EventSystem/ClientTickEvent.h"
-#include "Common/EventSystem/EventBus.h"
-#include "Common/EventSystem/ServerTickEvent.h"
+#include "../../Minecraft.Client/ServerLevel.h"
 #include "../../Minecraft.Client/ServerPlayer.h"
+#include "../../Minecraft.World/AABB.h"
+#include "../../Minecraft.World/DamageSource.h"
+#include "../../Minecraft.World/ItemEntity.h"
 #include "../../Minecraft.World/ItemInstance.h"
 #include "../../Minecraft.World/Level.h"
 #include "../../Minecraft.World/MobEffect.h"
 #include "../../Minecraft.World/MobEffectInstance.h"
+#include "../../Minecraft.World/Tile.h"
 #include "../Registry/IDs.h"
+#include "../Server/Events/Block/BlockTickEvent.h"
+#include "../Server/Events/Block/BlockUseEvent.h"
 #include "../Server/Events/Item/ItemTickEvent.h"
+#include "../Server/Events/Player/PlayerHurtEvent.h"
+#include "Common/EventSystem/ClientTickEvent.h"
+#include "Common/EventSystem/EventBus.h"
+#include "Common/EventSystem/ServerTickEvent.h"
 #include "Common/RubyUtils.h"
 #include "LuaStructs.h"
-#include "../Registry/IDs.h"
 
 namespace
 {
@@ -198,7 +205,13 @@ Loader *rubyLoader()
 		sol::protected_function fn;
 		try
 		{
-			fn = (L == loader->luaServer.lua_state()) ? mod->getServerFunction(fnName) : mod->getClientFunction(fnName);
+		    if (L == loader->luaServer.lua_state()) {
+		        fn = mod->getServerFunction(fnName);
+		    } else if (L == loader->luaClient.lua_state()) {
+		        fn = mod->getClientFunction(fnName);
+		    } else {
+		        fn = mod->getStartupFunction(fnName);
+		    }
 		}
 		catch (const sol::error &e)
 		{
@@ -326,6 +339,11 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
         };
         logTable[sol::metatable_key] = logMeta;
         (*lua)["log"] = logTable;
+
+        lua->set_function("logFile", [](const std::string &message) {
+            Loader::writeToLog(message);
+        });
+
         lua->set_function("schedule", [](double delayTicks, sol::protected_function fn, sol::this_state state) {
             return schedulerFor(state.lua_state()).schedule(delayTicks, std::move(fn));
         });
@@ -431,7 +449,39 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
             sol::meta_function::division, &LuaVec3::division
         );
 
+        lua->new_usertype<CompoundTag>("CompoundTag",
+            sol::constructors<CompoundTag()>(),
+            "setNumber", [](CompoundTag& tag, const std::string &key, double value) {
+                tag.putDouble(RubyUtils::toWString(key), value);
+            },
+            "getNumber", [](CompoundTag& tag, const std::string &key) {
+                return tag.getDouble(RubyUtils::toWString(key));
+            },
+            "setBool", [](CompoundTag& tag, const std::string &key, bool value) {
+                tag.putBoolean(RubyUtils::toWString(key), value);
+            },
+            "getBool", [](CompoundTag& tag, const std::string &key) {
+                return tag.getBoolean(RubyUtils::toWString(key));
+            },
+            "setString", [](CompoundTag& tag, const std::string &key, std::string value) {
+                tag.putString(RubyUtils::toWString(key), RubyUtils::toWString(value));
+            },
+            "getString", [](CompoundTag& tag, const std::string &key) {
+                return RubyUtils::toString(tag.getString(RubyUtils::toWString(key)));
+            },
+            "putTag", [](CompoundTag& tag, const std::string &key, CompoundTag& value) {
+                tag.putCompound(RubyUtils::toWString(key), dynamic_cast<CompoundTag *>(value.copy()));
+            },
+            "getTag", [](CompoundTag& tag, const std::string &key) {
+                auto k = RubyUtils::toWString(key);
+                return tag.contains(k) ? tag.getCompound(k) : nullptr;
+            }
+        );
+
         lua->new_usertype<LuaBlock>("Block",
+            "new", [](const LuaVec3 * vec, int blkid, int aux) {
+                return makeLuaBlock(*vec, blkid, aux);
+            },
             "pos", &LuaBlock::pos,
             "id", sol::property(&LuaBlock::getID),
             "oid", sol::property(&LuaBlock::getOID)
@@ -532,173 +582,11 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
 }
 
 void LuaBindings::bindServerEvents(sol::state& lua) {
-    lua.new_usertype<Inventory>("Inventory",
-        "setItem", [](Inventory& inv, const int slot, int count, const std::string& identifier, sol::this_state state) {
-            IDMapping::MappedItem mapping = IDMapping::get()->getID(identifier);
-            if (mapping.id == 0 && identifier != "minecraft:air") {
-                RubyUtils::LuaException(state, "Identifier " + identifier + " does not exist");
-                return;
-            }
-            if (Item::items[mapping.id] == nullptr) {
-                RubyUtils::LuaException(state, "Item id " + std::to_string(mapping.id) + " is null in Item::items");
-                return;
-            }
-            if (count <= 0) {
-                RubyUtils::LuaException(state, "Item count is zero");
-                return;
-            }
-
-            inv.setItem(slot, std::make_shared<ItemInstance>(mapping.id, count, mapping.aux));
-        },
-        "getItem", [](Inventory& inv, const int slot) {
-            return inv.getItem(slot);
-        },
-        "clear", [](Inventory& inv) {
-            inv.clearInventory(-1, -1);
-        },
-        "isInAccessory", [](Inventory& inv, ItemInstance* item) {
-            return inv.inAccessory(item);
-        }
-    );
-
-    lua.new_usertype<ItemInstance>("ItemInstance",
-        "getHoverName", [](ItemInstance& item) {
-            return item.getHoverName();
-        },
-        "isStackable", &ItemInstance::isStackable,
-        "isEnchanted", &ItemInstance::isEnchanted,
-        "isDamaged", &ItemInstance::isDamaged,
-        "damageValue", &ItemInstance::getDamageValue,
-        "maxDamage", &ItemInstance::getMaxDamage,
-        "getAmount", &ItemInstance::count,
-        "id", &ItemInstance::id
-    );
-
-    lua.new_usertype<ServerPlayerGameMode>("ServerPlayerGameMode",
-        "isSurvival", sol::property(&ServerPlayerGameMode::isSurvival),
-        "isCreative", sol::property(&ServerPlayerGameMode::isCreative)
-    );
-
     lua["GameMode"] = sol::table(lua, sol::create);
     lua["GameMode"]["NOT_SET"]   = 0;
     lua["GameMode"]["SURVIVAL"]  = 0;
     lua["GameMode"]["CREATIVE"]  = 1;
     lua["GameMode"]["ADVENTURE"] = 2;
-
-    lua.new_usertype<ServerPlayer>("ServerPlayer",
-        "getHeldItem", &ServerPlayer::getCarriedItem,
-        "setData", [](sol::this_environment env, ServerPlayer& player, const std::string &key, sol::object value, sol::this_state state) -> bool {
-            sol::environment& modEnv = env;
-            std::string modId = modEnv["modId"];
-            if (modId.empty()) return false;
-            ModStore::Get().setPlayerData(modId, RubyPaths::toNarrow(player.name), key, value, state);
-            return true;
-        },
-        "getData", [](sol::this_environment env, ServerPlayer& player, const std::string &key, sol::this_state state) -> sol::object {
-            sol::environment& modEnv = env;
-            std::string modId = modEnv["modId"];
-            if (modId.empty()) return sol::lua_nil_t{};
-            return ModStore::Get().getPlayerData(modId, RubyPaths::toNarrow(player.name), key, state);
-        },
-        "setFoodLevel", [](ServerPlayer& player, int food) {
-            player.getFoodData()->setFoodLevel(food);
-        },
-        "feed", [](ServerPlayer& player, int food, double modifier) {
-            player.getFoodData()->eat(food,modifier);
-        },
-        "getHealth", [](ServerPlayer& player) {
-            return player.getHealth();
-        },
-        "setHealth", [](ServerPlayer& player, int health) {
-            player.setHealth(health);
-        },
-        "addEffect", [](ServerPlayer& player, int effectId, int durationTicks, int amplifier) {
-            player.addEffect(new MobEffectInstance(effectId, durationTicks, amplifier));
-        },
-        "hasEffect", [](ServerPlayer& player, int effectId) {
-            for (MobEffectInstance* effect : *player.getActiveEffects()) {
-                if (effect == nullptr) continue;
-                if (effect->getId() == effectId) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        "pos", sol::property([](ServerPlayer& player) { return LuaVec3(player.x, player.y, player.z); }),
-        "teleport", [](ServerPlayer& player, sol::object target, sol::this_state state) {
-            if (target.is<LuaVec3>()) {
-                auto vec3 = target.as<LuaVec3>();
-                player.teleportTo(vec3.x, vec3.y, vec3.z);
-            }else {
-                RubyUtils::LuaException(state, "Not a valid Vec3 object");
-            }
-        },
-        "setCanFly", [](ServerPlayer& player, bool toggle) {
-            // Toggles the PERMISSION to fly
-            unsigned int val = toggle == true ? 1 : 0;
-            player.setPlayerGamePrivilege(Player::EPlayerGamePrivileges::ePlayerGamePrivilege_CanFly,val);
-            player.abilities.mayfly = toggle;
-            if (player.connection == nullptr) {
-                Loader::_debugPrint("setCanFly: " + RubyPaths::toNarrow(player.name) + " has no connection yet, abilities not sent");
-                return;
-            }
-            std::shared_ptr<PlayerAbilitiesPacket> pkt =
-                std::make_shared<PlayerAbilitiesPacket>(&player.abilities);
-            player.connection->send(pkt);
-        },
-        "setFly", [](ServerPlayer& player, bool toggle) {
-            // Toggles the flight state (must implicitly toggle the permission if starting flight aswell!)
-            if (toggle) player.abilities.mayfly = toggle; // If we are disabling flight; do not remove toggle. That is the job of toggleFlightAllowed
-            player.abilities.flying = toggle;
-            if (player.connection == nullptr) {
-                Loader::_debugPrint("setFly: " + RubyPaths::toNarrow(player.name) + " has no connection yet, abilities not sent");
-                return;
-            }
-            std::shared_ptr<PlayerAbilitiesPacket> pkt =
-                std::make_shared<PlayerAbilitiesPacket>(&player.abilities);
-            player.connection->send(pkt);
-        },
-        "canFly", [](ServerPlayer& player) {
-            return player.abilities.mayfly;
-        },
-        "getViewDistance", [](ServerPlayer& player) {
-            return player.getViewDistance();
-        },
-        "displayName", &ServerPlayer::m_displayName,
-        "experience",  &ServerPlayer::experienceProgress,
-        "flySpeed", sol::property([](ServerPlayer& p) { return p.abilities.getFlyingSpeed(); }),
-        "level", &ServerPlayer::experienceLevel,
-        "name", &ServerPlayer::name,
-        "walkSpeed", sol::property([](ServerPlayer& p) { return p.abilities.getWalkingSpeed(); }),
-        "giveExp", [](ServerPlayer& player, float amount) {
-            player.experienceProgress += amount;
-        },
-        "giveExpLevels", [](ServerPlayer& player, int amount) {
-            player.experienceLevel += amount;
-        },
-        "setExp", [](ServerPlayer& player, float amount) {
-            player.experienceProgress = amount;
-        },
-        "setLevel", [](ServerPlayer& player, int amount) {
-            player.experienceLevel = amount;
-        },
-        "gamemode", &ServerPlayer::gameMode,
-        "inventory", &ServerPlayer::inventory,
-        "setGameMode", [](ServerPlayer& player, int gameTypeId) {
-            if (GameType* type = GameType::byId(gameTypeId)) player.setGameMode(type);
-        },
-
-        "destroyBlock", [](ServerPlayer& p, sol::object target, sol::this_state state) {
-            if (target.is<LuaVec3>()) {
-                auto vec3 = target.as<LuaVec3>();
-                if (p.level->getTile(vec3.x,vec3.y,vec3.z) == 0) return;
-                p.gameMode->destroyBlock(vec3.x, vec3.y, vec3.z);
-            }else {
-                RubyUtils::LuaException(state, "Not a valid Vec3 object");
-            }
-        },
-        sol::base_classes, sol::bases<Player, CommandSender, LivingEntity>()
-    );
 
     lua.new_usertype<PlayerBlockBreakEvent>("PlayerBlockBreakEvent",
         "player", &PlayerBlockBreakEvent::player,
@@ -710,6 +598,27 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         "player", &PlayerBlockPlaceEvent::player,
         "block", &PlayerBlockPlaceEvent::block,
         sol::base_classes, sol::bases<CancellableRubyEvent, RubyEvent>()
+    );
+
+    lua.new_usertype<BlockTickEvent>("BlockTickEvent",
+        "level", &BlockTickEvent::level,
+        "block", &BlockTickEvent::block,
+        sol::base_classes, sol::bases<RubyEvent>()
+    );
+
+    lua.new_usertype<BlockUseEvent>("BlockUseEvent",
+        "level", &BlockUseEvent::level,
+        "block", &BlockUseEvent::block,
+        "player", &BlockUseEvent::player,
+        sol::base_classes, sol::bases<RubyEvent>()
+    );
+
+    lua.new_usertype<PlayerHurtEvent>("PlayerHurtEvent",
+        "player", &PlayerHurtEvent::player,
+        "level", &PlayerHurtEvent::level,
+        "damageSource", &PlayerHurtEvent::dmgSrc,
+        "damage", &PlayerHurtEvent::dmg,
+        sol::base_classes, sol::bases<RubyEvent, CancellableRubyEvent>()
     );
 
     lua.new_usertype<ItemCompleteUseEvent>("ItemConsumeEvent",
@@ -758,25 +667,89 @@ void LuaBindings::bindServerEvents(sol::state& lua) {
         "player", &PlayerFlightEndedEvent::player,
         sol::base_classes, sol::bases<RubyEvent>()
     );
+    LuaBindings::bindServerUsertypes(lua);
 }
 
-void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) {
-    lua["server"] = server;
-    Loader *loader = rubyLoader();
-    if (loader != nullptr)
-    {
-        loader->m_commandRegistry.init(server);
-        lua.set_function("registerCommand", [loader](const std::string &name, int permissionLevel, sol::protected_function handler) -> int {
-            return loader->m_commandRegistry.registerCommand(name, permissionLevel, std::move(handler));
-        });
+void LuaBindings::bindServerUsertypes(sol::state& lua) {
+    //class bindings
+    //TODO: organize this
+    lua.new_usertype<Inventory>("Inventory",
+        "setItem", [](Inventory& inv, const int slot, int count, const std::string& identifier, sol::this_state state) {
+            IDMapping::MappedItem mapping = IDMapping::get()->getID(identifier);
+            if (mapping.id == 0 && identifier != "minecraft:air") {
+                RubyUtils::LuaException(state, "Identifier " + identifier + " does not exist");
+                return;
+            }
+            if (Item::items[mapping.id] == nullptr) {
+                RubyUtils::LuaException(state, "Item id " + std::to_string(mapping.id) + " is null in Item::items");
+                return;
+            }
+            if (count <= 0) {
+                RubyUtils::LuaException(state, "Item count is zero");
+                return;
+            }
 
-        lua.set_function("runCommand", [loader](sol::object sender, const std::string &name, sol::variadic_args args) -> bool {
-            std::vector<std::string> argv = variadicArgsToStrings(args);
-            if (argv.size() != args.size()) return false;
-            ServerPlayer *player = sender.is<ServerPlayer>() ? sender.as<ServerPlayer *>() : nullptr;
-            return loader->m_commandRegistry.performCommand(name, player, argv);
-        });
-    }
+            inv.setItem(slot, std::make_shared<ItemInstance>(mapping.id, count, mapping.aux));
+        },
+        "getItem", [](Inventory& inv, const int slot) {
+            return inv.getItem(slot);
+        },
+        "clear", [](Inventory& inv) {
+            inv.clearInventory(-1, -1);
+        },
+        "getArmorItem", [](Inventory& inv, const int slot) -> std::shared_ptr<ItemInstance> { //TODO: add setArmorItem, setAccessoryItem, setOffHandItem
+            if ((slot - 36) >= 0 && (slot - 36) <= 3) {
+                return inv.armor[slot-36];
+            }
+            return nullptr;
+        },
+        "isInAccessory", [](Inventory& inv, ItemInstance* item) {
+            return inv.inAccessory(item);
+        },
+        "getAccessoryItem", [](Inventory& inv, const int slot) -> std::shared_ptr<ItemInstance> {
+            if ((slot - 41) >= 1 && (slot - 41) <= 3) {
+                return inv.aether[slot-41];
+            }
+            return nullptr;
+        },
+        "getOffhandItem", [](Inventory& inv) -> shared_ptr<ItemInstance> {
+            return inv.aether[0];
+        }
+    );
+
+    lua.new_usertype<ItemInstance>("ItemInstance",
+        "getHoverName", [](ItemInstance& item) {
+            return item.getHoverName();
+        },
+        "setHoverName", [](ItemInstance& item, std::string name) {
+            item.setHoverName(RubyUtils::toWString(name));
+        },
+        "resetHoverName", &ItemInstance::resetHoverName,
+        "isStackable", &ItemInstance::isStackable,
+        "isEnchanted", &ItemInstance::isEnchanted,
+        "isDamaged", &ItemInstance::isDamaged,
+        "damageValue", &ItemInstance::getDamageValue,
+        "maxDamage", &ItemInstance::getMaxDamage,
+        "getAmount", &ItemInstance::count,
+        "setAmount", [](ItemInstance& item, int amount) {
+            item.count = amount;
+        },
+        "id", &ItemInstance::id,
+        "hasTag", [](ItemInstance& item) {
+            return item.getTag() != nullptr;
+        },
+        "getTag", [](ItemInstance& item) {
+            return item.getTag();
+        },
+        "setTag", [](ItemInstance& item, CompoundTag& tag) {
+            item.setTag(dynamic_cast<CompoundTag *>(tag.copy()));
+        }
+    );
+
+    lua.new_usertype<ServerPlayerGameMode>("ServerPlayerGameMode",
+        "isSurvival", sol::property(&ServerPlayerGameMode::isSurvival),
+        "isCreative", sol::property(&ServerPlayerGameMode::isCreative)
+    );
 
     lua.new_usertype<MinecraftServer>("MinecraftServer",
         "getCommandDispatcher", &MinecraftServer::getCommandDispatcher,
@@ -797,11 +770,262 @@ void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) 
             std::wstring wmessage(message.begin(), message.end());
             p.sendMessage(wmessage);
         },
-        sol::base_classes, sol::bases<CommandSender, LivingEntity>()
+        "level", &Player::level,
+        sol::base_classes, sol::bases<CommandSender, LivingEntity, Entity>()
     );
 
-    lua.new_usertype<CommandDispatcher>("CommandDispatcher", "performCommand", &CommandDispatcher::performCommand
+    lua.new_usertype<ServerPlayer>("ServerPlayer",
+        "getHeldItem", &ServerPlayer::getCarriedItem,
+        "setData", [](sol::this_environment env, ServerPlayer& player, const std::string &key, sol::object value, sol::this_state state) -> bool {
+            sol::environment& modEnv = env;
+            std::string modId = modEnv["modId"];
+            if (modId.empty()) return false;
+            ModStore::Get().setPlayerData(modId, RubyPaths::toNarrow(player.name), key, value, state);
+            return true;
+        },
+        "getData", [](sol::this_environment env, ServerPlayer& player, const std::string &key, sol::this_state state) -> sol::object {
+            sol::environment& modEnv = env;
+            std::string modId = modEnv["modId"];
+            if (modId.empty()) return sol::lua_nil_t{};
+            return ModStore::Get().getPlayerData(modId, RubyPaths::toNarrow(player.name), key, state);
+        },
+        "setFoodLevel", [](ServerPlayer& player, int food) {
+            player.getFoodData()->setFoodLevel(food);
+        },
+        "feed", [](ServerPlayer& player, int food, double modifier) {
+            player.getFoodData()->eat(food,modifier);
+        },
+        "setCanFly", [](ServerPlayer& player, bool toggle) {
+            // Toggles the PERMISSION to fly
+            unsigned int val = toggle == true ? 1 : 0;
+            player.setPlayerGamePrivilege(Player::EPlayerGamePrivileges::ePlayerGamePrivilege_CanFly,val);
+            player.abilities.mayfly = toggle;
+            if (player.connection == nullptr) {
+                Loader::_debugPrint("setCanFly: " + RubyPaths::toNarrow(player.name) + " has no connection yet, abilities not sent");
+                return;
+            }
+            std::shared_ptr<PlayerAbilitiesPacket> pkt =
+                std::make_shared<PlayerAbilitiesPacket>(&player.abilities);
+            player.connection->send(pkt);
+        },
+        "setFly", [](ServerPlayer& player, bool toggle) {
+            // Toggles the flight state (must implicitly toggle the permission if starting flight aswell!)
+            if (toggle) player.abilities.mayfly = toggle; // If we are disabling flight; do not remove toggle. That is the job of toggleFlightAllowed
+            player.abilities.flying = toggle;
+            if (player.connection == nullptr) {
+                Loader::_debugPrint("setFly: " + RubyPaths::toNarrow(player.name) + " has no connection yet, abilities not sent");
+                return;
+            }
+            std::shared_ptr<PlayerAbilitiesPacket> pkt =
+                std::make_shared<PlayerAbilitiesPacket>(&player.abilities);
+            player.connection->send(pkt);
+        },
+        "canFly", [](ServerPlayer& player) {
+            return player.abilities.mayfly;
+        },
+        "getViewDistance", [](ServerPlayer& player) {
+            return player.getViewDistance();
+        },
+        "displayName", &ServerPlayer::m_displayName,
+        "experience",  &ServerPlayer::experienceProgress,
+        "flySpeed", sol::property([](ServerPlayer& p) { return p.abilities.getFlyingSpeed(); }),
+        "expLevel", &ServerPlayer::experienceLevel,
+        "name", &ServerPlayer::name,
+        "walkSpeed", sol::property([](ServerPlayer& p) { return p.abilities.getWalkingSpeed(); }),
+        "giveExp", [](ServerPlayer& player, float amount) {
+            player.experienceProgress += amount;
+        },
+        "giveExpLevels", [](ServerPlayer& player, int amount) {
+            player.experienceLevel += amount;
+        },
+        "setExp", [](ServerPlayer& player, float amount) {
+            player.experienceProgress = amount;
+        },
+        "setLevel", [](ServerPlayer& player, int amount) {
+            player.experienceLevel = amount;
+        },
+        "gamemode", &ServerPlayer::gameMode,
+        "inventory", &ServerPlayer::inventory,
+        "setGameMode", [](ServerPlayer& player, int gameTypeId) {
+            if (GameType* type = GameType::byId(gameTypeId)) player.setGameMode(type);
+        },
+
+        "destroyBlock", [](ServerPlayer& p, sol::object target, sol::this_state state) {
+            if (target.is<LuaVec3>()) {
+                auto vec3 = target.as<LuaVec3>();
+                if (p.level->getTile(vec3.x,vec3.y,vec3.z) == 0) return;
+                p.gameMode->destroyBlock(vec3.x, vec3.y, vec3.z);
+            }else {
+                RubyUtils::LuaException(state, "Not a valid Vec3 object");
+            }
+        },
+        sol::base_classes, sol::bases<Player, CommandSender, LivingEntity, Entity>()
     );
+
+    lua.new_usertype<LivingEntity>("LivingEntity",
+        "getHealth", [](LivingEntity& entity) {
+            return entity.getHealth();
+        },
+        "setHealth", [](LivingEntity& entity, int health) {
+            entity.setHealth(health);
+        },
+        "heal", [](LivingEntity& entity, int health) {
+            entity.heal(health);
+        },
+        "addEffect", [](LivingEntity& entity, int effectId, int durationTicks, int amplifier) {
+            entity.addEffect(new MobEffectInstance(effectId, durationTicks, amplifier));
+        },
+        "hasEffect", [](LivingEntity& entity, int effectId) {
+            for (MobEffectInstance* effect : *entity.getActiveEffects()) {
+                if (effect == nullptr) continue;
+                if (effect->getId() == effectId) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        "teleport", [](LivingEntity& entity, sol::object target, sol::this_state state) {
+            if (target.is<LuaVec3>()) {
+                auto vec3 = target.as<LuaVec3>();
+                entity.teleportTo(vec3.x, vec3.y, vec3.z);
+            }else {
+                RubyUtils::LuaException(state, "Not a valid Vec3 object");
+            }
+        },
+        "setOnFire", [](LivingEntity& entity, int duration) {
+            entity.setOnFire(duration);
+        },
+        "swing", [](LivingEntity& entity) {
+            entity.swing();
+        },
+        sol::base_classes, sol::bases<Entity>()
+    );
+
+    lua.new_usertype<Entity>("Entity",
+        "castToItem", [](Entity& e) -> shared_ptr<ItemEntity> {
+            return dynamic_pointer_cast<ItemEntity>(e.shared_from_this());
+        },
+        "castToPlayer", [](Entity& e) -> shared_ptr<Player> {
+            return dynamic_pointer_cast<Player>(e.shared_from_this());
+        },
+        "pos", sol::property([](Entity& entity) { return LuaVec3(entity.x, entity.y, entity.z); }),
+        "getDisplayName", &Entity::getDisplayName,
+        "setDelta", [](Entity& ent, LuaVec3& delta) {
+            ent.xd = delta.x;
+            ent.yd = delta.y;
+            ent.zd = delta.z;
+        },
+        "getDelta", [](Entity& ent) -> LuaVec3 {
+            return LuaVec3(ent.xd, ent.yd, ent.zd);
+        },
+        "getLookAngle", [](Entity& ent) -> LuaVec3 {
+            auto look = ent.getLookAngle();
+            return LuaVec3(look->x, look->y, look->z);
+        }
+    );
+
+    lua.new_usertype<CommandDispatcher>("CommandDispatcher",
+        "performCommand", &CommandDispatcher::performCommand
+    );
+
+    lua.new_usertype<ServerLevel>("ServerLevel",
+        "getBlocksAndData", &ServerLevel::getBlocksAndData,
+        "setBlocksAndData", &ServerLevel::setBlocksAndData,
+        "getServer", &ServerLevel::getServer,
+        "isClientside", &ServerLevel::isClientSide,
+        "getTile", &ServerLevel::getTile,
+        "hasChunkAt", &ServerLevel::hasChunkAt,
+        sol::base_classes, sol::bases<Level>()
+    );
+
+    lua.new_usertype<DamageSource>("DamageSource",
+       "getDirectEntity", &DamageSource::getDirectEntity,
+       "getEntity", &DamageSource::getEntity,
+       "isBypassArmor", &DamageSource::isBypassArmor,
+       "isBypassInvulerability", &DamageSource::isBypassInvul,
+       "isBypassInvul", &DamageSource::isBypassInvul, //for lazy
+       "isCritical", &DamageSource::isCritical,
+       "isExplosion", &DamageSource::isExplosion,
+       "isFire", &DamageSource::isFire,
+       "isMagic", &DamageSource::isMagic,
+       "isProjectile", &DamageSource::isProjectile,
+       "scalesWithDifficulty", &DamageSource::scalesWithDifficulty
+   );
+
+    lua.new_usertype<Level>("Level",
+        "setBlockIdAndAux", &Level::setTileAndData,
+        "getBlockId", &Level::getTile,
+        "setBlockAux", &Level::setData,
+        "getBlockAux", &Level::getData,
+        "setBlock", sol::overload(
+            [](Level& lvl, int x, int y, int z, LuaBlock* blk ) {
+                lvl.setTileAndData(x, y, z, blk->id, blk->aux, 3);
+            },
+            [](Level& lvl, const LuaVec3 * pos, LuaBlock* blk) {
+                lvl.setTileAndData(pos->x, pos->y, pos->z, blk->id, blk->aux, 3);
+            },
+            [](Level& lvl, LuaBlock* blk) {
+                lvl.setTileAndData(blk->pos.x, blk->pos.y, blk->pos.z, blk->id, blk->aux, 3);
+            }
+        ),
+        "getBlock", sol::overload(
+            [](Level& lvl, int x, int y, int z) {
+                return makeLuaBlock(LuaVec3(x, y, z), lvl.getTile(x, y, z), lvl.getData(x, y, z));
+            },
+            [](Level& lvl, const LuaVec3 * pos) {
+                return makeLuaBlock(*pos, lvl.getTile(pos->x, pos->y, pos->z), lvl.getData(pos->x, pos->y, pos->z));
+            }
+        ),
+        "getClosestEntityOfClass", sol::overload(
+            [](Level& lvl, LuaVec3* vec1, LuaVec3* vec2, int entityClass, LivingEntity* ent) {
+                shared_ptr<Entity> entityPtr = static_pointer_cast<Entity>(ent->shared_from_this());
+                switch (entityClass) {
+                    case 0: return lvl.getClosestEntityOfClass(typeid(ItemEntity), AABB::newTemp(vec1->x, vec1->y, vec1->z, vec2->x, vec2->y, vec2->z), entityPtr);
+                    case 1: return lvl.getClosestEntityOfClass(typeid(Player), AABB::newTemp(vec1->x, vec1->y, vec1->z, vec2->x, vec2->y, vec2->z), entityPtr);
+                    default: return lvl.getClosestEntityOfClass(typeid(Player), AABB::newTemp(vec1->x, vec1->y, vec1->z, vec2->x, vec2->y, vec2->z), entityPtr);
+                }
+            },
+            [](Level& lvl, const int x1, const int y1, const int z1, const int x2, const int y2, const int z2, int entityClass, LivingEntity* ent) {
+                shared_ptr<Entity> entityPtr = static_pointer_cast<Entity>(ent->shared_from_this());
+                switch (entityClass) {
+                    case 0: return lvl.getClosestEntityOfClass(typeid(ItemEntity), AABB::newTemp(x1, y1, z1, x2, y2, z2), entityPtr);
+                    case 1: return lvl.getClosestEntityOfClass(typeid(Player), AABB::newTemp(x1, y1, z1, x2, y2, z2), entityPtr);
+                    default: return lvl.getClosestEntityOfClass(typeid(Player), AABB::newTemp(x1, y1, z1, x2, y2, z2), entityPtr);
+                }
+            }
+        )
+    );
+
+    lua.new_usertype<ItemEntity>("ItemEntity",
+        "getItem", &ItemEntity::getItem
+    );
+
+    lua.new_usertype<Tile>("Tile",
+        "getAABB", &Tile::getAABB
+    );
+
+    lua.set_function("getIdFromString", [](sol::this_environment env, const std::string& id) {
+        return IDMapping::get()->getID(id).id;
+    });
+}
+
+void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) {
+    lua["server"] = server;
+    Loader *loader = rubyLoader();
+    if (loader != nullptr)
+    {
+        loader->m_commandRegistry.init(server);
+        lua.set_function("registerCommand", [loader](const std::string &name, int permissionLevel, sol::protected_function handler) -> int {
+            return loader->m_commandRegistry.registerCommand(name, permissionLevel, std::move(handler));
+        });
+
+        lua.set_function("runCommand", [loader](sol::object sender, const std::string &name, sol::variadic_args args) -> bool {
+            std::vector<std::string> argv = variadicArgsToStrings(args);
+            if (argv.size() != args.size()) return false;
+            ServerPlayer *player = sender.is<ServerPlayer>() ? sender.as<ServerPlayer *>() : nullptr;
+            return loader->m_commandRegistry.performCommand(name, player, argv);
+        });
+    }
 
     lua.new_enum<EGameCommand>("EGameCommand", {
             {"COUNT", eGameCommand_COUNT},
@@ -816,28 +1040,17 @@ void LuaBindings::bindServerFunctions(sol::state& lua, MinecraftServer* server) 
         }
     );
 
-    lua.new_usertype<ServerLevel>("ServerLevel",
-        "getBlocksAndData", &ServerLevel::getBlocksAndData,
-        "setBlocksAndData", &ServerLevel::setBlocksAndData,
-        "getServer", &ServerLevel::getServer,
-        "isClientside", &ServerLevel::isClientSide,
-        "getTile", &ServerLevel::getTile,
-        "hasChunkAt", &ServerLevel::hasChunkAt
+    lua.new_enum("EntityClass",
+        "Item", 0,
+        "Player", 1
     );
-
-    lua.new_usertype<Level>("Level",
-        "setTileAndData", &Level::setTileAndData,
-        "getTile", &Level::getTile,
-        "setData", &Level::setData,
-        "getData", &Level::getData
-    );
-
-    lua.set_function("getIdFromString", [](sol::this_environment env, const std::string& id) {
-        return IDMapping::get()->getID(id).id;
-    });
 }
 
 void LuaBindings::bindClientFunctions(sol::state& lua) {
+    LuaBindings::bindStartupFunctions(lua);
+}
+
+void LuaBindings::bindStartupFunctions(sol::state& lua) {
     lua.new_enum<EBaseItem>("EBaseItem", {
         {"Default", EBaseItem::Default},
         {"Food", EBaseItem::Food},
@@ -881,6 +1094,14 @@ void LuaBindings::bindClientFunctions(sol::state& lua) {
         {"Valkyrie", ItemTier_Valkyrie},
         {"Aphalaf", ItemTier_Aphalaf},
         {"Nusa", ItemTier_Nusa}
+    });
+
+    lua.new_enum<UseAnim>("EUseAnim", {
+        {"None", UseAnim_none},
+        {"Eat", UseAnim_eat},
+        {"Drink", UseAnim_drink},
+        {"Block", UseAnim_block},
+        {"Bow", UseAnim_bow},
     });
 
     lua.new_enum<EItemMaterial>("EItemMaterial", {

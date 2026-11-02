@@ -35,7 +35,6 @@ public:
 
 private:
 	static bool getIsMatch(float *frac, bool requireOcean);
-	static void getFracs(intArray indices, float *fracs);
 
 public:
 #ifdef __PSVITA__
