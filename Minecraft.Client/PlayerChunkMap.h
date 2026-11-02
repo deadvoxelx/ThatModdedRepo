@@ -19,6 +19,7 @@ public:
 	static const int MIN_VIEW_DISTANCE = 3;
 	static const int MAX_CHANGES_BEFORE_RESEND = 10;
 	static const int MIN_TICKS_BETWEEN_REGION_UPDATE = 10;
+	static const int MAX_REGION_UPDATES_PER_TICK = 8;
 
 	// 4J - added
 	class PlayerChunkAddRequest

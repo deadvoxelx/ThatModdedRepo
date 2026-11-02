@@ -93,8 +93,8 @@ void TileEntity::save(CompoundTag *tag)
 	tag->putInt(L"z", z);
 }
 
-void TileEntity::tick()
-{
+void TileEntity::tick() {
+
 }
 
 shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag *tag)

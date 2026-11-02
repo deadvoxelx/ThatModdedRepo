@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CompressedTileStorage.h"
+#include "LevelChunk.h"
 
 #ifdef __PSVITA__
 #define PSVITA_PRECOMPUTED_TABLE
@@ -689,6 +690,116 @@ void CompressedTileStorage::getData16(unsigned short *retArray, unsigned int ret
 }
 
 #endif
+
+void CompressedTileStorage::getData16Slice(unsigned short *retArray, int yStart, int yEnd, int destY)
+{
+	unsigned int localAllocatedSize = allocatedSize;
+	unsigned char *localIndicesAndData = indicesAndData;
+	if(!localIndicesAndData) return;
+
+	unsigned short *blockIndices = (unsigned short *)localIndicesAndData;
+	unsigned char *data = localIndicesAndData + 1024;
+
+	const int rows = LevelChunk::SECTION_SLICE_ROWS;
+	const int blockY0 = yStart >> 2;
+	const int blockY1 = ( yEnd - 1 ) >> 2;
+
+	for( int blockY = blockY0; blockY <= blockY1; blockY++ )
+	{
+		const int rowBase = destY + ( blockY << 2 ) - yStart;
+
+		for( int blockXZ = 0; blockXZ < 16; blockXZ++ )
+		{
+			const int i = ( blockXZ << 5 ) | blockY;
+			const int corner = ( ( blockXZ >> 2 ) << 11 ) | ( ( blockXZ & 3 ) << 7 );
+
+			int indexType = blockIndices[i] & INDEX_TYPE_MASK;
+			if( indexType == INDEX_TYPE_0_OR_8_BIT )
+			{
+				if( blockIndices[i] & INDEX_TYPE_0_BIT_FLAG )
+				{
+					unsigned short val = ( blockIndices[i] >> INDEX_TILE_SHIFT ) & INDEX_TILE_MASK;
+					for( int j = 0; j < 64; j++ )
+					{
+						int row = rowBase + ( j & 3 );
+						if( (unsigned int)row < (unsigned int)rows )
+						{
+							retArray[ corner | ( ( j & 0x30 ) << 5 ) | ( ( j & 0x0c ) << 3 ) | row ] = val;
+						}
+					}
+				}
+				else
+				{
+					unsigned int off = ( blockIndices[i] >> INDEX_OFFSET_SHIFT ) & INDEX_OFFSET_MASK;
+					if( ( localAllocatedSize >= 1024 ) && ( off + 128 <= (unsigned int)( localAllocatedSize - 1024 ) ) )
+					{
+						unsigned short *packed = (unsigned short *)(data + off);
+
+						for( int j = 0; j < 64; j++ )
+						{
+							int row = rowBase + ( j & 3 );
+							if( (unsigned int)row < (unsigned int)rows )
+							{
+								unsigned short val = packed[j];
+								retArray[ corner | ( ( j & 0x30 ) << 5 ) | ( ( j & 0x0c ) << 3 ) | row ] = val < 512 ? val : 0;
+							}
+						}
+					}
+					else
+					{
+						for( int j = 0; j < 64; j++ )
+						{
+							int row = rowBase + ( j & 3 );
+							if( (unsigned int)row < (unsigned int)rows )
+							{
+								retArray[ corner | ( ( j & 0x30 ) << 5 ) | ( ( j & 0x0c ) << 3 ) | row ] = 0;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				int bitspertile = 1 << indexType;
+				int tiletypecount = 1 << bitspertile;
+				int tiletypemask = tiletypecount - 1;
+				int indexshift = 3 - indexType;
+				int indexmask_bits = 7 >> indexType;
+				int indexmask_bytes = 62 >> indexshift;
+
+				unsigned int off = ( blockIndices[i] >> INDEX_OFFSET_SHIFT ) & INDEX_OFFSET_MASK;
+				if( ( localAllocatedSize >= 1024 ) && ( off + ( tiletypecount * 2 ) + ( 8 << indexType ) <= (unsigned int)( localAllocatedSize - 1024 ) ) )
+				{
+					unsigned short *tile_types = (unsigned short *)(data + off);
+					unsigned char *packed = (unsigned char *)(tile_types + tiletypecount);
+
+					for( int j = 0; j < 64; j++ )
+					{
+						int row = rowBase + ( j & 3 );
+						if( (unsigned int)row < (unsigned int)rows )
+						{
+							int idx = ( j >> indexshift ) & indexmask_bytes;
+							int bit = ( j & indexmask_bits ) * bitspertile;
+							unsigned short val = tile_types[( packed[idx] >> bit ) & tiletypemask];
+							retArray[ corner | ( ( j & 0x30 ) << 5 ) | ( ( j & 0x0c ) << 3 ) | row ] = val < 512 ? val : 0;
+						}
+					}
+				}
+				else
+				{
+					for( int j = 0; j < 64; j++ )
+					{
+						int row = rowBase + ( j & 3 );
+						if( (unsigned int)row < (unsigned int)rows )
+						{
+							retArray[ corner | ( ( j & 0x30 ) << 5 ) | ( ( j & 0x0c ) << 3 ) | row ] = 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 int  CompressedTileStorage::get(int x, int y, int z)
 {

@@ -40,3 +40,7 @@ struct LuaBlock {
         return IDMapping::get()->getByID(id, aux);
     }
 };
+
+inline LuaBlock makeLuaBlock(const LuaVec3 &pos, int id, int aux) {
+    return LuaBlock{pos, id, aux};
+}

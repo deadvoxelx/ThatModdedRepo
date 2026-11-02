@@ -40,19 +40,7 @@ LayerArray Layer::getDefaultLayers(int64_t seed, LevelType *levelType, int world
 		zoomLevel = 6;
 	}
 
-#ifdef _LARGE_WORLDS
-	// Voxel - cheap way of doing this but-
-	// this makes terrain and structures and stuff generate beyond the large world boundaries
-	// without having to do anything crazy...
-	{
-		int islandScale = LEVEL_WIDTH_LARGE;
-		while (islandScale < worldSizeChunks)
-		{
-			islandScale <<= 1;
-			zoomLevel++;
-		}
-	}
-#endif
+	(void)worldSizeChunks;
 
 	shared_ptr<Layer> riverLayer = islandLayer;
 	riverLayer = ZoomLayer::zoom(1000, riverLayer, 0);

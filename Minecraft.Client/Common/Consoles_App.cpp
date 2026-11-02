@@ -4603,8 +4603,10 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_APHALAF_PLANT, L"Aphalaf Plant");
 		m_stringTable->registerString(IDS_ITEM_APHALAF_TOOTH, L"Aphalaf Tooth");
 		m_stringTable->registerString(IDS_ITEM_APHALAF_SWORD, L"Aphalaf Sword");
-		m_stringTable->registerString(IDS_PLAYER_ENTER_OUTER_END, L"Entering The Outer End");
-		m_stringTable->registerString(IDS_PLAYER_LEAVE_OUTER_END, L"Leaving The Outer End");
+		m_stringTable->registerString(IDS_PLAYER_ENTER_OUTER_END, L"%s has entered The Outer End");
+		m_stringTable->registerString(IDS_PLAYER_LEAVE_OUTER_END, L"%s has left The Outer End");
+		m_stringTable->registerString(IDS_PROGRESS_ENTERING_OUTER_END, L"Entering The Outer End");
+		m_stringTable->registerString(IDS_PROGRESS_LEAVING_OUTER_END, L"Leaving The Outer End");
 		m_stringTable->registerString(IDS_TILE_PACKED_ICE, L"Packed Ice");
 		m_stringTable->registerString(IDS_TILE_BLUE_ICE, L"Blue Ice");
 		m_stringTable->registerString(IDS_TILE_PACKED_GLASS, L"Packed Glass");
@@ -4670,8 +4672,10 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_ITEM_GRAVITITE_PICKAXE, L"Gravitite Pickaxe");
 		m_stringTable->registerString(IDS_ITEM_GRAVITITE_AXE, L"Gravitite Axe");
 		m_stringTable->registerString(IDS_ITEM_GRAVITITE_SHOVEL, L"Gravitite Shovel");
-		m_stringTable->registerString(IDS_PLAYER_ENTER_AETHER, L"Entering The Aether");
-		m_stringTable->registerString(IDS_PLAYER_LEAVE_AETHER, L"Leaving The Aether");
+		m_stringTable->registerString(IDS_PLAYER_ENTER_AETHER, L"%s has entered The Aether");
+		m_stringTable->registerString(IDS_PLAYER_LEAVE_AETHER, L"%s has left The Aether");
+		m_stringTable->registerString(IDS_PROGRESS_ENTERING_AETHER, L"Entering The Aether");
+		m_stringTable->registerString(IDS_PROGRESS_LEAVING_AETHER, L"Leaving The Aether");
 		m_stringTable->registerString(IDS_ITEM_GRAVITITE_HOE, L"Gravitite Hoe");
 		m_stringTable->registerString(IDS_ITEM_ZANITE_SWORD, L"Zanite Sword");
 		m_stringTable->registerString(IDS_ITEM_ZANITE_PICKAXE, L"Zanite Pickaxe");
@@ -4753,8 +4757,10 @@ void CMinecraftApp::loadStringTable()
 		m_stringTable->registerString(IDS_UPDATE_LOG, L"Will use this later maybe");
 		m_stringTable->registerString(IDS_SENSITIVITY, L"Sensitivity");
 		m_stringTable->registerString(IDS_TILE_NUSA_PORTAL, L"Nusa Portal");
-		m_stringTable->registerString(IDS_PLAYER_ENTER_NUREALM, L"Entering The Nurealm");
-		m_stringTable->registerString(IDS_PLAYER_LEAVE_NUREALM, L"Leaving The Nurealm");
+		m_stringTable->registerString(IDS_PLAYER_ENTER_NUREALM, L"%s has entered The Nurealm");
+		m_stringTable->registerString(IDS_PLAYER_LEAVE_NUREALM, L"%s has left The Nurealm");
+		m_stringTable->registerString(IDS_PROGRESS_ENTERING_NUREALM, L"Entering The Nurealm");
+		m_stringTable->registerString(IDS_PROGRESS_LEAVING_NUREALM, L"Leaving The Nurealm");
 		m_stringTable->registerString(IDS_TILE_NUSTONE, L"Nustone");
 		m_stringTable->registerString(IDS_TILE_NUGRASS, L"Nugrass");
 		m_stringTable->registerString(IDS_TILE_NUBRICKS, L"Nustone Bricks");

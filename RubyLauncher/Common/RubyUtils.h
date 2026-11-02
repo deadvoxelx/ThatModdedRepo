@@ -28,4 +28,14 @@ namespace RubyUtils {
         lua_getinfo(L, "Sl", &info);
         Loader::_debugPrint(message + " (" + info.short_src + ":" + std::to_string(info.currentline) + ")");
     }
+
+    static std::wstring toWString(std::string str){
+        std::wstring wmessage(str.begin(), str.end());
+        return wmessage;
+    }
+
+    static std::string toString(std::wstring wstr){
+        std::string str(wstr.begin(), wstr.end());
+        return str;
+    }
 }

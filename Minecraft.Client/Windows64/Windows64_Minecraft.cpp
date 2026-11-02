@@ -1462,16 +1462,15 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	hMyInst=hInstance;
 
+	if (LoadFullscreenOption() && !g_isFullscreen || launchOptions.fullscreen)
+	{
+		ToggleFullscreen();
+	}
+
 	if( FAILED( InitDevice() ) )
 	{
 		CleanupDevice();
 		return 0;
-	}
-
-	// Restore fullscreen state from previous session
-	if (LoadFullscreenOption() && !g_isFullscreen || launchOptions.fullscreen)
-	{
-		ToggleFullscreen();
 	}
 
 #if 0
@@ -1560,7 +1559,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	}
 #endif
 
-	ShowWindow(g_hWnd, (nCmdShow != SW_HIDE) ? SW_SHOWMAXIMIZED : nCmdShow);
+	ShowWindow(g_hWnd, g_isFullscreen ? SW_SHOW : ((nCmdShow != SW_HIDE) ? SW_SHOWMAXIMIZED : nCmdShow));
 	UpdateWindow(g_hWnd);
 
 	MSG msg = {0};
@@ -1806,6 +1805,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			const unsigned char displayHud = app.GetGameSettings(primaryPad, eGameSetting_DisplayHUD);
 			app.SetGameSettings(primaryPad, eGameSetting_DisplayHUD, displayHud ? 0 : 1);
 			app.SetGameSettings(primaryPad, eGameSetting_DisplayHand, displayHud ? 0 : 1);
+		}
+
+		if (pMinecraft->screen == nullptr && !ui.GetMenuDisplayed(0) &&
+			g_KBMInput.IsKeyPressed(KeyboardMouseInput::KEY_COLOR_PULSE))
+		{
+			PostProcesser::GetInstance().ToggleColorPulse();
 		}
 
 		// F3 toggles onscreen debug info

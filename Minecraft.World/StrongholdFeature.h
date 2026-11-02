@@ -29,8 +29,9 @@ private:
 	static vector<Biome *> allowedBiomes;
 
 	bool isSpotSelected;
-	static const int strongholdPos_length = 1;// Java game has 3, but xbox game only has 1 because of the world size;	// 4J added
-	ChunkPos *strongholdPos[strongholdPos_length];
+	static const int MAX_STRONGHOLD_COUNT = 3;
+	int strongholdCount;
+	ChunkPos *strongholdPos[MAX_STRONGHOLD_COUNT];
 	double distance;
 	int spread;
 

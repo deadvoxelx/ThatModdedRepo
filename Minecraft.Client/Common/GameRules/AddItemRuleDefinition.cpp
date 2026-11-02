@@ -61,6 +61,7 @@ void AddItemRuleDefinition::addAttribute(const wstring &attributeName, const wst
 	if(attributeName.compare(L"itemId") == 0)
 	{
 		int value = _fromString<int>(attributeValue);
+		if ((value >= 256 && value < 512) || (value >= 2256 && value < 2268)) value += 256;
 		m_itemId = value;
 		//app.DebugPrintf(2,"AddItemRuleDefinition: Adding parameter itemId=%d\n",m_itemId);
 	}

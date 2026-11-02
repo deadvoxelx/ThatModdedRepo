@@ -1287,8 +1287,7 @@ void ClientConnection::handleChunkVisibility(shared_ptr<ChunkVisibilityPacket> p
 	}
 }
 
-void ClientConnection::handleChunkTilesUpdate(shared_ptr<ChunkTilesUpdatePacket> packet)
-{
+void ClientConnection::handleChunkTilesUpdate(shared_ptr<ChunkTilesUpdatePacket> packet)	{
 	// 4J - changed to encode level in packet
 	MultiPlayerLevel *dimensionLevel = (MultiPlayerLevel *)minecraft->levels[packet->levelIdx];
 	if( dimensionLevel )
@@ -1356,8 +1355,7 @@ void ClientConnection::handleChunkTilesUpdate(shared_ptr<ChunkTilesUpdatePacket>
 	}
 }
 
-void ClientConnection::handleBlockRegionUpdate(shared_ptr<BlockRegionUpdatePacket> packet)
-{
+void ClientConnection::handleBlockRegionUpdate(shared_ptr<BlockRegionUpdatePacket> packet)	{
 	// 4J - changed to encode level in packet
 	MultiPlayerLevel *dimensionLevel = (MultiPlayerLevel *)minecraft->levels[packet->levelIdx];
 	if( dimensionLevel )
@@ -1416,8 +1414,7 @@ void ClientConnection::handleBlockRegionUpdate(shared_ptr<BlockRegionUpdatePacke
 	}
 }
 
-void ClientConnection::handleTileUpdate(shared_ptr<TileUpdatePacket> packet)
-{
+void ClientConnection::handleTileUpdate(shared_ptr<TileUpdatePacket> packet)	{
 	// 4J added - using a block of 255 to signify that this is a packet for destroying a tile, where we need to inform the level renderer that we are about to do so.
 	// This is used in creative mode as the point where a tile is first destroyed at the client end of things. Packets formed like this are potentially sent from
 	// ServerPlayerGameMode::destroyBlock
@@ -1608,10 +1605,18 @@ void ClientConnection::handleTakeItemEntity(shared_ptr<TakeItemEntityPacket> pac
 
 }
 
+static void replacePlayerName(wstring &message, const wstring &playerDisplayName)
+{
+	size_t iPos = message.find(L"%s");
+	if (iPos != wstring::npos)
+	{
+		message.replace(iPos, 2, playerDisplayName);
+	}
+}
+
 void ClientConnection::handleChat(shared_ptr<ChatPacket> packet)
 {
 	wstring message;
-	int iPos;
 	bool displayOnGui = true;
 
 	bool replacePlayer = false;
@@ -1644,26 +1649,22 @@ void ClientConnection::handleChat(shared_ptr<ChatPacket> packet)
 		break;
 	case ChatPacket::e_ChatBedPlayerSleep:
 		message=app.GetString(IDS_TILE_BED_PLAYERSLEEP);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatBedMeSleep:
 		message=app.GetString(IDS_TILE_BED_MESLEEP);
 		break;
 	case ChatPacket::e_ChatPlayerJoinedGame:
 		message=app.GetString(IDS_PLAYER_JOINED);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatPlayerLeftGame:
 		message=app.GetString(IDS_PLAYER_LEFT);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatPlayerKickedFromGame:
 		message=app.GetString(IDS_PLAYER_KICKED);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatCannotPlaceLava:
 		displayOnGui = false;
@@ -1880,46 +1881,38 @@ void ClientConnection::handleChat(shared_ptr<ChatPacket> packet)
 
 	case ChatPacket::e_ChatPlayerEnteredEnd:
 		message=app.GetString(IDS_PLAYER_ENTERED_END);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatPlayerLeftEnd:
 		message=app.GetString(IDS_PLAYER_LEFT_END);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 
 	case ChatPacket::e_ChatPlayerEnterOuterEnd:
 		message=app.GetString(IDS_PLAYER_ENTER_OUTER_END);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatPlayerLeaveOuterEnd:
 		message=app.GetString(IDS_PLAYER_LEAVE_OUTER_END);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 
 	case ChatPacket::e_ChatPlayerEnterAether:
 		message=app.GetString(IDS_PLAYER_ENTER_AETHER);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatPlayerLeaveAether:
 		message=app.GetString(IDS_PLAYER_LEAVE_AETHER);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 
 	case ChatPacket::e_ChatPlayerEnterNurealm:
 		message=app.GetString(IDS_PLAYER_ENTER_NUREALM);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 	case ChatPacket::e_ChatPlayerLeaveNurealm:
 		message=app.GetString(IDS_PLAYER_LEAVE_NUREALM);
-		iPos=message.find(L"%s");
-		message.replace(iPos,2,playerDisplayName);
+		replacePlayerName(message, playerDisplayName);
 		break;
 
 	case ChatPacket::e_ChatPlayerMaxEnemies:
@@ -3058,29 +3051,29 @@ void ClientConnection::handleRespawn(shared_ptr<RespawnPacket> packet)
 
 		else if( packet->dimension == 2)
 		{
-			param->stringId = IDS_PLAYER_ENTER_OUTER_END;
+			param->stringId = IDS_PROGRESS_ENTERING_OUTER_END;
 		}
 		else if( oldDimension == 2)
 		{
-			param->stringId = IDS_PLAYER_LEAVE_OUTER_END;
+			param->stringId = IDS_PROGRESS_LEAVING_OUTER_END;
 		}
 
 		else if( packet->dimension == 3)
 		{
-			param->stringId = IDS_PLAYER_ENTER_AETHER;
+			param->stringId = IDS_PROGRESS_ENTERING_AETHER;
 		}
 		else if( oldDimension == 3)
 		{
-			param->stringId = IDS_PLAYER_LEAVE_AETHER;
+			param->stringId = IDS_PROGRESS_LEAVING_AETHER;
 		}
 
 		else if( packet->dimension == 4)
 		{
-			param->stringId = IDS_PLAYER_ENTER_NUREALM;
+			param->stringId = IDS_PROGRESS_ENTERING_NUREALM;
 		}
 		else if( oldDimension == 4)
 		{
-			param->stringId = IDS_PLAYER_LEAVE_NUREALM;
+			param->stringId = IDS_PROGRESS_LEAVING_NUREALM;
 		}
 
 		param->showTooltips = false;

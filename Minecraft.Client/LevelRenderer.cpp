@@ -44,7 +44,7 @@
 #include "../Minecraft.World/IntBuffer.h"
 #include "../Minecraft.World/JavaMath.h"
 #include "../Minecraft.World/net.minecraft.world.level.h"
-#include "..\Minecraft.World\net.minecraft.world.level.storage.h"
+#include "../Minecraft.World/net.minecraft.world.level.storage.h"
 #include "../Minecraft.World/net.minecraft.world.level.dimension.h"
 #include "../Minecraft.World/net.minecraft.world.level.tile.h"
 #include "../Minecraft.World/net.minecraft.world.phys.h"
@@ -195,6 +195,12 @@ LevelRenderer::LevelRenderer(Minecraft *mc, Textures *textures)
 	totalEntities = 0;
 	renderedEntities = 0;
 	culledEntities = 0;
+	m_occlusionFrameID = 0;
+	m_occlusionTracesThisFrame = 0;
+	culledTileEntities = 0;
+	totalTileEntities = 0;
+	m_cameraInSolidBlock = false;
+	m_tileCullBox = AABB::newPermanent(-1, -1, -1, 1, 1, 1);
 	chunkFixOffs = 0;
 	frame = 0;
 	repeatList = MemoryTracker::genLists(1);
@@ -207,6 +213,7 @@ LevelRenderer::LevelRenderer(Minecraft *mc, Textures *textures)
 		//		sortedChunks[i] = nullptr;	// 4J - removed - not sorting our chunks anymore
 		chunks[i] = ClipChunkArray();
 		lastPlayerCount[i] = 0;
+		m_visibleClipChunksGridLength[i] = 0;
 	}
 
 	InitializeCriticalSection(&m_csDirtyChunks);
@@ -538,6 +545,10 @@ void LevelRenderer::allChanged(int playerIndex)
 	}
 
 	chunks[playerIndex] = ClipChunkArray(xChunks * yChunks * zChunks);
+	m_visibleClipChunksGridLength[playerIndex] = 0;
+	m_entityOcclusion.clear();
+	m_tileEntityOcclusion.clear();
+
 #ifdef _LARGE_WORLDS
 	chunkLists[playerIndex] = MemoryTracker::genLists((xChunks * yChunks * zChunks) * 2);
 #endif
@@ -593,6 +604,195 @@ void LevelRenderer::allChanged(int playerIndex)
 	//LeaveCriticalSection(&m_csDirtyChunks);
 }
 
+static const double OCCLUSION_MIN_DIST_SQR = 4.0 * 4.0;
+static const int	OCCLUSION_ENTITY_REFIRE_FRAMES = 4;
+static const int	OCCLUSION_TILE_REFIRE_FRAMES = 8;
+static const int	OCCLUSION_MAX_TRACES_PER_FRAME = 32;
+static const double OCCLUSION_CAM_MOVE_SQR = 2.0 * 2.0;
+static const double OCCLUSION_ENTITY_MOVE_SQR = 0.5 * 0.5;
+static const int	OCCLUSION_FORGET_FRAMES = 200;
+
+static bool isOpaqueTileAt(Level *level, int x, int y, int z)
+{
+	if( y < 0 || y >= Level::genDepth ) return false;
+	int t = level->getTile(x, y, z);
+	if( t <= 0 ) return false;
+	Tile *tile = Tile::tiles[t];
+	return ( tile != nullptr ) && tile->isSolidRender();
+}
+
+static bool isPointBehindBlocks(Level *level, Vec3 *cam, double x, double y, double z)
+{
+	int x0 = Mth::floor(cam->x), y0 = Mth::floor(cam->y), z0 = Mth::floor(cam->z);
+	int x1 = Mth::floor(x), y1 = Mth::floor(y), z1 = Mth::floor(z);
+
+	if( x0 == x1 && y0 == y1 && z0 == z1 ) return false;
+
+	int stepX = ( x1 > x0 ) ? 1 : ( ( x1 < x0 ) ? -1 : 0 );
+	int stepY = ( y1 > y0 ) ? 1 : ( ( y1 < y0 ) ? -1 : 0 );
+	int stepZ = ( z1 > z0 ) ? 1 : ( ( z1 < z0 ) ? -1 : 0 );
+
+	double dx = x - cam->x;
+	double dy = y - cam->y;
+	double dz = z - cam->z;
+
+	double absDx = ( dx < 0 ) ? -dx : dx;
+	double absDy = ( dy < 0 ) ? -dy : dy;
+	double absDz = ( dz < 0 ) ? -dz : dz;
+
+	double tDeltaX = ( stepX != 0 ) ? 1.0 / absDx : 1e30;
+	double tDeltaY = ( stepY != 0 ) ? 1.0 / absDy : 1e30;
+	double tDeltaZ = ( stepZ != 0 ) ? 1.0 / absDz : 1e30;
+
+	double tMaxX = ( stepX > 0 ) ? ( x0 + 1 - cam->x ) / absDx : ( ( stepX < 0 ) ? ( cam->x - x0 ) / absDx : 1e30 );
+	double tMaxY = ( stepY > 0 ) ? ( y0 + 1 - cam->y ) / absDy : ( ( stepY < 0 ) ? ( cam->y - y0 ) / absDy : 1e30 );
+	double tMaxZ = ( stepZ > 0 ) ? ( z0 + 1 - cam->z ) / absDz : ( ( stepZ < 0 ) ? ( cam->z - z0 ) / absDz : 1e30 );
+
+	for( int guard = 0; guard < 512; guard++ )
+	{
+		double t;
+		if( tMaxX <= tMaxY && tMaxX <= tMaxZ )
+		{
+			t = tMaxX;
+			x0 += stepX;
+			tMaxX += tDeltaX;
+		}
+		else if( tMaxY <= tMaxZ )
+		{
+			t = tMaxY;
+			y0 += stepY;
+			tMaxY += tDeltaY;
+		}
+		else
+		{
+			t = tMaxZ;
+			z0 += stepZ;
+			tMaxZ += tDeltaZ;
+		}
+
+		if( t >= 1.0 ) return false;
+		if( x0 == x1 && y0 == y1 && z0 == z1 ) return false;
+		if( isOpaqueTileAt(level, x0, y0, z0) ) return true;
+	}
+
+	return false;
+}
+
+static bool isBoxHiddenBehindBlocks(Level *level, Vec3 *cam, AABB *bb)
+{
+	double x0 = bb->x0 < bb->x1 ? bb->x0 : bb->x1;
+	double x1 = bb->x0 < bb->x1 ? bb->x1 : bb->x0;
+	double y0 = bb->y0 < bb->y1 ? bb->y0 : bb->y1;
+	double y1 = bb->y0 < bb->y1 ? bb->y1 : bb->y0;
+	double z0 = bb->z0 < bb->z1 ? bb->z0 : bb->z1;
+	double z1 = bb->z0 < bb->z1 ? bb->z1 : bb->z0;
+
+	double midX = ( x0 + x1 ) * 0.5;
+	double midY = ( y0 + y1 ) * 0.5;
+	double midZ = ( z0 + z1 ) * 0.5;
+	if( !isPointBehindBlocks(level, cam, midX, midY, midZ) ) return false;
+
+	double inset = ( y1 - y0 ) * 0.15;
+	if( !isPointBehindBlocks(level, cam, midX, y0 + inset, midZ) ) return false;
+	if( !isPointBehindBlocks(level, cam, midX, y1 - inset, midZ) ) return false;
+
+	return true;
+}
+
+bool LevelRenderer::isEntityOccluded(int playerIndex, shared_ptr<Entity> entity, Vec3 *cam)
+{
+	if( entity == nullptr || entity->bb == nullptr || cam == nullptr ) return false;
+	if( level[playerIndex] == nullptr ) return false;
+	if( entity->noCulling ) return false;
+	if( entity == mc->cameraTargetPlayer ) return false;
+	if( entity == mc->crosshairPickMob ) return false;
+	if( mc->cameraTargetPlayer != nullptr && entity == mc->cameraTargetPlayer->riding ) return false;
+
+	double dx = entity->x - cam->x;
+	double dy = entity->y - cam->y;
+	double dz = entity->z - cam->z;
+	if( dx * dx + dy * dy + dz * dz < OCCLUSION_MIN_DIST_SQR ) return false;
+
+	Level *lvl = level[playerIndex];
+
+	if( m_cameraInSolidBlock ) return false;
+
+	OcclusionState &state = m_entityOcclusion[entity->entityId];
+	state.lastSeenFrame = m_occlusionFrameID;
+
+	return traceOcclusion( state, lvl, cam, entity->bb, entity->x, entity->y, entity->z, OCCLUSION_ENTITY_REFIRE_FRAMES );
+}
+
+bool LevelRenderer::traceOcclusion(OcclusionState &state, Level *lvl, Vec3 *cam, AABB *box, double x, double y, double z, int refireFrames)
+{
+	bool geometryChanged = ( state.testLevel != lvl );
+
+	if( !geometryChanged )
+	{
+		double cdx = cam->x - state.testCamX;
+		double cdy = cam->y - state.testCamY;
+		double cdz = cam->z - state.testCamZ;
+		if( cdx * cdx + cdy * cdy + cdz * cdz > OCCLUSION_CAM_MOVE_SQR ) geometryChanged = true;
+	}
+
+	if( !geometryChanged )
+	{
+		double sdx = x - state.testX;
+		double sdy = y - state.testY;
+		double sdz = z - state.testZ;
+		if( sdx * sdx + sdy * sdy + sdz * sdz > OCCLUSION_ENTITY_MOVE_SQR ) geometryChanged = true;
+	}
+
+	if( geometryChanged || ( m_occlusionFrameID - state.lastTestFrame ) >= refireFrames )
+	{
+		if( m_occlusionTracesThisFrame >= OCCLUSION_MAX_TRACES_PER_FRAME )
+		{
+			return state.tested && !geometryChanged && state.occluded;
+		}
+
+		m_occlusionTracesThisFrame++;
+		state.occluded = isBoxHiddenBehindBlocks( lvl, cam, box );
+		state.tested = true;
+		state.lastTestFrame = m_occlusionFrameID;
+		state.testLevel = lvl;
+		state.testCamX = cam->x;
+		state.testCamY = cam->y;
+		state.testCamZ = cam->z;
+		state.testX = x;
+		state.testY = y;
+		state.testZ = z;
+	}
+
+	return state.occluded;
+}
+
+static bool isTileEntityDrawnOutsideItsBlock(shared_ptr<TileEntity> tileEntity)
+{
+	eINSTANCEOF type = tileEntity->GetType();
+	return ( type == eTYPE_BEACONTILEENTITY ) || ( type == eTYPE_PISTONPIECEENTITY );
+}
+
+bool LevelRenderer::isTileEntityCulled(int playerIndex, shared_ptr<TileEntity> tileEntity, Culler *culler, Vec3 *cam, bool allowBlockCulling)
+{
+	if( tileEntity == nullptr || culler == nullptr ) return false;
+	if( level[playerIndex] == nullptr ) return false;
+	if( isTileEntityDrawnOutsideItsBlock(tileEntity) ) return false;
+
+	m_tileCullBox->set( tileEntity->x - 0.5, tileEntity->y - 0.5, tileEntity->z - 0.5, tileEntity->x + 1.5, tileEntity->y + 1.5, tileEntity->z + 1.5 );
+
+	if( !culler->isVisible( m_tileCullBox ) ) return true;
+
+	if( !allowBlockCulling || cam == nullptr ) return false;
+	if( m_cameraInSolidBlock ) return false;
+
+	Level *lvl = level[playerIndex];
+
+	OcclusionState &state = m_tileEntityOcclusion[tileEntity.get()];
+	state.lastSeenFrame = m_occlusionFrameID;
+
+	return traceOcclusion( state, lvl, cam, m_tileCullBox, tileEntity->x + 0.5, tileEntity->y + 0.5, tileEntity->z + 0.5, OCCLUSION_TILE_REFIRE_FRAMES );
+}
+
 void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 {
 	if (mc == nullptr || mc->player == nullptr)
@@ -615,6 +815,31 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 	totalEntities = 0;
 	renderedEntities = 0;
 	culledEntities = 0;
+	totalTileEntities = 0;
+	culledTileEntities = 0;
+	m_occlusionFrameID++;
+	m_occlusionTracesThisFrame = 0;
+	m_cameraInSolidBlock = false;
+
+	if ( cam != nullptr && level[playerIndex] != nullptr )
+	{
+		m_cameraInSolidBlock = isOpaqueTileAt( level[playerIndex], Mth::floor(cam->x), Mth::floor(cam->y), Mth::floor(cam->z) );
+	}
+
+	if( ( m_occlusionFrameID & 0xff ) == 0 )
+	{
+		for( auto it = m_entityOcclusion.begin(); it != m_entityOcclusion.end(); )
+		{
+			if( ( m_occlusionFrameID - it->second.lastSeenFrame ) > OCCLUSION_FORGET_FRAMES ) it = m_entityOcclusion.erase( it );
+			else ++it;
+		}
+
+		for( auto it = m_tileEntityOcclusion.begin(); it != m_tileEntityOcclusion.end(); )
+		{
+			if( ( m_occlusionFrameID - it->second.lastSeenFrame ) > OCCLUSION_FORGET_FRAMES ) it = m_tileEntityOcclusion.erase( it );
+			else ++it;
+		}
+	}
 
 	shared_ptr<Entity> player = mc->cameraTargetPlayer;
 	if (player == nullptr)
@@ -634,6 +859,13 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 	vector<shared_ptr<Entity> > entities = level[playerIndex]->getAllEntities();
 	totalEntities = static_cast<int>(entities.size());
 
+	bool allowOcclusionCulling = true;
+	if ( mc->cameraTargetPlayer->instanceof(eTYPE_LOCALPLAYER) )
+	{
+		shared_ptr<LocalPlayer> camPlayer = dynamic_pointer_cast<LocalPlayer>( mc->cameraTargetPlayer );
+		allowOcclusionCulling = ( camPlayer->ThirdPersonView() == 0 );
+	}
+
 	for (auto& entity : level[playerIndex]->globalEntities)
 	{
 		renderedEntities++;
@@ -644,6 +876,7 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 	{
 		bool isPlayerVehicle = (entity == mc->cameraTargetPlayer->riding);
 		bool shouldRender = (entity->shouldRender(cam) && (entity->noCulling || isPlayerVehicle || culler->isVisible(entity->bb)));
+		bool keptForLeash = false;
 
 		// Render the mob if the mob's leash holder is within the culler
 		if ( !shouldRender && entity->instanceof(eTYPE_MOB) )
@@ -653,7 +886,14 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 			{
 				shared_ptr<Entity> leashHolder = mob->getLeashHolder();
 				shouldRender = culler->isVisible(leashHolder->bb);
+				keptForLeash = shouldRender;
 			}
+		}
+
+		if ( shouldRender && allowOcclusionCulling && !keptForLeash && isEntityOccluded(playerIndex, entity, cam) )
+		{
+			culledEntities++;
+			continue;
 		}
 
 		if (shouldRender)
@@ -685,6 +925,14 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 
 		for( auto& it2 : it.second)
 		{
+			totalTileEntities++;
+
+			if( isTileEntityCulled(playerIndex, it2, culler, cam, allowOcclusionCulling) )
+			{
+				culledTileEntities++;
+				continue;
+			}
+
 			TileEntityRenderDispatcher::instance->render(it2, a);
 		}
 	}
@@ -730,7 +978,7 @@ wstring LevelRenderer::gatherStats1()
 
 wstring LevelRenderer::gatherStats2()
 {
-	return L"E: " + std::to_wstring(renderedEntities) + L"/" + std::to_wstring(totalEntities) + L". B: " + std::to_wstring(culledEntities) + L", I: " + std::to_wstring((totalEntities - culledEntities) - renderedEntities);
+	return L"E: " + std::to_wstring(renderedEntities) + L"/" + std::to_wstring(totalEntities) + L". B: " + std::to_wstring(culledEntities) + L", I: " + std::to_wstring((totalEntities - culledEntities) - renderedEntities) + L". T: " + std::to_wstring(culledTileEntities) + L"/" + std::to_wstring(totalTileEntities);
 }
 
 void LevelRenderer::resortChunks(int xc, int yc, int zc)
@@ -833,6 +1081,20 @@ int LevelRenderer::render(shared_ptr<LivingEntity> player, int layer, double alp
 
 	int count = renderChunks(0, static_cast<int>(chunks[playerIndex].length), layer, alpha);
 
+	if( layer == 0 )
+	{
+		totalChunks = static_cast<int>( chunks[playerIndex].length );
+		renderedChunks = count;
+		if( m_visibleClipChunksGridLength[playerIndex] == chunks[playerIndex].length )
+		{
+			offscreenChunks = totalChunks - static_cast<int>( m_visibleClipChunks[playerIndex].size() );
+		}
+		else
+		{
+			offscreenChunks = 0;
+		}
+	}
+
 	return count;
 }
 
@@ -906,10 +1168,14 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 
 	bool first = true;
 	int count = 0;
-	ClipChunk *pClipChunk = chunks[playerIndex].data;
+	ClipChunk *pChunkData = chunks[playerIndex].data;
 	unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
-	for( int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++ )
+	bool useVisibleList = ( pChunkData != nullptr ) && ( m_visibleClipChunksGridLength[playerIndex] == chunks[playerIndex].length );
+	vector<unsigned int> &visibleChunks = m_visibleClipChunks[playerIndex];
+	unsigned int chunkCount = useVisibleList ? static_cast<unsigned int>( visibleChunks.size() ) : chunks[playerIndex].length;
+	for( unsigned int i = 0; i < chunkCount; i++ )
 	{
+		ClipChunk *pClipChunk = useVisibleList ? &pChunkData[ visibleChunks[i] ] : &pChunkData[i];
 		if( !pClipChunk->visible ) continue;													// This will be set if the chunk isn't visible, or isn't compiled, or has both empty flags set
 		if( pClipChunk->globalIdx == -1 ) continue;												// Not sure if we should ever encounter this... TODO check
 		if( ( globalChunkFlags[pClipChunk->globalIdx] & emptyFlag ) == emptyFlag ) continue;	// Check that this particular layer isn't empty
@@ -2093,6 +2359,9 @@ bool LevelRenderer::updateDirtyChunks()
 					for( int y = 0; y < CHUNK_Y_COUNT; y++ )
 					{
 						ClipChunk *pClipChunk = &chunks[p][(z * yChunks + y) * xChunks + x];
+						if( pClipChunk->globalIdx == -1 ) continue;
+						if( !( globalChunkFlags[ pClipChunk->globalIdx ] & CHUNK_FLAG_DIRTY ) ) continue;
+
 						// Get distance to this chunk - deliberately not calling the chunk's method of doing this to avoid overheads (passing entitie, type conversion etc.) that this involves
 						int xd = pClipChunk->xm - px;
 						int yd = pClipChunk->ym - py;
@@ -2100,7 +2369,6 @@ bool LevelRenderer::updateDirtyChunks()
 						int distSq = xd * xd + yd * yd + zd * zd;
 						int distSqWeighted = xd * xd + yd * yd * 4 + zd * zd;  // Weighting against y to prioritise things in same x/z plane as player first
 
-						if( globalChunkFlags[ pClipChunk->globalIdx ] & CHUNK_FLAG_DIRTY )
 						{
 							if( (!onlyRebuild) ||
 								globalChunkFlags[ pClipChunk->globalIdx ] & CHUNK_FLAG_COMPILED ||
@@ -2670,6 +2938,7 @@ void LevelRenderer::cull(Culler *culler, float a)
 	int playerIndex = mc->player->GetXboxPad();	// 4J added
 
 #if defined __PS3__ && !defined DISABLE_SPU_CODE
+	m_visibleClipChunksGridLength[playerIndex] = 0;
 	cull_SPU(playerIndex, culler, a);
 	return;
 #endif // __PS3__
@@ -2689,33 +2958,58 @@ void LevelRenderer::cull(Culler *culler, float a)
 		fdraw[i * 4 + 3] = static_cast<float>(fd->m_Frustum[i][3] + (fx * -fc->xOff) + (fy * -fc->yOff) + (fz * -fc->zOff));
 	}
 
-	ClipChunk *pClipChunk = chunks[playerIndex].data;
-	int vis = 0;
-	int total = 0;
-	int numWrong = 0;
-	for (unsigned int i = 0; i < chunks[playerIndex].length; i++)
+	ClipChunk *pChunks = chunks[playerIndex].data;
+	m_visibleClipChunksGridLength[playerIndex] = 0;
+	if( pChunks == nullptr || xChunks <= 0 || yChunks <= 0 || zChunks <= 0 ) return;
+
+	vector<unsigned int> &visibleChunks = m_visibleClipChunks[playerIndex];
+	visibleChunks.clear();
+
+	const int columnStride = xChunks;
+	for( int z = 0; z < zChunks; z++ )
 	{
-		unsigned char flags = pClipChunk->globalIdx == -1 ? 0 : globalChunkFlags[ pClipChunk->globalIdx ];
+		for( int x = 0; x < xChunks; x++ )
+		{
+			ClipChunk *pColumn = pChunks + ( z * yChunks * columnStride ) + x;
 
-		// Always perform frustum cull test
-		bool clipres = clip(pClipChunk->aabb, fdraw);
+			float columnBox[6];
+			for( int i = 0; i < 6; i++ ) columnBox[i] = pColumn->aabb[i];
+			for( int y = 1; y < yChunks; y++ )
+			{
+				const float *aabb = pColumn[ y * columnStride ].aabb;
+				for( int i = 0; i < 3; i++ )
+				{
+					if( aabb[i] < columnBox[i] ) columnBox[i] = aabb[i];
+					if( aabb[i + 3] > columnBox[i + 3] ) columnBox[i + 3] = aabb[i + 3];
+				}
+			}
 
-		if ( (flags & CHUNK_FLAG_COMPILED ) && ( ( flags & CHUNK_FLAG_EMPTYBOTH ) != CHUNK_FLAG_EMPTYBOTH ) )
-		{
-			pClipChunk->visible = clipres;
-			if( pClipChunk->visible ) vis++;
-			total++;
+			if( !clip(columnBox, fdraw) )
+			{
+				for( int y = 0; y < yChunks; y++ )
+				{
+					pColumn[ y * columnStride ].visible = false;
+				}
+				continue;
+			}
+
+			for( int y = 0; y < yChunks; y++ )
+			{
+				ClipChunk *pClipChunk = pColumn + y * columnStride;
+				if( clip(pClipChunk->aabb, fdraw) )
+				{
+					pClipChunk->visible = true;
+					visibleChunks.push_back( static_cast<unsigned int>( pClipChunk - pChunks ) );
+				}
+				else
+				{
+					pClipChunk->visible = false;
+				}
+			}
 		}
-		else if (clipres)
-		{
-			pClipChunk->visible = true;
-		}
-		else
-		{
-			pClipChunk->visible = false;
-		}
-		pClipChunk++;
 	}
+
+	m_visibleClipChunksGridLength[playerIndex] = chunks[playerIndex].length;
 }
 
 

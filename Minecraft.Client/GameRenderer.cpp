@@ -1092,12 +1092,33 @@ void GameRenderer::ApplyGammaPostProcess() const
     float gammas[NUM_LIGHT_TEXTURES];
     const UINT n = BuildPlayerViewports(vps, gammas, NUM_LIGHT_TEXTURES);
 
+    const bool pulseActive = PostProcesser::GetInstance().IsColorPulseEnabled();
+    if (pulseActive)
+    {
+        static const int64_t PULSE_PERIOD_MS = 5000;
+        static const float PULSE_DEPTH = 0.3f;
+
+        const int64_t phaseMs = System::currentTimeMillis() % PULSE_PERIOD_MS;
+        const float phase = static_cast<float>(phaseMs) * (2.0f * PI / static_cast<float>(PULSE_PERIOD_MS));
+        const float base = 1.0f - PULSE_DEPTH;
+
+        PostProcesser::GetInstance().SetColorPulse(
+            base + PULSE_DEPTH * (0.5f + 0.5f * Mth::sin(phase)),
+            base + PULSE_DEPTH * (0.5f + 0.5f * Mth::sin(phase + 2.0943951f)),   // +120 degrees
+            base + PULSE_DEPTH * (0.5f + 0.5f * Mth::sin(phase + 4.1887902f)),   // +240 degrees
+            1.0f);
+    }
+    else
+    {
+        PostProcesser::GetInstance().SetColorPulse(1.0f, 1.0f, 1.0f, 0.0f);
+    }
+
     float gamma = 1.0f;
     bool hasPlayers = n > 0;
 
     if (hasPlayers)
     {
-        bool anyEffect = false;
+        bool anyEffect = pulseActive;
         for (UINT i = 0; i < n; ++i)
         {
             if (gammas[i] < 0.99f || gammas[i] > 1.01f)
@@ -1113,11 +1134,10 @@ void GameRenderer::ApplyGammaPostProcess() const
     {
         const float slider = app.GetGameSettings(0, eGameSetting_Gamma);
         gamma = ComputeGammaFromSlider(slider);
-        if (gamma < 0.99f || gamma > 1.01f)
+        if (gamma < 0.99f || gamma > 1.01f || pulseActive)
         {
             PostProcesser::GetInstance().SetGamma(gamma);
             PostProcesser::GetInstance().Apply();
-            return;
         }
         return;
     }

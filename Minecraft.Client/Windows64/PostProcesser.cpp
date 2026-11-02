@@ -21,21 +21,24 @@ const char* PostProcesser::g_gammaPSCode =
     "cbuffer GammaCB : register(b0)\n"
     "{\n"
     "    float gamma;\n"
-    "    float _pad;\n"
-    "    float2 uvOffset;\n"
-    "    float2 uvScale;\n"
-    "    float2 _pad2;\n"
+    "    float uvOffsetX, uvOffsetY;\n"
+    "    float uvScaleX, uvScaleY;\n"
+    "    float tintR, tintG, tintB;\n"
+    "    float strength;\n"
+    "    float _pad[3];\n"
     "};\n"
     "Texture2D sceneTex : register(t0);\n"
     "SamplerState sceneSampler : register(s0);\n"
     "float4 main(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_Target\n"
     "{\n"
-    "    float2 texUV = uvOffset + uv * uvScale;\n"
+    "    float2 texUV = float2(uvOffsetX, uvOffsetY) + uv * float2(uvScaleX, uvScaleY);\n"
     "    float4 color = sceneTex.Sample(sceneSampler, texUV);\n"
     "\n"
     "    color.rgb = max(color.rgb, 0.0);\n"
     "\n"
     "    color.rgb = pow(color.rgb, 1.0 / gamma);\n"
+    "\n"
+    "    color.rgb *= lerp(float3(1.0, 1.0, 1.0), float3(tintR, tintG, tintB), saturate(strength));\n"
     "\n"
     "    return color;\n"
     "}\n";
@@ -61,6 +64,14 @@ bool PostProcesser::IsRunningUnderWine()
 void PostProcesser::SetGamma(float gamma)
 {
     m_gamma = gamma;
+}
+
+void PostProcesser::SetColorPulse(float r, float g, float b, float strength)
+{
+    m_tintR = r;
+    m_tintG = g;
+    m_tintB = b;
+    m_tintStrength = strength;
 }
 
 void PostProcesser::Init()
@@ -162,7 +173,12 @@ void PostProcesser::Init()
     cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-    GammaCBData initData = {1.0f, 0, 0.0f, 0.0f, 1.0f, 1.0f, {0, 0}};
+    GammaCBData initData = {};
+    initData.gamma = 1.0f;
+    initData.uvScaleX = 1.0f;
+    initData.uvScaleY = 1.0f;
+    initData.tintR = initData.tintG = initData.tintB = 1.0f;
+    initData.strength = 0.0f;
     D3D11_SUBRESOURCE_DATA srData;
     srData.pSysMem = &initData;
     srData.SysMemPitch = 0;
@@ -220,7 +236,7 @@ void PostProcesser::Apply() const
     if (!m_initialized)
         return;
 
-    if (m_gamma > 0.99f && m_gamma < 1.01f)
+    if (m_gamma > 0.99f && m_gamma < 1.01f && !HasColorPulse())
         return;
 
     ID3D11DeviceContext *ctx = g_pImmediateContext;
@@ -245,6 +261,10 @@ void PostProcesser::Apply() const
         cb->uvOffsetY = 0.0f;
         cb->uvScaleX = 1.0f;
         cb->uvScaleY = 1.0f;
+        cb->tintR = m_tintR;
+        cb->tintG = m_tintG;
+        cb->tintB = m_tintB;
+        cb->strength = m_tintStrength;
         ctx->Unmap(m_pGammaCB, 0);
     }
 
@@ -336,7 +356,7 @@ void PostProcesser::ApplyFromCopied() const
     if (!m_initialized)
         return;
 
-    if (m_gamma > 0.99f && m_gamma < 1.01f)
+    if (m_gamma > 0.99f && m_gamma < 1.01f && !HasColorPulse())
         return;
 
     ID3D11DeviceContext* ctx = g_pImmediateContext;
@@ -369,6 +389,10 @@ void PostProcesser::ApplyFromCopied() const
         cb->uvOffsetY = vp.TopLeftY / texH;
         cb->uvScaleX = vp.Width / texW;
         cb->uvScaleY = vp.Height / texH;
+        cb->tintR = m_tintR;
+        cb->tintG = m_tintG;
+        cb->tintB = m_tintB;
+        cb->strength = m_tintStrength;
         ctx->Unmap(m_pGammaCB, 0);
     }
 

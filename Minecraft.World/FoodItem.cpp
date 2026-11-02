@@ -51,7 +51,6 @@ void FoodItem::addEatEffect(shared_ptr<ItemInstance> instance, Level *level, sha
 	{
 		player->addEffect(new MobEffectInstance(effectId, effectDurationSeconds * SharedConstants::TICKS_PER_SECOND, effectAmplifier));
 	}
-
 }
 
 int FoodItem::getUseDuration(shared_ptr<ItemInstance> itemInstance)

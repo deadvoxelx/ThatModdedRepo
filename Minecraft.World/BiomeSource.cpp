@@ -434,6 +434,16 @@ int64_t BiomeSource::findSeed(LevelType *generator, int worldSizeChunks)
 	else
 #endif
 	{
+#ifdef _LARGE_WORLDS
+		if (worldSizeChunks >= LEVEL_WIDTH_HUGE)
+		{
+			Random seedRng(System::nanoTime());
+			int64_t seed = seedRng.nextLong();
+			app.DebugPrintf("findSeed: Huge world, skipping biome screening. Seed %lld\n", seed);
+			mcprogress->progressStagePercentage(100);
+			return seed;
+		}
+#endif
 #ifdef DEBUG_SEEDS
 		for( int k = 0; k < DEBUG_SEEDS; k++ )
 #endif
@@ -445,13 +455,24 @@ int64_t BiomeSource::findSeed(LevelType *generator, int worldSizeChunks)
 			// Removing a border of 8 from each side since we'll be doing special things at the edge to turn our world into an island, and so don't want to count things
 			// in the edge region in case they later get removed
 			const int biomeWidth = ( worldSizeChunks * 4 ) - 16;			// Should be even so we can offset evenly
-			const int biomeOffset = -( biomeWidth / 2 );
+
+#ifdef _LARGE_WORLDS
+			const int largeSampleWidth = ( LEVEL_WIDTH_LARGE * 4 ) - 16;
+			const int sampleWidth = biomeWidth < largeSampleWidth ? biomeWidth : largeSampleWidth;
+#else
+			const int sampleWidth = biomeWidth;
+#endif
+			const bool tiled = sampleWidth < biomeWidth;
+			const int tilesPerSide = tiled ? 8 : 1;
+			const int tileWidth = sampleWidth / tilesPerSide;
+			const int slice = biomeWidth / tilesPerSide;
 
 			// Storage for our biome indices
-			intArray indices = intArray( biomeWidth * biomeWidth );
+			intArray indices = intArray( tileWidth * tileWidth );
 
 			// Storage for the fractional amounts of each biome that will be calculated
 			float toCompare[Biome::BIOME_COUNT];
+			float biomeCounts[Biome::BIOME_COUNT];
 
 			bool matchFound = false;
 			int tryCount = 0;
@@ -462,8 +483,25 @@ int64_t BiomeSource::findSeed(LevelType *generator, int worldSizeChunks)
 				int64_t seed = pr->nextLong();
 				BiomeSource *biomeSource = new BiomeSource(seed,generator,worldSizeChunks);
 
-				biomeSource->getRawBiomeIndices(indices, biomeOffset, biomeOffset, biomeWidth, biomeWidth);
-				getFracs(indices, toCompare);
+				const int cellsPerTile = tileWidth * tileWidth;
+				for (int i = 0; i < Biome::BIOME_COUNT; i++) biomeCounts[i] = 0.0f;
+
+				for (int tz = 0; tz < tilesPerSide; tz++)
+				{
+					for (int tx = 0; tx < tilesPerSide; tx++)
+					{
+						const int x = -( biomeWidth / 2 ) + tx * slice + ( slice - tileWidth ) / 2;
+						const int z = -( biomeWidth / 2 ) + tz * slice + ( slice - tileWidth ) / 2;
+						biomeSource->getRawBiomeIndices(indices, x, z, tileWidth, tileWidth);
+						for (int i = 0; i < cellsPerTile; i++)
+						{
+							biomeCounts[indices[i]] += 1.0f;
+						}
+					}
+				}
+
+				const float cellsSampled = static_cast<float>( cellsPerTile * tilesPerSide * tilesPerSide );
+				for (int i = 0; i < Biome::BIOME_COUNT; i++) toCompare[i] = biomeCounts[i] / cellsSampled;
 
 #ifdef _LARGE_WORLDS
 				matchFound = getIsMatch( toCompare, worldSizeChunks <= LEVEL_WIDTH_LARGE );
@@ -544,25 +582,6 @@ int64_t BiomeSource::findSeed(LevelType *generator, int worldSizeChunks)
 	}
 
 	return bestSeed;
-}
-
-// 4J added - get the fractional amounts of each biome type in the given indices
-void BiomeSource::getFracs(intArray indices, float *fracs)
-{
-	for( int i = 0; i < Biome::BIOME_COUNT; i++ )
-	{
-		fracs[i] = 0.0f;
-	}
-
-	for( int i = 0; i < indices.length; i++ )
-	{
-		fracs[indices[i]] += 1.0f;
-	}
-
-	for( int i = 0; i < Biome::BIOME_COUNT; i++ )
-	{
-		fracs[i] /= static_cast<float>(indices.length);
-	}
 }
 
 // 4J added - determine if this particular set of fractional amounts of biome types matches are requirements

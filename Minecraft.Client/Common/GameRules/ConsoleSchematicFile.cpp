@@ -50,6 +50,30 @@ void ConsoleSchematicFile::save(DataOutputStream *dos)
 	}
 }
 
+static void remapLegacyItemIds(Tag *tag)
+{
+	if (tag == nullptr) return;
+	if (tag->getId() == Tag::TAG_Compound)
+	{
+		CompoundTag *compound = static_cast<CompoundTag *>(tag);
+		Tag *id = compound->get(L"id");
+		if (id != nullptr && id->getId() == Tag::TAG_Short && compound->contains(L"Count"))
+		{
+			ShortTag *shortId = static_cast<ShortTag *>(id);
+			if ((shortId->data >= 256 && shortId->data < 512) || (shortId->data >= 2256 && shortId->data < 2268))
+				shortId->data += 256;
+		}
+		vector<Tag *> *children = compound->getAllTags();
+		for (Tag *child : *children) remapLegacyItemIds(child);
+		delete children;
+	}
+	else if (tag->getId() == Tag::TAG_List)
+	{
+		ListTag<Tag> *list = static_cast<ListTag<Tag> *>(tag);
+		for (int i = 0; i < list->size(); i++) remapLegacyItemIds(list->get(i));
+	}
+}
+
 void ConsoleSchematicFile::load(DataInputStream *dis)
 {
 	if(dis != nullptr)
@@ -110,6 +134,7 @@ void ConsoleSchematicFile::load(DataInputStream *dis)
 
 		// READ TAGS //
 		CompoundTag *tag = NbtIo::read(dis);
+		remapLegacyItemIds(tag);
 		ListTag<CompoundTag> *tileEntityTags = (ListTag<CompoundTag> *) tag->getList(L"TileEntities");
 		if (tileEntityTags != nullptr)
 		{

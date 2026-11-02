@@ -4,6 +4,7 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.biome.h"
 #include "net.minecraft.world.level.dimension.h"
+#include "ChunkSource.h"
 #include "Mth.h"
 #include "FileHeader.h"
 #include "JavaMath.h"
@@ -37,11 +38,12 @@ void StrongholdFeature::_init()
 	spread = 3;
 
 	// 4J added initialisers
-	for (int i = 0; i < strongholdPos_length; i++)
+	for (int i = 0; i < MAX_STRONGHOLD_COUNT; i++)
 	{
 		strongholdPos[i] = nullptr;
 	}
 	isSpotSelected = false;
+	strongholdCount = 1;
 }
 
 StrongholdFeature::StrongholdFeature() : StructureFeature()
@@ -61,8 +63,6 @@ StrongholdFeature::StrongholdFeature(unordered_map<wstring, wstring> options)
 		}
 		else if (option.first.compare(OPTION_COUNT) == 0)
 		{
-			// 4J-JEV: Removed, we only have the one stronghold.
-			//strongholdPos = new ChunkPos[ Mth::getInt(it->second, strongholdPos_length, 1) ];
 			assert(false);
 		}
 		else if (option.first.compare(OPTION_SPREAD) == 0)
@@ -74,7 +74,7 @@ StrongholdFeature::StrongholdFeature(unordered_map<wstring, wstring> options)
 
 StrongholdFeature::~StrongholdFeature()
 {
-	for (int i = 0; i < strongholdPos_length; i++)
+	for (int i = 0; i < MAX_STRONGHOLD_COUNT; i++)
 	{
 		delete strongholdPos[i];
 	}
@@ -95,12 +95,18 @@ bool StrongholdFeature::isFeatureChunk(int x, int z,bool bIsSuperflat)
 		double angle = random.nextDouble() * PI * 2.0;
 		int circle = 1;
 
+#ifdef _LARGE_WORLDS
+		strongholdCount = (level->dimension->getXZSize() >= LEVEL_WIDTH_HUGE) ? MAX_STRONGHOLD_COUNT : 1;
+#else
+		strongholdCount = 1;
+#endif
+
 		// 4J Stu - Changed so that we keep trying more until we have found somewhere in the world to place a stronghold
 		bool hasFoundValidPos = false;
 		int findAttempts = 0;
 		do
 		{
-			for (int i = 0; i < strongholdPos_length; i++)
+			for (int i = 0; i < strongholdCount; i++)
 			{
 				double dist = 0.0;
 #ifdef _LARGE_WORLDS
@@ -146,7 +152,14 @@ bool StrongholdFeature::isFeatureChunk(int x, int z,bool bIsSuperflat)
 					selectedZ = position->z >> 4;
 
 #ifndef _CONTENT_PACKAGE
-					if(position->x > 2560 || position->x < -2560 || position->z > 2560 || position->z < -2560)
+					int strongholdLimit = 2560;
+#ifdef _LARGE_WORLDS
+					if (level->dimension->getXZSize() >= LEVEL_WIDTH_HUGE)
+					{
+						strongholdLimit = (level->dimension->getXZSize() * 16) / 2;
+					}
+#endif
+					if(position->x > strongholdLimit || position->x < -strongholdLimit || position->z > strongholdLimit || position->z < -strongholdLimit)
 					{
 						__debugbreak();
 					}
@@ -164,11 +177,14 @@ bool StrongholdFeature::isFeatureChunk(int x, int z,bool bIsSuperflat)
 				delete strongholdPos[i];
 				strongholdPos[i] = new ChunkPos(selectedX, selectedZ);
 
-				angle += PI * 2.0 / static_cast<double>(strongholdPos_length);
+				angle += PI * 2.0 / static_cast<double>(strongholdCount);
+				++circle;
 			}
 
 			// 4J Stu - We want to make sure that we have at least one stronghold in this world
 			++findAttempts;
+
+			circle = 1;
 
 			// 4J Stu - Randomise the angles for retries as well
 #ifdef _LARGE_WORLDS
@@ -187,7 +203,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z,bool bIsSuperflat)
 		isSpotSelected = true;
 	}
 
-	for (int i = 0; i < strongholdPos_length; i++)
+	for (int i = 0; i < strongholdCount; i++)
 	{
 		bool forcePlacement = false;
 		LevelGenerationOptions *levelGenOptions = app.getLevelGenerationOptions();
@@ -208,7 +224,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z,bool bIsSuperflat)
 vector<TilePos> *StrongholdFeature::getGuesstimatedFeaturePositions()
 {
 	vector<TilePos> *positions = new vector<TilePos>();
-	for( int i = 0; i < strongholdPos_length; i++ )
+	for( int i = 0; i < strongholdCount; i++ )
 	{
 		ChunkPos *chunkPos = strongholdPos[i];
 		if (chunkPos != nullptr)

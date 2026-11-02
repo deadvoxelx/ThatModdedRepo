@@ -15,12 +15,21 @@ sol::protected_function RubyMod::getServerFunction(std::string n) {
     return getServerEnv()[n];
 };
 
+sol::protected_function RubyMod::getStartupFunction(std::string n) {
+    return getStartupEnv()[n];
+};
+
 sol::protected_function RubyMod::getClientFunction(std::string n) {
     return getClientEnv()[n];
 };
 
 std::string_view RubyMod::getServerEntry() const {
     auto it = metadata.find("serverMain");
+    return it == metadata.end() ? std::string_view{} : std::string_view{it->second};
+};
+
+std::string_view RubyMod::getStartupEntry() const {
+    auto it = metadata.find("startupMain");
     return it == metadata.end() ? std::string_view{} : std::string_view{it->second};
 };
 
@@ -41,12 +50,20 @@ void RubyMod::setServerEnv(sol::environment env) {
     serverEnv = std::move(env);
 };
 
+void RubyMod::setStartupEnv(sol::environment env) {
+    startupEnv = std::move(env);
+};
+
 void RubyMod::setClientEnv(sol::environment env) {
     clientEnv = std::move(env);
 };
 
 sol::environment& RubyMod::getServerEnv() {
     return serverEnv;
+};
+
+sol::environment& RubyMod::getStartupEnv() {
+    return startupEnv;
 };
 
 sol::environment& RubyMod::getClientEnv() {

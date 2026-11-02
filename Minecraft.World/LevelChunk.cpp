@@ -1115,6 +1115,28 @@ void LevelChunk::getBlockData16(unsigned short *data)
 	}
 }
 
+void LevelChunk::getBlockData16Section(unsigned short *data, int sliceYStart)
+{
+	memset(data, 0, SECTION_SLICE_LENGTH * sizeof(unsigned short));
+
+	const int sliceYEnd = sliceYStart + SECTION_SLICE_ROWS;
+	const int halfHeight = Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+
+	int start = sliceYStart < 0 ? 0 : sliceYStart;
+	int end = sliceYEnd > halfHeight ? halfHeight : sliceYEnd;
+	if( start < end )
+	{
+		lowerBlocks->getData16Slice(data, start, end, start - sliceYStart);
+	}
+
+	start = sliceYStart < halfHeight ? halfHeight : sliceYStart;
+	end = sliceYEnd > Level::maxBuildHeight ? Level::maxBuildHeight : sliceYEnd;
+	if( ( start < end ) && ( upperBlocks != nullptr ) )
+	{
+		upperBlocks->getData16Slice(data, start - halfHeight, end - halfHeight, start - sliceYStart);
+	}
+}
+
 int LevelChunk::getBrightness(LightLayer::variety layer, int x, int y, int z)
 {
 	if (layer == LightLayer::Sky)
