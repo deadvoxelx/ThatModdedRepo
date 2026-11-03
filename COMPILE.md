@@ -45,6 +45,12 @@ Build Release:
 cmake --build --preset windows64-release --target Minecraft.Client
 ```
 
+Build DebugFast:
+
+```powershell
+cmake --build --preset windows64-debugfast --target Minecraft.Client
+```
+
 Build Dedicated Server (Debug):
 
 ```powershell
@@ -72,7 +78,7 @@ cd .\build\windows64\Minecraft.Server\Debug
 ```
 
 Notes:
-- Post-build asset copy is automatic for `Minecraft.Client` in CMake (Debug and Release variants).
+- Post-build asset copy is automatic for `Minecraft.Client` in CMake (Debug, DebugFast, and Release variants).
 - The game relies on relative paths (for example `Common\Media\...`), so launching from the output directory is required.
 
 ## CMake (Linux x64 Cross-Compile with Clang)

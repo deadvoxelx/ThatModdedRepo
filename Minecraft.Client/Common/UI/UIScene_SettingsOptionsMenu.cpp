@@ -51,9 +51,11 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad, void *initDat
 	}
 
 	unsigned char ucValue=app.GetGameSettings(m_iPad,eGameSetting_Autosave);
+	if(ucValue > CMinecraftApp::AUTOSAVE_SETTING_MAX) ucValue = CMinecraftApp::AUTOSAVE_SETTING_MAX;
 
-	wchar_t autosaveLabels[9][256];
-	for(unsigned int i = 0; i < 9; ++i)
+	const int autosaveCount = CMinecraftApp::AUTOSAVE_SETTING_MAX + 1;
+	wchar_t autosaveLabels[autosaveCount][256];
+	for(int i = 0; i < autosaveCount; ++i)
 	{
 		if(i==0)
 		{
@@ -61,12 +63,12 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad, void *initDat
 		}
 		else
 		{
-			swprintf( autosaveLabels[i], 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),i*15, app.GetString( IDS_MINUTES ));		
+			swprintf( autosaveLabels[i], 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),CMinecraftApp::AutosaveIntervalMinutes(static_cast<unsigned char>(i)), app.GetString( IDS_MINUTES ));		
 		}
 
 	}
-	m_sliderAutosave.setAllPossibleLabels(9,autosaveLabels);
-	m_sliderAutosave.init(autosaveLabels[ucValue],eControl_Autosave,0,8,ucValue);
+	m_sliderAutosave.setAllPossibleLabels(autosaveCount,autosaveLabels);
+	m_sliderAutosave.init(autosaveLabels[ucValue],eControl_Autosave,0,CMinecraftApp::AUTOSAVE_SETTING_MAX,ucValue);
 
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
 	removeControl(&m_sliderAutosave,true);
@@ -274,9 +276,11 @@ void UIScene_SettingsOptionsMenu::handleReload()
 	}
 
 	unsigned char ucValue=app.GetGameSettings(m_iPad,eGameSetting_Autosave);
+	if(ucValue > CMinecraftApp::AUTOSAVE_SETTING_MAX) ucValue = CMinecraftApp::AUTOSAVE_SETTING_MAX;
 
-	wchar_t autosaveLabels[9][256];
-	for(unsigned int i = 0; i < 9; ++i)
+	const int autosaveCount = CMinecraftApp::AUTOSAVE_SETTING_MAX + 1;
+	wchar_t autosaveLabels[autosaveCount][256];
+	for(int i = 0; i < autosaveCount; ++i)
 	{
 		if(i==0)
 		{
@@ -284,12 +288,12 @@ void UIScene_SettingsOptionsMenu::handleReload()
 		}
 		else
 		{
-			swprintf( autosaveLabels[i], 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),i*15, app.GetString( IDS_MINUTES ));		
+			swprintf( autosaveLabels[i], 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),CMinecraftApp::AutosaveIntervalMinutes(static_cast<unsigned char>(i)), app.GetString( IDS_MINUTES ));		
 		}
 
 	}
-	m_sliderAutosave.setAllPossibleLabels(9,autosaveLabels);
-	m_sliderAutosave.init(autosaveLabels[ucValue],eControl_Autosave,0,8,ucValue);
+	m_sliderAutosave.setAllPossibleLabels(autosaveCount,autosaveLabels);
+	m_sliderAutosave.init(autosaveLabels[ucValue],eControl_Autosave,0,CMinecraftApp::AUTOSAVE_SETTING_MAX,ucValue);
 
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
 	removeControl(&m_sliderAutosave,true);

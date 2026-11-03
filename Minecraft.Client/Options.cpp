@@ -141,10 +141,15 @@ wstring Options::Option::getCaptionId() const
 	return captionId;
 }
 
-const wstring Options::RENDER_DISTANCE_NAMES[] =
+int Options::SnapRenderDistance(float value)
 {
-    L"options.renderDistance.far", L"options.renderDistance.normal", L"options.renderDistance.short", L"options.renderDistance.tiny"
-};
+    int dist = static_cast<int>(value + (value < 0.0f ? -0.5f : 0.5f));
+    if (dist < RENDER_DISTANCE_MIN) dist = RENDER_DISTANCE_MIN;
+    if (dist > RENDER_DISTANCE_MAX) dist = RENDER_DISTANCE_MAX;
+    dist = ((dist - RENDER_DISTANCE_MIN + RENDER_DISTANCE_STEP / 2) / RENDER_DISTANCE_STEP) * RENDER_DISTANCE_STEP + RENDER_DISTANCE_MIN;
+    if (dist > RENDER_DISTANCE_MAX) dist = RENDER_DISTANCE_MAX;
+    return dist;
+}
 const wstring Options::DIFFICULTY_NAMES[] =
 {
     L"options.difficulty.peaceful", L"options.difficulty.easy", L"options.difficulty.normal", L"options.difficulty.hard"
@@ -169,7 +174,7 @@ void Options::init()
     sound = 1;
     sensitivity = 0.5f;
     invertYMouse = false;
-    viewDistance = 0;
+    viewDistance = 16;
     bobView = true;
     anaglyph3d = false;
     advancedOpengl = false;
@@ -355,14 +360,14 @@ void Options::set(const Options::Option *item, float fVal)
 	}
 	if (item == Option::RENDER_DISTANCE)
 	{
-		viewDistance = fVal;
+		viewDistance = SnapRenderDistance(fVal);
 	}
 }
 
 void Options::toggle(const Options::Option *option, int dir)
 {
     if (option == Option::INVERT_MOUSE) invertYMouse = !invertYMouse;
-    if (option == Option::RENDER_DISTANCE) viewDistance = (viewDistance + dir) & 3;
+    if (option == Option::RENDER_DISTANCE) viewDistance = SnapRenderDistance(static_cast<float>(viewDistance + dir * RENDER_DISTANCE_STEP));
     if (option == Option::GUI_SCALE) guiScale = (guiScale + dir) & 3;
 	if (option == Option::PARTICLES) particles = (particles + dir) % 3;
 
@@ -491,7 +496,7 @@ wstring Options::getMessage(const Options::Option *item)
     }
 	else if (item == Option::RENDER_DISTANCE)
 	{
-        return caption + language->getElement(RENDER_DISTANCE_NAMES[viewDistance]);
+        return caption + std::to_wstring(viewDistance);
     }
 	else if (item == Option::DIFFICULTY)
 	{
@@ -554,7 +559,19 @@ void Options::load()
 				if (cmds[0] == L"fov") fov = readFloat(cmds[1]);
 				if (cmds[0] == L"gamma") gamma = readFloat(cmds[1]);
                 if (cmds[0] == L"invertYMouse") invertYMouse = cmds[1]==L"true";
-                if (cmds[0] == L"viewDistance") viewDistance = _fromString<int>(cmds[1]);
+                if (cmds[0] == L"viewDistance")
+                {
+                    int stored = _fromString<int>(cmds[1]);
+                    if (stored < RENDER_DISTANCE_MIN)
+                    {
+                        int shift = 3 - stored;
+                        if (shift > 5) shift = 5;
+                        int distance = 2 << shift;
+                        if (distance > RENDER_DISTANCE_MAX) distance = RENDER_DISTANCE_MAX;
+                        stored = distance;
+                    }
+                    viewDistance = SnapRenderDistance(static_cast<float>(stored));
+                }
                 if (cmds[0] == L"guiScale") guiScale =_fromString<int>(cmds[1]);
 				if (cmds[0] == L"particles") particles = _fromString<int>(cmds[1]);
                 if (cmds[0] == L"bobView") bobView = cmds[1]==L"true";
@@ -630,5 +647,5 @@ void Options::save()
 
 bool Options::isCloudsOn()
 {
-	return viewDistance < 2 && renderClouds;
+	return viewDistance >= 8 && renderClouds;
 }

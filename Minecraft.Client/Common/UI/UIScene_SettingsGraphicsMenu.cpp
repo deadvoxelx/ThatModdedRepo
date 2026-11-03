@@ -31,24 +31,24 @@ namespace
 		if (sliderValue > FOV_SLIDER_MAX) sliderValue = FOV_SLIDER_MAX;
 		return FOV_MIN + ((sliderValue * (FOV_MAX - FOV_MIN)) / FOV_SLIDER_MAX);
 	}
+
+	constexpr int RENDER_DISTANCE_LEVELS =
+		((Options::RENDER_DISTANCE_MAX - Options::RENDER_DISTANCE_MIN) / Options::RENDER_DISTANCE_STEP) + 1;
 }
 
 int UIScene_SettingsGraphicsMenu::LevelToDistance(int level)
 {
-	static const int table[6] = {2,4,8,16,32,64};
 	if(level < 0) level = 0;
-	if(level > 5) level = 5;
-	return table[level];
+	if(level > RENDER_DISTANCE_LEVELS - 1) level = RENDER_DISTANCE_LEVELS - 1;
+	return Options::RENDER_DISTANCE_MIN + (level * Options::RENDER_DISTANCE_STEP);
 }
 
 int UIScene_SettingsGraphicsMenu::DistanceToLevel(int dist)
 {
-    static const int table[6] = {2,4,8,16,32,64};
-    for(int i = 0; i < 6; i++){
-        if(table[i] == dist)
-            return i;
-    }
-    return 3;
+	int level = (dist - Options::RENDER_DISTANCE_MIN + (Options::RENDER_DISTANCE_STEP / 2)) / Options::RENDER_DISTANCE_STEP;
+	if(level < 0) level = 0;
+	if(level > RENDER_DISTANCE_LEVELS - 1) level = RENDER_DISTANCE_LEVELS - 1;
+	return level;
 }
 
 UIScene_SettingsGraphicsMenu::UIScene_SettingsGraphicsMenu(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
@@ -68,7 +68,7 @@ UIScene_SettingsGraphicsMenu::UIScene_SettingsGraphicsMenu(int iPad, void *initD
 	WCHAR TempString[256];
 
 	swprintf(TempString, 256, L"Render Distance: %d",app.GetGameSettings(m_iPad,eGameSetting_RenderDistance));	
-	m_sliderRenderDistance.init(TempString,eControl_RenderDistance,0,5,DistanceToLevel(app.GetGameSettings(m_iPad,eGameSetting_RenderDistance)));
+	m_sliderRenderDistance.init(TempString,eControl_RenderDistance,0,RENDER_DISTANCE_LEVELS - 1,DistanceToLevel(app.GetGameSettings(m_iPad,eGameSetting_RenderDistance)));
 	
 	swprintf( TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_GAMMA ),app.GetGameSettings(m_iPad,eGameSetting_Gamma));	
 	m_sliderGamma.init(TempString,eControl_Gamma,0,100,app.GetGameSettings(m_iPad,eGameSetting_Gamma));
@@ -209,7 +209,7 @@ void UIScene_SettingsGraphicsMenu::handleSliderMove(F64 sliderId, F64 currentVal
 			app.SetGameSettings(m_iPad,eGameSetting_RenderDistance,dist);
 
 			const Minecraft* mc = Minecraft::GetInstance();
-			mc->options->viewDistance = 3 - value;
+			mc->options->viewDistance = dist;
 			swprintf(TempString,256,L"Render Distance: %d",dist);
 			m_sliderRenderDistance.setLabel(TempString);
 		}

@@ -885,7 +885,7 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS *pSettings,con
 	SetGameSettings(iPad,eGameSetting_Sensitivity_InMenu,100);
 	SetGameSettings(iPad,eGameSetting_DisplaySplitscreenGamertags,1);
 	SetGameSettings(iPad,eGameSetting_Hints,1);
-	SetGameSettings(iPad,eGameSetting_Autosave,2);
+	SetGameSettings(iPad,eGameSetting_Autosave,1); // 5 mins
 	SetGameSettings(iPad,eGameSetting_Tooltips,1);
 	SetGameSettings(iPad,eGameSetting_InterfaceOpacity,80);
 
@@ -1058,7 +1058,7 @@ int CMinecraftApp::OldProfileVersionCallback(LPVOID pParam,unsigned char *pucDat
 			pGameSettings->ucInterfaceOpacity=80; //eGameSetting_Sensitivity_InMenu
 			pGameSettings->usBitmaskValues|=0x0200; //eGameSetting_DisplaySplitscreenGamertags - on
 			pGameSettings->usBitmaskValues|=0x0400; //eGameSetting_Hints - on
-			pGameSettings->usBitmaskValues|=0x1000; //eGameSetting_Autosave - 2
+			pGameSettings->usBitmaskValues|=0x0800; //eGameSetting_Autosave - 1 (5 mins)
 			pGameSettings->usBitmaskValues|=0x8000; //eGameSetting_Tooltips - on
 
 			// 4J-PB - Let's also award all the achievements they have again because of the profile bug that seemed to stop the awards of some
@@ -1315,7 +1315,7 @@ int CMinecraftApp::OldProfileVersionCallback(LPVOID pParam,unsigned char *pucDat
 			pGameSettings->ucInterfaceOpacity=80; //eGameSetting_Sensitivity_InMenu
 			pGameSettings->usBitmaskValues|=0x0200; //eGameSetting_DisplaySplitscreenGamertags - on
 			pGameSettings->usBitmaskValues|=0x0400; //eGameSetting_Hints - on
-			pGameSettings->usBitmaskValues|=0x1000; //eGameSetting_Autosave - 2
+			pGameSettings->usBitmaskValues|=0x0800; //eGameSetting_Autosave - 1 (5 mins)
 			pGameSettings->usBitmaskValues|=0x8000; //eGameSetting_Tooltips - on
 
 			pGameSettings->uiBitmaskValues=0L; // reset
@@ -1412,10 +1412,8 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 	case eGameSetting_RenderDistance:
         if (iPad == ProfileManager.GetPrimaryPad())
         {
-            int dist = (GameSettingsA[iPad]->uiBitmaskValues >> 16) & 0xFF;
-
-            int level = UIScene_SettingsGraphicsMenu::DistanceToLevel(dist);
-            pMinecraft->options->set(Options::Option::RENDER_DISTANCE, 3 - level);
+			int dist = (GameSettingsA[iPad]->uiBitmaskValues >> 16) & 0xFF;
+            pMinecraft->options->set(Options::Option::RENDER_DISTANCE, static_cast<float>(dist));
         };
 		break;
 	case eGameSetting_Gamma:
@@ -9945,14 +9943,25 @@ int CMinecraftApp::GetDLCInfoTexturesOffersCount()
 }
 
 // AUTOSAVE
+static const int s_autosaveIntervalMinutes[CMinecraftApp::AUTOSAVE_SETTING_MAX + 1] =
+{
+	0, 5, 10, 15, 30, 45, 60, 75, 90, 105, 120
+};
+
+int CMinecraftApp::AutosaveIntervalMinutes(unsigned char setting)
+{
+	if(setting > CMinecraftApp::AUTOSAVE_SETTING_MAX) setting = CMinecraftApp::AUTOSAVE_SETTING_MAX;
+	return s_autosaveIntervalMinutes[setting];
+}
+
 void CMinecraftApp::SetAutosaveTimerTime(void)
 {
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
 	m_uiAutosaveTimer= GetTickCount()+1000*60;
 #else
-	m_uiAutosaveTimer= GetTickCount()+GetGameSettings(ProfileManager.GetPrimaryPad(),eGameSetting_Autosave)*1000*60*15;
+	m_uiAutosaveTimer= GetTickCount()+AutosaveIntervalMinutes(GetGameSettings(ProfileManager.GetPrimaryPad(),eGameSetting_Autosave))*1000*60;
 #endif
-}// value x 15 to get mins, x60 for secs
+}
 
 bool CMinecraftApp::AutosaveDue(void)
 {

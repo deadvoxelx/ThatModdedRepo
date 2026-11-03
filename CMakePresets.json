@@ -75,6 +75,7 @@
   "buildPresets": [
     { "name": "windows64-debug",   "displayName": "Windows64 - Debug",   "configurePreset": "windows64", "configuration": "Debug" },
     { "name": "windows64-release", "displayName": "Windows64 - Release", "configurePreset": "windows64", "configuration": "Release" },
+    { "name": "windows64-debugfast", "displayName": "Windows64 - DebugFast", "configurePreset": "windows64", "configuration": "DebugFast" },
 
     { "name": "durango-debug",     "displayName": "Durango - Debug",     "configurePreset": "durango",   "configuration": "Debug" },
     { "name": "durango-release",   "displayName": "Durango - Release",   "configurePreset": "durango",   "configuration": "Release" },
