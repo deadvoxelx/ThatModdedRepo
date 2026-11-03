@@ -691,6 +691,8 @@ public:
 	bool GetBanListCheck(int iPad)			{ return m_BanListCheck[iPad];}
 	// AUTOSAVE
 public:
+	static const int AUTOSAVE_SETTING_MAX = 10;
+	static int AutosaveIntervalMinutes(unsigned char setting);
 	void SetAutosaveTimerTime(void);
 	bool AutosaveDue(void);
 	unsigned int SecondsToAutosave();

@@ -73,10 +73,19 @@ ResourceLocation GameRenderer::RAIN_LOCATION = ResourceLocation(TN_ENVIRONMENT_R
 ResourceLocation GameRenderer::SNOW_LOCATION = ResourceLocation(TN_ENVIRONMENT_SNOW);
 ResourceLocation GameRenderer::ASH_LOCATION = ResourceLocation(TN_ENVIRONMENT_NUSA_ASH);
 
+namespace
+{
+	float renderDistanceLevel(int chunks)
+	{
+		if (chunks < Options::RENDER_DISTANCE_MIN) chunks = Options::RENDER_DISTANCE_MIN;
+		return std::log2(static_cast<float>(chunks) / static_cast<float>(Options::RENDER_DISTANCE_MIN));
+	}
+}
+
 GameRenderer::GameRenderer(Minecraft *mc)
 {
 	// 4J - added this block of initialisers
-	renderDistance = static_cast<float>(16 * 16 >> mc->options->viewDistance);
+	renderDistance = static_cast<float>(mc->options->viewDistance * 16);
 	_tick = 0;
 	hovered = nullptr;
 	thirdDistance = 4;
@@ -220,7 +229,7 @@ void GameRenderer::tick(bool first)		// 4J - add bFirst
 	}
 
 	float brr = mc->level->getBrightness(Mth::floor(mc->cameraTargetPlayer->x), Mth::floor(mc->cameraTargetPlayer->y), Mth::floor(mc->cameraTargetPlayer->z));
-	float whiteness = (3 - mc->options->viewDistance) / 3.0f;
+	float whiteness = renderDistanceLevel(mc->options->viewDistance) / 3.0f;
 	float fogBrT = brr * (1 - whiteness) + whiteness;
 	fogBr += (fogBrT - fogBr) * 0.1f;
 
@@ -640,14 +649,7 @@ void GameRenderer::getFovAndAspect(float& fov, float& aspect, float a, bool appl
 
 void GameRenderer::setupCamera(float a, int eye)
 {
-	if (mc->options->viewDistance >= 0)
-	{
-		renderDistance = static_cast<float>(16 * 16 >> mc->options->viewDistance);
-	}
-	else
-	{
-		renderDistance = static_cast<float>((16 * 16) << (-mc->options->viewDistance));
-	}
+	renderDistance = static_cast<float>(mc->options->viewDistance * 16);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -1482,7 +1484,7 @@ void GameRenderer::renderLevel(float a, int64_t until)
 		Camera::prepare(mc->player, mc->player->ThirdPersonView() == 2);
 
 		Frustum::getFrustum();
-		if (mc->options->viewDistance < 2)
+		if (renderDistanceLevel(mc->options->viewDistance) > 1.0f)
 		{
 			setupFog(-1, a);
 			levelRenderer->renderSky(a);
@@ -2018,7 +2020,7 @@ void GameRenderer::setupClearColor(float a)
 	Level *level = mc->level;
 	shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
 
-	float whiteness = 1.0f / (4 - mc->options->viewDistance);
+	float whiteness = 1.0f / (1.0f + renderDistanceLevel(mc->options->viewDistance));
 	whiteness = 1 - static_cast<float>(pow(static_cast<double>(whiteness), 0.25));
 
 	Vec3 *skyColor = level->getSkyColor(mc->cameraTargetPlayer, a);
@@ -2031,7 +2033,7 @@ void GameRenderer::setupClearColor(float a)
 	fg = static_cast<float>(fogColor->y);
 	fb = static_cast<float>(fogColor->z);
 
-	if (mc->options->viewDistance < 2)
+	if (renderDistanceLevel(mc->options->viewDistance) > 1.0f)
 	{
 		Vec3 *sunAngle = Mth::sin(level->getSunAngle(a)) > 0 ? Vec3::newTemp(-1, 0, 0) : Vec3::newTemp(1, 0, 0);
 		float d = static_cast<float>(player->getViewVector(a)->dot(sunAngle));

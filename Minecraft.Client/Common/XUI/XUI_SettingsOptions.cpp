@@ -64,7 +64,7 @@ HRESULT CScene_SettingsOptions::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 	}
 	else
 	{
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),ucValue*15, app.GetString( IDS_MINUTES ));		
+		swprintf( (WCHAR *)TempString, 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),CMinecraftApp::AutosaveIntervalMinutes(ucValue), app.GetString( IDS_MINUTES ));		
 	}
 
  	m_SliderA[SLIDER_SETTINGS_AUTOSAVE].SetText(TempString);
@@ -274,7 +274,7 @@ HRESULT CScene_SettingsOptions::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINot
 		else
 		{
 			app.SetAutosaveTimerTime();
-			swprintf( static_cast<WCHAR *>(TempString), 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),pNotifyValueChanged->nValue*15, app.GetString( IDS_MINUTES ));		
+			swprintf( static_cast<WCHAR *>(TempString), 256, L"%ls: %d %ls", app.GetString( IDS_SLIDER_AUTOSAVE ),CMinecraftApp::AutosaveIntervalMinutes(static_cast<unsigned char>(pNotifyValueChanged->nValue)), app.GetString( IDS_MINUTES ));		
 		}
 		m_SliderA[SLIDER_SETTINGS_AUTOSAVE].SetText(TempString);
 	}

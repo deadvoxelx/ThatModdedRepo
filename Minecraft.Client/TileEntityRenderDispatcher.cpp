@@ -15,6 +15,8 @@
 #include "SkullTileRenderer.h"
 #include "EnderChestRenderer.h"
 #include "BeaconRenderer.h"
+#include "Minecraft.h"
+#include "Options.h"
 
 TileEntityRenderDispatcher *TileEntityRenderDispatcher::instance = nullptr;
 double TileEntityRenderDispatcher::xOff = 0;
@@ -114,7 +116,15 @@ void TileEntityRenderDispatcher::prepare(Level *level, Textures *textures, Font 
 
 void TileEntityRenderDispatcher::render(shared_ptr<TileEntity> e, float a, bool setColor/*=true*/)
 {
-	if (e->distanceToSqr(xPlayer, yPlayer, zPlayer) < e->getViewDistance())
+	double viewDistanceSqr = e->getViewDistance();
+	Minecraft *pMinecraft = Minecraft::GetInstance();
+	if (pMinecraft != nullptr && pMinecraft->options != nullptr)
+	{
+		const double chunkReach = (pMinecraft->options->viewDistance + 1) * 16.0;
+		if (chunkReach * chunkReach > viewDistanceSqr) viewDistanceSqr = chunkReach * chunkReach;
+	}
+
+	if (e->distanceToSqr(xPlayer, yPlayer, zPlayer) < viewDistanceSqr)
 	{
 		// 4J - changes brought forward from 1.8.2
 		if (SharedConstants::TEXTURE_LIGHTING)

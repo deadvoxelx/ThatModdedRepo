@@ -575,7 +575,7 @@ void				C_4JProfile::Initialise(DWORD dwTitleID,
 		pGameSettings->ucInterfaceOpacity = 80; //eGameSetting_Sensitivity_InMenu
 		pGameSettings->usBitmaskValues |= 0x0200; //eGameSetting_DisplaySplitscreenGamertags - on
 		pGameSettings->usBitmaskValues |= 0x0400; //eGameSetting_Hints - on
-		pGameSettings->usBitmaskValues |= 0x1000; //eGameSetting_Autosave - 2
+		pGameSettings->usBitmaskValues |= 0x0800; //eGameSetting_Autosave - 1 (5 mins)
 		pGameSettings->usBitmaskValues |= 0x8000; //eGameSetting_Tooltips - on
 		pGameSettings->uiBitmaskValues = 0L; // reset
 		pGameSettings->uiBitmaskValues |= GAMESETTING_CLOUDS;					//eGameSetting_Clouds - on

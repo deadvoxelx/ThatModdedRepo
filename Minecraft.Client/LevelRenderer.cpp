@@ -509,7 +509,7 @@ void LevelRenderer::allChanged(int playerIndex)
 
 	lastViewDistance = mc->options->viewDistance;
 
-	int realviewDistance = UIScene_SettingsGraphicsMenu::LevelToDistance(3 - mc->options->viewDistance) + 2;
+	int realviewDistance = mc->options->viewDistance + 2;
 	int realrenderArea = (realviewDistance * realviewDistance * 4);
 
 	// Calculate size of area we can render based on number of players we need to render for
@@ -692,9 +692,22 @@ static bool isBoxHiddenBehindBlocks(Level *level, Vec3 *cam, AABB *bb)
 	double midZ = ( z0 + z1 ) * 0.5;
 	if( !isPointBehindBlocks(level, cam, midX, midY, midZ) ) return false;
 
-	double inset = ( y1 - y0 ) * 0.15;
-	if( !isPointBehindBlocks(level, cam, midX, y0 + inset, midZ) ) return false;
-	if( !isPointBehindBlocks(level, cam, midX, y1 - inset, midZ) ) return false;
+	const double ex = ( x1 - x0 ) * 0.02 + 0.001;
+	const double ey = ( y1 - y0 ) * 0.02 + 0.001;
+	const double ez = ( z1 - z0 ) * 0.02 + 0.001;
+	const double xs[2] = { x0 + ex, x1 - ex };
+	const double ys[2] = { y0 + ey, y1 - ey };
+	const double zs[2] = { z0 + ez, z1 - ez };
+
+	for( int corner = 0; corner < 8; corner++ )
+	{
+		const double px = xs[ corner & 1 ];
+		const double py = ys[ ( corner >> 1 ) & 1 ];
+		const double pz = zs[ corner >> 2 ];
+
+		if( isOpaqueTileAt( level, Mth::floor(px), Mth::floor(py), Mth::floor(pz) ) ) continue;
+		if( !isPointBehindBlocks(level, cam, px, py, pz) ) return false;
+	}
 
 	return true;
 }

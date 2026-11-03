@@ -16,15 +16,21 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES
   "Debug"
   "Release"
+  "DebugFast"
   CACHE STRING "" FORCE
 )
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug,DebugFast>:Debug>")
+
+set(CMAKE_CXX_FLAGS_DEBUGFAST "/Zi" CACHE STRING "Flags used by the C++ compiler during DebugFast builds.")
+set(CMAKE_C_FLAGS_DEBUGFAST "/Zi" CACHE STRING "Flags used by the C compiler during DebugFast builds.")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUGFAST "/debug /INCREMENTAL" CACHE STRING "Flags used by the linker during DebugFast builds.")
+set(CMAKE_SHARED_LINKER_FLAGS_DEBUGFAST "/debug /INCREMENTAL" CACHE STRING "Flags used by the linker during DebugFast builds.")
 
 function(configure_compiler_target target)
   # MSVC and compatible compilers (like Clang-cl)
   if (MSVC)
     target_compile_options(${target} PRIVATE
-      $<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:C,CXX>>:/W3>
+      $<$<AND:$<CONFIG:Debug,DebugFast>,$<COMPILE_LANGUAGE:C,CXX>>:/W3>
       $<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:C,CXX>>:/W0>
       $<$<COMPILE_LANGUAGE:C,CXX>:/MP>
       $<$<COMPILE_LANGUAGE:C,CXX>:/FS>
@@ -33,6 +39,7 @@ function(configure_compiler_target target)
       $<$<COMPILE_LANGUAGE:CXX>:/GR>
       $<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:C,CXX>>:/Od>
       $<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:C,CXX>>:/O2 /Oi /GT /GF>
+      $<$<AND:$<CONFIG:DebugFast>,$<COMPILE_LANGUAGE:C,CXX>>:/O2 /Ob1>
     )
   endif()
 
@@ -51,6 +58,7 @@ function(configure_compiler_target target)
     target_compile_options(${target} PRIVATE
       $<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:C,CXX>>:-O0 -Wall>
       $<$<AND:$<CONFIG:Release>,$<COMPILE_LANGUAGE:C,CXX>>:-O2 -w -flto>
+      $<$<AND:$<CONFIG:DebugFast>,$<COMPILE_LANGUAGE:C,CXX>>:-O2 -g -w>
     )
     target_link_options(${target} PRIVATE
       $<$<CONFIG:Release>:-flto>
@@ -58,6 +66,10 @@ function(configure_compiler_target target)
   endif()
 endfunction()
 
+# ---
+# 4J platform libraries (no more bullshit compiled libraries)
+# ---
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/4JLibs.cmake")
 
 # ---
 # Configuration
@@ -65,7 +77,7 @@ endfunction()
 set(MINECRAFT_SHARED_DEFINES
   _LARGE_WORLDS
   _DEBUG_MENUS_ENABLED
-  $<$<CONFIG:Debug>:_DEBUG>
+  $<$<CONFIG:Debug,DebugFast>:_DEBUG>
   _CRT_NON_CONFORMING_SWPRINTFS
   _CRT_SECURE_NO_WARNINGS
   _HAS_STD_BYTE=0

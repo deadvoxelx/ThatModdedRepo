@@ -49,8 +49,13 @@ public:
 		wstring getCaptionId() const;
     };
 
+public:
+	static const int RENDER_DISTANCE_MIN = 2;
+	static const int RENDER_DISTANCE_MAX = 32;
+	static const int RENDER_DISTANCE_STEP = 2;
+	static int SnapRenderDistance(float value);
+
 private:
-	static const wstring RENDER_DISTANCE_NAMES[];
     static const wstring DIFFICULTY_NAMES[];
     static const wstring GUI_SCALE[];
     static const wstring FRAMERATE_LIMITS[];
