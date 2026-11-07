@@ -180,20 +180,35 @@ int BlockRegistry::maxBlockCount() {
 	return TILE_ID_MAX - TILE_ID_MIN + 1;
 }
 
-int BlockRegistry::nextItemId() {
+bool BlockRegistry::isBlockIdFree(int id) {
+	return id >= TILE_ID_MIN && id <= TILE_ID_MAX && Tile::tiles[id] == nullptr && Item::items[id] == nullptr;
+}
+
+int BlockRegistry::nextItemId(const std::string &key) {
+	IDMapping *mapping = IDMapping::get();
 	do {
 		tileIdMax += 1;
-	} while (tileIdMax <= TILE_ID_MAX && (Tile::tiles[tileIdMax] != nullptr || Item::items[tileIdMax] != nullptr));
+	} while (tileIdMax <= TILE_ID_MAX && (Tile::tiles[tileIdMax] != nullptr || Item::items[tileIdMax] != nullptr || mapping->isReservedByOther(tileIdMax, key)));
 
 	return (tileIdMax > TILE_ID_MAX) ? -1 : tileIdMax;
 }
 
 int BlockRegistry::registerBlock(const std::wstring& path, const std::string& id, const std::string& name, std::string modId, const std::string& texturePath, const BlockDefinition& def) {
 	int nameId = ItemRegistry::nextItemNameId();
-	int tileId = BlockRegistry::nextItemId();
+
+	const std::string context = modId + ":" + id;
+	int tileId = IDMapping::get()->pinnedId(context);
+	if (tileId != -1 && !isBlockIdFree(tileId))
+	{
+		Loader::_debugPrint("block '" + context + "' was pinned to id " + std::to_string(tileId) + " but that slot is already taken; allocating a new id");
+		tileId = -1;
+	}
+
+	const bool pinned = (tileId != -1);
+	if (!pinned) tileId = BlockRegistry::nextItemId(context);
 
 	if (tileId == -1) {
-		Loader::_debugPrint("out of block ids (" + std::to_string(TILE_ID_MIN) + "-" + std::to_string(TILE_ID_MAX) + "), '" + id + "' was not registered");
+		Loader::_debugPrint("out of block ids (" + std::to_string(TILE_ID_MIN) + "-" + std::to_string(TILE_ID_MAX) + "), '" + context + "' was not registered");
 		return -1;
 	}
 
@@ -268,7 +283,7 @@ int BlockRegistry::registerBlock(const std::wstring& path, const std::string& id
 	IDMapping::get()->add(modId, id, true, tileId);
 
 	RubyCreative::addEntry(tileId, 0, RubyCreativeGroup_BuildingBlocks);
-	Loader::_debugPrint("registered block " + modId + ":" + id + " as tile " + std::to_string(tileId) + " (hardness " + std::to_string(def.hardness) + ")" + (texturePath.empty() ? "" : ", texture '" + texturePath + "'"));
+	Loader::_debugPrint("registered block " + context + " as tile " + std::to_string(tileId) + (pinned ? " (pinned)" : "") + " (hardness " + std::to_string(def.hardness) + ")" + (texturePath.empty() ? "" : ", texture '" + texturePath + "'"));
 
 	return tileId;
 }

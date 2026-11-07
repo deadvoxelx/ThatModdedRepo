@@ -48,7 +48,9 @@ struct PendingBlockDrop
 
 class BlockRegistry {
 public:
-    static int nextItemId();
+    static int nextItemId(const std::string &key = std::string());
+
+    static bool isBlockIdFree(int id);
 
     static int maxBlockCount();
 

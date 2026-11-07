@@ -25,7 +25,14 @@ int SaplingRegistry::registerSapling(const std::string &modId, const std::string
 	Feature *treeFeature = TreeFeatureRegistry::buildTreeFeature(shape, trunk, leaves, height, context);
 	if (treeFeature == nullptr) return -1;
 
-	const int tileId = BlockRegistry::nextItemId();
+	int tileId = IDMapping::get()->pinnedId(context);
+	if (tileId != -1 && !BlockRegistry::isBlockIdFree(tileId))
+	{
+		Loader::_debugPrint("sapling '" + context + "' was pinned to id " + std::to_string(tileId) + " but that slot is already taken; allocating a new id");
+		tileId = -1;
+	}
+	if (tileId == -1) tileId = BlockRegistry::nextItemId(context);
+
 	if (tileId == -1)
 	{
 		Loader::_debugPrint("out of block ids, sapling '" + context + "' was not registered");

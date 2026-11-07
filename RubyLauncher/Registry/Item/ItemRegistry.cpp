@@ -123,20 +123,31 @@ int ItemRegistry::nextItemNameId() {
     return itemNameIdMax;
 }
 
-int ItemRegistry::nextItemId() {
+int ItemRegistry::nextItemId(const std::string &key) {
+    IDMapping *mapping = IDMapping::get();
     do {
         itemIdMax += 1;
-    } while (itemIdMax < Item::ITEM_NUM_COUNT && (Item::items[itemIdMax] != nullptr));
+    } while (itemIdMax < Item::ITEM_NUM_COUNT && (Item::items[itemIdMax] != nullptr || mapping->isReservedByOther(itemIdMax, key)));
 
     return itemIdMax;
 }
 
 int ItemRegistry::registerItem(const std::wstring& path, const std::string& id, const std::string& name, std::string modId, const ItemDefinition& def, const std::string& texturePath) {
     int nameId = nextItemNameId();
-    int itemId = nextItemId();
+
+    const std::string context = modId + ":" + id;
+    int itemId = IDMapping::get()->pinnedId(context);
+    if (itemId != -1 && (itemId <= 0 || itemId >= Item::ITEM_NUM_COUNT || Item::items[itemId] != nullptr))
+    {
+        Loader::_debugPrint("item '" + context + "' was pinned to id " + std::to_string(itemId) + " but that slot is already taken; allocating a new id");
+        itemId = -1;
+    }
+
+    const bool pinned = (itemId != -1);
+    if (!pinned) itemId = nextItemId(context);
 
     if (itemId >= Item::ITEM_NUM_COUNT) {
-        Loader::_debugPrint("out of item ids, '" + id + "' was not registered");
+        Loader::_debugPrint("out of item ids, '" + context + "' was not registered");
         return -1;
     }
 
@@ -235,7 +246,7 @@ int ItemRegistry::registerItem(const std::wstring& path, const std::string& id, 
 
     RubyCreative::addEntry(itemId, 0, creativeGroupFor(def.type));
 
-    Loader::_debugPrint("registered item " + modId + ":" + id + " as id " + std::to_string(itemId) + (texturePath.empty() ? "" : ", texture '" + texturePath + "'"));
+    Loader::_debugPrint("registered item " + context + " as id " + std::to_string(itemId) + (pinned ? " (pinned)" : "") + (texturePath.empty() ? "" : ", texture '" + texturePath + "'"));
 
     return itemId;
 }

@@ -1,6 +1,13 @@
 #include "IDs.h"
+
+#include <filesystem>
+#include <fstream>
+
+#include "Common/ModPaths.h"
 #include "Item.h"
+#include "Loader.h"
 #include "Tile.h"
+#include "json/json.hpp"
 
 IDMapping* IDMapping::get() {
     static IDMapping instance;
@@ -10,7 +17,79 @@ IDMapping* IDMapping::get() {
 void IDMapping::add(std::string ns, std::string name, bool isBlock, int id) {
     std::string n = ns+":"+name;
     stringToID[n] = { id, isBlock, 0 };
+    pinned_[n] = { id, isBlock, 0 };
     buildReverseMap();
+    saveRegistry();
+}
+
+std::string IDMapping::registryPath() {
+    std::filesystem::path root(RubyPaths::modsRoot());
+    return (root.parent_path() / "ruby_ids.json").string();
+}
+
+void IDMapping::loadRegistry() {
+    pinned_.clear();
+
+    std::ifstream file(registryPath());
+    if (!file.is_open()) return;
+
+    nlohmann::json doc;
+    try {
+        file >> doc;
+    } catch (const std::exception &e) {
+        Loader::_debugPrint("couldnt read the mod id registry '" + registryPath() + "': " + e.what());
+        return;
+    }
+
+    if (!doc.is_object() || !doc.contains("entries") || !doc["entries"].is_object()) return;
+
+    for (auto it = doc["entries"].begin(); it != doc["entries"].end(); ++it) {
+        if (!it.value().is_object()) continue;
+        const int id = it.value().value("id", -1);
+        if (id < 0) continue;
+        MappedItem mapped;
+        mapped.id = id;
+        mapped.isBlock = it.value().value("block", false);
+        mapped.aux = it.value().value("aux", 0);
+        pinned_[it.key()] = mapped;
+    }
+
+    Loader::_debugPrint("loaded " + std::to_string(pinned_.size()) + " pinned mod ids from " + registryPath());
+}
+
+void IDMapping::saveRegistry() {
+    nlohmann::json entries = nlohmann::json::object();
+    for (const auto &entry : pinned_) {
+        nlohmann::json item;
+        item["id"] = entry.second.id;
+        item["block"] = entry.second.isBlock;
+        item["aux"] = entry.second.aux;
+        entries[entry.first] = item;
+    }
+
+    nlohmann::json doc;
+    doc["version"] = 1;
+    doc["entries"] = entries;
+
+    try {
+        std::ofstream out(registryPath());
+        if (!out.is_open()) return;
+        out << doc.dump(1, '\t') << "\n";
+    } catch (const std::exception &e) {
+        Loader::_debugPrint("couldnt save the mod id registry '" + registryPath() + "': " + e.what());
+    }
+}
+
+int IDMapping::pinnedId(const std::string &key) const {
+    auto it = pinned_.find(key);
+    return (it == pinned_.end()) ? -1 : it->second.id;
+}
+
+bool IDMapping::isReservedByOther(int id, const std::string &key) const {
+    for (const auto &entry : pinned_) {
+        if (entry.first != key && entry.second.id == id) return true;
+    }
+    return false;
 }
 
 IDMapping::MappedItem IDMapping::getID(std::string k) {
@@ -765,5 +844,6 @@ void IDMapping::init() {
     #undef ADD_BLOCK
     #undef ADD_ITEM
 
+    loadRegistry();
     buildReverseMap();
 }
