@@ -4,6 +4,7 @@
 #include "net.minecraft.world.h"
 #include "net.minecraft.world.level.tile.h"
 #include "FireTile.h"
+#include "../RubyLauncher/Registry/Dimension/PortalRegistry.h"
 #include "SoundTypes.h"
 #include "../Minecraft.Client/MinecraftServer.h"
 #include "../Minecraft.Client/PlayerList.h"
@@ -303,6 +304,8 @@ void FireTile::neighborChanged(Level *level, int x, int y, int z, int type)
 
 void FireTile::onPlace(Level *level, int x, int y, int z)
 {
+	if (PortalRegistry::tryLight(level, x, y, z)) return;
+
 	if (level->dimension->id <= 0 && level->getTile(x, y - 1, z) == Tile::obsidian_Id)
 	{
 		if (Tile::portalTile->trySpawnPortal(level, x, y, z, true))

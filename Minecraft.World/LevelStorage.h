@@ -2,6 +2,8 @@
 using namespace std;
 
 #include "ConsoleSavePath.h"
+#include <map>
+#include <string>
 
 class PlayerIO;
 class Dimension;
@@ -20,6 +22,30 @@ public:
     static const wstring OUTEREND_FOLDER;
     static const wstring AETHER_FOLDER;
     static const wstring NUREALM_FOLDER;
+
+	static const wstring &folderForDimension(int id)
+	{
+		if (id == 0)
+		{
+			static const wstring overworld = L"";
+			return overworld;
+		}
+
+		switch (id)
+		{
+		case -1: return NETHER_FOLDER;
+		case 1: return ENDER_FOLDER;
+		case 2: return OUTEREND_FOLDER;
+		case 3: return AETHER_FOLDER;
+		case 4: return NUREALM_FOLDER;
+		default: break;
+		}
+
+		static map<int, wstring> customFolders;
+		wstring &folder = customFolders[id];
+		if (folder.empty()) folder = L"dimension_" + to_wstring(id);
+		return folder;
+	}
 
     virtual LevelData *prepareLevel() = 0;
     virtual void checkSession() = 0;

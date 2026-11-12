@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "DimensionSlots.h"
 #include <iostream>
 #include "InputOutputStream.h"
 #include "net.minecraft.world.level.h"
@@ -42,12 +43,8 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positi
 		blocks[i] = static_cast<short>(levelChunk->getTile(x, y, z) & 0x1ff);
 		data[i] = static_cast<byte>(levelChunk->getData(x, y, z));
 	}
-	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : 
-		( (level->dimension->id == -1) ? 1 : 
-		( (level->dimension->id == 1) ? 2 : 
-		( (level->dimension->id == 2) ? 3 : 
-		(level->dimension->id == 3) ? 4 : 
-		5 ) ) ) );
+	levelIdx = DimensionSlots::indexOf(level->dimension->id);
+	if (levelIdx < 0) levelIdx = 0;
 }
 
 void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException 

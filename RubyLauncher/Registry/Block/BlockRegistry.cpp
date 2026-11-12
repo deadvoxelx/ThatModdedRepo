@@ -47,6 +47,12 @@ namespace
 
 	int tileIdMax = TILE_ID_MIN - 1;
 
+	int baseItemTypeForName(const std::string &name)
+	{
+		if (name == "planks") return Item::eBaseItemType_structwoodstuff;
+		return -1;
+	}
+
 	ModTileTraits traitsFor(const BlockDefinition &def)
 	{
 		ModTileTraits traits;
@@ -90,6 +96,8 @@ namespace
 			traits.itemMaterial = Item::eMaterial_stone;
 			break;
 		}
+
+	if (def.baseItemType >= 0) traits.craftingCategory = def.baseItemType;
 
 	traits.hardness = def.hardness;
 		traits.resistance = def.resistance;
@@ -174,6 +182,9 @@ BlockDefinition::BlockDefinition(sol::table table)
 	sol::optional<bool> dropNothingValue = table["dropNothing"];
 	if (dropNothingValue) dropNothing = dropNothingValue.value();
 	if (drop == "nothing") dropNothing = true;
+
+	sol::optional<std::string> baseItemValue = table["baseItem"];
+	if (baseItemValue) baseItemType = baseItemTypeForName(baseItemValue.value());
 }
 
 int BlockRegistry::maxBlockCount() {

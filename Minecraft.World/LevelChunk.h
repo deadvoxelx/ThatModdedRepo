@@ -54,6 +54,7 @@ public:
 	void sanitizeBlocks();
 	void getBlockData(byteArray data);	// Sets data in passed in array of size 32768, from the block data in this chunk
 	void getBlockData16(unsigned short *data);
+	void setBlockData16(unsigned short *data, unsigned int length);
 
 	static const int SECTION_SLICE_ROWS = 18;
 	static const int SECTION_SLICE_Y_STRIDE = 32;

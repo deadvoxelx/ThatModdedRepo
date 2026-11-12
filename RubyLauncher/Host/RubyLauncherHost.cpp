@@ -6,6 +6,11 @@
 #include "Registry/Block/BlockRegistry.h"
 #include "Registry/WorldGen/OreFeatureRegistry.h"
 #include "Registry/WorldGen/TreeFeatureRegistry.h"
+#include "Registry/WorldGen/FeatureRegistry.h"
+#include "Registry/Biome/BiomeRegistry.h"
+#include "Registry/Block/PlantRegistry.h"
+#include "Registry/Dimension/DimensionRegistry.h"
+#include "Registry/Dimension/PortalRegistry.h"
 #include "Common/EventSystem/EventBus.h"
 #include "Common/ModNetBus.h"
 #include "Common/ModPaths.h"
@@ -63,6 +68,12 @@ namespace
 void RubyCreative::addEntry(int id, int aux, RubyCreativeGroup group)
 {
 	g_creativeEntries.push_back({ id, aux, group });
+}
+
+void RubyCreative::removeEntry(int id)
+{
+	g_creativeEntries.erase(std::remove_if(g_creativeEntries.begin(), g_creativeEntries.end(),
+		[id](const RubyCreativeEntry &entry) { return entry.id == id; }), g_creativeEntries.end());
 }
 
 std::vector<RubyCreativeEntry> RubyLoader::getCreativeEntries()
@@ -169,6 +180,10 @@ void RubyLoader::onClientBoot()
 
 	RecipeRegistry::finalize();
 	BlockRegistry::finalizeDrops();
+	PlantRegistry::finalize();
+	BiomeRegistry::finalize();
+	DimensionRegistry::finalize();
+	PortalRegistry::finalize();
 }
 
 void RubyLoader::onStringTableReloaded()
@@ -210,13 +225,19 @@ void RubyLoader::onServerStart(MinecraftServer *server)
 	ModNetBus::Get().clearServer();
 	OreFeatureRegistry::reset();
 	TreeFeatureRegistry::reset();
+	FeatureRegistry::reset();
 
 	g_loader->registerServerFunctions(server);
 	g_loader->refreshServerScripts();
 	g_loader->executeServerScripts("main", true);
 
+	BiomeRegistry::finalize();
+	DimensionRegistry::finalize();
+	PortalRegistry::finalize();
+	PlantRegistry::finalize();
 	OreFeatureRegistry::finalize();
 	TreeFeatureRegistry::finalize();
+	FeatureRegistry::finalize();
 }
 
 int RubyLoader::getModCount()

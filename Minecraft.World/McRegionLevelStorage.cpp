@@ -201,7 +201,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 		}
 		return new McRegionChunkStorage(m_saveFile, LevelStorage::NUREALM_FOLDER);
 	}
-    return new McRegionChunkStorage(m_saveFile, L"");
+    return new McRegionChunkStorage(m_saveFile, LevelStorage::folderForDimension(dimension->id));
 }
 
 void McRegionLevelStorage::saveLevelData(LevelData *levelData, vector<shared_ptr<Player> > *players)

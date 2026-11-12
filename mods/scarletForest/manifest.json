@@ -1,0 +1,7 @@
+{
+  "name": "Scarlet Forest",
+  "version": "1.0.0",
+  "modId": "scarletForest",
+  "serverMain": "module/server.lua",
+  "startupMain": "module/startup.lua"
+}

@@ -642,6 +642,7 @@ Level::Level(shared_ptr<LevelStorage> levelStorage, const wstring& name, Dimensi
 	}
 
 	dimension->init(this);
+	if (dimension->getSeaLevelOverride() >= 0) seaLevel = dimension->getSeaLevelOverride();
 	chunkSource = nullptr;	// 4J - added flag so chunk source can be called from derived class instead
 
 	updateSkyBrightness();
@@ -701,6 +702,7 @@ void Level::_init(shared_ptr<LevelStorage>levelStorage, const wstring& levelName
 	if( !this->levelData->useNewSeaLevel() ) seaLevel = Level::genDepth / 2;		// 4J added - sea level is one unit lower since 1.8.2, maintain older height for old levels
 
 	((Dimension *) dimension)->init( this );
+	if (dimension->getSeaLevelOverride() >= 0) seaLevel = dimension->getSeaLevelOverride();
 
 	chunkSource = doCreateChunkSource ? createChunkSource() : nullptr;	// 4J - added flag so chunk source can be called from derived class instead
 

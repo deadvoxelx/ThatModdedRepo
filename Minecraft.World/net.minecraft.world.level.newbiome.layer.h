@@ -26,3 +26,5 @@
 // 1.1.
 #include "RegionHillsLayer.h"
 #include "SwampRiversLayer.h"
+
+#include "RubyBiomeLayer.h"

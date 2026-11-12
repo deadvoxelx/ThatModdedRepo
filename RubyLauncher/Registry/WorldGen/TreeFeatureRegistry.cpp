@@ -1,9 +1,8 @@
 #include "TreeFeatureRegistry.h"
-
 #include "OreFeatureRegistry.h"
+#include "Registry/Biome/BiomeRegistry.h"
 #include "Loader.h"
 #include "Registry/IDs.h"
-
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.levelgen.feature.h"
@@ -15,7 +14,6 @@
 #include "BirchFeature.h"
 #include "MegaTreeFeature.h"
 #include "SwampTreeFeature.h"
-
 #include <utility>
 #include <vector>
 #include <string>
@@ -30,6 +28,7 @@ namespace
 		std::string trunk;
 		std::string leaves;
 		std::string biome;
+
 		int count = 1;
 		int height = 0;
 	};
@@ -120,6 +119,8 @@ namespace
 		{
 			if (wanted == entry.name) return *entry.slot;
 		}
+
+		if (Biome *custom = BiomeRegistry::findBiome(biomeName)) return custom;
 
 		Loader::_debugPrint("tree feature " + context + ": unknown biome '" + biomeName + "'");
 		return nullptr;
@@ -237,6 +238,11 @@ void TreeFeatureRegistry::finalize()
 		placed.feature = feature;
 		placed.count = pending.count;
 		placed.biome = resolveBiome(pending.biome, context);
+		if (!pending.biome.empty() && placed.biome == nullptr)
+		{
+			delete feature;
+			continue;
+		}
 
 		g_placed.push_back(placed);
 		++added;
@@ -264,20 +270,21 @@ void TreeFeatureRegistry::reset()
 	g_pending.clear();
 }
 
-void TreeFeatureRegistry::decorateChunk(Level *level, Random *random, int xo, int zo, Biome *biome)
+void TreeFeatureRegistry::decorateChunk(Level *level, Random *random, int xo, int zo)
 {
 	if (g_placed.empty()) return;
 
 	for (const PlacedTree &tree : g_placed)
 	{
-		if (tree.biome != nullptr && tree.biome != biome) continue;
-
 		for (int i = 0; i < tree.count; i++)
 		{
-			const int x = xo + random->nextInt(16) + 8;
-			const int z = zo + random->nextInt(16) + 8;
-			const int y = level->getHeightmap(x, z);
+			const int x = xo + random->nextInt(16);
+			const int z = zo + random->nextInt(16);
 
+			if (tree.biome != nullptr && level->getBiome(x, z) != tree.biome) continue;
+
+			const int y = level->getHeightmap(x, z);
+			if (y <= 0) continue;
 			tree.feature->place(level, random, x, y, z);
 		}
 	}

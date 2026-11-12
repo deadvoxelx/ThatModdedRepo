@@ -241,6 +241,160 @@ inline void CompressedTileStorage::getBlock(int *block, int x, int y, int z)
 	*block = ( ( x  & 0x0c ) << 5 ) | ( ( z & 0x0c ) << 3 ) | ( y >> 2 );
 }
 
+void CompressedTileStorage::setData16(unsigned short *dataIn, unsigned int inOffset)
+{
+	if( dataIn == nullptr )
+	{
+		return;
+	}
+
+	unsigned short _blockIndices[512];
+	const unsigned short *data = dataIn + inOffset;
+
+	EnterCriticalSection(&cs_write);
+
+	int memToAlloc = 0;
+
+	for( int i = 0; i < 512; i++ )
+	{
+#ifdef __PSVITA__
+		unsigned int usedFlags[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+		__int32 i32_1 = 1;
+		for( int j = 0; j < 64; j++ )
+		{
+			int tile = data[getIndex(i,j)];
+			if( tile < 512 )
+			{
+				usedFlags[tile & 15] |= ( i32_1 << ( tile >> 4 ) );
+			}
+		}
+		int count = 0;
+		for( int tile = 0; tile < 512; tile++ )
+		{
+			if( usedFlags[tile & 15] & ( i32_1 << ( tile >> 4 ) ) )
+			{
+				count++;
+			}
+		}
+#else
+		uint64_t usedFlags[8] = {0,0,0,0,0,0,0,0};
+		int64_t i64_1 = 1;
+		for( int j = 0; j < 64; j++ )
+		{
+			int tile = data[getIndex(i,j)];
+
+			usedFlags[tile & 7] |= ( i64_1 << ( tile >> 3 ) );
+		}
+		int count = 0;
+		for( int tile = 0; tile < 512; tile++ )
+		{
+			if( usedFlags[tile & 7] & ( i64_1 << ( tile >> 3 ) ) )
+			{
+				count++;
+			}
+		}
+#endif
+		if( count == 1 )
+		{
+			_blockIndices[i] = INDEX_TYPE_0_OR_8_BIT | INDEX_TYPE_0_BIT_FLAG;
+		}
+		else if( count == 2 )
+		{
+			_blockIndices[i] = INDEX_TYPE_1_BIT;
+			memToAlloc += 12;
+		}
+		else if ( count <= 4 )
+		{
+			_blockIndices[i] = INDEX_TYPE_2_BIT;
+			memToAlloc += 24;
+		}
+		else if ( count <= 16 )
+		{
+			_blockIndices[i] = INDEX_TYPE_4_BIT;
+			memToAlloc += 64;
+		}
+		else
+		{
+			_blockIndices[i] = INDEX_TYPE_0_OR_8_BIT;
+			memToAlloc = ( memToAlloc + 7 ) & 0xfff8;
+			memToAlloc += 128;
+		}
+	}
+
+	memToAlloc += 1024;
+	unsigned char *newIndicesAndData = static_cast<unsigned char *>(XPhysicalAlloc(memToAlloc, MAXULONG_PTR, 4096, PAGE_READWRITE));
+	unsigned char *pucData = newIndicesAndData + 1024;
+	unsigned short usDataOffset = 0;
+	unsigned short *newIndices = (unsigned short *) newIndicesAndData;
+
+	for( int i = 0; i < 512; i++ )
+	{
+		unsigned short indexTypeNew = _blockIndices[i] & INDEX_TYPE_MASK;
+		newIndices[i] = indexTypeNew;
+
+		if( indexTypeNew == INDEX_TYPE_0_OR_8_BIT )
+		{
+			if( _blockIndices[i] & INDEX_TYPE_0_BIT_FLAG )
+			{
+				newIndices[i] = INDEX_TYPE_0_OR_8_BIT | INDEX_TYPE_0_BIT_FLAG | (static_cast<unsigned short>(data[getIndex(i, 0)]) << INDEX_TILE_SHIFT);
+			}
+			else
+			{
+				usDataOffset = (usDataOffset + 7 ) & 0xfff8;
+				for( int j = 0; j < 64; j++ )
+				{
+					((unsigned short *)(pucData + usDataOffset))[j] = data[getIndex(i,j)];
+				}
+				newIndices[i] |= ( usDataOffset & INDEX_OFFSET_MASK) << INDEX_OFFSET_SHIFT;
+				usDataOffset += 128;
+			}
+		}
+		else
+		{
+			unsigned char ucMappings[512] = {0};
+			for( int j = 0; j < 512; j++ )
+			{
+				ucMappings[j] = 255;
+			}
+
+			int bitspertile = 1 << indexTypeNew;
+			int tiletypecount = 1 << bitspertile;
+			int tiledatasize = 8 << indexTypeNew;
+			int indexshift = 3 - indexTypeNew;
+			int indexmask_bits = 7 >> indexTypeNew;
+			int indexmask_bytes = 62 >> indexshift;
+
+			unsigned short *tile_types = (unsigned short *)(pucData + usDataOffset);
+			unsigned char *repacked = (unsigned char *)(tile_types + tiletypecount);
+			XMemSet(tile_types, 255, tiletypecount * 2);
+			XMemSet(repacked, 0, tiledatasize);
+			newIndices[i] |= ( usDataOffset & INDEX_OFFSET_MASK) << INDEX_OFFSET_SHIFT;
+			usDataOffset += ( tiletypecount * 2 ) + tiledatasize;
+			int count = 0;
+			for( int j = 0; j < 64; j++ )
+			{
+				int tile = data[getIndex(i,j)];
+				if( ucMappings[tile] == 255 )
+				{
+					ucMappings[tile] = count;
+					tile_types[count++] = (unsigned short) tile;
+				}
+				int idx = ( j >> indexshift ) & indexmask_bytes;
+				int bit = ( j & indexmask_bits ) * bitspertile;
+				repacked[idx] |= ucMappings[tile] << bit;
+			}
+		}
+	}
+
+	if( indicesAndData )
+	{
+		queueForDelete( indicesAndData );
+	}
+	indicesAndData = newIndicesAndData;
+	allocatedSize = memToAlloc;
+	LeaveCriticalSection(&cs_write);
+}
+
 void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset)
 {
 	unsigned short _blockIndices[512];
