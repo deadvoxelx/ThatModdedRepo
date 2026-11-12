@@ -40,6 +40,7 @@ public:
 	void setData(byteArray dataIn, unsigned int inOffset);
 	void getData(byteArray retArray, unsigned int retOffset);
 	void getData16(unsigned short *retArray, unsigned int retOffset);
+	void setData16(unsigned short *dataIn, unsigned int inOffset);
 	void getData16Slice(unsigned short *retArray, int yStart, int yEnd, int destY);
     int  get(int x, int y, int z);
     void set(int x, int y, int z, int val);

@@ -18,6 +18,8 @@ class ChunkRebuildData;
 class Biome
 {
 	friend class ChunkRebuildData;
+	friend class RubyBiome;
+
 public:
 	// 4J JEV, replaces the static blocks.
 	static void staticCtor();
@@ -55,7 +57,7 @@ public:
 	static Biome *nulands;
 	static Biome *redDesert;
 
-	static const int BIOME_COUNT = 29; // 4J Stu added
+	static const int BIOME_COUNT = 256;
 	static const int BIOME_COLOR_BLEND_RADIUS = 5;
 
 public:

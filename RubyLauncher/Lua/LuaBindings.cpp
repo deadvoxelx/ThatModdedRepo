@@ -2,8 +2,12 @@
 #include "Common/ModNetBus.h"
 #include "Common/ModPaths.h"
 #include "Common/ModStore.h"
+#include "Registry/Biome/BiomeRegistry.h"
+#include "Registry/Dimension/DimensionRegistry.h"
+#include "Registry/Dimension/PortalRegistry.h"
 #include "Loader.h"
 
+#include <cstdlib>
 #include <map>
 #include <vector>
 
@@ -32,10 +36,13 @@
 #include "Registry/Item/ItemRegistry.h"
 #include "Registry/Item/ItemFactory.h"
 #include "Registry/Block/BlockRegistry.h"
+#include "Registry/Block/PlantRegistry.h"
 #include "Registry/Block/SaplingRegistry.h"
 #include "Registry/Recipe/RecipeRegistry.h"
 #include "Registry/WorldGen/OreFeatureRegistry.h"
 #include "Registry/WorldGen/TreeFeatureRegistry.h"
+#include "Registry/WorldGen/FeatureRegistry.h"
+#include "Loader.h"
 #include "Registry/Item/TierRegistry.h"
 #include "Registry/Item/ArmorMaterialRegistry.h"
 #include "Registry/IDs.h"
@@ -577,6 +584,319 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
                 if (heightValue && heightValue.value() > 0) height = heightValue.value();
             }
             return TreeFeatureRegistry::registerTree(modId, treeId, shape, trunk, leaves, biome, count, height);
+        });
+
+        lua->new_usertype<FeatureContext>("FeatureContext",
+            "x", sol::property(&FeatureContext::getX),
+            "y", sol::property(&FeatureContext::getY),
+            "z", sol::property(&FeatureContext::getZ),
+            "set", [](FeatureContext &context, int dx, int dy, int dz, sol::object block, sol::optional<int> aux)
+            {
+                const int tile = block.get_type() == sol::type::number ? static_cast<int>(block.as<double>()) : FeatureRegistry::blockId(block.as<std::string>());
+                if (tile > 0) context.set(dx, dy, dz, tile, aux.value_or(0));
+            },
+            "replace", [](FeatureContext &context, int dx, int dy, int dz, sol::object block, sol::optional<int> aux)
+            {
+                const int tile = block.get_type() == sol::type::number ? static_cast<int>(block.as<double>()) : FeatureRegistry::blockId(block.as<std::string>());
+                if (tile > 0) context.replace(dx, dy, dz, tile, aux.value_or(0));
+            },
+            "fill", [](FeatureContext &context, int x0, int y0, int z0, int x1, int y1, int z1, sol::object block, sol::optional<int> aux)
+            {
+                const int tile = block.get_type() == sol::type::number ? static_cast<int>(block.as<double>()) : FeatureRegistry::blockId(block.as<std::string>());
+                if (tile > 0) context.fill(x0, y0, z0, x1, y1, z1, tile, aux.value_or(0));
+            },
+            "get", &FeatureContext::get,
+            "isAir", &FeatureContext::isAir,
+            "height", &FeatureContext::height,
+            "randomInt", &FeatureContext::randomInt,
+            "randomFloat", &FeatureContext::randomFloat,
+            "block", [](FeatureContext &, const std::string &name) { return FeatureRegistry::blockId(name); }
+        );
+
+        lua->set_function("registerFeature", [](sol::this_environment env, const std::string &featureId, sol::optional<sol::object> options) -> bool
+        {
+            sol::environment &modEnv = env;
+            const std::string modId = modEnv["modId"];
+
+            FeatureDefinition definition;
+            definition.modId = modId;
+            definition.featureId = featureId;
+
+            if (!options.has_value() || !options->valid() || !options->is<sol::table>())
+            {
+                Loader::_debugPrint("feature " + modId + ":" + featureId + ": an options table with a place function is required");
+                return false;
+            }
+
+            sol::table t = options->as<sol::table>();
+
+            definition.count = t.get_or("count", definition.count);
+            definition.chance = t.get_or("chance", definition.chance);
+
+            sol::optional<sol::object> biomes = t["biomes"];
+            if (biomes && biomes->valid())
+            {
+                if (biomes->is<std::string>()) definition.biomes.push_back(biomes->as<std::string>());
+                else if (biomes->is<sol::table>())
+                {
+                    sol::table list = biomes->as<sol::table>();
+                    for (size_t i = 1; i <= list.size(); i++)
+                    {
+                        sol::object entry = list[i];
+                        if (entry.valid() && entry.is<std::string>()) definition.biomes.push_back(entry.as<std::string>());
+                    }
+                }
+            }
+
+            sol::optional<sol::object> dimensions = t["dimensions"];
+            if (dimensions && dimensions->valid())
+            {
+                if (dimensions->is<std::string>()) definition.dimensions.push_back(dimensions->as<std::string>());
+                else if (dimensions->is<sol::table>())
+                {
+                    sol::table list = dimensions->as<sol::table>();
+                    for (size_t i = 1; i <= list.size(); i++)
+                    {
+                        sol::object entry = list[i];
+                        if (!entry.valid()) continue;
+                        if (entry.is<std::string>()) definition.dimensions.push_back(entry.as<std::string>());
+                        else if (entry.get_type() == sol::type::number) definition.dimensions.push_back(std::to_string(static_cast<int>(entry.as<double>())));
+                    }
+                }
+            }
+
+            sol::optional<sol::object> placement = t["placement"];
+            if (placement && placement->valid() && placement->is<sol::table>())
+            {
+                sol::table p = placement->as<sol::table>();
+
+                const std::string mode = p.get_or<std::string>("mode", "surface");
+                if (mode == "range") definition.placement.mode = FeaturePlacement::RANGE;
+                else if (mode == "fixed") definition.placement.mode = FeaturePlacement::FIXED;
+                else definition.placement.mode = FeaturePlacement::SURFACE;
+
+                definition.placement.minY = p.get_or("min", definition.placement.minY);
+                definition.placement.maxY = p.get_or("max", definition.placement.maxY);
+
+                sol::optional<sol::object> ground = p["ground"];
+                if (ground && ground->valid())
+                {
+                    if (ground->is<std::string>()) definition.placement.ground.push_back(ground->as<std::string>());
+                    else if (ground->is<sol::table>())
+                    {
+                        sol::table list = ground->as<sol::table>();
+                        for (size_t i = 1; i <= list.size(); i++)
+                        {
+                            sol::object entry = list[i];
+                            if (entry.valid() && entry.is<std::string>()) definition.placement.ground.push_back(entry.as<std::string>());
+                        }
+                    }
+                }
+            }
+
+            sol::protected_function handler = t["place"];
+            if (!handler.valid())
+            {
+                Loader::_debugPrint("feature " + modId + ":" + featureId + ": a place function is required");
+                return false;
+            }
+
+            definition.builder = [handler](FeatureContext &context) mutable -> bool
+            {
+                sol::protected_function_result result = handler(&context);
+                if (!result.valid())
+                {
+                    sol::error error = result;
+                    Loader::_debugPrint(std::string("feature: place failed: ") + error.what());
+                    return false;
+                }
+                return true;
+            };
+
+            return FeatureRegistry::registerFeature(definition);
+        });
+
+        lua->set_function("registerBiome", [](sol::this_environment env, const std::string &biomeId, sol::optional<sol::object> options) -> bool
+        {
+            sol::environment& modEnv = env;
+            std::string modId = modEnv["modId"];
+
+            BiomeDefinition definition;
+            definition.modId = modId;
+            definition.biomeId = biomeId;
+
+            if (options.has_value() && options->valid() && options->is<sol::table>())
+            {
+                sol::table t = options->as<sol::table>();
+
+                sol::optional<std::string> nameValue = t["name"];
+                if (nameValue && !nameValue.value().empty()) definition.name = nameValue.value();
+
+                sol::optional<std::string> surfaceValue = t["surface"];
+                if (surfaceValue && !surfaceValue.value().empty()) definition.surface = surfaceValue.value();
+
+                sol::optional<std::string> fillerValue = t["filler"];
+                if (fillerValue && !fillerValue.value().empty()) definition.filler = fillerValue.value();
+
+                sol::optional<double> depthValue = t["depth"];
+                if (depthValue) definition.depth = static_cast<float>(depthValue.value());
+
+                sol::optional<double> scaleValue = t["scale"];
+                if (scaleValue) definition.scale = static_cast<float>(scaleValue.value());
+
+                sol::optional<double> temperatureValue = t["temperature"];
+                if (temperatureValue) definition.temperature = static_cast<float>(temperatureValue.value());
+
+                sol::optional<double> downfallValue = t["downfall"];
+                if (downfallValue) definition.downfall = static_cast<float>(downfallValue.value());
+
+                sol::optional<bool> snowValue = t["snow"];
+                if (snowValue) definition.snow = snowValue.value();
+
+                sol::optional<bool> rainValue = t["rain"];
+                if (rainValue) definition.rain = rainValue.value();
+
+                sol::optional<bool> overworldValue = t["isOverworldBiome"];
+                if (overworldValue) definition.isOverworldBiome = overworldValue.value();
+
+                sol::optional<int> grassCountValue = t["grassCount"];
+                if (grassCountValue) definition.grassCount = grassCountValue.value();
+
+                sol::optional<int> flowerCountValue = t["flowerCount"];
+                if (flowerCountValue) definition.flowerCount = flowerCountValue.value();
+
+                sol::optional<int> sizeValue = t["size"];
+                if (sizeValue) definition.size = sizeValue.value();
+
+                sol::optional<double> frequencyValue = t["frequency"];
+                if (frequencyValue) definition.frequency = static_cast<float>(frequencyValue.value());
+
+                sol::optional<std::string> tallGrassValue = t["tallGrass"];
+                if (tallGrassValue) definition.tallGrass = tallGrassValue.value();
+
+                auto readColour = [](sol::table &table, const char *key, int &out)
+                {
+                    sol::optional<sol::object> value = table[key];
+                    if (!value || !value->valid()) return;
+
+                    if (value->get_type() == sol::type::number)
+                    {
+                        out = static_cast<int>(value->as<double>()) & 0xffffff;
+                    }
+                    else if (value->get_type() == sol::type::string)
+                    {
+                        std::string text = value->as<std::string>();
+                        if (!text.empty() && text[0] == '#') text.erase(0, 1);
+                        if (!text.empty()) out = static_cast<int>(strtol(text.c_str(), nullptr, 16)) & 0xffffff;
+                    }
+                };
+
+                readColour(t, "grassColor", definition.grassColor);
+                readColour(t, "foliageColor", definition.foliageColor);
+                readColour(t, "waterColor", definition.waterColor);
+                readColour(t, "skyColor", definition.skyColor);
+            }
+
+            if (definition.name.empty()) definition.name = biomeId;
+            return BiomeRegistry::registerBiome(definition);
+        });
+
+        lua->set_function("registerDimension", [](sol::this_environment env, const std::string &dimensionId, sol::optional<sol::object> options) -> bool
+        {
+            sol::environment& modEnv = env;
+            std::string modId = modEnv["modId"];
+
+            DimensionDefinition definition;
+            definition.modId = modId;
+            definition.dimensionId = dimensionId;
+
+            if (options.has_value() && options->valid() && options->is<sol::table>())
+            {
+                sol::table t = options->as<sol::table>();
+
+                sol::optional<int> slotValue = t["slot"];
+                if (slotValue)
+                {
+                    definition.slot = slotValue.value();
+                    definition.hasSlot = true;
+                }
+
+                sol::optional<std::string> biomeValue = t["biome"];
+                if (biomeValue) definition.biome = biomeValue.value();
+
+                sol::optional<std::string> generatorValue = t["generator"];
+                if (generatorValue) definition.generator = generatorValue.value();
+
+                sol::optional<sol::object> terrainValue = t["terrain"];
+                if (terrainValue && terrainValue->valid() && terrainValue->is<sol::table>())
+                {
+                    sol::table terrain = terrainValue->as<sol::table>();
+
+                    definition.terrain.stone = terrain.get_or<std::string>("stone", definition.terrain.stone);
+                    definition.terrain.surface = terrain.get_or<std::string>("surface", definition.terrain.surface);
+                    definition.terrain.filler = terrain.get_or<std::string>("filler", definition.terrain.filler);
+
+                    definition.terrain.baseHeight = terrain.get_or("baseHeight", definition.terrain.baseHeight);
+                    definition.terrain.heightVariation = terrain.get_or("heightVariation", definition.terrain.heightVariation);
+                    definition.terrain.relief = terrain.get_or("relief", definition.terrain.relief);
+
+                    definition.terrain.soilDepth = terrain.get_or("soilDepth", definition.terrain.soilDepth);
+                    definition.terrain.baseDepth = terrain.get_or("baseDepth", definition.terrain.baseDepth);
+                    definition.terrain.ceilingMargin = terrain.get_or("ceilingMargin", definition.terrain.ceilingMargin);
+                    definition.terrain.lakes = terrain.get_or("lakes", definition.terrain.lakes);
+                }
+
+                sol::optional<int> xzSizeValue = t["xzSize"];
+                if (xzSizeValue) definition.xzSize = xzSizeValue.value();
+
+                sol::optional<int> seaLevelValue = t["seaLevel"];
+                if (seaLevelValue) definition.seaLevel = seaLevelValue.value();
+
+                sol::optional<bool> ceilingValue = t["hasCeiling"];
+                if (ceilingValue) definition.hasCeiling = ceilingValue.value();
+
+                sol::optional<bool> ultraWarmValue = t["ultraWarm"];
+                if (ultraWarmValue) definition.ultraWarm = ultraWarmValue.value();
+
+                sol::optional<bool> naturalValue = t["natural"];
+                if (naturalValue) definition.natural = naturalValue.value();
+
+                sol::optional<bool> respawnValue = t["mayRespawn"];
+                if (respawnValue) definition.mayRespawn = respawnValue.value();
+
+                sol::optional<sol::object> spawnValue = t["spawn"];
+                if (spawnValue && spawnValue->valid() && spawnValue->is<sol::table>())
+                {
+                    sol::table spawn = spawnValue->as<sol::table>();
+                    definition.spawnX = spawn.get_or(1, definition.spawnX);
+                    definition.spawnY = spawn.get_or(2, definition.spawnY);
+                    definition.spawnZ = spawn.get_or(3, definition.spawnZ);
+                }
+            }
+            return DimensionRegistry::registerDimension(definition);
+        });
+
+        lua->set_function("registerPortal", [](sol::this_environment env, const std::string &portalId, sol::optional<sol::object> options) -> bool
+        {
+            sol::environment& modEnv = env;
+            std::string modId = modEnv["modId"];
+
+            PortalDefinition definition;
+            definition.modId = modId;
+            definition.portalId = portalId;
+
+            if (options.has_value() && options->valid() && options->is<sol::table>())
+            {
+                sol::table t = options->as<sol::table>();
+
+                definition.block = t.get_or<std::string>("block", definition.block);
+                definition.to = t.get_or<std::string>("to", definition.to);
+                definition.from = t.get_or<std::string>("from", definition.from);
+                definition.bidirectional = t.get_or("bidirectional", definition.bidirectional);
+                definition.cooldown = t.get_or("cooldown", definition.cooldown);
+                definition.frame = t.get_or<std::string>("frame", definition.frame);
+            }
+            return PortalRegistry::registerPortal(definition);
         });
     }
 }
@@ -1234,6 +1554,44 @@ void LuaBindings::bindStartupFunctions(sol::state& lua) {
         int registered = SaplingRegistry::registerSapling(modId, saplingId, name, path, texturePath, shape, trunk, leaves, height);
         if (registered == -1) {
             RubyUtils::LuaException(state, "registerSapling: failed to register '" + saplingId + "' (bad shape, unknown trunk/leaves block, or the block registry limit was reached)");
+            return -1;
+        }
+        return registered;
+    });
+
+    lua.set_function("registerPlant", [](sol::this_environment env, const std::string &plantId, const std::string &name, const std::string &texturePath, sol::optional<sol::object> options, sol::this_state state) -> int {
+        sol::environment& modEnv = env;
+        std::string modId = modEnv["modId"];
+        std::string envPath = modEnv["pathName"];
+
+        PlantDefinition definition;
+        definition.modId = modId;
+        definition.plantId = plantId;
+        definition.name = name.empty() ? plantId : name;
+        definition.modPath = std::wstring(envPath.begin(), envPath.end());
+        definition.texturePath = texturePath;
+
+        if (options.has_value() && options->valid() && options->is<sol::table>())
+        {
+            sol::table t = options->as<sol::table>();
+
+            sol::optional<sol::object> soilValue = t["soil"];
+            if (soilValue && soilValue->valid())
+            {
+                if (!luaStringArrayToVector(soilValue.value(), definition.soil, "registerPlant: soil")) return -1;
+            }
+
+            sol::optional<std::string> dropValue = t["drop"];
+            if (dropValue) definition.drop = dropValue.value();
+
+            sol::optional<bool> dropNothingValue = t["dropNothing"];
+            if (dropNothingValue) definition.dropNothing = dropNothingValue.value();
+            if (definition.drop == "nothing") definition.dropNothing = true;
+        }
+
+        int registered = PlantRegistry::registerPlant(definition);
+        if (registered == -1) {
+            RubyUtils::LuaException(state, "registerPlant: failed to register '" + plantId + "' (the block registry limit was reached)");
             return -1;
         }
         return registered;

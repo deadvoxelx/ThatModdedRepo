@@ -40,6 +40,7 @@ struct RubyCreativeEntry
 namespace RubyCreative
 {
 	void addEntry(int id, int aux, RubyCreativeGroup group);
+	void removeEntry(int id);
 }
 
 struct RubyModTexture

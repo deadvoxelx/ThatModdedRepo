@@ -2424,7 +2424,15 @@ bool LevelChunk::isRenderChunkEmpty(int y)
 	}
 }
 
-// Set block data to that passed in in the input array of size 32768
+void LevelChunk::setBlockData16(unsigned short *data, unsigned int length)
+{
+	lowerBlocks->setData16(data, 0);
+	if( ( data != nullptr ) && ( length > static_cast<unsigned int>( Level::COMPRESSED_CHUNK_SECTION_TILES ) ) && ( upperBlocks != nullptr ) )
+	{
+		upperBlocks->setData16(data, Level::COMPRESSED_CHUNK_SECTION_TILES);
+	}
+}
+
 void LevelChunk::setBlockData(byteArray data)
 {
 	lowerBlocks->setData(data,0);

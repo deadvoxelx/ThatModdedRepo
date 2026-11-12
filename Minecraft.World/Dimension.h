@@ -63,4 +63,5 @@ public:
 
 	// 4J Added
 	virtual int getXZSize();
+	virtual int getSeaLevelOverride();
 };

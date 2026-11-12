@@ -11,6 +11,7 @@
 #include "Biome.h"
 #include "..\RubyLauncher\Registry\WorldGen\OreFeatureRegistry.h"
 #include "..\RubyLauncher\Registry\WorldGen\TreeFeatureRegistry.h"
+#include "..\RubyLauncher\Registry\WorldGen\FeatureRegistry.h"
 
 Biome *Biome::biomes[256];
 
@@ -280,7 +281,8 @@ void Biome::decorate(Level *level, Random *random, int xo, int zo)
 {
 	decorator->decorate(level, random, xo, zo);
 	OreFeatureRegistry::decorateChunk(level, random, xo, zo, this);
-	TreeFeatureRegistry::decorateChunk(level, random, xo, zo, this);
+	TreeFeatureRegistry::decorateChunk(level, random, xo, zo);
+	FeatureRegistry::decorateChunk(level, random, xo, zo, this);
 }
 
 typedef int (*BiomeColorGetter)(Biome *biome);

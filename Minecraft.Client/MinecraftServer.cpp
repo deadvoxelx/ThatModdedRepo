@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "../Minecraft.World/DimensionSlots.h"
 //#include "Minecraft.h"
 
 #include <ctime>
@@ -900,7 +901,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	ProgressRenderer *mcprogress = Minecraft::GetInstance()->progressRenderer;
 
 	// 4J TODO - free levels here if there are already some?
-	levels = ServerLevelArray(6); //
+	levels = ServerLevelArray(DimensionSlots::count()); //
 
 	int gameTypeId = GetDedicatedServerInt(settings, L"gamemode", app.GetGameHostOption(eGameHostOption_GameType));//LevelSettings::GAMETYPE_SURVIVAL);
 	GameType *gameType = LevelSettings::validateGameType(gameTypeId);
@@ -974,12 +975,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 
 		//            String levelName = name;
 		//            if (i == 1) levelName += "_nether";
-		int dimension = 0;
-		if (i == 1) dimension = -1;
-		if (i == 2) dimension = 1;
-		if (i == 3) dimension = 2;
-		if (i == 4) dimension = 3;
-		if (i == 5) dimension = 4;
+		int dimension = DimensionSlots::idAt(i);
 		if (i == 0)
 		{
 			levels[i] = new ServerLevel(this, storage, name, dimension, levelSettings);
@@ -1020,6 +1016,8 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 
 		players->setLevel(levels);
 	}
+
+	RubyLoader::onServerStart(this);
 
 	if( levels[0]->isNew )
 	{
@@ -1087,7 +1085,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 		}
 		// we're always overwriting hell edges
 		int oldHellSize = levels[0]->getLevelData()->getXZHellSizeOld();
-		overwriteHellBordersForNewWorldSize(levels[1], oldHellSize);
+		overwriteHellBordersForNewWorldSize(getLevel(-1), oldHellSize);
 	}
 #endif
 
@@ -1233,40 +1231,16 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 
 	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
 
-	if( levels[1]->isNew )
+	for( unsigned int i = 1; i < levels.length; ++i )
 	{
-		levels[1]->save(true, mcprogress);
+		if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
+
+		if( levels[i] != nullptr && levels[i]->isNew )
+		{
+			levels[i]->save(true, mcprogress);
+		}
 	}
 
-	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
-
-	if( levels[2]->isNew )
-	{
-		levels[2]->save(true, mcprogress);
-	}
-
-	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
-
-	if( levels[3]->isNew )
-	{
-		levels[3]->save(true, mcprogress);
-	}
-
-	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
-
-	if( levels[4]->isNew )
-	{
-		levels[4]->save(true, mcprogress);
-	}
-
-	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
-
-	if( levels[5]->isNew )
-	{
-		levels[5]->save(true, mcprogress);
-	}
-
-	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
 
 	// 4J - added - immediately save newly created level, like single player game
 	// 4J Stu - We also want to immediately save the tutorial
@@ -1280,7 +1254,17 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 
 	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
 
-	if( levels[0]->isNew || levels[1]->isNew || levels[2]->isNew || levels[3]->isNew || levels[4]->isNew || levels[5]->isNew)
+	bool anyNew = false;
+	for( unsigned int j = 0; j < levels.length; ++j )
+	{
+		if( levels[j] != nullptr && levels[j]->isNew )
+		{
+			anyNew = true;
+			break;
+		}
+	}
+
+	if( anyNew )
 	{
 #ifndef _WINDOWS64
 		// On Windows64 we skip the automatic initial save so that choosing
@@ -1781,8 +1765,6 @@ void MinecraftServer::run(int64_t seed, void *lpParameter)
                 pLevelData->setHasStronghold();
             }
         }
-
-        RubyLoader::onServerStart(server);
 
         int64_t lastTime = getCurrentTimeMillis();
         int64_t unprocessedTime = 0;
@@ -2326,23 +2308,17 @@ wstring MinecraftServer::getConsoleName()
 
 ServerLevel *MinecraftServer::getLevel(int dimension)
 {
-	if (dimension == -1) return levels[1];
-	else if (dimension == 1) return levels[2];
-	else if (dimension == 2) return levels[3];
-	else if (dimension == 3) return levels[4];
-	else if (dimension == 4) return levels[5];
-	else return levels[0];
+	const int index = DimensionSlots::indexOf(dimension);
+	if (index >= 0 && index < static_cast<int>(levels.length)) return levels[index];
+
+	return levels[0];
 }
 
 // 4J added
 void MinecraftServer::setLevel(int dimension, ServerLevel *level)
 {
-	if (dimension == -1) levels[1] = level;
-	else if (dimension == 1) levels[2] = level;
-	else if (dimension == 2) levels[3] = level;
-	else if (dimension == 3) levels[4] = level;
-	else if (dimension == 4) levels[5] = level;
-	else levels[0] = level;
+	const int index = DimensionSlots::indexOf(dimension);
+	if (index >= 0 && index < static_cast<int>(levels.length)) levels[index] = level;
 }
 
 #if defined _ACK_CHUNK_SEND_THROTTLING

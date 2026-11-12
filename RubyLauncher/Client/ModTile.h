@@ -3,7 +3,7 @@
 #include "Tile.h"
 #include "Facing.h"
 #include "IconRegister.h"
-
+#include "Registry/Dimension/PortalRegistry.h"
 #include <string>
 
 class Random;
@@ -43,6 +43,8 @@ private:
     int dropMax;
     float dropChance;
     bool dropNothing;
+    bool portalBlock = false;
+    int portalFrameId = -1;
 
 public:
     ModTile(int id, const ModTileTraits& traits) : Tile(id, traits.material, !traits.transparent)
@@ -104,7 +106,50 @@ public:
 
     virtual bool isSolidRender(bool isServerLevel = false)
     {
-        return !transparent;
+        return portalBlock ? false : !transparent;
+    }
+
+    void setPortalBlock(bool value)
+    {
+        portalBlock = value;
+    }
+
+    void setPortalFrame(int value)
+    {
+        portalFrameId = value;
+    }
+
+    int getPortalFrame() const
+    {
+        return portalFrameId;
+    }
+
+    virtual void neighborChanged(Level *level, int x, int y, int z, int type);
+    virtual int getRenderLayer();
+    virtual bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
+    virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>());
+    virtual void animateTick(Level *level, int x, int y, int z, Random *random);
+
+    virtual bool isCubeShaped()
+    {
+        return portalBlock ? false : Tile::isCubeShaped();
+    }
+
+    virtual AABB *getAABB(Level *level, int x, int y, int z)
+    {
+        if (portalBlock) return nullptr;
+        return Tile::getAABB(level, x, y, z);
+    }
+
+    virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source)
+    {
+        if (portalBlock) return;
+        Tile::addAABBs(level, x, y, z, box, boxes, source);
+    }
+
+    virtual void entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
+    {
+        if (portalBlock) PortalRegistry::enter(level, entity, id, x, y, z);
     }
 
     virtual bool blocksLight()

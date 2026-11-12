@@ -87,6 +87,8 @@ LayerArray Layer::getDefaultLayers(int64_t seed, LevelType *levelType, int world
 
 	biomeLayer = std::make_shared<RiverMixerLayer>(100, biomeLayer, riverLayer);
 
+	biomeLayer = std::make_shared<RubyBiomeLayer>(1000, biomeLayer);
+
 #ifndef _CONTENT_PACKAGE
 #ifdef _BIOME_OVERRIDE
 	if(app.DebugSettingsOn() && app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_EnableBiomeOverride))

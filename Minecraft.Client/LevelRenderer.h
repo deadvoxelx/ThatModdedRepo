@@ -1,5 +1,6 @@
 #pragma once
 #include "../Minecraft.World/LevelListener.h"
+#include <vector>
 #include "../Minecraft.World/Definitions.h"
 #include "OffsettedRenderList.h"
 #include "../Minecraft.World/JavaIntHash.h"
@@ -257,12 +258,12 @@ public:
 	// This defines the maximum size of renderable level, must be big enough to cope with actual size of level + view distance at each side
 	// so that we can render the "infinite" sea at the edges
 #ifdef _LARGE_WORLDS
-	static int			MAX_LEVEL_RENDER_SIZE[6];
-	static int			DIMENSION_OFFSETS[6];
+static std::vector<int> MAX_LEVEL_RENDER_SIZE;
+static std::vector<int> DIMENSION_OFFSETS;
 	static void			configureForWorld(int xzSize, int hellScale);
 #else
-	static const int	MAX_LEVEL_RENDER_SIZE[6];
-	static const int    DIMENSION_OFFSETS[6];
+	static const int	MAX_LEVEL_RENDER_SIZE[7];
+	static const int    DIMENSION_OFFSETS[7];
 #endif
 	// This is the TOTAL area of columns of chunks to be allocated for render round the players. So for one player, it would be a region of
 	// sqrt(PLAYER_RENDER_AREA) x sqrt(PLAYER_RENDER_AREA)

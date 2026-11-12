@@ -16,6 +16,8 @@
 #include "EntityTracker.h"
 #include "../Minecraft.World/net.minecraft.world.level.storage.h"
 #include "../Minecraft.World/net.minecraft.world.level.dimension.h"
+#include "../RubyLauncher/Registry/Dimension/DimensionRegistry.h"
+#include "../RubyLauncher/Registry/Dimension/PortalRegistry.h"
 #include "../Minecraft.World/ArrayWithLength.h"
 #include "../Minecraft.World/net.minecraft.network.packet.h"
 #include "../Minecraft.World/net.minecraft.network.h"
@@ -1052,6 +1054,14 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 			oldLevel->tick(entity, false);
 		}
 	}
+	else if (entity->dimension == 5)
+	{
+		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
+		if (entity->isAlive())
+		{
+			oldLevel->tick(entity, false);
+		}
+	}
 	//
 	else
 	{
@@ -1088,13 +1098,42 @@ void PlayerList::repositionAcrossDimension(shared_ptr<Entity> entity, int lastDi
 
 	xt = static_cast<double>(Mth::clamp(static_cast<int>(xt), -Level::MAX_LEVEL_SIZE + 128, Level::MAX_LEVEL_SIZE - 128));
 	zt = static_cast<double>(Mth::clamp(static_cast<int>(zt), -Level::MAX_LEVEL_SIZE + 128, Level::MAX_LEVEL_SIZE - 128));
+
+	if (entity->isAlive() && (DimensionRegistry::isModDimension(lastDimension) || DimensionRegistry::isModDimension(entity->dimension)))
+	{
+		const bool hadAutoCreate = newLevel->cache->autoCreate;
+		newLevel->cache->autoCreate = true;
+
+		int arrivalY = DimensionRegistry::safeArrivalY(newLevel, static_cast<int>(xt), static_cast<int>(zt));
+		if (arrivalY > 0)
+		{
+			entity->y = arrivalY;
+		}
+		else
+		{
+			Pos *spawn = newLevel->getDimensionSpecificSpawn();
+			xt = spawn->x;
+			zt = spawn->z;
+
+			const int spawnY = DimensionRegistry::safeArrivalY(newLevel, spawn->x, spawn->z);
+			entity->y = spawnY > 0 ? spawnY : spawn->y;
+
+			delete spawn;
+		}
+
+		const int portalY = PortalRegistry::placeArrivalPortal(newLevel, lastDimension, entity->dimension, static_cast<int>(xt), static_cast<int>(entity->y), static_cast<int>(zt));
+		if (portalY > 0) entity->y = portalY;
+
+		newLevel->cache->autoCreate = hadAutoCreate;
+	}
 	if (entity->isAlive())
 	{
 		newLevel->addEntity(entity);
 		entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
 		newLevel->tick(entity, false);
 		newLevel->cache->autoCreate = true;
-		if (lastDimension != 1 && lastDimension != 2 && lastDimension != 4 && entity->dimension != 4 && !entity->fellFromAether)
+		const bool modDimension = DimensionRegistry::isModDimension(lastDimension) || DimensionRegistry::isModDimension(entity->dimension);
+		if (!modDimension && lastDimension != 1 && lastDimension != 2 && lastDimension != 4 && entity->dimension != 4 && !entity->fellFromAether)
 		{
 			newLevel->getPortalForcer()->force(newLevel, entity, lastDimension);
 		}

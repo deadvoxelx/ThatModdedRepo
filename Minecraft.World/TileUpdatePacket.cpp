@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "DimensionSlots.h"
 #include <iostream>
 #include "InputOutputStream.h"
 #include "net.minecraft.world.level.h"
@@ -19,12 +20,8 @@ TileUpdatePacket::TileUpdatePacket(int x, int y, int z, Level *level)
 	this->z = z;
 	block = level->getTile(x, y, z);
 	data = level->getData(x, y, z);
-	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : 
-		( (level->dimension->id == -1) ? 1 : 
-		( (level->dimension->id == 1) ? 2 : 
-		( (level->dimension->id == 2) ? 3 : 
-		(level->dimension->id == 3) ? 4 : 
-		5 ) ) ) );
+	levelIdx = DimensionSlots::indexOf(level->dimension->id);
+	if (levelIdx < 0) levelIdx = 0;
 }
 
 void TileUpdatePacket::read(DataInputStream *dis) //throws IOException 

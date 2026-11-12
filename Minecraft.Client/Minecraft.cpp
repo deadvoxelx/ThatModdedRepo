@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "../Minecraft.World/DimensionSlots.h"
 #include "Minecraft.h"
 #include "Common/UI/UIScene.h"
 #include "GameMode.h"
@@ -137,7 +138,7 @@ Minecraft::Minecraft(Component *mouseComponent, Canvas *parent, MinecraftApplet 
 	timer = new Timer(SharedConstants::TICKS_PER_SECOND);
 	oldLevel = nullptr; //4J Stu added
 	level = nullptr;
-	levels = MultiPlayerLevelArray(6); // 4J Added (overworld, nether, end, outer end, aether, nurealm)
+	levels = MultiPlayerLevelArray(DimensionSlots::count());
 	levelRenderer = nullptr;
 	player = nullptr;
 	cameraTargetPlayer = nullptr;
@@ -4496,12 +4497,11 @@ void Minecraft::forceStatsSave(int idx)
 // 4J Added
 MultiPlayerLevel *Minecraft::getLevel(int dimension)
 {
-	if (dimension == -1) return levels[1];
-	else if(dimension == 1) return levels[2];
-	else if(dimension == 2) return levels[3];
-	else if(dimension == 3) return levels[4];
-	else if(dimension == 4) return levels[5];
-	else return levels[0];
+	const int index = DimensionSlots::indexOf(dimension);
+	if (index < 0) return levels[0];
+	if (index >= static_cast<int>(levels.length)) levels.resize(DimensionSlots::count());
+
+	return levels[index];
 }
 
 // 4J Stu - Removed as redundant with default values in params.
@@ -4519,13 +4519,11 @@ MultiPlayerLevel *Minecraft::getLevel(int dimension)
 
 void Minecraft::forceaddLevel(MultiPlayerLevel *level)
 {
-	int dimId = level->dimension->id;
-	if (dimId == -1) levels[1] = level;
-	else if(dimId == 1) levels[2] = level;
-	else if(dimId == 2) levels[3] = level;
-	else if(dimId == 3) levels[4] = level;
-	else if(dimId == 4) levels[5] = level;
-	else levels[0] = level;
+	int index = DimensionSlots::indexOf(level->dimension->id);
+	if (index < 0) index = 0;
+	if (index >= static_cast<int>(levels.length)) levels.resize(DimensionSlots::count());
+
+	levels[index] = level;
 }
 
 void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, shared_ptr<Player> forceInsertPlayer /*=nullptr*/, bool doForceStatsSave /*=true*/, bool bPrimaryPlayerSignedOut /*=false*/)
@@ -4582,39 +4580,17 @@ void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, shared_pt
 	// 4J If we are setting the level to nullptr then we are exiting, so delete the levels
 	if( level == nullptr )
 	{
-		if(levels[0]!=nullptr)
+		auto *sharedSavedDataStorage = ( levels[0] != nullptr ) ? levels[0]->savedDataStorage : nullptr;
+
+		for(unsigned int i = 0; i < levels.length; ++i)
 		{
-			delete levels[0];
-			levels[0] = nullptr;
+			if( levels[i] == nullptr ) continue;
 
 			// Both level share the same savedDataStorage
-			if(levels[1]!=nullptr) levels[1]->savedDataStorage = nullptr;
-		}
-		if(levels[1]!=nullptr)
-		{
-			delete levels[1];
-			levels[1] = nullptr;
-		}
-		if(levels[2]!=nullptr)
-		{
-			delete levels[2];
-			levels[2] = nullptr;
-		}
-		if(levels[3]!=nullptr)
-		{
-			delete levels[3];
-			levels[3] = nullptr;
-		}
-		if(levels[4]!=nullptr)
-		{
-			levels[4]->savedDataStorage = nullptr; // shared with overworld
-			delete levels[4];
-			levels[4] = nullptr;
-		}
-		if(levels[5]!=nullptr)
-		{
-			delete levels[5];
-			levels[5] = nullptr;
+			if( i != 0 && levels[i]->savedDataStorage == sharedSavedDataStorage ) levels[i]->savedDataStorage = nullptr;
+
+			delete levels[i];
+			levels[i] = nullptr;
 		}
 
 		// Delete all the player objects
@@ -4664,6 +4640,7 @@ void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, shared_pt
 		else if(dimId == 2) levels[3] = level;
 		else if(dimId == 3) levels[4] = level;
 		else if(dimId == 4) levels[5] = level;
+	else if(dimId == 5) levels[6] = level;
 		else levels[0] = level;
 
 		// If no player has been set, then this is the first level to be set this game, so set up

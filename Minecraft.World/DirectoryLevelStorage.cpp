@@ -69,9 +69,6 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension)
 	dimensions[id>>5] &= ~( 5 << offset );
 	switch(dimension)
 	{
-	case 0: // Overworld
-		//dimensions[id>>2] &= ~( 2 << offset );
-		break;
 	case -1: // Nether
 		dimensions[id>>5] |= ( 1 << offset );
 		break;
@@ -88,10 +85,6 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension)
 		dimensions[id>>5] |= ( 5 << offset );
 		break;
 	default:
-#ifndef _CONTENT_PACKAGE
-		printf("Trying to set a MapDataMapping for an invalid dimension.\n");
-		__debugbreak();
-#endif
 		break;
 	}
 }
@@ -262,8 +255,7 @@ ChunkStorage *DirectoryLevelStorage::createChunkStorage(Dimension *dimension)
 		const File dir2 = File(dir, LevelStorage::NUREALM_FOLDER);
 		return new OldChunkStorage(dir2, true);
 	}
-
-	return new OldChunkStorage(dir, true);
+	return new OldChunkStorage(File(dir, LevelStorage::folderForDimension(dimension->id)), true);
 }
 
 LevelData *DirectoryLevelStorage::prepareLevel()

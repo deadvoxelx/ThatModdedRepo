@@ -1,0 +1,8 @@
+{
+  "name": "Sift Mod",
+  "version": "1.0.0",
+  "modId": "siftMod",
+  "serverMain": "module/server.lua",
+  "clientMain": "module/client.lua",
+  "startupMain": "module/startup.lua"
+}

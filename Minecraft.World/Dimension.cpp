@@ -13,6 +13,7 @@
 #include "TheOuterEndDimension.h"
 #include "AetherDimension.h"
 #include "NurealmDimension.h"
+#include "../RubyLauncher/Registry/Dimension/DimensionRegistry.h"
 #include "net.minecraft.world.level.tile.h"
 #include "../Minecraft.Client/Minecraft.h"
 #include "../Minecraft.Client/Common/Colours/ColourTable.h"
@@ -200,6 +201,8 @@ bool Dimension::mayRespawn() const
 
 Dimension *Dimension::getNew(int id)
 {
+	if (Dimension *custom = DimensionRegistry::create(id)) return custom;
+
 	if (id == -1) return new HellDimension();
 	if (id == 0) return new NormalDimension();
 	if (id == 1) return new TheEndDimension();
@@ -262,4 +265,9 @@ bool Dimension::isFoggyAt(int x, int z)
 int Dimension::getXZSize()
 {
 	return level->getLevelData()->getXZSize();
+}
+
+int Dimension::getSeaLevelOverride()
+{
+	return -1;
 }

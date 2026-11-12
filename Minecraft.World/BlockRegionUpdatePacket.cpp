@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "DimensionSlots.h"
 #include <iostream>
 #include <exception>
 #include "InputOutputStream.h"
@@ -41,12 +42,8 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs, in
 	this->ys = ys;
 	this->zs = zs;
 	bIsFullChunk = false;
-	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : 
-		( (level->dimension->id == -1) ? 1 : 
-		( (level->dimension->id == 1) ? 2 : 
-		( (level->dimension->id == 2) ? 3 : 
-		(level->dimension->id == 3) ? 4 : 
-		5 ) ) ) );
+	levelIdx = DimensionSlots::indexOf(level->dimension->id);
+	if (levelIdx < 0) levelIdx = 0;
 
 	// 4J - if we are compressing a full chunk, re-order the blocks so that they compress better
 	// TODO - we should be using compressed data directly here rather than decompressing first and then recompressing...
@@ -106,7 +103,7 @@ void BlockRegionUpdatePacket::read(DataInputStream *dis) //throws IOException
 		ys = 0;
 
 	size = dis->readInt();
-	levelIdx = ( size >> 28 ) & 7;
+	levelIdx = ( size >> 28 ) & 0xf;
 	 size &= 0x0fffffff;
 
 	const int MAX_COMPRESSED_CHUNK_SIZE = 5 * 1024 * 1024;

@@ -30,6 +30,7 @@ struct BlockDefinition {
     int dropAux = 0;
     bool dropPending = false;
     bool transparent = false;
+    int baseItemType = -1;
 
     EBlockTool tool = BlockTool_Pickaxe;
 
