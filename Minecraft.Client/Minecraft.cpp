@@ -3906,7 +3906,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 			extern ID3D11DeviceContext* g_pImmediateContext;
 			extern IDXGISwapChain* g_pSwapChain;
 			//sarah: taken from neolegacy (tysm!)
-			if (!g_pSwapChain || !g_pd3dDevice || !g_pImmediateContext) return false;
+			/*sarah: returns cant be placed here
+			if (!g_pSwapChain || !g_pd3dDevice || !g_pImmediateContext) return false;*/
 			ID3D11Texture2D* pBackBuffer = nullptr;
 			HRESULT hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBuffer);
 			if (FAILED(hr))return false;
@@ -3916,7 +3917,6 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 			desc.BindFlags = 0;
 			desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 			desc.MiscFlags = 0;
-			bool success = false;
 			ID3D11Texture2D* pStaging = nullptr;
 			hr = g_pd3dDevice->CreateTexture2D(&desc, nullptr, &pStaging);
 			if (SUCCEEDED(hr)){
@@ -3949,13 +3949,11 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 					if (writeResult){
 						wstring msg = L"Saved screenshot to " + wstring(filename);
 						gui->addMessage(msg, iPad);
-						success = true;
 					}
 				}
 				pStaging->Release();
 			}
 			pBackBuffer->Release();
-			return success;
 		}
 #endif
 
