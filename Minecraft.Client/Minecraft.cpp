@@ -3910,7 +3910,6 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 			if (!g_pSwapChain || !g_pd3dDevice || !g_pImmediateContext) return false;*/
 			ID3D11Texture2D* pBackBuffer = nullptr;
 			HRESULT hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBuffer);
-			if (FAILED(hr))return false;
 			D3D11_TEXTURE2D_DESC desc;
 			pBackBuffer->GetDesc(&desc);
 			desc.Usage = D3D11_USAGE_STAGING;
