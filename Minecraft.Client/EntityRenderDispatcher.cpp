@@ -13,6 +13,7 @@
 #include "../Minecraft.World/net.minecraft.world.level.tile.h"
 #include "../Minecraft.World/net.minecraft.world.item.h"
 #include "../Minecraft.World/net.minecraft.world.item.alchemy.h"
+#include "ModProjectileRenderer.h"
 #include "SpiderRenderer.h"
 #include "PigRenderer.h"
 #include "SheepRenderer.h"
@@ -163,6 +164,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	renderers[eTYPE_NUSA_SPIKE] = new NusaSpikeRenderer();
 
 	renderers[eTYPE_HELLSPHERE] = new ItemSpriteRenderer(Item::hellSphere);
+	renderers[eTYPE_MODPROJECTILE] = new ModProjectileRenderer();
 	//renderers[eTYPE_SLIMEBALL] = new ItemSpriteRenderer(Item::slimeBall);
 	renderers[eTYPE_ZEPHYRBALL] = new ItemSpriteRenderer(Item::snowBall);
 	renderers[eTYPE_DART] = new ArrowRenderer();

@@ -9,6 +9,7 @@
 
 #include "Common/ModPaths.h"
 #include "Common/ModStore.h"
+#include "Registry/IDs.h"
 #include "Common/EventSystem/ClientTickEvent.h"
 #include "Common/EventSystem/EventBus.h"
 #include "Common/EventSystem/ServerTickEvent.h"
@@ -18,6 +19,65 @@ class MinecraftServer;
 
 namespace fs = std::filesystem;
 using string = std::string;
+
+namespace
+{
+    sol::protected_function stripLuaSandbox(sol::state &luaState)
+    {
+        sol::table globals = luaState.globals();
+        sol::protected_function load = globals["load"];
+
+        globals["load"] = sol::nil;
+        globals["loadfile"] = sol::nil;
+        globals["dofile"] = sol::nil;
+
+        sol::object packageObject = globals["package"];
+
+        if (packageObject.is<sol::table>())
+        {
+            sol::table package = packageObject.as<sol::table>();
+
+            package["loadlib"] = sol::nil;
+            package["cpath"] = "";
+
+            sol::object searchersObject = package["searchers"];
+
+            if (searchersObject.is<sol::table>())
+            {
+                sol::table searchers = searchersObject.as<sol::table>();
+
+                searchers[3] = sol::nil;
+                searchers[4] = sol::nil;
+            }
+        }
+        return load;
+    }
+
+    sol::protected_function makeModRequire(sol::state &luaState, const std::string &folderName)
+    {
+        static const char *wrapper =
+            "local baseRequire, path = ...\n"
+            "return function(name)\n"
+            "    local saved = package.path\n"
+            "    package.path = path\n"
+            "    local results = table.pack(pcall(baseRequire, name))\n"
+            "    package.path = saved\n"
+            "    if not results[1] then error(results[2], 2) end\n"
+            "    return table.unpack(results, 2, results.n)\n"
+            "end";
+
+        sol::load_result loaded = luaState.load(wrapper, "=rubyModRequire");
+
+        if (!loaded.valid()) return sol::protected_function();
+
+        sol::protected_function factory = loaded.get<sol::protected_function>();
+        sol::protected_function_result created = factory(luaState["require"], RubyPaths::modRequirePath(folderName));
+
+        if (!created.valid()) return sol::protected_function();
+
+        return created.get<sol::protected_function>();
+    }
+}
 
 Loader *Loader::s_instance = nullptr;
 Loader *Loader::getInstance()
@@ -30,6 +90,10 @@ Loader::Loader() {
     luaServer.open_libraries(sol::lib::base, sol::lib::string, sol::lib::table, sol::lib::package, sol::lib::math);
     luaStartup.open_libraries(sol::lib::base, sol::lib::string, sol::lib::table, sol::lib::package, sol::lib::math);
     luaClient.open_libraries(sol::lib::base, sol::lib::string, sol::lib::table, sol::lib::package, sol::lib::math);
+    m_serverLoad = stripLuaSandbox(luaServer);
+    m_startupLoad = stripLuaSandbox(luaStartup);
+    m_clientLoad = stripLuaSandbox(luaClient);
+
     auto panicHandler = [](lua_State* L) -> int {
         Loader::_debugPrint("[Lua] PANIC: " + std::string(lua_tostring(L, -1)));
         return 0;
@@ -112,11 +176,38 @@ void Loader::registerServerFunctions(MinecraftServer *server) {
     LuaBindings::bindServerFunctions(luaServer, server);
 }
 
-bool hasMetadata(nlohmann::json& json, const std::string& key) {
-    return !json[key].is_null();
+bool manifestString(nlohmann::json& json, const std::string& key, std::string& out) {
+    auto it = json.find(key);
+    if (it == json.end() || !it->is_string()) return false;
+    out = it->get<std::string>();
+    return true;
+}
+
+bool manifestEntry(nlohmann::json& json, RubyMod& mod, const std::string& key, const std::string& modPath) {
+    std::string value;
+    if (manifestString(json, key, value)) {
+        mod.metadata[key] = value;
+        return true;
+    }
+    auto it = json.find(key);
+    if (it != json.end() && !it->is_null()) {
+        Loader::_debugPrint(modPath + " metadata '" + key + "' must be a string, so it is ignored");
+    }
+    return false;
+}
+
+bool manifestBool(nlohmann::json& json, const std::string& key, bool defaultValue) {
+    auto it = json.find(key);
+    if (it == json.end() || !it->is_boolean()) return defaultValue;
+    return it->get<bool>();
 }
 
 void Loader::collectMods() {
+    if (!IDMapping::get()->isUsable()) {
+        _debugPrint("not collecting mods: '" + IDMapping::registryPath() + "' could not be read (see above)");
+        return;
+    }
+
     for (const auto & modEntry : fs::directory_iterator(RubyPaths::modsRoot())) {
         if (!modEntry.is_directory()) continue;
         string modPath = modEntry.path().string();
@@ -134,26 +225,32 @@ void Loader::collectMods() {
         bool missingRequired = false;
 
         for ( const auto & metadata : loaderRequiredMetadata ) {
-            if (!hasMetadata(json, metadata)) {
-                _debugPrint((modPath+" missing metadata '"+metadata+"' add it to your manifest.json"));
+            std::string value;
+            if (!manifestString(json, metadata, value)) {
+                _debugPrint((modPath+" missing metadata '"+metadata+"' (it has to be a string) add it to your manifest.json"));
                 missingRequired = true;
                 break;
             }
-            m.metadata[metadata] = json[metadata].get<std::string>();
+            m.metadata[metadata] = value;
         }
 
         if (missingRequired) continue;
 
-        bool hasServer = hasMetadata(json, "serverMain");
-        bool hasClient = hasMetadata(json, "clientMain");
-        bool hasStartup = hasMetadata(json, "startupMain");
+        bool hasServer = manifestEntry(json, m, "serverMain", modPath);
+        bool hasClient = manifestEntry(json, m, "clientMain", modPath);
+        bool hasStartup = manifestEntry(json, m, "startupMain", modPath);
+
+        m.allowEval = manifestBool(json, "allowEval", false);
+
+        auto allowEvalEntry = json.find("allowEval");
+
+        if (allowEvalEntry != json.end() && !allowEvalEntry->is_boolean()) {
+            _debugPrint(modPath + " metadata 'allowEval' must be true or false, so it is ignored");
+        }
         if (!hasServer && !hasClient && !hasStartup) {
             _debugPrint((modPath+" needs at least one of 'serverMain'/'clientMain'/'startupMain' in your manifest.json"));
             continue;
         }
-        if (hasServer) m.metadata["serverMain"] = json["serverMain"].get<std::string>();
-        if (hasClient) m.metadata["clientMain"] = json["clientMain"].get<std::string>();
-        if (hasStartup) m.metadata["startupMain"] = json["startupMain"].get<std::string>();
         if (json["dependencies"].is_array()) {
             for (const auto &dep : json["dependencies"]) {
                 if (dep.is_string()) m.dependencies.push_back(dep.get<std::string>());
@@ -167,7 +264,8 @@ void Loader::collectMods() {
 
         string folderName = modEntry.path().filename().string();
         m.setPathName(folderName);
-        mods_[std::string(m.getName())] = m;
+
+        mods_[std::string(m.getModID())] = m;
     }
 
     buildLoadOrder();
@@ -204,7 +302,7 @@ std::vector<std::string> Loader::computeLoadOrder() {
             order.push_back(id);
         }
     }
-    if (cycle) _debugPrint("dependency cycle detected, falling back to name order for cyclic mods");
+    if (cycle) _debugPrint("dependency cycle detected, falling back to id order for cyclic mods");
     return order;
 }
 
@@ -230,7 +328,7 @@ void Loader::buildLoadOrder() {
     loadOrder_ = computeLoadOrder();
 }
 
-void Loader::refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)() const,bool prependPath) {
+void Loader::refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)() const) {
     std::vector<std::string> failedMods;
     for (const std::string &name : loadOrder_) {
         auto modIterator = mods_.find(name);
@@ -248,19 +346,28 @@ void Loader::refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)(
             continue;
         }
         std::string scriptPath = RubyPaths::modScriptPath(folderName, modEntry);
+
+        if (scriptPath.empty()) {
+            _debugPrint(modName + ": entry '" + modEntry + "' points outside the mod folder, so it is not loaded");
+            continue;
+        }
+
         if (!fs::exists(scriptPath)) {
             _debugPrint("Couldnt find file for " + scriptPath + " for mod " + modName);
             continue;
         }
 
-        if (prependPath) {
-            std::string currentPath = luaState["package"]["path"];
-            luaState["package"]["path"] = RubyPaths::modsRoot() + "/" + folderName + "/?.lua;" + currentPath;
-        }
-
         sol::environment modEnv(luaState, sol::create, luaState.globals());
         modEnv["modId"] = modId;
         modEnv["pathName"] = folderName;
+        modEnv["require"] = makeModRequire(luaState, folderName);
+
+        if (mod.allowEval) {
+            if (&luaState == &luaServer) modEnv["load"] = m_serverLoad;
+            else if (&luaState == &luaStartup) modEnv["load"] = m_startupLoad;
+            else modEnv["load"] = m_clientLoad;
+        }
+
         sol::table modTable(luaState, sol::create);
         modTable["modId"] = modId;
         modTable["name"] = modName;
@@ -311,15 +418,15 @@ void Loader::refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)(
 }
 
 void Loader::refreshServerScripts() {
-    refresh(luaServer,&RubyMod::getServerEntry,true);
+    refresh(luaServer,&RubyMod::getServerEntry);
 }
 
 void Loader::refreshStartupScripts() {
-    refresh(luaStartup,&RubyMod::getStartupEntry,false);
+    refresh(luaStartup,&RubyMod::getStartupEntry);
 }
 
 void Loader::refreshClientScripts() {
-    refresh(luaClient,&RubyMod::getClientEntry,false);
+    refresh(luaClient,&RubyMod::getClientEntry);
 }
 
 void Loader::execute(sol::environment& (RubyMod::*getEnv)(), std::string funcName, bool warn) {

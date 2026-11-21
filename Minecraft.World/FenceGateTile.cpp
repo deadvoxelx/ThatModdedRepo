@@ -5,7 +5,7 @@
 #include "net.minecraft.h"
 #include "LevelEvent.h"
 
-FenceGateTile::FenceGateTile(int id) : DirectionalTile(id, Material::wood, isSolidRender() )
+FenceGateTile::FenceGateTile(int id, Material *material) : DirectionalTile(id, material != nullptr ? material : Material::wood, isSolidRender() )
 {
 }
 

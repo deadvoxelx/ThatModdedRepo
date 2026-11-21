@@ -693,21 +693,23 @@ Recipes::Recipes()
 		L'A');
 
 	addShapedRecipy(new ItemInstance(Item::gravititePendant, 1), //
-		L"ssscictg",
+		L"ssscicictg",
 		L"###", //
-		L"# #", //
+		L"#Z#", //
 		L" G ", //
 
 		L'#', Item::string,
+		L'Z', Item::zanitePendant,
 		L'G', Tile::enchantedGravitite,
 		L'A');
 
 	addShapedRecipy(new ItemInstance(Item::gravititeRing, 1), //
-		L"sssctg",
+		L"ssscictg",
 		L" G ", //
-		L"G G", //
+		L"GZG", //
 		L" G ", //
 
+		L'Z', Item::zaniteRing,
 		L'G', Tile::enchantedGravitite,
 		L'A');
 

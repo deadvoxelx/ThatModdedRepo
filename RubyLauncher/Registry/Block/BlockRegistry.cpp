@@ -11,6 +11,8 @@
 #include <algorithm>
 
 #include "Client/ModTile.h"
+#include "Client/ModTileShapes.h"
+#include "StoneSlabTileItem.h"
 #include "Common/ModPaths.h"
 #include "Host/RubyLauncherHost.h"
 #include "Registry/Item/ItemRegistry.h"
@@ -53,7 +55,15 @@ namespace
 		return -1;
 	}
 
-	ModTileTraits traitsFor(const BlockDefinition &def)
+	int lightLevelFor(const std::string &context, const char *option, int value, int fallback)
+	{
+		if (value >= 0 && value <= 15) return value;
+
+		Loader::_debugPrint("block '" + context + "': " + option + " must be from 0 to 15, using " + std::to_string(fallback));
+		return fallback;
+	}
+
+	ModTileTraits traitsFor(const BlockDefinition &def, const std::string &context)
 	{
 		ModTileTraits traits;
 
@@ -122,7 +132,47 @@ namespace
 		traits.dropChance = def.dropChance;
 		traits.dropNothing = def.dropNothing;
 
+		const int defaultBlocking = def.transparent ? 1 : 15;
+		traits.lightEmission = lightLevelFor(context, "lightEmission", def.lightEmission, 0);
+		traits.lightBlocking = (def.lightBlocking < 0) ? defaultBlocking : lightLevelFor(context, "lightBlocking", def.lightBlocking, defaultBlocking);
+
 		return traits;
+	}
+
+	enum EBlockShape
+	{
+		BlockShape_Block = 0,
+		BlockShape_Slab,
+		BlockShape_Stairs,
+		BlockShape_Fence,
+		BlockShape_FenceGate,
+	};
+
+	EBlockShape shapeForName(const std::string &name)
+	{
+		if (name.empty() || name == "block" || name == "cube")
+		{
+			return BlockShape_Block;
+		}
+		if (name == "slab" || name == "halfSlab" || name == "half_slab")
+		{
+			return BlockShape_Slab;
+		}
+		if (name == "stairs" || name == "stair")
+		{
+			return BlockShape_Stairs;
+		}
+		if (name == "fence")
+		{
+			return BlockShape_Fence;
+		}
+		if (name == "fenceGate" || name == "fence_gate" || name == "gate")
+		{
+			return BlockShape_FenceGate;
+		}
+
+		Loader::_debugPrint("unknown block shape '" + name + "' (expected block, slab, stairs, fence or fenceGate); using block");
+		return BlockShape_Block;
 	}
 }
 
@@ -185,6 +235,15 @@ BlockDefinition::BlockDefinition(sol::table table)
 
 	sol::optional<std::string> baseItemValue = table["baseItem"];
 	if (baseItemValue) baseItemType = baseItemTypeForName(baseItemValue.value());
+
+	sol::optional<std::string> shapeValue = table["shape"];
+	if (shapeValue) shape = shapeValue.value();
+
+	sol::optional<int> lightEmissionValue = table["lightEmission"];
+	if (lightEmissionValue) lightEmission = lightEmissionValue.value();
+
+	sol::optional<int> lightBlockingValue = table["lightBlocking"];
+	if (lightBlockingValue) lightBlocking = lightBlockingValue.value();
 }
 
 int BlockRegistry::maxBlockCount() {
@@ -231,12 +290,12 @@ int BlockRegistry::registerBlock(const std::wstring& path, const std::string& id
 	{
 		defCopy.dropId = -1;
 		PendingBlockDrop pending;
-		pending.tile = nullptr;
+		pending.sink = nullptr;
 		pending.drop = defCopy.drop;
 		pending.context = modId + ":" + id;
 		pendingDrops.push_back(pending);
 	}
-	ModTileTraits traits = traitsFor(defCopy);
+	ModTileTraits traits = traitsFor(defCopy, context);
 
 	if (!texturePath.empty())
 	{
@@ -276,19 +335,92 @@ int BlockRegistry::registerBlock(const std::wstring& path, const std::string& id
 
 	traits.transparent = def.transparent;
 
-	Tile *tile = new ModTile(tileId, traits);
-	tile->setDescriptionId(nameId);
+	ModDropSink *dropSink = nullptr;
+	Item *item = nullptr;
+
+	switch (shapeForName(def.shape))
+	{
+	case BlockShape_Slab:
+	{
+		const std::string fullKey = context + "_double";
+		int fullTileId = IDMapping::get()->pinnedId(fullKey);
+
+		if (fullTileId != -1 && !isBlockIdFree(fullTileId))
+		{
+			Loader::_debugPrint("slab '" + context + "': its double form was pinned to id " + std::to_string(fullTileId) + " but that slot is already taken; allocating a new id");
+			fullTileId = -1;
+		}
+
+		if (fullTileId == -1) fullTileId = nextItemId(fullKey);
+
+		if (fullTileId == -1)
+		{
+			Loader::_debugPrint("out of block ids (" + std::to_string(TILE_ID_MIN) + "-" + std::to_string(TILE_ID_MAX) + "), slab '" + context + "' needs a second id for its double form and was not registered");
+			return -1;
+		}
+
+		ModSlabTile *halfTile = new ModSlabTile(tileId, false, tileId, fullTileId, traits);
+		ModSlabTile *fullTile = new ModSlabTile(fullTileId, true, tileId, fullTileId, traits);
+
+		halfTile->setDescriptionId(nameId);
+		fullTile->setDescriptionId(nameId);
+
+		IDMapping::get()->add(modId, id + "_double", true, fullTileId);
+
+		dropSink = halfTile;
+		item = (new StoneSlabTileItem(tileId - 512, halfTile, fullTile, false))
+			->setIconName(traits.textureIconName.empty() ? traits.placeholderIconName : traits.textureIconName)
+			->setDescriptionId(nameId)
+			->setBaseItemTypeAndMaterial(traits.craftingCategory, traits.itemMaterial)
+			->setUseDescriptionId(IDS_DESC_STONE);
+		break;
+	}
+	case BlockShape_Stairs:
+	{
+		ModStairTile *stairTile = new ModStairTile(tileId, traits);
+		stairTile->setDescriptionId(nameId);
+		dropSink = stairTile;
+		break;
+	}
+	case BlockShape_Fence:
+	{
+		ModFenceTile *fenceTile = new ModFenceTile(tileId, traits);
+		fenceTile->setDescriptionId(nameId);
+		dropSink = fenceTile;
+		break;
+	}
+	case BlockShape_FenceGate:
+	{
+		ModFenceGateTile *gateTile = new ModFenceGateTile(tileId, traits);
+		gateTile->setDescriptionId(nameId);
+		dropSink = gateTile;
+		break;
+	}
+	case BlockShape_Block:
+	default:
+	{
+		ModTile *modTile = new ModTile(tileId, traits);
+		modTile->setDescriptionId(nameId);
+		dropSink = modTile;
+		break;
+	}
+	}
+
+	if (item == nullptr)
+	{
+		item = (new TileItem(tileId - 512))
+			->setIconName(traits.textureIconName.empty() ? traits.placeholderIconName : traits.textureIconName)
+			->setDescriptionId(nameId)
+			->setBaseItemTypeAndMaterial(traits.craftingCategory, traits.itemMaterial)
+			->setUseDescriptionId(IDS_DESC_STONE);
+	}
+
+	Item::items[tileId] = item;
 
 	if (defCopy.dropPending && !pendingDrops.empty())
 	{
-		pendingDrops.back().tile = static_cast<ModTile *>(tile);
+		pendingDrops.back().sink = dropSink;
 	}
-
-	Item::items[tileId] = (new TileItem(tileId - 512))
-		->setIconName(traits.textureIconName.empty() ? traits.placeholderIconName : traits.textureIconName)
-		->setDescriptionId(nameId)
-		->setBaseItemTypeAndMaterial(traits.craftingCategory, traits.itemMaterial)
-		->setUseDescriptionId(IDS_DESC_STONE);
 
 	ItemRegistry::langList[nameId] = wname;
 	IDMapping::get()->add(modId, id, true, tileId);
@@ -303,12 +435,12 @@ void BlockRegistry::finalizeDrops()
 {
 	for (const PendingBlockDrop &pending : pendingDrops)
 	{
-		if (pending.tile == nullptr) continue;
+		if (pending.sink == nullptr) continue;
 
 		IDMapping::MappedItem mapped = IDMapping::get()->getID(pending.drop);
 		if (mapped.id != 0)
 		{
-			pending.tile->setDropOverride(mapped.id, mapped.aux);
+			pending.sink->setDropOverride(mapped.id, mapped.aux);
 		}
 		else
 		{

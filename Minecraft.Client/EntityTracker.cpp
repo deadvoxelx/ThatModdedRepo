@@ -55,6 +55,7 @@ void EntityTracker::addEntity(shared_ptr<Entity> e)
     else if (e->instanceof(eTYPE_FIREBALL)) addEntity(e, 16 * 4, 10, false);
     else if (e->instanceof(eTYPE_SNOWBALL)) addEntity(e, 16 * 4, 10, true);
 	else if (e->instanceof(eTYPE_HELLSPHERE)) addEntity(e, 16 * 4, 10, true);
+	else if (e->instanceof(eTYPE_MODPROJECTILE)) addEntity(e, 16 * 4, 10, true);
 	//else if (e->instanceof(eTYPE_SLIMEBALL)) addEntity(e, 16 * 4, 10, true);
 	else if (e->instanceof(eTYPE_THROWNENDERPEARL)) addEntity(e, 16 * 4, 10, true);
 	else if (e->instanceof(eTYPE_EYEOFENDERSIGNAL)) addEntity(e, 16 * 4, 4, true);

@@ -478,6 +478,12 @@ void LivingEntity::readAdditionalSaveData(CompoundTag *tag)
 	hurtTime = tag->getShort(L"HurtTime");
 	deathTime = tag->getShort(L"DeathTime");
 	attackTime = tag->getShort(L"AttackTime");
+
+	if (instanceof(eTYPE_PLAYER) && getHealth() <= 0)
+	{
+		setHealth(getMaxHealth());
+		deathTime = 0;
+	}
 }
 
 void LivingEntity::tickEffects()

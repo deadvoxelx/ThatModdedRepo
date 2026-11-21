@@ -244,6 +244,7 @@ enum eINSTANCEOF
 			eTYPE_THROWNPOTION		= eTYPE_THROWABLE | 0x4,
 			eTYPE_THROWNEXPBOTTLE	= eTYPE_THROWABLE | 0x5,
 			eTYPE_HELLSPHERE		= eTYPE_THROWABLE | 0x6,
+			eTYPE_MODPROJECTILE		= eTYPE_THROWABLE | 0x7,
 			//eTYPE_SLIMEBALL			= eTYPE_THROWABLE | 0x7,
 
 
@@ -475,6 +476,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_NUSA_SPIKE			)->addParent( eTYPE_AMBIENT )->addParent(eTYPE_VALID_IN_SPAWNER_FLAG ) );
 
 		classes->push_back( SUBCLASS(eTYPE_HELLSPHERE			)->addParent( eTYPE_THROWABLE ) );
+		classes->push_back( SUBCLASS(eTYPE_MODPROJECTILE		)->addParent( eTYPE_THROWABLE ) );
 		//classes->push_back( SUBCLASS(eTYPE_SLIMEBALL			)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_ZEPHYRBALL			)->addParent( eTYPE_FIREBALL ) );
 		classes->push_back( SUBCLASS(eTYPE_DART					)->addParent( eTYPE_ENTITY )->addParent(eTYPE_PROJECTILE ) );
@@ -532,6 +534,7 @@ public:
 		classes->push_back( SUBCLASS(eTYPE_THROWNENDERPEARL		)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_THROWNPOTION			)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_THROWNEXPBOTTLE		)->addParent( eTYPE_THROWABLE ) );
+		classes->push_back( SUBCLASS(eTYPE_MODPROJECTILE		)->addParent( eTYPE_THROWABLE ) );
 		classes->push_back( SUBCLASS(eTYPE_HANGING_ENTITY		)->addParent( eTYPE_ENTITY ) );
 		classes->push_back( SUBCLASS(eTYPE_PAINTING				)->addParent( eTYPE_HANGING_ENTITY ) );
 		classes->push_back( SUBCLASS(eTYPE_ITEM_FRAME			)->addParent( eTYPE_HANGING_ENTITY ) );

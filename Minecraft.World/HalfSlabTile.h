@@ -23,8 +23,10 @@ public:
 	virtual int getSpawnResourcesAuxValue(int data);
 	virtual bool isCubeShaped();
 	virtual bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
-private:
-	static bool isHalfSlab(int tileId);
+
+protected:
+	virtual bool isHalfSlabTile(int tileId) const;
+
 public:
 	virtual int getAuxName(int auxValue) = 0;
 

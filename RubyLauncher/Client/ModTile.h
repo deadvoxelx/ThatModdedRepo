@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Facing.h"
 #include "IconRegister.h"
+#include "Random.h"
 #include "Registry/Dimension/PortalRegistry.h"
 #include <string>
 
@@ -28,9 +29,94 @@ struct ModTileTraits
     int dropMax = 1;
     float dropChance = 1.0f;
     bool dropNothing = false;
+
+    int lightEmission = 0;
+    int lightBlocking = 15;
 };
 
-class ModTile : public Tile {
+inline void modApplyLight(int id, const ModTileTraits &traits)
+{
+    Tile::lightEmission[id] = traits.lightEmission;
+    Tile::lightBlock[id] = traits.lightBlocking;
+
+    if (traits.lightBlocking == 0) Tile::propagate[id] = true;
+}
+
+class ModDropSink
+{
+public:
+    virtual ~ModDropSink() {}
+    virtual void setDropOverride(int newDropId, int newDropAux) = 0;
+};
+
+struct ModDrops
+{
+    int dropId = -1;
+    int dropAux = 0;
+    int dropMin = 1;
+    int dropMax = 1;
+    float dropChance = 1.0f;
+    bool dropNothing = false;
+
+    void load(const ModTileTraits &traits)
+    {
+        dropId = traits.dropId;
+        dropAux = traits.dropAux;
+        dropMin = traits.dropMin;
+        dropMax = traits.dropMax;
+        dropChance = traits.dropChance;
+        dropNothing = traits.dropNothing;
+    }
+
+    int resourceCount(Random *random) const
+    {
+        if (dropNothing) return 0;
+        if (dropMin >= dropMax) return dropMax;
+        return dropMin + random->nextInt(dropMax - dropMin + 1);
+    }
+
+    int resource(int selfId, Random *random) const
+    {
+        if (dropNothing) return 0;
+        if (dropId <= 0) return selfId;
+        if (dropChance >= 1.0f || random->nextFloat() < dropChance) return dropId;
+        return 0;
+    }
+
+    int spawnAux(int defaultAux) const
+    {
+        return dropId > 0 ? dropAux : defaultAux;
+    }
+};
+
+struct ModIcons
+{
+    std::wstring topName;
+    std::wstring bottomName;
+    Icon *topIcon = nullptr;
+    Icon *bottomIcon = nullptr;
+
+    void load(const ModTileTraits &traits)
+    {
+        topName = traits.topTextureIconName;
+        bottomName = traits.bottomTextureIconName;
+    }
+
+    void registerIcons(IconRegister *iconRegister)
+    {
+        if (!topName.empty()) topIcon = iconRegister->registerIcon(topName);
+        if (!bottomName.empty()) bottomIcon = iconRegister->registerIcon(bottomName);
+    }
+
+    Icon *texture(int face, Icon *base) const
+    {
+        if (face == Facing::UP && topIcon != nullptr) return topIcon;
+        if (face == Facing::DOWN && bottomIcon != nullptr) return bottomIcon;
+        return base;
+    }
+};
+
+class ModTile : public Tile, public ModDropSink {
 private:
     std::wstring topIconName;
     Icon *topIcon = nullptr;
@@ -63,11 +149,6 @@ public:
             setSoundType(traits.sound);
         }
 
-        if (transparent)
-        {
-            setLightBlock(1);
-        }
-
         dropId = traits.dropId;
         dropAux = traits.dropAux;
         dropMin = traits.dropMin;
@@ -76,6 +157,7 @@ public:
         dropNothing = traits.dropNothing;
 
         setBaseItemTypeAndMaterial(traits.craftingCategory, traits.itemMaterial);
+        modApplyLight(id, traits);
     }
 
     virtual int getResourceCount(Random *random)

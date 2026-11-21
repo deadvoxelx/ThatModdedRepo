@@ -42,6 +42,8 @@ public:
 	Throwable(Level *level, double x, double y, double z);
 
 protected:
+	Throwable(Level *level, shared_ptr<LivingEntity> mob, float throwPower);
+
 	virtual float getThrowPower();
 	virtual float getThrowUpAngleOffset();
 

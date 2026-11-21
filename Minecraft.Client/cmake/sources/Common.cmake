@@ -872,6 +872,8 @@ set(_MINECRAFT_CLIENT_COMMON_NET_MINECRAFT_CLIENT_RENDERER_ENTITY
   "${CMAKE_CURRENT_SOURCE_DIR}/ItemRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/ItemSpriteRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/ItemSpriteRenderer.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/ModProjectileRenderer.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/ModProjectileRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/LavaSlimeRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/LavaSlimeRenderer.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/LeashKnotRenderer.cpp"

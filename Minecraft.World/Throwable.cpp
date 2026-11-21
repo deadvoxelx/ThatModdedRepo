@@ -39,7 +39,11 @@ bool Throwable::shouldRenderAtSqrDistance(double distance)
 	return distance < size * size;
 }
 
-Throwable::Throwable(Level *level, shared_ptr<LivingEntity> mob) : Entity(level)
+Throwable::Throwable(Level *level, shared_ptr<LivingEntity> mob) : Throwable(level, mob, Throwable::getThrowPower())
+{
+}
+
+Throwable::Throwable(Level *level, shared_ptr<LivingEntity> mob, float throwPower) : Entity(level)
 {
 	_throwableInit();
 	owner = mob;
@@ -61,7 +65,7 @@ Throwable::Throwable(Level *level, shared_ptr<LivingEntity> mob) : Entity(level)
 	zd = (cos(yRot / 180 * PI) * cos(xRot / 180 * PI)) * speed;
 	yd = (-sin((xRot + getThrowUpAngleOffset()) / 180 * PI)) * speed;
 
-	shoot(xd, yd, zd, getThrowPower(), 1);
+	shoot(xd, yd, zd, throwPower, 1);
 }
 
 Throwable::Throwable(Level *level, double x, double y, double z) : Entity(level)

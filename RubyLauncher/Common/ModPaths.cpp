@@ -40,6 +40,33 @@ namespace
 		g_modsRootWide = executableDirectory() + L"\\mods";
 		g_modsRootNarrow = RubyPaths::toNarrow(g_modsRootWide);
 	}
+
+	bool isSafeFolderName(const std::string &folderName)
+	{
+		if (folderName.empty() || folderName == "." || folderName == "..") return false;
+
+		return folderName.find_first_of("/\\:") == std::string::npos;
+	}
+
+	bool isInsideFolder(const fs::path &candidate, const fs::path &folder)
+	{
+		std::error_code error;
+		const fs::path canonicalCandidate = fs::weakly_canonical(candidate, error);
+
+		if (error) return false;
+
+		const fs::path canonicalFolder = fs::weakly_canonical(folder, error);
+
+		if (error) return false;
+
+		const fs::path relative = canonicalCandidate.lexically_relative(canonicalFolder);
+
+		if (relative.empty()) return false;
+
+		const auto first = relative.begin();
+
+		return first != relative.end() && *first != "..";
+	}
 }
 
 const std::string &RubyPaths::modsRoot()
@@ -67,12 +94,28 @@ void RubyPaths::ensureModsFolderExists()
 
 std::string RubyPaths::modScriptPath(const std::string &folderName, const std::string &entry)
 {
-	return modsRoot() + "/" + folderName + "/" + entry;
+	if (!isSafeFolderName(folderName) || entry.empty()) return std::string();
+
+	const fs::path folder = fs::path(modsRoot()) / folderName;
+	const fs::path script = folder / entry;
+
+	if (!isInsideFolder(script, folder)) return std::string();
+
+	return script.string();
+}
+
+std::string RubyPaths::modRequirePath(const std::string &folderName)
+{
+	if (!isSafeFolderName(folderName)) return std::string();
+
+	const fs::path folder = fs::path(modsRoot()) / folderName;
+
+	return (folder / "?.lua").string() + ";" + (folder / "?" / "init.lua").string();
 }
 
 std::string RubyPaths::resolveModTexturePath(const std::string &folderName, const std::string &texturePath)
 {
-	if (folderName.empty() || texturePath.empty()) return std::string();
+	if (!isSafeFolderName(folderName) || texturePath.empty()) return std::string();
 
 	const fs::path folder = fs::path(modsRoot()) / folderName;
 	const fs::path given(texturePath);
@@ -92,6 +135,8 @@ std::string RubyPaths::resolveModTexturePath(const std::string &folderName, cons
 
 	for (const fs::path &candidate : candidates)
 	{
+		if (!isInsideFolder(candidate, folder)) continue;
+
 		std::error_code error;
 
 		if (fs::is_regular_file(candidate, error)) return candidate.string();

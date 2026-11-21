@@ -18,12 +18,22 @@
 #include "DurangoMedia/loc/strings.h"
 #endif
 
-int SaplingRegistry::registerSapling(const std::string &modId, const std::string &saplingId, const std::string &name, const std::wstring &modPath, const std::string &texturePath, const std::string &shape, const std::string &trunk, const std::string &leaves, int height)
+int SaplingRegistry::registerSapling(const std::string &modId, const std::string &saplingId, const std::string &name, const std::wstring &modPath, const std::string &texturePath, const std::string &shape, const std::string &trunk, const std::string &leaves, int height, const std::string &feature)
 {
 	const std::string context = modId + ":" + saplingId;
 
-	Feature *treeFeature = TreeFeatureRegistry::buildTreeFeature(shape, trunk, leaves, height, context);
-	if (treeFeature == nullptr) return -1;
+	std::string featureName;
+	if (!feature.empty())
+	{
+		featureName = (feature.find(':') == std::string::npos) ? modId + ":" + feature : feature;
+	}
+
+	Feature *treeFeature = nullptr;
+	if (featureName.empty())
+	{
+		treeFeature = TreeFeatureRegistry::buildTreeFeature(shape, trunk, leaves, height, context);
+		if (treeFeature == nullptr) return -1;
+	}
 
 	int tileId = IDMapping::get()->pinnedId(context);
 	if (tileId != -1 && !BlockRegistry::isBlockIdFree(tileId))
@@ -60,7 +70,7 @@ int SaplingRegistry::registerSapling(const std::string &modId, const std::string
 
 	const int nameId = ItemRegistry::nextItemNameId();
 
-	Tile *tile = new ModSaplingTile(tileId, icon, treeFeature);
+	Tile *tile = new ModSaplingTile(tileId, icon, treeFeature, featureName);
 	tile->setDescriptionId(nameId);
 
 	Item::items[tileId] = (new TileItem(tileId - 512))
@@ -74,7 +84,13 @@ int SaplingRegistry::registerSapling(const std::string &modId, const std::string
 	IDMapping::get()->add(modId, saplingId, true, tileId);
 
 	RubyCreative::addEntry(tileId, 0, RubyCreativeGroup_Decoration);
-	Loader::_debugPrint("registered sapling " + context + " as tile " + std::to_string(tileId) + " (grows a " + shape + " tree)");
-
+	if (featureName.empty())
+	{
+		Loader::_debugPrint("registered sapling " + context + " as tile " + std::to_string(tileId) + " (grows a " + shape + " tree)");
+	}
+	else
+	{
+		Loader::_debugPrint("registered sapling " + context + " as tile " + std::to_string(tileId) + " (grows feature " + featureName + ")");
+	}
 	return tileId;
 }

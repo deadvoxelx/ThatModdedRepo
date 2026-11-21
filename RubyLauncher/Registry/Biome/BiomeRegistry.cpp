@@ -4,6 +4,8 @@
 #include "Registry/IDs.h"
 #include "Biome.h"
 #include "Tile.h"
+#include "EntityIO.h"
+#include "MobCategory.h"
 #include <algorithm>
 #include <vector>
 
@@ -51,6 +53,78 @@ namespace
 			return -1;
 		}
 		return mapped.id;
+	}
+	
+	MobCategory *mobCategoryForName(const std::string &name)
+	{
+		if (name.empty() || name == "monster") return MobCategory::monster;
+		if (name == "creature") return MobCategory::creature;
+		if (name == "chicken") return MobCategory::creature_chicken;
+		if (name == "wolf") return MobCategory::creature_wolf;
+		if (name == "mushroomcow") return MobCategory::creature_mushroomcow;
+		if (name == "water") return MobCategory::waterCreature;
+		if (name == "ambient") return MobCategory::ambient;
+		return nullptr;
+	}
+
+	eINSTANCEOF mobTypeForName(const std::string &name)
+	{
+		if (name.empty()) return eTYPE_NOTSET;
+
+		std::wstring wide(name.begin(), name.end());
+
+		if (EntityIO::getEncodeId(EntityIO::getId(wide)) == wide) return EntityIO::getType(wide);
+
+		if (wide[0] >= 'a' && wide[0] <= 'z') wide[0] = static_cast<wchar_t>(wide[0] - 'a' + 'A');
+
+		if (EntityIO::getEncodeId(EntityIO::getId(wide)) == wide) return EntityIO::getType(wide);
+
+		return eTYPE_NOTSET;
+	}
+
+	bool resolveMobSpawns(const BiomeDefinition &definition, const std::string &context, std::vector<RubyMobSpawn> &resolved)
+	{
+		resolved.clear();
+
+		for (const BiomeMobSpawn &spawn : definition.mobSpawns)
+		{
+			const eINSTANCEOF type = mobTypeForName(spawn.mob);
+
+			if (type == eTYPE_NOTSET)
+			{
+				Loader::_debugPrint("biome " + context + ": unknown mob '" + spawn.mob + "' in mobSpawns; skipping it");
+				continue;
+			}
+
+			MobCategory *category = mobCategoryForName(spawn.category);
+
+			if (category == nullptr)
+			{
+				Loader::_debugPrint("biome " + context + ": unknown spawn category '" + spawn.category + "' for '" + spawn.mob + "'; use monster, creature, chicken, wolf, mushroomcow, water or ambient");
+				continue;
+			}
+
+			if (spawn.weight <= 0)
+			{
+				Loader::_debugPrint("biome " + context + ": '" + spawn.mob + "' has a spawn weight of " + std::to_string(spawn.weight) + "; it needs to be above 0, skipping it");
+				continue;
+			}
+
+			RubyMobSpawn entry;
+			entry.type = type;
+			entry.category = category;
+			entry.weight = spawn.weight;
+			entry.minCount = spawn.minCount < 1 ? 1 : spawn.minCount;
+			entry.maxCount = spawn.maxCount < entry.minCount ? entry.minCount : spawn.maxCount;
+
+			resolved.push_back(entry);
+		}
+		if (resolved.empty())
+		{
+			Loader::_debugPrint("biome " + context + ": mobSpawns named no usable mobs; keeping the default spawns");
+			return false;
+		}
+		return true;
 	}
 }
 
@@ -130,7 +204,29 @@ void BiomeRegistry::finalize()
 		RubyBiome *biome = new RubyBiome(nextId++);
 		const std::wstring name(definition.name.begin(), definition.name.end());
 		biome->applyDefinition(name, surface, filler, definition.depth, definition.scale, definition.temperature, definition.downfall, definition.snow, definition.rain, definition.grassColor, definition.foliageColor, definition.waterColor, definition.skyColor);
-		biome->setVegetationCounts(definition.grassCount, definition.flowerCount);
+		RubyDecoratorCounts counts;
+		counts.grass = definition.grassCount;
+		counts.flowers = definition.flowerCount;
+		counts.deadBushes = definition.deadBushCount;
+		counts.cacti = definition.cactusCount;
+		counts.reeds = definition.reedsCount;
+		counts.mushrooms = definition.mushroomCount;
+		counts.waterlilies = definition.waterlilyCount;
+		counts.sand = definition.sandCount;
+		counts.clay = definition.clayCount;
+		counts.gravel = definition.gravelCount;
+		biome->setVegetationCounts(counts);
+
+		if (!definition.mobSpawns.empty())
+		{
+			std::vector<RubyMobSpawn> spawns;
+
+			if (resolveMobSpawns(definition, context, spawns))
+			{
+				biome->setMobSpawns(spawns);
+				Loader::_debugPrint("biome " + context + ": " + std::to_string(spawns.size()) + " mob spawn entries of its own");
+			}
+		}
 
 		if (!definition.tallGrass.empty())
 		{

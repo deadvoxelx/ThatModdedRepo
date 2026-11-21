@@ -1103,6 +1103,8 @@ bool Tile::mayPick()
 }
 
 void Tile::tick(Level *level, int x, int y, int z, Random *random) {
+    if (!RubyLoader::hasBlockTickListeners()) return;
+
     if (ServerLevel* serverLevel = dynamic_cast<ServerLevel*>(level)) {
         RubyLoader::fireBlockTick(x, y, z, this->id, serverLevel);
     }

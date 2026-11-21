@@ -34,12 +34,20 @@
 #include "ServerLevel.h"
 #include "ServerPlayer.h"
 #include "TileItem.h"
+#include "ClientConnection.h"
+#include "CustomPayloadPacket.h"
+#include "DisconnectPacket.h"
+#include "Minecraft.h"
+#include "PlayerConnection.h"
 
 #include "json/json.hpp"
 
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <map>
+#include <sstream>
+#include <vector>
 
 namespace
 {
@@ -56,6 +64,182 @@ namespace
 
 	const int ARMOR_SET_FIRST_INDEX = 9;
 	std::vector<ArmorSet> g_armorSets;
+
+	const char *REGISTRY_CHANNEL = "registry";
+	const char *REGISTRY_REPLY_CHANNEL = "registry_reply";
+	const char *REGISTRY_HEADER = "ruby-registry 1";
+
+	using RegistryEntries = std::map<std::string, std::pair<int, std::string>>;
+
+	std::string registrySnapshot()
+	{
+		std::vector<std::string> lines;
+
+		for (const auto &entry : IDMapping::get()->stringToID)
+		{
+			lines.push_back(entry.first + "\t" + std::to_string(entry.second.id) + "\t" + (entry.second.isBlock ? "block" : "item"));
+		}
+
+		std::sort(lines.begin(), lines.end());
+
+		std::string snapshot = std::string(REGISTRY_HEADER) + "\n";
+
+		for (const std::string &line : lines) snapshot += line + "\n";
+
+		return snapshot;
+	}
+
+	bool parseRegistrySnapshot(const std::string &snapshot, RegistryEntries &entries)
+	{
+		entries.clear();
+
+		std::istringstream stream(snapshot);
+		std::string line;
+
+		if (!std::getline(stream, line)) return false;
+
+		if (line != REGISTRY_HEADER) return false;
+
+		while (std::getline(stream, line))
+		{
+			const size_t firstTab = line.find('\t');
+			if (firstTab == std::string::npos) continue;
+
+			const size_t secondTab = line.find('\t', firstTab + 1);
+			if (secondTab == std::string::npos) continue;
+
+			try
+			{
+				entries[line.substr(0, firstTab)] = { std::stoi(line.substr(firstTab + 1, secondTab - firstTab - 1)), line.substr(secondTab + 1) };
+			}
+			catch (const std::exception &)
+			{
+			}
+		}
+		return true;
+	}
+
+	std::string registryMismatch(const RegistryEntries &remote, const RegistryEntries &local)
+	{
+		std::vector<std::string> differences;
+
+		for (const auto &entry : local)
+		{
+			auto found = remote.find(entry.first);
+
+			if (found == remote.end()) differences.push_back("'" + entry.first + "' only exists here");
+			else if (found->second.first != entry.second.first) differences.push_back("'" + entry.first + "' is id " + std::to_string(entry.second.first) + " here but " + std::to_string(found->second.first) + " there");
+			else if (found->second.second != entry.second.second) differences.push_back("'" + entry.first + "' is a " + entry.second.second + " here but a " + found->second.second + " there");
+		}
+
+		for (const auto &entry : remote)
+		{
+			if (local.find(entry.first) == local.end()) differences.push_back("'" + entry.first + "' only exists on the other side");
+		}
+
+		if (differences.empty()) return std::string();
+
+		const size_t limit = 8;
+		std::string description;
+
+		for (size_t i = 0; i < differences.size() && i < limit; ++i)
+		{
+			if (i > 0) description += "; ";
+			description += differences[i];
+		}
+
+		if (differences.size() > limit) description += "; and " + std::to_string(differences.size() - limit) + " more";
+
+		return description;
+	}
+
+	ClientConnection *primaryConnection(Minecraft *minecraft)
+	{
+		if (minecraft == nullptr || minecraft->localplayers[0] == nullptr) return nullptr;
+
+		return minecraft->getConnection(0);
+	}
+
+	void sendRegistrySnapshot(PlayerConnection &connection, const char *channel, const std::string &snapshot)
+	{
+		connection.send(std::make_shared<CustomPayloadPacket>(RubyPaths::toWide(std::string("ruby:") + channel), stringToByteArray(snapshot)));
+	}
+
+	RegistryEntries localRegistryEntries()
+	{
+		RegistryEntries entries;
+
+		parseRegistrySnapshot(registrySnapshot(), entries);
+
+		return entries;
+	}
+
+	void checkClientRegistry(ServerPlayer *player, const std::string &clientSnapshot)
+	{
+		RegistryEntries clientEntries;
+
+		if (!parseRegistrySnapshot(clientSnapshot, clientEntries))
+		{
+			Loader::_debugPrint("ignoring a mod id payload without the '" + std::string(REGISTRY_HEADER) + "' header");
+			return;
+		}
+
+		const RegistryEntries serverEntries = localRegistryEntries();
+
+		if (serverEntries.empty() || clientEntries.empty())
+		{
+			Loader::_debugPrint(std::string("skipping the mod id check, ") + (serverEntries.empty() ? "this server" : "the client") + " registered no mod ids");
+			return;
+		}
+
+		const std::string mismatch = registryMismatch(clientEntries, serverEntries);
+
+		if (mismatch.empty())
+		{
+			Loader::_debugPrint("client mod ids match the server's");
+			return;
+		}
+
+		Loader::_debugPrint("refusing a client whose mod ids do not match: " + mismatch);
+
+		if (player->connection == nullptr) return;
+
+		sendRegistrySnapshot(*player->connection, REGISTRY_REPLY_CHANNEL, registrySnapshot());
+		player->connection->disconnect(DisconnectPacket::eDisconnect_Kicked);
+	}
+
+	void checkServerRegistry(const std::string &serverSnapshot)
+	{
+		RegistryEntries serverEntries;
+
+		if (!parseRegistrySnapshot(serverSnapshot, serverEntries))
+		{
+			Loader::_debugPrint("ignoring a mod id payload without the '" + std::string(REGISTRY_HEADER) + "' header");
+			return;
+		}
+
+		const RegistryEntries clientEntries = localRegistryEntries();
+
+		if (serverEntries.empty() || clientEntries.empty())
+		{
+			Loader::_debugPrint(std::string("skipping the mod id check, ") + (clientEntries.empty() ? "this client" : "the server") + " registered no mod ids");
+			return;
+		}
+
+		const std::string mismatch = registryMismatch(serverEntries, clientEntries);
+
+		if (mismatch.empty())
+		{
+			Loader::_debugPrint("this client's mod ids match the server's");
+			return;
+		}
+
+		Loader::_debugPrint("this client does not match the server's mod ids: " + mismatch);
+
+		ClientConnection *connection = primaryConnection(Minecraft::GetInstance());
+
+		if (connection != nullptr && !connection->isClosed()) connection->onDisconnect(DisconnectPacket::eDisconnect_Kicked, nullptr);
+	}
 
 	std::string toForwardSlashes(const std::string &path)
 	{
@@ -184,6 +368,8 @@ void RubyLoader::onClientBoot()
 	BiomeRegistry::finalize();
 	DimensionRegistry::finalize();
 	PortalRegistry::finalize();
+
+	IDMapping::get()->saveRegistry();
 }
 
 void RubyLoader::onStringTableReloaded()
@@ -203,10 +389,38 @@ void RubyLoader::onClientTick()
 {
 	if (g_loader == nullptr) return;
 	g_loader->tickClient();
+
+	static bool registrySent = false;
+
+	Minecraft *minecraft = Minecraft::GetInstance();
+	ClientConnection *connection = primaryConnection(minecraft);
+
+	if (minecraft == nullptr || minecraft->level == nullptr || connection == nullptr || connection->isClosed())
+	{
+		registrySent = false;
+		return;
+	}
+
+	if (registrySent) return;
+
+	connection->send(std::make_shared<CustomPayloadPacket>(RubyPaths::toWide(std::string("ruby:") + REGISTRY_CHANNEL), stringToByteArray(registrySnapshot())));
+	registrySent = true;
 }
 
 void RubyLoader::onModNetPacket(ServerPlayer *player, const std::string &channel, const std::string &data)
 {
+	if (player != nullptr && channel == REGISTRY_CHANNEL)
+	{
+		checkClientRegistry(player, data);
+		return;
+	}
+
+	if (player == nullptr && channel == REGISTRY_REPLY_CHANNEL)
+	{
+		checkServerRegistry(data);
+		return;
+	}
+
 	if (player != nullptr)
 	{
 		ModNetBus::Get().fireServer(player, channel, data);
@@ -238,6 +452,8 @@ void RubyLoader::onServerStart(MinecraftServer *server)
 	OreFeatureRegistry::finalize();
 	TreeFeatureRegistry::finalize();
 	FeatureRegistry::finalize();
+
+	IDMapping::get()->saveRegistry();
 }
 
 int RubyLoader::getModCount()
@@ -363,10 +579,10 @@ bool RubyLoader::firePlayerBlockPlace(ServerPlayer *player, int x, int y, int z,
 
 bool RubyLoader::firePlayerHurt(ServerPlayer* plr, ServerLevel* level, DamageSource* src, int dmg)
 {
-    if (plr != nullptr && level != nullptr) {
-        PlayerHurtEvent event(plr, level, src, dmg);
-        return EventBus::Get().fire(event);
-    }
+    if (plr == nullptr || level == nullptr) return false;
+
+    PlayerHurtEvent event(plr, level, src, dmg);
+    return EventBus::Get().fire(event);
 }
 
 void RubyLoader::fireItemCompleteUse(ItemInstance *item, ServerLevel *level, ServerPlayer *player)
@@ -393,7 +609,13 @@ void RubyLoader::fireItemTick(ItemInstance *item, ServerLevel *level, ServerPlay
     EventBus::Get().fire(event);
 }
 
-void RubyLoader::fireBlockTick(int x, int y, int z, int blockId, ServerLevel* level) {
+bool RubyLoader::hasBlockTickListeners()
+{
+    return EventBus::Get().hasListeners(BlockTickEvent::NAME);
+}
+
+void RubyLoader::fireBlockTick(int x, int y, int z, int blockId, ServerLevel* level)
+{
     if (level == nullptr) return;
 
     BlockTickEvent event(x, y, z, blockId, level);

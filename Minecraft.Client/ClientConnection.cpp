@@ -22,7 +22,8 @@
 #include "../Minecraft.World/net.minecraft.world.entity.npc.h"
 #include "../Minecraft.World/net.minecraft.world.entity.item.h"
 #include "../Minecraft.World/net.minecraft.world.entity.projectile.h"
-#include "..\Minecraft.World\EntityCrystal.h"
+#include "../Minecraft.World/EntityCrystal.h"
+#include "../Minecraft.World/ModProjectile.h"
 #include "../Minecraft.World/net.minecraft.world.entity.global.h"
 #include "../Minecraft.World/net.minecraft.world.entity.boss.enderdragon.h"
 #include "../Minecraft.World/net.minecraft.world.entity.monster.h"
@@ -560,6 +561,14 @@ void ClientConnection::handleAddEntity(shared_ptr<AddEntityPacket> packet)
 	case AddEntityPacket::HELLSPHERE:
 		e = std::make_shared<HellSphere>(level, x, y, z);
 		break;
+
+	case AddEntityPacket::MODPROJECTILE:
+		{
+			shared_ptr<ModProjectile> projectile = std::make_shared<ModProjectile>(level, x, y, z);
+			projectile->setSpecId(packet->data);
+			e = projectile;
+			break;
+		}
 
 	case AddEntityPacket::ITEM_FRAME:
 		{

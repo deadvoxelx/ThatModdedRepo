@@ -26,7 +26,9 @@ void ModNetBus::fireServer(ServerPlayer* player, const std::string& channel, con
     auto it = m_serverListeners.find(channel);
     if (it == m_serverListeners.end()) return;
     ModNetEvent event{ player, channel, data };
-    for (auto& fn : it->second)
+
+    std::vector<Listener> listeners = it->second;
+    for (auto& fn : listeners)
     {
         if (!fn.valid()) continue;
         auto result = fn(&event);
@@ -42,7 +44,9 @@ void ModNetBus::fireClient(const std::string& channel, const std::string& data)
     auto it = m_clientListeners.find(channel);
     if (it == m_clientListeners.end()) return;
     ModNetEvent event{ nullptr, channel, data };
-    for (auto& fn : it->second)
+
+    std::vector<Listener> listeners = it->second;
+    for (auto& fn : listeners)
     {
         if (!fn.valid()) continue;
         auto result = fn(&event);

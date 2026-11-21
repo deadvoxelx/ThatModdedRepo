@@ -10,7 +10,7 @@ int StairTile::DEAD_SPACES[8][2] = {
 	{0, 4}, {1, 5}, {0, 1}, {4, 5}
 };
 
-StairTile::StairTile(int id, Tile *base,int basedata) : Tile(id, base->material, isSolidRender())
+StairTile::StairTile(int id, Tile *base,int basedata, Material *material) : Tile(id, material != nullptr ? material : base->material, isSolidRender())
 {
 	this->base = base;
 	this->basedata = basedata;

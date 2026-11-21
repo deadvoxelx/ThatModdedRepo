@@ -80,6 +80,7 @@ namespace RubyLoader
 	void fireItemCompleteUse(ItemInstance *item, ServerLevel *level, ServerPlayer *player);
 	void fireItemInteract(ItemInstance *item, ServerLevel *level, ServerPlayer *player);
 	void fireItemTick(ItemInstance *item, ServerLevel *level, ServerPlayer *player, int slot);
+    bool hasBlockTickListeners();
     void fireBlockTick(int x, int y, int z, int blockId, ServerLevel* level);
     void fireBlockUse(int x, int y, int z, int blockId, ServerLevel* level, ServerPlayer* player);
 	void fireItemInteractEntity(ItemInstance *item, Entity *entity);

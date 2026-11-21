@@ -114,17 +114,17 @@ bool HalfSlabTile::shouldRenderFace(LevelSource *level, int x, int y, int z, int
 	{
 		if (face == Facing::DOWN) return true;
 		if (face == Facing::UP && Tile::shouldRenderFace(level, x, y, z, face)) return true;
-		return !(isHalfSlab(level->getTile(x, y, z)) && (level->getData(x, y, z) & TOP_SLOT_BIT) != 0);
+		return !(isHalfSlabTile(level->getTile(x, y, z)) && (level->getData(x, y, z) & TOP_SLOT_BIT) != 0);
 	} 
 	else 
 	{
 		if (face == Facing::UP) return true;
 		if (face == Facing::DOWN && Tile::shouldRenderFace(level, x, y, z, face)) return true;
-		return !(isHalfSlab(level->getTile(x, y, z)) && (level->getData(x, y, z) & TOP_SLOT_BIT) == 0);
+		return !(isHalfSlabTile(level->getTile(x, y, z)) && (level->getData(x, y, z) & TOP_SLOT_BIT) == 0);
 	}
 }
 
-bool HalfSlabTile::isHalfSlab(int tileId) 
+bool HalfSlabTile::isHalfSlabTile(int tileId) const
 {
 	return tileId == Tile::stoneSlabHalf_Id || tileId == Tile::woodSlabHalf_Id;
 }
@@ -136,7 +136,7 @@ int HalfSlabTile::cloneTileData(Level *level, int x, int y, int z)
 
 int HalfSlabTile::cloneTileId(Level *level, int x, int y, int z)
 {
-	if (isHalfSlab(id))
+	if (isHalfSlabTile(id))
 	{
 		return id;
 	}

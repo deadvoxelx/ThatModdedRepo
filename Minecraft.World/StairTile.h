@@ -29,7 +29,7 @@ private:
 	int clipStep;
 
 protected:
-	StairTile(int id, Tile *base, int basedata);
+	StairTile(int id, Tile *base, int basedata, Material *material = nullptr);
 
 public:
 	void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param

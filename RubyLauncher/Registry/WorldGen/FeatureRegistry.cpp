@@ -11,6 +11,7 @@
 #include "net.minecraft.world.level.dimension.h"
 #include <algorithm>
 #include <map>
+#include <set>
 #include <utility>
 
 namespace
@@ -340,6 +341,30 @@ void FeatureRegistry::decorateChunk(Level *level, Random *random, int xo, int zo
 			applyBlocks(level, context);
 		}
 	}
+}
+
+bool FeatureRegistry::place(const std::string &name, Level *level, Random *random, int x, int y, int z)
+{
+	if (level == nullptr || random == nullptr) return false;
+
+	for (const PlacedFeature &feature : g_placed)
+	{
+		if (feature.name != name) continue;
+
+		FeatureContext context(level, random, x, y, z);
+		if (!feature.builder(context)) return false;
+		if (exceedsWorldHeight(context)) return false;
+
+		applyBlocks(level, context);
+		return true;
+	}
+
+	static std::set<std::string> reported;
+	if (reported.insert(name).second)
+	{
+		Loader::_debugPrint("feature '" + name + "': no feature with that name was registered, it cannot be grown");
+	}
+	return false;
 }
 
 int FeatureRegistry::blockId(const std::string &name)

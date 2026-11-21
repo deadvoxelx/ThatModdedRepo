@@ -711,9 +711,9 @@ void Item::staticCtor()
 	Item::moaEggBlue = (new Item(242))																->setIconName(L"moaEggBlue")->setDescriptionId(IDS_ITEM_MOAEGG_BLUE)->setUseDescriptionId(IDS_ITEM_MOAEGG_BLUE);
 	Item::moaEggWhite = (new Item(243))																->setIconName(L"moaEggWhite")->setDescriptionId(IDS_ITEM_MOAEGG_WHITE)->setUseDescriptionId(IDS_ITEM_MOAEGG_WHITE);
 	Item::moaEggBlack = (new Item(244))																->setIconName(L"moaEggBlack")->setDescriptionId(IDS_ITEM_MOAEGG_BLACK)->setUseDescriptionId(IDS_ITEM_MOAEGG_BLACK);
-	Item::keyBronze = (new Item(245))																->setIconName(L"keyBronze")->setDescriptionId(IDS_ITEM_KEY_BRONZE)->setUseDescriptionId(IDS_ITEM_KEY_BRONZE);
-	Item::keySilver = (new Item(246))																->setIconName(L"keySilver")->setDescriptionId(IDS_ITEM_KEY_SILVER)->setUseDescriptionId(IDS_ITEM_KEY_SILVER);
-	Item::keyGold = (new Item(247))																	->setIconName(L"keyGold")->setDescriptionId(IDS_ITEM_KEY_GOLD)->setUseDescriptionId(IDS_ITEM_KEY_GOLD);
+	Item::keyBronze = (new Item(245))																->setIconName(L"keyBronze")->setDescriptionId(IDS_ITEM_KEY_BRONZE)->setUseDescriptionId(IDS_ITEM_KEY_BRONZE)->setFireImmune();
+	Item::keySilver = (new Item(246))																->setIconName(L"keySilver")->setDescriptionId(IDS_ITEM_KEY_SILVER)->setUseDescriptionId(IDS_ITEM_KEY_SILVER)->setFireImmune();
+	Item::keyGold = (new Item(247))																	->setIconName(L"keyGold")->setDescriptionId(IDS_ITEM_KEY_GOLD)->setUseDescriptionId(IDS_ITEM_KEY_GOLD)->setFireImmune();
 	Item::cloudParachute = (CloudParachuteItem *)(new CloudParachuteItem(248))						->setIconName(L"cloudParachute")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool,	eMaterial_cloud)->setDescriptionId(IDS_ITEM_CLOUD_PARACHUTE)->setUseDescriptionId(IDS_ITEM_CLOUD_PARACHUTE);
 	Item::vampireBlade = ( new WeaponItem(254, _Tier::VAMPIRE) )									->setBaseItemTypeAndMaterial(eBaseItemType_sword,	eMaterial_endorium)->setIconName(L"vampireSword")->setDescriptionId(IDS_ITEM_VAMPIRE_BLADE)->setUseDescriptionId(IDS_ITEM_VAMPIRE_BLADE);
 	Item::staffShard = (new Item(255))																->setIconName(L"staffShard")->setDescriptionId(IDS_ITEM_STAFF_SHARD)->setUseDescriptionId(IDS_ITEM_STAFF_SHARD)->setFireImmune()->setBlastImmune();
@@ -722,7 +722,7 @@ void Item::staticCtor()
 	Item::nusaShard = (new SimpleFoiledItem(258))													->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_nusa)->setIconName(L"nusaShard")->setDescriptionId(IDS_ITEM_NUSA_SHARD)->setUseDescriptionId(IDS_ITEM_NUSA_SHARD)->setFireImmune()->setBlastImmune();
 	Item::endothaniumIngot = (new Item(259))														->setIconName(L"endothanium")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_endorium)->setDescriptionId(IDS_ITEM_ENDOTHANIUM)->setUseDescriptionId(IDS_ITEM_ENDOTHANIUM)->setFireImmune()->setBlastImmune();
 	Item::shellFossil = (new Item(260))																->setIconName(L"shellFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_SHELL_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
-	Item::fireFossil = (new Item(261))																->setIconName(L"fireFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_FIRE_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
+	Item::fireFossil = (new Item(261))																->setIconName(L"fireFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_FIRE_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL)->setFireImmune();
 	Item::airFossil = (new Item(262))																->setIconName(L"airFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_AIR_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 	Item::ribFossil = (new Item(263))																->setIconName(L"ribFossil")->setBaseItemTypeAndMaterial(eBaseItemType_treasure,    eMaterial_fossil)->setDescriptionId(IDS_ITEM_RIB_FOSSIL)->setUseDescriptionId(IDS_DESC_FOSSIL);
 	Item::ironBubble = (new Item(264))																->setIconName(L"ironBubble")->setBaseItemTypeAndMaterial(eBaseItemType_accessory,    eMaterial_iron)->setDescriptionId(IDS_ITEM_IRON_BUBBLE)->setUseDescriptionId(IDS_ITEM_IRON_BUBBLE)->setMaxStackSize(1)->setAccessory();

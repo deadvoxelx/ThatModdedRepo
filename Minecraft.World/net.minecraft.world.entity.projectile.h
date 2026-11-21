@@ -30,3 +30,4 @@
 #include "DartEnchanted.h"
 #include "DartNethanium.h"
 #include "EntityCrystal.h"
+#include "ModProjectile.h"

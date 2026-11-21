@@ -325,6 +325,20 @@ mainloop: continue;
 
 		return true;
 	}
+
+	Tile *customTile = (tile > 0 && tile < Tile::TILE_NUM_COUNT) ? Tile::tiles[tile] : nullptr;
+	if (customTile != nullptr && customTile->canBonemeal(level, x, y, z))
+	{
+		if (!bTestUseOnOnly)
+		{
+			if (!level->isClientSide)
+			{
+				customTile->bonemeal(level, x, y, z, level->random);
+				itemInstance->count--;
+			}
+		}
+		return true;
+	}
 	return false;
 }
 

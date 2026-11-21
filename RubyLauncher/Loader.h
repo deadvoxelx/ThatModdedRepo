@@ -24,7 +24,7 @@ public:
 
     static void log(const std::string &message);
 
-    void refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)() const,bool prependPath = false);
+    void refresh(sol::state& luaState,std::string_view (RubyMod::*getEntry)() const);
     void execute(sol::environment& (RubyMod::*getEnv)(), std::string funcName, bool warn);
 
     void refreshServerScripts();
@@ -47,6 +47,9 @@ public:
     sol::state luaServer;
     sol::state luaStartup;
     sol::state luaClient;
+    sol::protected_function m_serverLoad;
+    sol::protected_function m_startupLoad;
+    sol::protected_function m_clientLoad;
     Scheduler m_serverScheduler;
     Scheduler m_clientScheduler;
     ModCommandRegistry m_commandRegistry;

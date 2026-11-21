@@ -27,6 +27,7 @@ public:
     static std::string registryPath();
     void loadRegistry();
     void saveRegistry();
+    bool isUsable() const;
     int pinnedId(const std::string &key) const;
     bool isReservedByOther(int id, const std::string &key) const;
 
@@ -41,6 +42,10 @@ public:
 
 private:
     std::map<std::string, MappedItem> pinned_;
+
+    bool dirty_ = false;
+    bool usable_ = true;
+    bool skipBackup_ = false;
     IDMapping() = default;
     IDMapping(const IDMapping&) = delete;
     IDMapping& operator=(const IDMapping&) = delete;

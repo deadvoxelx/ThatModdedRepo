@@ -1,0 +1,6 @@
+{
+  "name": "Dynamite Mod",
+  "version": "1.0.0",
+  "modId": "dynamiteMod",
+  "startupMain": "module/startup.lua"
+}

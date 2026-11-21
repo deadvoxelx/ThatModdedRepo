@@ -21,6 +21,7 @@
 #include "ItemTypes/ModHoeItem.h"
 #include "ItemTypes/ModPickaxeItem.h"
 #include "ItemTypes/ModShovelItem.h"
+#include "ItemTypes/ModThrowableItem.h"
 #include "ItemTypes/ModWeaponItem.h"
 #include "ModItem.hpp"
 
@@ -57,6 +58,8 @@ public:
 
                 return food;
             }
+            case EBaseItem::Throwable:
+                return (new ModThrowableItem(id, def));
             case EBaseItem::Default:
             default:
                 return (new ModItem(id, def));

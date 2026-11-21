@@ -13,8 +13,11 @@ private:
     sol::environment clientEnv;
 
     std::string pathName;
+
 public:
     Mapping metadata;
+
+    bool allowEval = false;
 
     RubyMod() = default;
     ~RubyMod() = default;

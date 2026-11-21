@@ -15,7 +15,7 @@ public:
 
 	static const unsigned int FENCE_NAMES[7];
 
-	FenceTile(int id, Tile *baseTile);
+	FenceTile(int id, Tile *baseTile, Material *material = nullptr);
 	Icon *getTexture(int face, int data);
 	virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source);
 	virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>()); // 4J added forceData, forceEntity param
