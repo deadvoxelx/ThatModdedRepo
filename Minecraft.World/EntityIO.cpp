@@ -9,6 +9,7 @@
 #include "Nusagar.h"
 #include "NusaSpike.h"
 #include "EntityCrystal.h"
+#include "ModProjectile.h"
 #include "net.minecraft.world.entity.ambient.h"
 #include "net.minecraft.world.entity.animal.h"
 #include "net.minecraft.world.entity.item.h"
@@ -121,6 +122,7 @@ void EntityIO::staticCtor()
 	setId(Moobloom::create, eTYPE_MOOBLOOM, L"Moobloom", 112, eMinecraftColour_Mob_Blaze_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_MOOBLOOM);
 	setId(Sheepuff::create, eTYPE_SHEEPUFF, L"Sheepuff", 113, eMinecraftColour_Mob_Sheep_Colour1, eMinecraftColour_Mob_Ghast_Colour2, IDS_SHEEPUFF);
 	setId(FlyingCow::create, eTYPE_FLYING_COW, L"FlyingCow", 114, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_LavaSlime_Colour2, IDS_FLYING_COW);
+	setId(ModProjectile::create, eTYPE_MODPROJECTILE, L"ModProjectile", 115);
 	setId(Zephyr::create, eTYPE_ZEPHYR, L"Zephyr", 116, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Ghast_Colour1, IDS_ZEPHYR);
 	setId(ZephyrFireball::create, eTYPE_ZEPHYRBALL, L"Zephyrball", 117);
 	setId(Aerwhale::create, eTYPE_AERWHALE, L"Aerwhale", 118, eMinecraftColour_Mob_Ghast_Colour1, eMinecraftColour_Mob_Zombie_Colour1, IDS_AERWHALE);

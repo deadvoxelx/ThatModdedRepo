@@ -341,6 +341,7 @@ set(_MINECRAFT_SERVER_COMMON_ROOT
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/ItemInHandRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/ItemRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/ItemSpriteRenderer.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/ModProjectileRenderer.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/JoinMultiplayerScreen.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/KeyMapping.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/../Minecraft.Client/LargeChestModel.cpp"

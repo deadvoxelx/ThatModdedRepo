@@ -1,0 +1,7 @@
+{
+  "name": "Haunted Forest",
+  "version": "1.0.0",
+  "modId": "hauntedForest",
+  "serverMain": "module/server.lua",
+  "startupMain": "module/startup.lua"
+}

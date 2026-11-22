@@ -7,6 +7,8 @@
 #include "ItemFactory.h"
 #include "Loader.h"
 #include "ModItem.hpp"
+#include "../Projectile/ModProjectileLuaHooks.h"
+#include "../Projectile/ModProjectileRegistry.h"
 #include "Registry/IDs.h"
 #include "TierRegistry.h"
 
@@ -44,6 +46,8 @@ namespace
 			return IDS_DESC_BREAD;
 		case EBaseItem::Food_Fruit:
 			return IDS_DESC_APPLE;
+		case EBaseItem::Throwable:
+			return IDS_DESC_SNOWBALL;
 		case EBaseItem::Default:
 		default:
 			return IDS_DESC_STICK;
@@ -63,6 +67,7 @@ namespace
 		case EBaseItem::Chestplate:
 		case EBaseItem::Leggings:
 		case EBaseItem::Boots:
+		case EBaseItem::Throwable:
 			return RubyCreativeGroup_Tools;
 		case EBaseItem::Food:
 		case EBaseItem::Food_Fruit:
@@ -168,6 +173,11 @@ int ItemRegistry::registerItem(const std::wstring& path, const std::string& id, 
         else Loader::_debugPrint("item '" + id + "': unknown custom tier handle " + std::to_string(resolved.tierIndex));
     }
 
+    if (resolved.type == EBaseItem::Throwable && !resolved.hasProjectileSpec && resolved.projectile != "snowball" && resolved.projectile != "hellsphere")
+    {
+        Loader::_debugPrint("item '" + context + "': projectile must be a table, \"snowball\" or \"hellsphere\"" + (resolved.projectile.empty() ? std::string(" (none given)") : " (got \"" + resolved.projectile + "\")") + "; it will throw a snowball");
+    }
+
     Item *item = ItemFactory::create(resolved, itemId - 512);
 
     if (item == nullptr) {
@@ -192,6 +202,44 @@ int ItemRegistry::registerItem(const std::wstring& path, const std::string& id, 
 
     item->setIconName(iconName)->setDescriptionId(nameId)->setUseDescriptionId(useDescriptionFor(def.type));
 
+    if (resolved.type == EBaseItem::Throwable && resolved.hasProjectileSpec)
+    {
+        ModProjectileSpec spec = resolved.projectileSpec;
+        spec.id = context;
+        spec.iconItemId = itemId;
+
+        const int particleType = ModProjectileRegistry::particleTypeFor(spec.particle);
+        if (particleType < 0)
+        {
+            Loader::_debugPrint("item '" + context + "': unknown projectile particle '" + spec.particle + "', using snowballpoof");
+        }
+        else
+        {
+            spec.particleType = particleType;
+        }
+
+        if (!spec.trail.empty())
+        {
+            const int trailType = ModProjectileRegistry::particleTypeFor(spec.trail);
+            if (trailType < 0)
+            {
+                Loader::_debugPrint("item '" + context + "': unknown projectile trail particle '" + spec.trail + "', no trail will be emitted");
+            }
+            else
+            {
+                spec.trailParticleType = trailType;
+            }
+        }
+
+        ModThrowableItem *throwable = dynamic_cast<ModThrowableItem *>(item);
+        if (throwable != nullptr)
+        {
+            const int specId = ModProjectileRegistry::add(spec);
+            throwable->setProjectileSpecId(specId);
+            ModProjectileLuaHooks::registerHooks(specId, resolved.projectileOnHit, resolved.projectileOnTick);
+        }
+    }
+
     if (isArmor)
     {
         item->setBaseItemTypeAndMaterial(baseItemTypeFor(def.type), armorMaterialTypeFor(def.armorMaterial));
@@ -210,6 +258,11 @@ int ItemRegistry::registerItem(const std::wstring& path, const std::string& id, 
     {
         const int material = (def.material != ItemMaterial_Undefined) ? itemMaterialFor(def.material) : Item::eMaterial_iron;
         item->setBaseItemTypeAndMaterial(Item::eBaseItemType_treasure, material);
+    }
+    else if (def.type == EBaseItem::Throwable)
+    {
+        item->handEquipped();
+        item->setBaseItemTypeAndMaterial(Item::eBaseItemType_devicetool, Item::eMaterial_undefined);
     }
     else
     {

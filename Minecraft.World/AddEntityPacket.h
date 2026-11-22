@@ -29,6 +29,7 @@ public:
 	static const int FISH_HOOK = 90;
 	static const int HELLSPHERE = 101;
 	//static const int SLIMEBALL = 111;
+	static const int MODPROJECTILE = 115;
 	static const int ZEPHYRBALL = 117;
 	static const int DRAGON_FIRE_BALL = 200;
 	static const int DART = 201;

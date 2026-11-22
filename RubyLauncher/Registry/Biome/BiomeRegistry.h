@@ -5,13 +5,20 @@
 
 class Biome;
 
+struct BiomeMobSpawn
+{
+	std::string mob;
+	std::string category = "monster";
+	int weight = 10;
+	int minCount = 4;
+	int maxCount = 4;
+};
+
 struct BiomeDefinition
 {
 	std::string modId;
 	std::string biomeId;
-
 	std::string name;
-
 	std::string surface;
 	std::string filler;
 
@@ -25,8 +32,17 @@ struct BiomeDefinition
 
 	int grassCount = 1;
 	int flowerCount = 2;
+	int deadBushCount = 0;
+	int cactusCount = 0;
+	int reedsCount = 0;
+	int mushroomCount = 0;
+	int waterlilyCount = 0;
+	int sandCount = 3;
+	int clayCount = 1;
+	int gravelCount = 1;
 
 	std::string tallGrass;
+	std::vector<BiomeMobSpawn> mobSpawns;
 
 	bool isOverworldBiome = true;
 

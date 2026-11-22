@@ -10,7 +10,8 @@
 #include "../Minecraft.World/net.minecraft.world.entity.animal.h"
 #include "../Minecraft.World/net.minecraft.world.entity.global.h"
 #include "../Minecraft.World/net.minecraft.world.entity.projectile.h"
-#include "..\Minecraft.World\EntityCrystal.h"
+#include "../Minecraft.World/EntityCrystal.h"
+#include "../Minecraft.World/ModProjectile.h"
 #include "../Minecraft.World/net.minecraft.network.packet.h"
 #include "../Minecraft.World/net.minecraft.world.item.h"
 #include "../Minecraft.World/net.minecraft.world.level.saveddata.h"
@@ -733,6 +734,12 @@ shared_ptr<Packet> TrackedEntity::getAddEntityPacket()
 	else if (e->instanceof(eTYPE_HELLSPHERE))
 	{
 		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::HELLSPHERE, yRotp, xRotp, xp, yp, zp);
+	}
+
+	else if (e->instanceof(eTYPE_MODPROJECTILE))
+	{
+		shared_ptr<ModProjectile> projectile = dynamic_pointer_cast<ModProjectile>(e);
+		return std::make_shared<AddEntityPacket>(e, AddEntityPacket::MODPROJECTILE, projectile->getSpecId(), yRotp, xRotp, xp, yp, zp);
 	}
 
 	//else if (e->instanceof(eTYPE_SLIMEBALL))

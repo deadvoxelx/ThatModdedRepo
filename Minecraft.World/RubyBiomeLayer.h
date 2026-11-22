@@ -10,6 +10,6 @@ public:
 	virtual intArray getArea(int xo, int yo, int w, int h);
 
 private:
-	int gridValue(int gx, int gz);
-	float sample(int x, int z, int cells);
+	int gridValue(int gx, int gz, int64_t salt);
+	float sample(int x, int z, int cells, int64_t salt);
 };

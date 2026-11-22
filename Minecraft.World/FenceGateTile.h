@@ -7,7 +7,7 @@ private:
 	static const int OPEN_BIT = 4;
 
 public:
-	FenceGateTile(int id);
+	FenceGateTile(int id, Material *material = nullptr);
 	Icon *getTexture(int face, int data);
 	virtual bool mayPlace(Level *level, int x, int y, int z);
 	virtual AABB *getAABB(Level *level, int x, int y, int z);

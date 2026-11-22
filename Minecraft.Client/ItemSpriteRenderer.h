@@ -10,6 +10,7 @@ private:
 	int sourceItemAuxValue;
 public:
 	ItemSpriteRenderer(Item *sourceItem, int sourceItemAuxValue = 0);
+	void setSourceItem(Item *item) { sourceItem = item; }
 	//ItemSpriteRenderer(Item *icon);
     virtual void render(shared_ptr<Entity> e, double x, double y, double z, float rot, float a);
 	virtual ResourceLocation *getTextureLocation(shared_ptr<Entity> mob);

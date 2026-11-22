@@ -70,23 +70,23 @@ RubyBiomeLayer::RubyBiomeLayer(int64_t seed, shared_ptr<Layer> parent) : Layer(s
 	this->parent = parent;
 }
 
-int RubyBiomeLayer::gridValue(int gx, int gz)
+int RubyBiomeLayer::gridValue(int gx, int gz, int64_t salt)
 {
-	initRandom(gx * 341873128712L, gz * 132897987541L);
+	initRandom(gx * 341873128712L + salt * 1013904223L, gz * 132897987541L + salt * 1664525L);
 	return nextRandom(256);
 }
 
-float RubyBiomeLayer::sample(int x, int z, int cells)
+float RubyBiomeLayer::sample(int x, int z, int cells, int64_t salt)
 {
 	const int gx = floorDiv(x, cells);
 	const int gz = floorDiv(z, cells);
 	const float fx = (x - gx * cells) / (float)cells;
 	const float fz = (z - gz * cells) / (float)cells;
 
-	const int n00 = gridValue(gx, gz);
-	const int n10 = gridValue(gx + 1, gz);
-	const int n01 = gridValue(gx, gz + 1);
-	const int n11 = gridValue(gx + 1, gz + 1);
+	const int n00 = gridValue(gx, gz, salt);
+	const int n10 = gridValue(gx + 1, gz, salt);
+	const int n01 = gridValue(gx, gz + 1, salt);
+	const int n11 = gridValue(gx + 1, gz + 1, salt);
 
 	const float north = n00 + (n10 - n00) * fx;
 	const float south = n01 + (n11 - n01) * fx;
@@ -125,7 +125,7 @@ intArray RubyBiomeLayer::getArea(int xo, int yo, int w, int h)
 
 			for (int i = 0; i < placementCount; i++)
 			{
-				if (sample(x + xo, y + yo, cells[i]) >= thresholds[i])
+				if (sample(x + xo, y + yo, cells[i], i) >= thresholds[i])
 				{
 					result[index] = placements[i].biomeId;
 					break;

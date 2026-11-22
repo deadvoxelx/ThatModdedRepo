@@ -64,13 +64,20 @@ public:
         }
     }
 
+    bool hasListeners(const std::string& eventName) const {
+        auto it = listeners_.find(eventName);
+        return it != listeners_.end() && !it->second.empty();
+    }
+
     template<typename E>
     bool fire(E& event) {
         auto it = listeners_.find(event.eventName);
         if (it == listeners_.end()) return false;
 
+        std::vector<Entry> entries = it->second;
+
         bool wasCanceled = false;
-        for (auto& entry : it->second) {
+        for (auto& entry : entries) {
             auto& fn = entry.listener;
             if (!fn.valid()) continue;
             auto result = fn(&event);

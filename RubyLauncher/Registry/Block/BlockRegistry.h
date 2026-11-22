@@ -6,6 +6,7 @@
 #include <vector>
 
 class ModTile;
+class ModDropSink;
 
 enum EBlockTool {
     BlockTool_None = 0,
@@ -31,6 +32,9 @@ struct BlockDefinition {
     bool dropPending = false;
     bool transparent = false;
     int baseItemType = -1;
+    std::string shape;
+    int lightEmission = 0;
+    int lightBlocking = -1;
 
     EBlockTool tool = BlockTool_Pickaxe;
 
@@ -42,7 +46,7 @@ struct BlockDefinition {
 
 struct PendingBlockDrop
 {
-    ModTile *tile;
+    ModDropSink *sink;
     std::string drop;
     std::string context;
 };

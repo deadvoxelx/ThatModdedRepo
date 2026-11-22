@@ -1,7 +1,17 @@
 #include "IDs.h"
 
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
+#include <iterator>
+#include <map>
+
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#endif
 
 #include "Common/ModPaths.h"
 #include "Item.h"
@@ -16,49 +26,227 @@ IDMapping* IDMapping::get() {
 
 void IDMapping::add(std::string ns, std::string name, bool isBlock, int id) {
     std::string n = ns+":"+name;
+
+    auto existing = stringToID.find(n);
+
+    if (existing != stringToID.end()) idToString.erase(makeKey(existing->second.id, existing->second.aux));
+
     stringToID[n] = { id, isBlock, 0 };
     pinned_[n] = { id, isBlock, 0 };
-    buildReverseMap();
-    saveRegistry();
+    idToString[makeKey(id, 0)] = n;
+    dirty_ = true;
+}
+
+namespace
+{
+    std::string g_registryPath;
+
+    bool isInstallRoot(const std::filesystem::path &path)
+    {
+        std::error_code error;
+        return std::filesystem::is_directory(path / "mods", error);
+    }
+
+    bool readRegistryFile(const std::string &path, std::map<std::string, IDMapping::MappedItem> &entries, std::string &problem)
+    {
+        entries.clear();
+
+        std::error_code error;
+
+        if (!std::filesystem::exists(path, error)) return true;
+
+        std::ifstream file(path);
+
+        if (!file.is_open())
+        {
+            problem = "it could not be opened";
+            return false;
+        }
+
+        const std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+        if (text.find_first_not_of(" \t\r\n") == std::string::npos) return true;
+
+        nlohmann::json doc;
+
+        try
+        {
+            doc = nlohmann::json::parse(text);
+        }
+        catch (const std::exception &e)
+        {
+            problem = std::string("it is not valid JSON: ") + e.what();
+            return false;
+        }
+
+        if (!doc.is_object())
+        {
+            problem = "it is not a JSON object";
+            return false;
+        }
+
+        if (!doc.contains("entries") || doc["entries"].is_null()) return true;
+
+        if (!doc["entries"].is_object())
+        {
+            problem = "its 'entries' value is not an object";
+            return false;
+        }
+
+        try
+        {
+            std::map<int, std::string> usedIds;
+
+            for (auto it = doc["entries"].begin(); it != doc["entries"].end(); ++it)
+            {
+                if (!it.value().is_object())
+                {
+                    problem = "'" + it.key() + "' is not an object";
+                    return false;
+                }
+
+                const auto idEntry = it.value().find("id");
+
+                if (idEntry == it.value().end() || !idEntry->is_number_integer())
+                {
+                    problem = "'" + it.key() + "' has no integer id";
+                    return false;
+                }
+
+                const int id = idEntry->get<int>();
+
+                if (id < 0)
+                {
+                    problem = "'" + it.key() + "' has a negative id";
+                    return false;
+                }
+
+                auto sameId = usedIds.find(id);
+
+                if (sameId != usedIds.end())
+                {
+                    problem = "'" + it.key() + "' and '" + sameId->second + "' both use id " + std::to_string(id);
+                    return false;
+                }
+
+                usedIds[id] = it.key();
+
+                IDMapping::MappedItem mapped;
+                mapped.id = id;
+                mapped.isBlock = it.value().value("block", false);
+                mapped.aux = it.value().value("aux", 0);
+                entries[it.key()] = mapped;
+            }
+        }
+        catch (const std::exception &e)
+        {
+            problem = std::string("it has an entry that cannot be read: ") + e.what();
+            return false;
+        }
+
+        return true;
+    }
 }
 
 std::string IDMapping::registryPath() {
-    std::filesystem::path root(RubyPaths::modsRoot());
-    return (root.parent_path() / "ruby_ids.json").string();
+    if (!g_registryPath.empty()) return g_registryPath;
+
+    const std::filesystem::path home = std::filesystem::path(RubyPaths::modsRoot()).parent_path();
+    const std::filesystem::path local = home / "ruby_ids.json";
+
+    if (const char *override = std::getenv("RUBY_IDS_PATH"))
+    {
+        if (override[0] != '\0')
+        {
+            g_registryPath = override;
+            Loader::_debugPrint("using the mod id registry '" + g_registryPath + "' from RUBY_IDS_PATH");
+            return g_registryPath;
+        }
+    }
+
+    if (!std::filesystem::exists(local))
+    {
+        std::filesystem::path ancestor = home.parent_path();
+        for (int depth = 0; depth < 4 && !ancestor.empty(); depth++, ancestor = ancestor.parent_path())
+        {
+            const std::filesystem::path candidate = ancestor / "ruby_ids.json";
+            std::error_code error;
+
+            if (std::filesystem::exists(candidate, error) && isInstallRoot(ancestor))
+            {
+                g_registryPath = candidate.string();
+                Loader::_debugPrint("using the shared mod id registry '" + g_registryPath + "'");
+                return g_registryPath;
+            }
+        }
+    }
+
+    g_registryPath = local.string();
+    return g_registryPath;
 }
 
 void IDMapping::loadRegistry() {
     pinned_.clear();
 
-    std::ifstream file(registryPath());
-    if (!file.is_open()) return;
+    usable_ = true;
 
-    nlohmann::json doc;
-    try {
-        file >> doc;
-    } catch (const std::exception &e) {
-        Loader::_debugPrint("couldnt read the mod id registry '" + registryPath() + "': " + e.what());
+    const std::string target = registryPath();
+    const std::string backup = target + ".bak";
+
+    std::map<std::string, MappedItem> loaded;
+    std::string problem;
+
+    const bool targetValid = readRegistryFile(target, loaded, problem);
+
+    if (!targetValid) Loader::_debugPrint("the mod id registry '" + target + "' is not usable: " + problem);
+
+    skipBackup_ = !targetValid;
+
+    if (loaded.empty())
+    {
+        std::map<std::string, MappedItem> backupEntries;
+        std::string backupProblem;
+
+        const bool backupValid = readRegistryFile(backup, backupEntries, backupProblem);
+
+        if (!backupEntries.empty())
+        {
+            pinned_ = std::move(backupEntries);
+            dirty_ = true;
+            skipBackup_ = true;
+
+            Loader::_debugPrint("restored " + std::to_string(pinned_.size()) + " pinned mod ids from the backup '" + backup + "'");
+            return;
+        }
+
+        if (targetValid)
+        {
+            Loader::_debugPrint("no pinned mod ids in '" + target + "' yet, mod ids will be created");
+            return;
+        }
+
+        std::error_code error;
+
+        if (!std::filesystem::exists(backup, error)) Loader::_debugPrint("there is no backup at '" + backup + "' to restore from");
+        else if (!backupValid) Loader::_debugPrint("the backup '" + backup + "' is not usable either: " + backupProblem);
+        else Loader::_debugPrint("the backup '" + backup + "' has no entries either");
+
+        usable_ = false;
+
+        Loader::_debugPrint("mods are not loaded this run, because assigning new block and item ids would renumber the blocks of existing worlds");
+        Loader::_debugPrint("to get them back, restore the last good copy of '" + target + "' (or of '" + backup + "') from a world backup and start the game again");
         return;
     }
 
-    if (!doc.is_object() || !doc.contains("entries") || !doc["entries"].is_object()) return;
-
-    for (auto it = doc["entries"].begin(); it != doc["entries"].end(); ++it) {
-        if (!it.value().is_object()) continue;
-        const int id = it.value().value("id", -1);
-        if (id < 0) continue;
-        MappedItem mapped;
-        mapped.id = id;
-        mapped.isBlock = it.value().value("block", false);
-        mapped.aux = it.value().value("aux", 0);
-        pinned_[it.key()] = mapped;
-    }
-
-    Loader::_debugPrint("loaded " + std::to_string(pinned_.size()) + " pinned mod ids from " + registryPath());
+    pinned_ = std::move(loaded);
+    Loader::_debugPrint("loaded " + std::to_string(pinned_.size()) + " pinned mod ids from " + target);
 }
 
 void IDMapping::saveRegistry() {
+    if (!dirty_ || !usable_) return;
+
     nlohmann::json entries = nlohmann::json::object();
+
     for (const auto &entry : pinned_) {
         nlohmann::json item;
         item["id"] = entry.second.id;
@@ -71,13 +259,71 @@ void IDMapping::saveRegistry() {
     doc["version"] = 1;
     doc["entries"] = entries;
 
-    try {
-        std::ofstream out(registryPath());
-        if (!out.is_open()) return;
-        out << doc.dump(1, '\t') << "\n";
-    } catch (const std::exception &e) {
-        Loader::_debugPrint("couldnt save the mod id registry '" + registryPath() + "': " + e.what());
+    const std::string target = registryPath();
+    const std::string temporary = target + ".tmp";
+    const std::string backup = target + ".bak";
+
+    bool written = false;
+
+    {
+        std::ofstream out(temporary, std::ios::binary | std::ios::trunc);
+
+        if (out.is_open())
+        {
+            out << doc.dump(1, '\t') << "\n";
+            out.flush();
+
+            written = out.good();
+        }
     }
+
+    if (!written)
+    {
+        std::error_code removeError;
+        std::filesystem::remove(temporary, removeError);
+
+        Loader::_debugPrint("couldnt write the mod id registry '" + target + "'; the previous file is untouched");
+        return;
+    }
+
+    if (!skipBackup_)
+    {
+        std::error_code existsError;
+        std::error_code copyError;
+
+        if (std::filesystem::exists(target, existsError))
+        {
+            std::filesystem::copy_file(target, backup, std::filesystem::copy_options::overwrite_existing, copyError);
+
+            if (copyError) Loader::_debugPrint("couldnt update the mod id registry backup '" + backup + "': " + copyError.message());
+        }
+    }
+
+    bool replaced = false;
+
+#ifdef _WIN32
+    replaced = MoveFileExW(RubyPaths::toWide(temporary).c_str(), RubyPaths::toWide(target).c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) != 0;
+#else
+    std::error_code renameError;
+    std::filesystem::rename(temporary, target, renameError);
+    replaced = !renameError;
+#endif
+
+    if (!replaced)
+    {
+        std::error_code removeError;
+        std::filesystem::remove(temporary, removeError);
+
+        Loader::_debugPrint("couldnt replace the mod id registry '" + target + "'; the previous file is untouched");
+        return;
+    }
+
+    dirty_ = false;
+    skipBackup_ = false;
+}
+
+bool IDMapping::isUsable() const {
+    return usable_;
 }
 
 int IDMapping::pinnedId(const std::string &key) const {

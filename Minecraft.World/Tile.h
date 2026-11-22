@@ -869,6 +869,8 @@ public:
 	virtual bool TestUse();
 	virtual bool TestUse(Level *level, int x, int y, int z, shared_ptr<Player> player);
 	virtual bool use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false); // 4J added soundOnly param
+	virtual bool canBonemeal(Level *level, int x, int y, int z) { return false; }
+	virtual bool bonemeal(Level *level, int x, int y, int z, Random *random) { return false; }
 	virtual void stepOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity);
 	virtual int getPlacedOnFaceDataValue(Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, int itemValue);
 	virtual void prepareRender(Level *level, int x, int y, int z);

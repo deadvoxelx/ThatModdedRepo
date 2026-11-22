@@ -3,6 +3,7 @@
 #include "sol/sol.hpp"
 #include "Item.h"
 #include "ArmorItem.h"
+#include "../Projectile/ModProjectileRegistry.h"
 
 enum EBaseItem {
     Default,
@@ -20,6 +21,7 @@ enum EBaseItem {
     Boots,
     Ingot,
     Stick,
+    Throwable,
 };
 
 enum EItemMaterial {
@@ -236,6 +238,13 @@ struct ItemDefinition {
     bool isAccessory = false;
     int maxStackSize = 64;
 
+    // Throwable Items
+    std::string projectile;
+    ModProjectileSpec projectileSpec;
+    bool hasProjectileSpec = false;
+    sol::function projectileOnHit = sol::nil;
+    sol::function projectileOnTick = sol::nil;
+
     // Armor Items
     EArmorMaterial armorMaterial = ArmorMaterial_Iron;
     std::string armorSet = "";
@@ -275,6 +284,9 @@ struct ItemDefinition {
         sol::optional<int> customTier = items["customTier"];
         sol::optional<int> customArmor = items["customArmorMaterial"];
         sol::optional<int> stackSize = items["maxStackSize"];
+        sol::object projectileValue = items["projectile"];
+        sol::optional<std::string> projectileKind;
+        if (projectileValue.valid() && projectileValue.is<std::string>()) projectileKind = projectileValue.as<std::string>();
         sol::optional<bool> fireImmuneValue = items["fireImmune"];
         sol::optional<bool> blastImmuneValue = items["blastImmune"];
         sol::optional<sol::function> useFunc = items["use"];
@@ -301,6 +313,39 @@ struct ItemDefinition {
         if (meat) isMeat = meat.value();
         if (accessory) isAccessory = accessory.value();
         if (stackSize) maxStackSize = stackSize.value();
+        if (projectileKind) projectile = projectileKind.value();
+
+        if (projectileValue.valid() && projectileValue.is<sol::table>())
+        {
+            sol::table projectileTable = projectileValue.as<sol::table>();
+            hasProjectileSpec = true;
+
+            sol::optional<std::string> particleName = projectileTable["particle"];
+            if (particleName) projectileSpec.particle = particleName.value();
+
+            sol::optional<std::string> trailName = projectileTable["trail"];
+            if (trailName) projectileSpec.trail = trailName.value();
+
+            sol::optional<int> damageValue = projectileTable["damage"];
+            if (damageValue) projectileSpec.damage = damageValue.value();
+
+            sol::optional<float> gravityValue = projectileTable["gravity"];
+            if (gravityValue) projectileSpec.gravity = gravityValue.value();
+
+            sol::optional<float> throwPowerValue = projectileTable["throwPower"];
+            if (throwPowerValue) projectileSpec.throwPower = throwPowerValue.value();
+
+            sol::object onHitValue = projectileTable["onHit"];
+            if (onHitValue.valid() && onHitValue.is<sol::function>()) projectileOnHit = onHitValue.as<sol::function>();
+
+            sol::object onTickValue = projectileTable["onTick"];
+            if (onTickValue.valid() && onTickValue.is<sol::function>()) projectileOnTick = onTickValue.as<sol::function>();
+
+            sol::optional<float> explosionValue = projectileTable["explosionPower"];
+            if (explosionValue) projectileSpec.explosionPower = explosionValue.value();
+        }
+
+        if (type == EBaseItem::Throwable && !stackSize) maxStackSize = 16;
         if (alwaysEat) canAlwaysEat = alwaysEat.value();
         if (armor) armorSet = armor.value();
         if (customTier) tierIndex = customTier.value();

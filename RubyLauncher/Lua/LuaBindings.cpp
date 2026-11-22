@@ -63,7 +63,9 @@
 #include "../../Minecraft.World/DamageSource.h"
 #include "../../Minecraft.World/ItemEntity.h"
 #include "../../Minecraft.World/ItemInstance.h"
+#include "../../Minecraft.World/Entity.h"
 #include "../../Minecraft.World/Level.h"
+#include "../../Minecraft.World/LightningBolt.h"
 #include "../../Minecraft.World/MobEffect.h"
 #include "../../Minecraft.World/MobEffectInstance.h"
 #include "../../Minecraft.World/Tile.h"
@@ -759,11 +761,22 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
                 sol::optional<bool> overworldValue = t["isOverworldBiome"];
                 if (overworldValue) definition.isOverworldBiome = overworldValue.value();
 
-                sol::optional<int> grassCountValue = t["grassCount"];
-                if (grassCountValue) definition.grassCount = grassCountValue.value();
+                auto readCount = [](sol::table &table, const char *key, int &out)
+                {
+                    sol::optional<int> value = table[key];
+                    if (value) out = value.value() < 0 ? 0 : value.value();
+                };
 
-                sol::optional<int> flowerCountValue = t["flowerCount"];
-                if (flowerCountValue) definition.flowerCount = flowerCountValue.value();
+                readCount(t, "grassCount", definition.grassCount);
+                readCount(t, "flowerCount", definition.flowerCount);
+                readCount(t, "deadBushCount", definition.deadBushCount);
+                readCount(t, "cactusCount", definition.cactusCount);
+                readCount(t, "reedsCount", definition.reedsCount);
+                readCount(t, "mushroomCount", definition.mushroomCount);
+                readCount(t, "waterlilyCount", definition.waterlilyCount);
+                readCount(t, "sandCount", definition.sandCount);
+                readCount(t, "clayCount", definition.clayCount);
+                readCount(t, "gravelCount", definition.gravelCount);
 
                 sol::optional<int> sizeValue = t["size"];
                 if (sizeValue) definition.size = sizeValue.value();
@@ -795,6 +808,43 @@ void LuaBindings::bindCommonFunctions(const std::vector<sol::state*> &luaStates)
                 readColour(t, "foliageColor", definition.foliageColor);
                 readColour(t, "waterColor", definition.waterColor);
                 readColour(t, "skyColor", definition.skyColor);
+
+                sol::optional<sol::object> mobSpawnsValue = t["mobSpawns"];
+                if (mobSpawnsValue && mobSpawnsValue->valid() && mobSpawnsValue->is<sol::table>())
+                {
+                    sol::table spawnTable = mobSpawnsValue->as<sol::table>();
+
+                    for (const auto &entry : spawnTable)
+                    {
+                        if (!entry.second.valid() || !entry.second.is<sol::table>()) continue;
+
+                        sol::table spawn = entry.second.as<sol::table>();
+
+                        sol::optional<std::string> mobValue = spawn["mob"];
+                        if (!mobValue || mobValue.value().empty())
+                        {
+                            Loader::_debugPrint("biome " + modId + ":" + biomeId + ": a mobSpawns entry needs a mob name");
+                            continue;
+                        }
+
+                        BiomeMobSpawn spec;
+                        spec.mob = mobValue.value();
+
+                        sol::optional<std::string> categoryValue = spawn["category"];
+                        if (categoryValue && !categoryValue.value().empty()) spec.category = categoryValue.value();
+
+                        sol::optional<int> weightValue = spawn["weight"];
+                        if (weightValue) spec.weight = weightValue.value();
+
+                        sol::optional<int> minValue = spawn["min"];
+                        if (minValue) spec.minCount = minValue.value();
+
+                        sol::optional<int> maxValue = spawn["max"];
+                        if (maxValue) spec.maxCount = maxValue.value();
+
+                        definition.mobSpawns.push_back(spec);
+                    }
+                }
             }
 
             if (definition.name.empty()) definition.name = biomeId;
@@ -1228,6 +1278,9 @@ void LuaBindings::bindServerUsertypes(sol::state& lua) {
         "castToPlayer", [](Entity& e) -> shared_ptr<Player> {
             return dynamic_pointer_cast<Player>(e.shared_from_this());
         },
+        "castToLivingEntity", [](Entity& e) -> shared_ptr<LivingEntity> {
+            return dynamic_pointer_cast<LivingEntity>(e.shared_from_this());
+        },
         "pos", sol::property([](Entity& entity) { return LuaVec3(entity.x, entity.y, entity.z); }),
         "getDisplayName", &Entity::getDisplayName,
         "setDelta", [](Entity& ent, LuaVec3& delta) {
@@ -1313,7 +1366,10 @@ void LuaBindings::bindServerUsertypes(sol::state& lua) {
                     default: return lvl.getClosestEntityOfClass(typeid(Player), AABB::newTemp(x1, y1, z1, x2, y2, z2), entityPtr);
                 }
             }
-        )
+        ),
+        "strikeLightning", [](Level& lvl, double x, double y, double z) {
+            return lvl.addGlobalEntity(std::make_shared<LightningBolt>(&lvl, x, y, z));
+        }
     );
 
     lua.new_usertype<ItemEntity>("ItemEntity",
@@ -1385,7 +1441,8 @@ void LuaBindings::bindStartupFunctions(sol::state& lua) {
         {"Boots", EBaseItem::Boots},
         {"Ingot", EBaseItem::Ingot},
         {"Food_Fruit", EBaseItem::Food_Fruit},
-        {"Food_Bread", EBaseItem::Food_Bread}
+        {"Food_Bread", EBaseItem::Food_Bread},
+        {"Throwable", EBaseItem::Throwable}
     });
 
     lua.new_enum<EArmorMaterial>("EArmorMaterial", {
@@ -1497,7 +1554,8 @@ void LuaBindings::bindStartupFunctions(sol::state& lua) {
         sol::constructors<BlockDefinition(sol::table)>(),
         "hardness", &BlockDefinition::hardness,
         "resistance", &BlockDefinition::resistance,
-        "tool", &BlockDefinition::tool
+        "tool", &BlockDefinition::tool,
+        "shape", &BlockDefinition::shape
     );
 
     lua.set_function("registerBlock", [](sol::this_environment env,const std::string& id, const std::string& name, const std::string& texturePath, sol::optional<sol::object> definition, sol::this_state state) {
@@ -1532,7 +1590,7 @@ void LuaBindings::bindStartupFunctions(sol::state& lua) {
         std::string envPath = modEnv["pathName"];
         std::wstring path = std::wstring(envPath.begin(), envPath.end());
 
-        std::string shape = "oak", trunk, leaves;
+        std::string shape = "oak", trunk, leaves, feature;
         int height = 0;
         if (options.has_value() && options->valid() && options->is<sol::table>())
         {
@@ -1549,9 +1607,12 @@ void LuaBindings::bindStartupFunctions(sol::state& lua) {
 
             sol::optional<int> heightValue = t["height"];
             if (heightValue && heightValue.value() > 0) height = heightValue.value();
+
+            sol::optional<std::string> featureValue = t["feature"];
+            if (featureValue && !featureValue.value().empty()) feature = featureValue.value();
         }
 
-        int registered = SaplingRegistry::registerSapling(modId, saplingId, name, path, texturePath, shape, trunk, leaves, height);
+        int registered = SaplingRegistry::registerSapling(modId, saplingId, name, path, texturePath, shape, trunk, leaves, height, feature);
         if (registered == -1) {
             RubyUtils::LuaException(state, "registerSapling: failed to register '" + saplingId + "' (bad shape, unknown trunk/leaves block, or the block registry limit was reached)");
             return -1;

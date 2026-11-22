@@ -90,5 +90,7 @@ namespace FeatureRegistry
 	void reset();
 	void decorateChunk(Level *level, Random *random, int xo, int zo, Biome *biome);
 
+	bool place(const std::string &name, Level *level, Random *random, int x, int y, int z);
+
 	int blockId(const std::string &name);
 }

@@ -6,6 +6,8 @@
 #include "net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
 #include "net.minecraft.world.level.dimension.h"
+#include "net.minecraft.world.item.h"
+#include "net.minecraft.world.entity.item.h"
 #include "net.minecraft.world.entity.monster.h"
 #include "net.minecraft.world.entity.global.h"
 #include "net.minecraft.world.entity.h"
@@ -146,6 +148,27 @@ int NusaCoreTile::getTickDelay(Level *level)
 bool NusaCoreTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly)
 {
 	if (level->isClientSide) return true;
+
+	shared_ptr<ItemInstance> heldItem = player->getCarriedItem();
+	if (heldItem != nullptr && heldItem->id == Item::aphalafShard_Id)
+	{
+		heldItem->count--;
+
+		if (heldItem->count <= 0)
+		{
+			player->removeSelectedItem();
+		}
+
+		if (ServerPlayer *serverPlayer = dynamic_cast<ServerPlayer *>(player.get()))
+		{
+			serverPlayer->inventory->setChanged();
+			serverPlayer->broadcastCarriedItem();
+		}
+
+		shared_ptr<ItemInstance> nusaShard = std::make_shared<ItemInstance>(Item::nusaShard_Id, 1, 0);
+		level->addEntity(std::make_shared<ItemEntity>(level, x + 0.5, y + 1.0, z + 0.5, nusaShard));
+		return true;
+	}
 	if ((level->getData(x, y, z) & 1) == NusaCoreTile::TYPE_ACTIVE) return false;
 
 	if (level->dimension->id == 4)

@@ -54,6 +54,7 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs, in
 		bIsFullChunk = true;
 
 		LevelChunk *lc = level->getChunkAt(x,z);
+		if (lc != nullptr) lc->reloadBiomes();
 		rawBuffer = lc->getReorderedBlocksAndData(x&0xF, y, z&0xF, xs, this->ys, zs);
 	}
 	else

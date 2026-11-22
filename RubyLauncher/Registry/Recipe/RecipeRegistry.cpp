@@ -100,12 +100,19 @@ namespace
 		for (const auto &entry : pending.key)
 		{
 			ItemInstance *ingredient = resolveIngredient(entry.second, context);
-			if (ingredient == nullptr) return nullptr;
+			if (ingredient == nullptr)
+			{
+				for (auto &existing : keyMap) delete existing.second;
+				return nullptr;
+			}
 			keyMap[entry.first] = ingredient;
 		}
 
 		ItemInstance **items = new ItemInstance *[width * height];
-		for (int y = 0; y < height; ++y)
+		for (int i = 0; i < width * height; ++i) items[i] = nullptr;
+
+		bool ok = true;
+		for (int y = 0; y < height && ok; ++y)
 		{
 			for (int x = 0; x < width; ++x)
 			{
@@ -121,20 +128,24 @@ namespace
 				if (found == keyMap.end())
 				{
 					Loader::_debugPrint("recipe " + context + ": the pattern uses '" + std::string(1, symbol) + "' but the key has no entry for it");
-					delete [] items;
-					return nullptr;
+					ok = false;
+					break;
 				}
 
-				items[y * width + x] = found->second;
+				items[y * width + x] = new ItemInstance(found->second->id, 1, Recipes::ANY_AUX_VALUE);
 			}
 		}
 
-		ItemInstance *result = resolveResult(pending.result, pending.count, pending.aux, context);
+		ItemInstance *result = ok ? resolveResult(pending.result, pending.count, pending.aux, context) : nullptr;
 		if (result == nullptr)
 		{
+			for (int i = 0; i < width * height; ++i) delete items[i];
 			delete [] items;
+			for (auto &existing : keyMap) delete existing.second;
 			return nullptr;
 		}
+
+		for (auto &existing : keyMap) delete existing.second;
 
 		return new ShapedRecipy(width, height, items, result, pending.group);
 	}
@@ -143,41 +154,26 @@ namespace
 	{
 		const std::string context = describe(pending);
 
-		std::map<int, ItemInstance *> cache;
-
 		vector<ItemInstance *> *ingredients = new vector<ItemInstance *>();
 		for (const std::string &name : pending.ingredients)
 		{
-			const int id = IDMapping::get()->getID(name).id;
-
-			ItemInstance *ingredient = nullptr;
-			auto cached = cache.find(id);
-			if (cached != cache.end())
+			ItemInstance *ingredient = resolveIngredient(name, context);
+			if (ingredient == nullptr)
 			{
-				ingredient = cached->second;
+				for (ItemInstance *existing : *ingredients) delete existing;
+				delete ingredients;
+				return nullptr;
 			}
-			else
-			{
-				ingredient = resolveIngredient(name, context);
-				if (ingredient == nullptr)
-				{
-					for (auto &entry : cache) delete entry.second;
-					delete ingredients;
-					return nullptr;
-				}
-				cache[id] = ingredient;
-			}
-
 			ingredients->push_back(ingredient);
 		}
 
 		ItemInstance *result = resolveResult(pending.result, pending.count, pending.aux, context);
 		if (result == nullptr)
 		{
+			for (ItemInstance *existing : *ingredients) delete existing;
 			delete ingredients;
 			return nullptr;
 		}
-
 		return new ShapelessRecipy(result, ingredients, pending.group);
 	}
 }

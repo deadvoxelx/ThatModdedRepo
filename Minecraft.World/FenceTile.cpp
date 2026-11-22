@@ -17,7 +17,7 @@ const unsigned int FenceTile::FENCE_NAMES[7] = {
 	IDS_TILE_SKYROOT_FENCE,
 };
 
-FenceTile::FenceTile(int id, Tile *baseTile) : Tile(id, baseTile->material, isSolidRender())
+FenceTile::FenceTile(int id, Tile *baseTile, Material *material) : Tile(id, material != nullptr ? material : baseTile->material, isSolidRender())
 {
 }
 
@@ -201,7 +201,12 @@ void FenceTile::registerIcons(IconRegister *iconRegister)
 
 bool FenceTile::isFence(int tile)
 {
-	return tile == Tile::fence_Id;
+	if (tile <= 0 || tile >= Tile::TILE_NUM_COUNT)
+	{
+		return false;
+	}
+
+	return dynamic_cast<FenceTile *>(Tile::tiles[tile]) != nullptr;
 }
 
 bool FenceTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly)

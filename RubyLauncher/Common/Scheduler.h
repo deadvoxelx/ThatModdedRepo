@@ -39,7 +39,9 @@ inline int Scheduler::schedule(double delayTicks, sol::protected_function fn)
 {
     if (!fn.valid()) return -1;
     int id = m_nextId++;
-    uint64_t due = m_curTick + ticksFrom(delayTicks);
+    uint64_t delay = ticksFrom(delayTicks);
+    if (delay == 0) delay = 1;
+    uint64_t due = m_curTick + delay;
     auto task = std::make_unique<Task>(Task{ id, due, 0, std::move(fn) });
     m_tasks[id] = std::move(task);
     m_due.emplace(due, id);
@@ -51,6 +53,7 @@ inline int Scheduler::scheduleEvery(double intervalTicks, sol::protected_functio
     if (!fn.valid()) return -1;
     int id = m_nextId++;
     uint64_t interval = ticksFrom(intervalTicks);
+    if (interval == 0) interval = 1;
     uint64_t due = m_curTick + interval;
     auto task = std::make_unique<Task>(Task{ id, due, interval, std::move(fn) });
     m_tasks[id] = std::move(task);
