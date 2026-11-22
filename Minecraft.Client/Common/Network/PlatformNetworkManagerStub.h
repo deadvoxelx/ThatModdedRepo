@@ -107,12 +107,14 @@ private:
 		int m_smallId;
 		PlayerFlags(INetworkPlayer *pNetworkPlayer, unsigned int count);
 		~PlayerFlags();
+		void resize(unsigned int newCount);
 	};
 	vector<PlayerFlags *> m_playerFlags;
 	void SystemFlagAddPlayer(INetworkPlayer *pNetworkPlayer);
 	void SystemFlagRemovePlayer(INetworkPlayer *pNetworkPlayer);
 	void SystemFlagRemoveBySmallId(int smallId);
 	void SystemFlagReset();
+	void EnsureSystemFlagCapacity(int index);
 public:
 	virtual void SystemFlagSet(INetworkPlayer *pNetworkPlayer, int index);
 	virtual bool SystemFlagGet(INetworkPlayer *pNetworkPlayer, int index);

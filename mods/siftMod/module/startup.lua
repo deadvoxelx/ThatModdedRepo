@@ -6,6 +6,8 @@ function main()
             BlockDefinition.new
             (
                 {
+					lightEmission = 0,
+					lightBlocking = 15,
                     hardness = 3.0,
                     resistance = 10.0,
                     tool = EBlockTool.Pickaxe,
@@ -21,6 +23,8 @@ function main()
             BlockDefinition.new
             (
                 {
+					lightEmission = 0,
+					lightBlocking = 15,
                     hardness = 1.0,
                     resistance = 0.0,
                     tool = EBlockTool.Shovel,
@@ -36,6 +40,8 @@ function main()
             BlockDefinition.new
             (
                 {
+					lightEmission = 0,
+					lightBlocking = 15,
                     hardness = 1.0,
                     resistance = 0.0,
                     tool = EBlockTool.Shovel,
@@ -53,6 +59,8 @@ function main()
             BlockDefinition.new
             (
                 {
+					lightEmission = 0,
+					lightBlocking = 15,
                     hardness = 0.5,
                     resistance = 0.0,
                     tool = EBlockTool.Hoe,
@@ -68,6 +76,8 @@ function main()
             BlockDefinition.new
             (
                 {
+					lightEmission = 0,
+					lightBlocking = 15,
                     hardness = 2.0,
                     resistance = 5.0,
                     tool = EBlockTool.Hatchet,
@@ -83,6 +93,8 @@ function main()
             BlockDefinition.new
             (
                 {
+					lightEmission = 0,
+					lightBlocking = 15,
                     hardness = 2.0,
                     resistance = 5.0,
                     tool = EBlockTool.Hatchet,
@@ -93,12 +105,86 @@ function main()
         )
     log("Sift Mod: registered siftPlanks as id " .. tostring(siftPlanksId))
 	
+	local siftPlanksSlabId = registerBlock
+        (
+            "siftPlanksSlab", "Wellspring Planks Slab", "res/siftPlanks.png",
+            BlockDefinition.new
+            (
+                {
+					shape = "slab",
+					lightEmission = 0,
+					lightBlocking = 15,
+                    hardness = 2.0,
+                    resistance = 5.0,
+                    tool = EBlockTool.Hatchet,
+                    sound = "wood"
+                }
+            )
+        )
+    log("Sift Mod: registered siftPlanksSlab as id " .. tostring(siftPlanksSlabId))
+	
+	local siftPlanksStairsId = registerBlock
+        (
+            "siftPlanksStairs", "Wellspring Planks Stairs", "res/siftPlanks.png",
+            BlockDefinition.new
+            (
+                {
+					shape = "stairs",
+					lightEmission = 0,
+					lightBlocking = 15,
+                    hardness = 2.0,
+                    resistance = 5.0,
+                    tool = EBlockTool.Hatchet,
+                    sound = "wood"
+                }
+            )
+        )
+    log("Sift Mod: registered siftPlanksStairs as id " .. tostring(siftPlanksStairsId))
+	
+	local siftPlanksFenceId = registerBlock
+        (
+            "siftPlanksFence", "Wellspring Planks Fence", "res/siftPlanks.png",
+            BlockDefinition.new
+            (
+                {
+					shape = "fence",
+					lightEmission = 0,
+					lightBlocking = 0,
+                    hardness = 2.0,
+                    resistance = 5.0,
+                    tool = EBlockTool.Hatchet,
+                    sound = "wood"
+                }
+            )
+        )
+    log("Sift Mod: registered siftPlanksFence as id " .. tostring(siftPlanksFenceId))
+	
+	local siftPlanksFenceGateId = registerBlock
+        (
+            "siftPlanksFenceGate", "Wellspring Planks Fence Gate", "res/siftPlanks.png",
+            BlockDefinition.new
+            (
+                {
+					shape = "fenceGate",
+					lightEmission = 0,
+					lightBlocking = 0,
+                    hardness = 2.0,
+                    resistance = 5.0,
+                    tool = EBlockTool.Hatchet,
+                    sound = "wood"
+                }
+            )
+        )
+    log("Sift Mod: registered siftPlanksFenceGate as id " .. tostring(siftPlanksFenceGateId))
+	
 	local reinforcedDeepslateId = registerBlock
         (
             "reinforcedDeepslate", "Reinforced Deepslate", "res/reinforcedDeepslateSide.png",
             BlockDefinition.new
             (
                 {
+					lightEmission = 0,
+					lightBlocking = 15,
                     hardness = 50.0,
                     resistance = 6000000.0,
                     tool = EBlockTool.Pickaxe,
@@ -109,6 +195,42 @@ function main()
             )
         )
     log("Sift Mod: registered reinforcedDeepslate as id " .. tostring(reinforcedDeepslateId))
+	
+	local siftStoneSlabId = registerBlock
+        (
+            "siftStoneSlab", "Soulshale Slab", "res/siftStone.png",
+            BlockDefinition.new
+            (
+                {
+					shape = "slab",
+					lightEmission = 0,
+					lightBlocking = 15,
+                    hardness = 3.0,
+                    resistance = 10.0,
+                    tool = EBlockTool.Pickaxe,
+                    sound = "stone"
+                }
+            )
+        )
+    log("Sift Mod: registered siftStoneSlab as id " .. tostring(siftStoneSlab))
+	
+	local siftStoneStairsId = registerBlock
+        (
+            "siftStoneStairs", "Soulshale Stairs", "res/siftStone.png",
+            BlockDefinition.new
+            (
+                {
+					shape = "stairs",
+					lightEmission = 0,
+					lightBlocking = 15,
+                    hardness = 3.0,
+                    resistance = 10.0,
+                    tool = EBlockTool.Pickaxe,
+                    sound = "stone"
+                }
+            )
+        )
+    log("Sift Mod: registered siftStoneStairs as id " .. tostring(siftStoneStairsId))
 	
     -- Plant
     local siftTallgrassId = registerPlant
@@ -164,6 +286,90 @@ function main()
         { S = "siftMod:siftStone" },
         "minecraft:furnace",
         { count = 1, group = ERecipeGroup.Structure }
+    )
+	
+	registerShapedRecipe
+    (
+        "sticksFromSiftPlanks",
+        {
+            "S",
+            "S"
+        },
+        { S = "siftMod:siftPlanks" },
+        "minecraft:stick",
+        { count = 8, group = ERecipeGroup.Structure }
+    )
+	
+	registerShapedRecipe
+    (
+        "siftSlabRecipe",
+        {
+            "SSS"
+        },
+        { S = "siftMod:siftPlanks" },
+        "siftMod:siftPlanksSlab",
+        { count = 6, group = ERecipeGroup.Structure }
+    )
+	
+	registerShapedRecipe
+    (
+        "siftStairsRecipe",
+        {
+            "  S",
+			" SS",
+			"SSS"
+        },
+        { S = "siftMod:siftPlanks" },
+        "siftMod:siftPlanksStairs",
+        { count = 6, group = ERecipeGroup.Structure }
+    )
+	
+	registerShapedRecipe
+    (
+        "siftFenceRecipe",
+        {
+            "STS",
+			"STS"
+        },
+        { S = "siftMod:siftPlanks", T = "minecraft:stick" },
+        "siftMod:siftPlanksFence",
+        { count = 4, group = ERecipeGroup.Structure }
+    )
+	
+	registerShapedRecipe
+    (
+        "siftFenceGateRecipe",
+        {
+            "TST",
+			"TST"
+        },
+        { S = "siftMod:siftPlanks", T = "minecraft:stick" },
+        "siftMod:siftPlanksFenceGate",
+        { count = 1, group = ERecipeGroup.Structure }
+    )
+	
+	registerShapedRecipe
+    (
+        "siftStoneSlabRecipe",
+        {
+            "SSS"
+        },
+        { S = "siftMod:siftStone" },
+        "siftMod:siftStoneSlab",
+        { count = 6, group = ERecipeGroup.Structure }
+    )
+	
+	registerShapedRecipe
+    (
+        "siftStoneStairsRecipe",
+        {
+            "  S",
+			" SS",
+			"SSS"
+        },
+        { S = "siftMod:siftStone" },
+        "siftMod:siftStoneStairs",
+        { count = 6, group = ERecipeGroup.Structure }
     )
 
 
@@ -234,6 +440,8 @@ function main()
         BlockDefinition.new
         (
             {
+				lightEmission = 7,
+				lightBlocking = 0,
                 hardness = -1.0,
                 resistance = 6000000.0,
                 tool = EBlockTool.None,

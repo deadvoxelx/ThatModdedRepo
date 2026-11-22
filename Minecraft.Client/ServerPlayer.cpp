@@ -1743,7 +1743,9 @@ void ServerPlayer::resetLastActionTime()
 int ServerPlayer::getFlagIndexForChunk(const ChunkPos& pos, int dimension)
 {
 	// Scale pos x & z up by 16 as getGlobalIndexForChunk is expecting tile rather than chunk coords
-	return LevelRenderer::getGlobalIndexForChunk(pos.x * 16 , 0, pos.z * 16, dimension ) / (Level::maxBuildHeight / 16);		// dividing here by number of renderer chunks in one column;
+	const int globalIndex = LevelRenderer::getGlobalIndexForChunk(pos.x * 16 , 0, pos.z * 16, dimension );
+	if( globalIndex < 0 ) return -1;
+	return globalIndex / (Level::maxBuildHeight / 16);
 }
 
 // 4J Added, returns a number which is subtracted from the default view distance

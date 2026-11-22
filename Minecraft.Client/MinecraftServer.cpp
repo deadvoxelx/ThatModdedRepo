@@ -16,6 +16,7 @@
 #include "ServerLevel.h"
 #include "ServerLevelListener.h"
 #include "Settings.h"
+#include "LevelRenderer.h"
 #include "../Minecraft.World/Command.h"
 #include "../Minecraft.World/AABB.h"
 #include "../Minecraft.World/Vec3.h"
@@ -1015,6 +1016,11 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 		}
 
 		players->setLevel(levels);
+	}
+
+	if( levels.length > 0 && levels[0] != nullptr )
+	{
+		LevelRenderer::configureForWorld( levels[0]->getLevelData()->getXZSize(), levels[0]->getLevelData()->getHellScale() );
 	}
 
 	RubyLoader::onServerStart(this);

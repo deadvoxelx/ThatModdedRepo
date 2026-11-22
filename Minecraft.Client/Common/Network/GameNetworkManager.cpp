@@ -71,6 +71,7 @@ void CGameNetworkManager::Initialise()
 	ServerStoppedCreate( false );
 	ServerReadyCreate( false );
 	int flagIndexSize = LevelRenderer::getGlobalChunkCount() / (Level::maxBuildHeight / 16);		// dividing here by number of renderer chunks in one column
+	if( flagIndexSize < 1024 ) flagIndexSize = 1024;
 #ifdef _XBOX
 	s_pPlatformNetworkManager = new CPlatformNetworkManagerXbox();
 #elif defined __PS3__ || defined __ORBIS__ || defined __PSVITA__

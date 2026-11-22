@@ -707,6 +707,23 @@ CPlatformNetworkManagerStub::PlayerFlags::~PlayerFlags()
 	delete [] flags;
 }
 
+void CPlatformNetworkManagerStub::PlayerFlags::resize(unsigned int newCount)
+{
+	newCount = (newCount + 8 - 1) & ~(8u - 1);
+	if (newCount <= count) return;
+
+	unsigned char *newFlags = new unsigned char [ newCount / 8 ];
+	memset( newFlags, 0, newCount / 8 );
+	if( flags != nullptr && count > 0 )
+	{
+		memcpy( newFlags, flags, count / 8 );
+	}
+
+	delete [] flags;
+	flags = newFlags;
+	count = newCount;
+}
+
 // Add a player to the per system flag storage - if we've already got a player from that system, copy its flags over
 void CPlatformNetworkManagerStub::SystemFlagAddPlayer(INetworkPlayer *pNetworkPlayer)
 {
@@ -767,23 +784,48 @@ void CPlatformNetworkManagerStub::SystemFlagReset()
 // Set a per system flag - this is done by setting the flag on every player that shares that system
 void CPlatformNetworkManagerStub::SystemFlagSet(INetworkPlayer *pNetworkPlayer, int index)
 {
-	if( ( index < 0 ) || ( index >= m_flagIndexSize ) ) return;
+	if( index < 0 ) return;
 	if( pNetworkPlayer == nullptr ) return;
+
+	EnsureSystemFlagCapacity( index );
 
 	for( unsigned int i = 0; i < m_playerFlags.size(); i++ )
 	{
 		if( pNetworkPlayer->IsSameSystem(m_playerFlags[i]->m_pNetworkPlayer) )
 		{
+			if( static_cast<unsigned int>( index ) >= m_playerFlags[i]->count ) continue;
 			m_playerFlags[i]->flags[ index / 8 ] |= ( 128 >> ( index % 8 ) );
 		}
 	}
+}
+
+void CPlatformNetworkManagerStub::EnsureSystemFlagCapacity(int index)
+{
+	if( index < m_flagIndexSize ) return;
+
+	int newSize = ( m_flagIndexSize > 0 ) ? m_flagIndexSize : 1024;
+	while( newSize <= index )
+	{
+		if( newSize > ( 1 << 30 ) )
+		{
+			newSize = index + 1;
+			break;
+		}
+		newSize *= 2;
+	}
+
+	for( unsigned int i = 0; i < m_playerFlags.size(); i++ )
+	{
+		m_playerFlags[i]->resize( static_cast<unsigned int>( newSize ) );
+	}
+	m_flagIndexSize = newSize;
 }
 
 // Get value of a per system flag - can be read from the flags of the passed in player as anything else sent to that
 // system should also have been duplicated here
 bool CPlatformNetworkManagerStub::SystemFlagGet(INetworkPlayer *pNetworkPlayer, int index)
 {
-	if( ( index < 0 ) || ( index >= m_flagIndexSize ) ) return false;
+	if( index < 0 ) return false;
 	if( pNetworkPlayer == nullptr )
 	{
 		return false;
@@ -793,6 +835,7 @@ bool CPlatformNetworkManagerStub::SystemFlagGet(INetworkPlayer *pNetworkPlayer, 
 	{
 		if( m_playerFlags[i]->m_pNetworkPlayer == pNetworkPlayer )
 		{
+			if( static_cast<unsigned int>( index ) >= m_playerFlags[i]->count ) return false;
 			return ( ( m_playerFlags[i]->flags[ index / 8 ] & ( 128 >> ( index % 8 ) ) ) != 0 );
 		}
 	}
